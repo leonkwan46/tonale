@@ -1,7 +1,7 @@
-import { Link, Stack } from 'expo-router'
-import styled from '@emotion/native'
-import { useColorScheme } from 'react-native'
 import { Colors } from '@/constants/Colors'
+import styled from '@emotion/native'
+import { Link, Stack } from 'expo-router'
+import { useColorScheme } from 'react-native'
 
 export default function NotFoundScreen() {
   const colorScheme = useColorScheme() ?? 'light'

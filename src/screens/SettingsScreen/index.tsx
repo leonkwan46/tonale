@@ -1,16 +1,16 @@
 import { auth } from '@/config/firebaseAuth'
-import { Alert, useColorScheme } from 'react-native'
-import { signOut } from 'firebase/auth'
 import { useRouter } from 'expo-router'
+import { signOut } from 'firebase/auth'
+import { Alert, useColorScheme } from 'react-native'
 
 import { AccountInfo } from './components/AccountInfo'
 import { SettingItem } from './components/SettingItem'
 import {
-  Container,
-  Title,
-  TitleContainer,
-  Card,
-  SectionTitle
+    Card,
+    Container,
+    SectionTitle,
+    Title,
+    TitleContainer
 } from './SettingsScreen.styles'
 
 export function SettingsScreen() {

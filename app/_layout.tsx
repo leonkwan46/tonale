@@ -4,6 +4,7 @@ import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import 'react-native-reanimated'
 
 import { ErrorBoundary } from '@/components/ErrorBoundary'
@@ -20,24 +21,28 @@ export default function RootLayout() {
   // Show splash while fonts are loading
   if (!loaded || showSplash) {
     return (
-      <ErrorBoundary>
-        <SplashScreen 
-          onComplete={() => setShowSplash(false)} 
-        />
-      </ErrorBoundary>
+      <SafeAreaProvider>
+        <ErrorBoundary>
+          <SplashScreen 
+            onComplete={() => setShowSplash(false)} 
+          />
+        </ErrorBoundary>
+      </SafeAreaProvider>
     )
   }
 
   return (
-    <ErrorBoundary>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </ErrorBoundary>
+    <SafeAreaProvider>
+      <ErrorBoundary>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(auth)" />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </ErrorBoundary>
+    </SafeAreaProvider>
   )
 }

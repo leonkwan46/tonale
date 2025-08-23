@@ -1,13 +1,13 @@
-import { useAuth } from '@/hooks/useAuth'
 import { Colors, ColorScheme } from '@/constants/Colors'
+import { useAuth } from '@/hooks/useAuth'
 import styled from '@emotion/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
 import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming
 } from 'react-native-reanimated'
 import { AppText, LogoAnimation, MusicBar } from './components'
 

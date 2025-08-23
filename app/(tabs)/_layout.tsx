@@ -1,8 +1,8 @@
+import styled from '@emotion/native'
+import { Ionicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { Platform, useColorScheme, View, Text } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import styled from '@emotion/native'
+import { Platform, useColorScheme } from 'react-native'
 
 import { Colors } from '@/constants/Colors'
 import { useAuth } from '@/hooks/useAuth'
@@ -80,8 +80,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Learn',
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="library" color={color} />
+          title: 'Theory',
+          tabBarIcon: ({ color }) => <Ionicons size={24} name="book" color={color} />
+        }}
+      />
+      <Tabs.Screen
+        name="aural"
+        options={{
+          title: 'Aural',
+          tabBarIcon: ({ color }) => <Ionicons size={24} name="musical-notes" color={color} />
         }}
       />
       <Tabs.Screen

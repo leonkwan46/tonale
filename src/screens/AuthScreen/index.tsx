@@ -11,7 +11,6 @@ import {
   withTiming
 } from 'react-native-reanimated'
 
-import type { AuthFormData, AuthMode, AuthState } from './types'
 import {
   Container,
   KeyboardContainer,
@@ -22,6 +21,7 @@ import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
 import { LogoSectionComponent } from './components/LogoSection'
 import { ModeToggle } from './components/ModeToggle'
+import type { AuthFormData, AuthMode, AuthState } from './types'
 
 export function AuthScreen() {
   const colorScheme = useColorScheme() ?? 'light'

@@ -13,6 +13,3 @@ export interface AuthState {
   showPassword: boolean
   showConfirmPassword: boolean
 }
-
-
-
