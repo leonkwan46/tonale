@@ -50,6 +50,6 @@ export const AppTheme = {
   textColor: (colorScheme: ColorScheme) => Colors[colorScheme].text,
   backgroundColor: (colorScheme: ColorScheme) => Colors[colorScheme].background,
   inputBackgroundColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#1a1a1a' : '#f8f9fa',
-  borderColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#333333' : '#e9ecef',
+  borderColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#333333' : '#e9ecef'
 }
 
