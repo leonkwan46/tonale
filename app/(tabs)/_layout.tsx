@@ -63,12 +63,25 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: 'absolute'
+        tabBarStyle: {
+          backgroundColor: Colors[colorScheme ?? 'light'].surface,
+          borderTopWidth: 1,
+          borderTopColor: Colors[colorScheme ?? 'light'].border,
+          paddingVertical: 8,
+          paddingHorizontal: 16,
+          height: Platform.select({
+            ios: 88, // Accounts for home indicator
+            android: 70
+          }),
+          elevation: 8, // Android shadow
+          shadowColor: '#000', // iOS shadow
+          shadowOffset: {
+            width: 0,
+            height: -2
           },
-          default: {}
-        })
+          shadowOpacity: 0.1,
+          shadowRadius: 8
+        }
       }}>
       <Tabs.Screen
         name="index"

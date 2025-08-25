@@ -1,38 +1,27 @@
-import { useScreenSafeArea } from '@/hooks/useScreenSafeArea'
 import styled from '@emotion/native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 interface ScreenContainerProps {
   children: React.ReactNode
-  includeBottomNavPadding?: boolean
   style?: object
 }
 
-const StyledContainer = styled(SafeAreaView)(({ theme }) => ({
+const StyledContainer = styled(View)<{ paddingTop: number }>(({ theme, paddingTop }) => ({
   flex: 1,
-  backgroundColor: theme.colors.background
-}))
-
-const ContentWrapper = styled.View<{ paddingBottom: number }>(({ paddingBottom }) => ({
-  flex: 1,
-  paddingBottom: paddingBottom
+  backgroundColor: theme?.colors?.background || 'transparent',
+  paddingTop: paddingTop
 }))
 
 export function ScreenContainer({ 
-  children, 
-  includeBottomNavPadding = true,
-  style 
-}: ScreenContainerProps) {
-  const { bottomPadding, bottomWithoutNav } = useScreenSafeArea()
-  
-  const paddingBottom = includeBottomNavPadding ? bottomPadding : bottomWithoutNav
+  children 
+}: ScreenContainerProps) {    
+  const insets = useSafeAreaInsets()
   
   return (
-    <StyledContainer style={style}>
-      <ContentWrapper paddingBottom={paddingBottom}>
-        {children}
-      </ContentWrapper>
+    <StyledContainer paddingTop={insets.top}>
+      {children}
     </StyledContainer>
   )
 }

@@ -52,4 +52,3 @@ export const AppTheme = {
   inputBackgroundColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#1a1a1a' : '#f8f9fa',
   borderColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#333333' : '#e9ecef'
 }
-

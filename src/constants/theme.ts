@@ -1,5 +1,38 @@
 import { Colors } from './Colors'
 
+// Shared constants that are theme-independent
+export const sharedConstants = {
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32
+  },
+  typography: {
+    xs: 10,
+    sm: 12,
+    base: 16,
+    lg: 20,
+    xl: 24,
+    '2xl': 28,
+    '3xl': 32,
+    '4xl': 40,
+    '5xl': 52
+  },
+  fontWeight: {
+    normal: '400' as const,
+    medium: '500' as const,
+    semibold: '600' as const,
+    bold: '700' as const
+  },
+  components: {
+    cardButton: {
+      size: 100 // Base size for CardButton (used with scale())
+    }
+  }
+}
+
 // Unified theme that extends your existing Colors
 export const lightTheme = {
   colors: {
@@ -23,33 +56,11 @@ export const lightTheme = {
     
     // Additional theme colors
     gold: '#FFD700',
-    inputBackground: '#f8f9fa'
+    inputBackground: '#f8f9fa',
+    lockedNode: '#999'
   },
-  // You can add other theme properties here like spacing, typography, etc.
-  spacing: {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32
-  },
-  typography: {
-    xs: 10,
-    sm: 12,
-    base: 16,
-    lg: 20,
-    xl: 24,
-    '2xl': 28,
-    '3xl': 32,
-    '4xl': 40,
-    '5xl': 52
-  },
-  fontWeight: {
-    normal: '400',
-    medium: '500',
-    semibold: '600',
-    bold: '700'
-  }
+  // Use shared constants for consistent dimensions across themes
+  ...sharedConstants
 }
 
 export const darkTheme = {
@@ -74,15 +85,17 @@ export const darkTheme = {
     
     // Additional theme colors
     gold: '#FFD700',
-    inputBackground: '#1a1a1a'
+    inputBackground: '#1a1a1a',
+    lockedNode: '#444'
   },
-  // Inherit same spacing, typography, and fontWeight
-  spacing: lightTheme.spacing,
-  typography: lightTheme.typography,
-  fontWeight: lightTheme.fontWeight
+  // Use shared constants for consistent dimensions across themes
+  ...sharedConstants
 }
 
 export type AppTheme = typeof lightTheme
+
+// Export component dimensions separately for direct access
+export const componentDimensions = sharedConstants.components
 
 // Create unified navigation themes that use our color system
 export const navigationLightTheme = {

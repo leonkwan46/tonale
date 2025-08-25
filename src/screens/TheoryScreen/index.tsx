@@ -1,18 +1,11 @@
 import { ScreenContainer } from '@/components'
 import React from 'react'
-import {
-  BottomText,
-  ContentWrapper,
-  TopText
-} from './TheoryScreen.styles'
+import { TheoryScreenBody } from './TheoryScreenBody/TheoryScreenBody'
 
 export function TheoryScreen() {
   return (
     <ScreenContainer>
-      <ContentWrapper>
-        <TopText>This is top text.</TopText>
-        <BottomText>This is bottom text.</BottomText>
-      </ContentWrapper>
+      <TheoryScreenBody />
     </ScreenContainer>
   )
 }

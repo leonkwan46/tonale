@@ -1,1 +1,2 @@
-export const BOTTOM_NAVBAR_HEIGHT = 40
+export const BOTTOM_NAVBAR_HEIGHT_IOS = 40
+export const BOTTOM_NAVBAR_HEIGHT_ANDROID = 50
