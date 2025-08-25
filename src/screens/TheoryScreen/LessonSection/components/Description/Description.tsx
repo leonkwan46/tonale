@@ -1,11 +1,19 @@
+import { useDevice } from '../../../../../hooks'
 import { DescriptionText, DescriptionTextContainer, TitleText } from './Description.styles'
 
-export const Description = () => {
+interface DescriptionProps {
+  title: string
+  description: string
+}
+
+export const Description: React.FC<DescriptionProps> = ({ title, description }) => {
+
+  const { isTablet } = useDevice()
     
   return (
     <DescriptionTextContainer>
-        <TitleText>Identify Notes</TitleText>
-        <DescriptionText>Can you name the notes? Train your reading skills on both Treble and Bass clefs.</DescriptionText>
+        <TitleText isTablet={isTablet}>{title}</TitleText>
+        <DescriptionText isTablet={isTablet}>{description}</DescriptionText>
     </DescriptionTextContainer>
   )
 }

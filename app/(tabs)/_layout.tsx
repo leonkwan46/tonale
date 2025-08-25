@@ -1,9 +1,9 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { Platform, useColorScheme } from 'react-native'
+import { useColorScheme } from 'react-native'
 
+import { CustomTabBar } from '@/components'
 import { Colors } from '@/constants/Colors'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -61,56 +61,14 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].surface,
-          borderTopWidth: 1,
-          borderTopColor: Colors[colorScheme ?? 'light'].border,
-          paddingVertical: 8,
-          paddingHorizontal: 16,
-          height: Platform.select({
-            ios: 88, // Accounts for home indicator
-            android: 70
-          }),
-          elevation: 8, // Android shadow
-          shadowColor: '#000', // iOS shadow
-          shadowOffset: {
-            width: 0,
-            height: -2
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 8
-        }
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="home" color={color} />
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Theory',
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="book" color={color} />
-        }}
-      />
-      <Tabs.Screen
-        name="aural"
-        options={{
-          title: 'Aural',
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="musical-notes" color={color} />
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="settings" color={color} />
-        }}
-      />
+        headerShown: false
+      }}
+      tabBar={(props) => <CustomTabBar {...props} />}
+    >
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="explore" />
+      <Tabs.Screen name="aural" />
+      <Tabs.Screen name="settings" />
     </Tabs>
   )
 }

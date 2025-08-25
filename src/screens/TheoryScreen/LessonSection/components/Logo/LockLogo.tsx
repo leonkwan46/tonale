@@ -2,6 +2,7 @@ import { useTheme } from '@emotion/react'
 import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { Path, Svg } from 'react-native-svg'
+import { useDevice } from '../../../../../hooks'
 
 interface LockLogoProps {
   size?: number
@@ -13,11 +14,12 @@ export const LockLogo: React.FC<LockLogoProps> = ({
   color 
 }) => {
   const theme = useTheme()
-  
+  const { isTablet } = useDevice()
+  const newSize = isTablet ? size * 0.8 : size
   return (
     <Svg 
-      width={scale(size)} 
-      height={scale(size)} 
+      width={scale(newSize)} 
+      height={scale(newSize)} 
       viewBox="0 0 25 25" 
       fill="none"
     >

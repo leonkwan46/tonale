@@ -2,6 +2,7 @@ import { useTheme } from '@emotion/react'
 import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { Path, Svg } from 'react-native-svg'
+import { useDevice } from '../../../../../hooks'
 
 interface StarLogoProps {
   size?: number
@@ -14,12 +15,14 @@ export const StarLogo: React.FC<StarLogoProps> = ({
   filled = false
 }) => {
   const theme = useTheme()
-  const newSize = filled ? size : size * 0.95
+  const { isTablet } = useDevice()
+  const newFilledSize = filled ? size : size * 0.95
+  const newFinalSize = isTablet ? newFilledSize * 0.8 : newFilledSize
   
   return (
     <Svg 
-      width={scale(newSize)} 
-      height={scale(newSize)} 
+      width={scale(newFinalSize)} 
+      height={scale(newFinalSize)} 
       viewBox="0 0 24 24" 
       fill="none"
     >
