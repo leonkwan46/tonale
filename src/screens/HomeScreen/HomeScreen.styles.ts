@@ -1,35 +1,36 @@
 
-import { Colors } from '@/constants/Colors'
 import styled from '@emotion/native'
 
-export const Container = styled.View<{ colorScheme: 'light' | 'dark' }>`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: ${props => Colors[props.colorScheme].background};
-  padding: 20px;
-`
+export const Content = styled.View(({ theme }) => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: theme.spacing.lg
+}))
 
-export const Title = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${props => Colors[props.colorScheme].text};
-  margin-bottom: 16px;
-  text-align: center;
-`
+export const Title = styled.Text(({ theme }) => ({
+  fontSize: theme.typography['4xl'],
+  fontWeight: theme.fontWeight.bold as any,
+  color: theme.colors.text,
+  marginBottom: theme.spacing.md,
+  textAlign: 'center' as const,
+  letterSpacing: -0.5
+}))
 
-export const Subtitle = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 18px;
-  color: ${props => Colors[props.colorScheme].text};
-  margin-bottom: 24px;
-  text-align: center;
-  opacity: 0.8;
-`
+export const Subtitle = styled.Text(({ theme }) => ({
+  fontSize: theme.typography.xl,
+  fontWeight: theme.fontWeight.medium as any,
+  color: theme.colors.primary,
+  marginBottom: theme.spacing.xl,
+  textAlign: 'center' as const
+}))
 
-export const Description = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 16px;
-  color: ${props => Colors[props.colorScheme].text};
-  text-align: center;
-  opacity: 0.6;
-  line-height: 24px;
-`
+export const Description = styled.Text(({ theme }) => ({
+  fontSize: theme.typography.lg,
+  fontWeight: theme.fontWeight.normal as any,
+  color: theme.colors.text,
+  textAlign: 'center' as const,
+  opacity: 0.7,
+  lineHeight: theme.typography.lg * 1.5,
+  maxWidth: 320
+}))

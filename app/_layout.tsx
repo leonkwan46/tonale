@@ -1,17 +1,15 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
-import { useColorScheme } from 'react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 import 'react-native-reanimated'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { UnifiedThemeProvider } from '@/components/UnifiedThemeProvider'
 import { SplashScreen } from '@/screens/SplashScreen'
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme()
   const [showSplash, setShowSplash] = useState(true)
   
   const [loaded] = useFonts({
@@ -34,14 +32,14 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ErrorBoundary>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <UnifiedThemeProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="auto" />
-        </ThemeProvider>
+        </UnifiedThemeProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
   )
