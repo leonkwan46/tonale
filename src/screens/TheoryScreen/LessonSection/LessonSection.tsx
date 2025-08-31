@@ -1,14 +1,7 @@
 import React from 'react'
+import { Lesson } from '../sampleData'
 import { CardButton, Description, FinalTest } from './components'
 import { LessonSectionContainer } from './LessonSection.styles'
-
-interface Lesson {
-  title: string
-  description: string
-  isLocked: boolean
-  isFinalTest?: boolean
-  stars: number
-}
 
 interface LessonSectionProps {
   index: number
