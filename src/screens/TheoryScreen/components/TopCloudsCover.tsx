@@ -1,6 +1,6 @@
 import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Animated, Dimensions, Easing } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -79,45 +79,45 @@ export const TopCloudsCover: React.FC<TopCloudsCoverProps> = ({
   isCleared,
   coverHeight = scale(180) 
 }) => {
-  // Create animated values and manage them properly
-  const cloudAnimations = useRef<Animated.Value[]>([]).current
+  // Create all Animated.Values at once
+  const cloudAnimations = useRef(
+    cloudShapes.map(() => new Animated.Value(Math.random()))
+  ).current
 
-  // Only add animations for new clouds, don't recreate existing ones
-  while (cloudAnimations.length < cloudShapes.length) {
-    const index = cloudAnimations.length
-    const animValue = new Animated.Value(Math.random())
-    cloudAnimations.push(animValue)
-    
-    // Create and start animation immediately for new cloud
-    const baseDuration = 15000 + (index * 2000)
-    const easingTypes = [
-      Easing.inOut(Easing.sin),
-      Easing.inOut(Easing.quad),
-      Easing.inOut(Easing.cubic),
-      Easing.linear
-    ]
-    const easing = easingTypes[index % easingTypes.length]
-    
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(animValue, {
-          toValue: 1,
-          duration: baseDuration,
-          easing: easing,
-          useNativeDriver: true
-        }),
-        Animated.timing(animValue, {
-          toValue: 0,
-          duration: baseDuration + (index * 1000),
-          easing: easing,
-          useNativeDriver: true
-        })
-      ])
-    )
-    
-    // Start animation immediately
-    animation.start()
-  }
+  useEffect(() => {
+    const animations = cloudAnimations.map((animValue, index) => {
+      const baseDuration = 15000 + index * 2000
+      const easingTypes = [
+        Easing.inOut(Easing.sin),
+        Easing.inOut(Easing.quad),
+        Easing.inOut(Easing.cubic),
+        Easing.linear
+      ]
+      const easing = easingTypes[index % easingTypes.length]
+
+      return Animated.loop(
+        Animated.sequence([
+          Animated.timing(animValue, {
+            toValue: 1,
+            duration: baseDuration,
+            easing,
+            useNativeDriver: true
+          }),
+          Animated.timing(animValue, {
+            toValue: 0,
+            duration: baseDuration + index * 1000,
+            easing,
+            useNativeDriver: true
+          })
+        ])
+      )
+    })
+
+    // Start them *all* together
+    animations.forEach(anim => anim.start())
+
+    return () => animations.forEach(anim => anim.stop())
+  }, [cloudAnimations])
 
   return (
     <CloudsContainer isVisible={!isCleared} coverHeight={coverHeight}>
@@ -167,8 +167,8 @@ export const TopCloudsCover: React.FC<TopCloudsCoverProps> = ({
       
       <GradientOverlay 
         coverHeight={coverHeight}
-        colors={['rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 0)']}
-        locations={[0, 1]}
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.64)', 'rgba(255, 255, 255, 0)']}
+        locations={[0, 0.5, 1]}
       />
     </CloudsContainer>
   )

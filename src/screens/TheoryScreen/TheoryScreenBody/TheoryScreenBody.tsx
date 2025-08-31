@@ -1,5 +1,5 @@
-import React from 'react'
-import { scale } from 'react-native-size-matters'
+import React, { useEffect, useRef } from 'react'
+import { ScrollView } from 'react-native'
 import { LessonSection } from '../LessonSection/LessonSection'
 import { LessonDivider, TopCloudsCover } from '../components'
 import { ContentContainer, ContentWrapper } from './TheoryScreenBody.styles'
@@ -106,8 +106,18 @@ const stages = {
 }
 
 export const TheoryScreenBody = () => {
+  const scrollViewRef = useRef<ScrollView>(null)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true })
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
-    <ContentWrapper>
+    <ContentWrapper ref={scrollViewRef}>
       <ContentContainer>
         <TopCloudsCover
           isCleared={stages.stageOne.isCleared}
