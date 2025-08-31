@@ -1,0 +1,52 @@
+name: Auto-Suggest PR to Main
+
+on:
+  push:
+    branches:
+      - staging
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  suggest-pr-to-main:
+    name: Suggest PR to Main
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if PR already exists
+        id: check-pr
+        run: |
+          PR_EXISTS=$(gh pr list --head staging --base main --json number --jq '.[0].number // empty')
+          if [ -n "$PR_EXISTS" ]; then
+            echo "pr_exists=true" >> $GITHUB_OUTPUT
+            echo "pr_number=$PR_EXISTS" >> $GITHUB_OUTPUT
+          else
+            echo "pr_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR to main
+        if: steps.check-pr.outputs.pr_exists == 'false'
+        run: |
+          gh pr create \
+            --head staging \
+            --base main \
+            --title "🚀 Deploy to Production: Staging Updates" \
+            --body "Auto-generated PR from staging to main. Review and merge when ready for production."
+
+      - name: Update existing PR
+        if: steps.check-pr.outputs.pr_exists == 'true'
+        run: |
+          gh pr edit ${{ steps.check-pr.outputs.pr_number }} \
+            --title "🚀 Deploy to Production: Staging Updates (Updated)" \
+            --body "Auto-generated PR from staging to main. Review and merge when ready for production."
+
+      - name: Comment on PR
+        run: |
+          PR_NUMBER=$(gh pr list --head staging --base main --json number --jq '.[0].number')
+          gh pr comment $PR_NUMBER --body "Auto-generated PR. Review and merge when ready for production."
