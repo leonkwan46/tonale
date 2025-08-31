@@ -1,11 +1,8 @@
 import { ScreenContainer } from '@/components'
 import React from 'react'
-// import { useAuth } from '@/hooks/useAuth' // TODO: Use when implementing personalization
 import { Content, Description, Subtitle, Title } from './HomeScreen.styles'
 
 export function HomeScreen() {
-  // const { user } = useAuth() // TODO: Use user data when implementing personalization
-
   return (
     <ScreenContainer>
       <Content>

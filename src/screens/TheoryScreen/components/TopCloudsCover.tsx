@@ -7,18 +7,15 @@ import { scale } from 'react-native-size-matters'
 const { width: screenWidth } = Dimensions.get('window')
 
 interface TopCloudsCoverProps {
-  isCleared: boolean
   coverHeight?: number
 }
 
-const CloudsContainer = styled.View<{ isVisible: boolean; coverHeight: number }>(({ isVisible, coverHeight }) => ({
+const CloudsContainer = styled.View<{ coverHeight: number }>(({ coverHeight }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
   height: coverHeight,
-  opacity: isVisible ? 1 : 0,
-  pointerEvents: isVisible ? 'auto' : 'none',
   zIndex: 10,
   overflow: 'hidden'
 }))
@@ -76,7 +73,6 @@ const cloudShapes = [
 ]
 
 export const TopCloudsCover: React.FC<TopCloudsCoverProps> = ({
-  isCleared,
   coverHeight = scale(180) 
 }) => {
   // Create all Animated.Values at once
@@ -120,7 +116,7 @@ export const TopCloudsCover: React.FC<TopCloudsCoverProps> = ({
   }, [cloudAnimations])
 
   return (
-    <CloudsContainer isVisible={!isCleared} coverHeight={coverHeight}>
+    <CloudsContainer coverHeight={coverHeight}>
       {/* Cloud shapes */}
       {cloudShapes.map((cloud, index) => {
         const verticalRange = scale(5 + (index % 3) * 3) // Reduced vertical: 5-11 units
