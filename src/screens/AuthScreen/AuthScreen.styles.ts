@@ -7,7 +7,7 @@ import Animated from 'react-native-reanimated'
 export const fontWeights = {
   bold: Platform.select({ ios: '700', android: 'bold' }),
   semiBold: Platform.select({ ios: '600', android: '700' }),
-  medium: Platform.select({ ios: '500', android: '500' }),
+  medium: Platform.select({ ios: '500', android: '500' })
 }
 
 // Main container styles
@@ -28,7 +28,7 @@ export const ScrollContentContainer = {
   flexGrow: 1,
   justifyContent: 'center' as const,
   paddingHorizontal: 32,
-  paddingVertical: 40,
+  paddingVertical: 40
 }
 
 // Logo section

@@ -21,7 +21,10 @@ export const Colors = {
     warning: '#ffd43b',
     error: '#ff6b6b',
     surface: '#f8f9fa',
-    border: '#e9ecef'
+    border: '#e9ecef',
+    stageCleared: '#4CAF50',
+    stagePerfect: '#FFD700',
+    stagePerfectBorder: '#FFA500'
   },
   dark: {
     text: '#ECEDEE',
@@ -37,7 +40,10 @@ export const Colors = {
     warning: '#ffe066',
     error: '#ff8787',
     surface: '#1f2937',
-    border: '#374151'
+    border: '#374151',
+    stageCleared: '#2E7D32',
+    stagePerfect: '#B8860B',
+    stagePerfectBorder: '#DAA520'
   }
 }
 
@@ -50,6 +56,5 @@ export const AppTheme = {
   textColor: (colorScheme: ColorScheme) => Colors[colorScheme].text,
   backgroundColor: (colorScheme: ColorScheme) => Colors[colorScheme].background,
   inputBackgroundColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#1a1a1a' : '#f8f9fa',
-  borderColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#333333' : '#e9ecef',
+  borderColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#333333' : '#e9ecef'
 }
-
