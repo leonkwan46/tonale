@@ -1,0 +1,35 @@
+name: QA Checks
+
+on:
+  pull_request:
+    branches: [ staging ]
+  push:
+    branches: [ staging ]
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.MUSIC_NOTATION_SECRET_KEY }}
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.MUSIC_NOTATION_SECRET_KEY }}" > ~/.npmrc
+        echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        npm ci
+        
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Type check
+      run: npx tsc --noEmit
