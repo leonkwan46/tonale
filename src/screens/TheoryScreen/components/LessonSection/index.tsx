@@ -1,5 +1,5 @@
 import React from 'react'
-import { Lesson } from '../sampleData'
+import { Lesson } from '../../sampleData'
 import { CardButton, Description, FinalTest } from './components'
 import { LessonSectionContainer } from './LessonSection.styles'
 
