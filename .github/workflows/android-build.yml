@@ -1,0 +1,72 @@
+name: Android Build
+
+on:
+  push:
+    branches: [ main, staging ]
+  pull_request:
+    branches: [ main, staging ]
+    types: [ opened, ready_for_review ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+        
+    - name: Install dependencies
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.MUSIC_NOTATION_SECRET_KEY }}
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.MUSIC_NOTATION_SECRET_KEY }}" > ~/.npmrc
+        echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        npm ci
+      
+    - name: Install Expo CLI
+      run: npm install -g @expo/cli
+      
+    - name: Setup Expo
+      run: |
+        npx expo install --fix
+        npx expo prebuild --platform android --clean
+        
+    - name: Build Android APK
+      run: |
+        cd android
+        ./gradlew assembleRelease
+        cd ..
+        
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: tonale-android-apk
+        path: android/app/build/outputs/apk/release/app-release.apk
+        
+    - name: Build Android AAB
+      run: |
+        cd android
+        ./gradlew bundleRelease
+        cd ..
+        
+    - name: Upload AAB artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: tonale-android-aab
+        path: android/app/build/outputs/bundle/release/app-release.aab
