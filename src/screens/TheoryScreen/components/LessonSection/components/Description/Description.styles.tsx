@@ -1,6 +1,6 @@
-import styled from '@emotion/native'
-import { scale } from 'react-native-size-matters'
-import { componentDimensions } from '../../../../../constants/theme'
+import { componentDimensions } from '@/constants/theme';
+import styled from '@emotion/native';
+import { scale } from 'react-native-size-matters';
 
 export const DescriptionTextContainer = styled.View(({ theme }) => ({
     flexDirection: 'column',

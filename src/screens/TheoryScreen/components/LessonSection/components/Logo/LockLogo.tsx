@@ -1,8 +1,8 @@
+import { useDevice } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { Path, Svg } from 'react-native-svg'
-import { useDevice } from '../../../../../hooks'
 
 interface LockLogoProps {
   size?: number

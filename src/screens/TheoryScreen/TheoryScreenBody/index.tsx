@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, ScrollView, Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
-import { LessonSection } from '../LessonSection/LessonSection'
 import { LessonDivider, StageHeader, TopCloudsCover } from '../components'
 import {
   getStageDisplayData,
   stagesArray
 } from '../sampleData'
 import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
+import { LessonSection } from '../components/LessonSection/LessonSection'
 
 export const TheoryScreenBody = () => {
   const scrollViewRef = useRef<ScrollView>(null)
