@@ -1,5 +1,5 @@
-import { useDevice } from '../../../../../hooks'
-import { DescriptionText, DescriptionTextContainer, TitleText } from './Description.styles'
+import { useDevice } from '@/hooks';
+import { DescriptionText, DescriptionTextContainer, TitleText } from './Description.styles';
 
 interface DescriptionProps {
   title: string
