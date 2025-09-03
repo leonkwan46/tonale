@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'expo-router'
 import { Lesson } from '../../sampleData'
 import { CardButton, Description, FinalTest } from './components'
 import { LessonSectionContainer } from './LessonSection.styles'
@@ -9,6 +10,8 @@ interface LessonSectionProps {
 }
 
 export const LessonSection: React.FC<LessonSectionProps> = ({ index, lesson }) => {
+  const router = useRouter()
+  
   const components = (isPressed: boolean) => index % 2 === 0 && !lesson.isFinalTest
     ? [
     <CardButton key="card" isPressed={isPressed} isLocked={lesson.isLocked} stars={lesson.stars} />, 
@@ -20,7 +23,9 @@ export const LessonSection: React.FC<LessonSectionProps> = ({ index, lesson }) =
     ]
 
   const handlePress = () => {
-    
+    if (!lesson.isLocked) {
+      router.push(`/lesson?lessonId=${lesson.id}`)
+    }
   }
 
   return (
