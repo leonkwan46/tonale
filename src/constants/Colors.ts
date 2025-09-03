@@ -22,6 +22,8 @@ export const Colors = {
     error: '#ff6b6b',
     surface: '#f8f9fa',
     border: '#e9ecef',
+    card: '#f8f9fa',
+    textSecondary: '#687076',
     stageCleared: '#4CAF50',
     stagePerfect: '#FFD700',
     stagePerfectBorder: '#FFA500'
@@ -41,6 +43,8 @@ export const Colors = {
     error: '#ff8787',
     surface: '#1f2937',
     border: '#374151',
+    card: '#1f2937',
+    textSecondary: '#9BA1A6',
     stageCleared: '#2E7D32',
     stagePerfect: '#B8860B',
     stagePerfectBorder: '#DAA520'
