@@ -1,6 +1,6 @@
-import React from 'react'
+import { Lesson } from '@/data/theoryData'
 import { useRouter } from 'expo-router'
-import { Lesson } from '../../sampleData'
+import React from 'react'
 import { CardButton, Description, FinalTest } from './components'
 import { LessonSectionContainer } from './LessonSection.styles'
 

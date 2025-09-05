@@ -1,8 +1,8 @@
+import { Stage } from '@/data/theoryData'
 import styled from '@emotion/native'
 import React from 'react'
 import { Animated, Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
-import { Stage } from '../sampleData'
 import { StarLogo } from './LessonSection/components/Logo'
 
 interface StageHeaderProps {
