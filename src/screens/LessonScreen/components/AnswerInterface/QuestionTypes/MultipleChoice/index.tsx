@@ -23,14 +23,14 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
     if (showCorrectAnswer && choice === correctAnswer) {
       return {
         backgroundColor: '#34C759',
-        borderColor: '#34C759',
+        borderColor: '#34C759'
       }
     }
     
     if (!showResult || selectedAnswer !== choice) {
       return {
         backgroundColor: selectedAnswer === choice ? '#007AFF' : '#F2F2F7',
-        borderColor: selectedAnswer === choice ? '#007AFF' : '#E5E5EA',
+        borderColor: selectedAnswer === choice ? '#007AFF' : '#E5E5EA'
       }
     }
     
@@ -38,20 +38,20 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
     if (choice === correctAnswer) {
       return {
         backgroundColor: '#34C759',
-        borderColor: '#34C759',
+        borderColor: '#34C759'
       }
     }
     
     if (selectedAnswer === choice && choice !== correctAnswer) {
       return {
         backgroundColor: '#FF3B30',
-        borderColor: '#FF3B30',
+        borderColor: '#FF3B30'
       }
     }
     
     return {
       backgroundColor: '#F2F2F7',
-      borderColor: '#E5E5EA',
+      borderColor: '#E5E5EA'
     }
   }
 

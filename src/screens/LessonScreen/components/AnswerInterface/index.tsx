@@ -1,8 +1,7 @@
 import { Question } from '@/data/theoryData/types'
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native'
-import { VisualQuestion } from '../VisualQuestion'
-import { AnswerInterfaceContainer, ExplanationContainer, ExplanationText, QuestionContainer, QuestionText } from './AnswerInterface.styles'
+import { AnswerInterfaceContainer } from './AnswerInterface.styles'
 import { KeyPress } from './QuestionTypes/KeyPress'
 import { MultipleChoice } from './QuestionTypes/MultipleChoice'
 import { TrueFalse } from './QuestionTypes/TrueFalse'
@@ -104,23 +103,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
 
   return (
     <AnswerInterfaceContainer>
-      <QuestionContainer>
-        <QuestionText>
-          {questionData.question}
-        </QuestionText>
-      </QuestionContainer>
-      
-      <VisualQuestion question={questionData} />
-      
       {renderAnswerComponent()}
-      
-      {showResult && questionData.explanation && (
-        <ExplanationContainer>
-          <ExplanationText isCorrect={isCorrect || false}>
-            {questionData.explanation}
-          </ExplanationText>
-        </ExplanationContainer>
-      )}
     </AnswerInterfaceContainer>
   )
 }

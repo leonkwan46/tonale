@@ -17,7 +17,7 @@ export const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question }) =>
         </QuestionText>
       </QuestionContainer>
       
-      <VisualQuestion question={question} />
+      <VisualQuestion visualComponent={question.visualComponent} />
     </View>
   )
 }
