@@ -9,14 +9,12 @@ import {
   BackButtonText,
   Header
 } from './LessonScreen.styles'
-import { AnswerInterface } from './components/AnswerInterface'
-import { MusicStaff } from './components/MusicStaff'
+import { LessonScreenBody } from './LessonScreenBody'
 
 export function LessonScreen() {
   const router = useRouter()
   const { lessonId } = useLocalSearchParams<{ lessonId: string }>()
   const lesson = lessonId ? getLessonById(lessonId) : null
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [questions, setQuestions] = useState<Question[]>([])
   
   // Generate questions when lesson loads
@@ -37,25 +35,13 @@ export function LessonScreen() {
   
   if (!lesson || questions.length === 0) return null
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const isLastQuestion = currentQuestionIndex === questions.length - 1
-
   const handleBackPress = () => {
     router.back()
   }
 
-  const handleAnswerSubmit = (isCorrect: boolean) => {
-    // AnswerInterface now handles the timing and progression
-  }
-
-  const handleNextQuestion = () => {
-    if (isLastQuestion) {
-      // Lesson completed
-      // TODO: Handle lesson completion
-    } else {
-      // Move to next question
-      setCurrentQuestionIndex(prev => prev + 1)
-    }
+  const handleLessonComplete = () => {
+    // TODO: Handle lesson completion
+    console.log('Lesson completed!')
   }
 
   return (
@@ -65,14 +51,10 @@ export function LessonScreen() {
           <BackButtonText>Go Back</BackButtonText>
         </BackButton>
       </Header>
-
-      <MusicStaff />
-
-      <AnswerInterface 
-        questionType={currentQuestion.type}
-        questionData={currentQuestion}
-        onAnswerSubmit={handleAnswerSubmit}
-        onNextQuestion={handleNextQuestion}
+      
+      <LessonScreenBody
+        questions={questions}
+        onLessonComplete={handleLessonComplete}
       />
     </ScreenContainer>
   )
