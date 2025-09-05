@@ -5,9 +5,9 @@ import { useState } from 'react'
 import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { UnifiedThemeProvider } from '@/components/UnifiedThemeProvider'
 import { SplashScreen } from '@/screens/SplashScreen'
+import { ErrorBoundary } from '@/sharedComponents/ErrorBoundary'
+import { UnifiedThemeProvider } from '@/sharedComponents/UnifiedThemeProvider'
 
 export default function RootLayout() {
   const [showSplash, setShowSplash] = useState(true)

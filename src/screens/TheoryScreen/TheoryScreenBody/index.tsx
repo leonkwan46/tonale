@@ -1,25 +1,73 @@
+import {
+  getStageById,
+  getStageRequirements,
+  stagesArray
+} from '@/data/theoryData'
+import { Stage, StageLesson } from '@/data/theoryData/types'
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, ScrollView, Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'
-import {
-  getStageDisplayData,
-  stagesArray
-} from '../sampleData'
 import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
+
+// UI Utility Functions for TheoryScreenBody
+const getVisibleLessonsForStage = (stageId: string): StageLesson[] => {
+  const stage = getStageById(stageId)
+  if (!stage) return []
+  
+  // If stage is unlocked, show all lessons
+  if (stage.isUnlocked) {
+    return stage.lessons.map(lesson => ({ ...lesson, isLocked: false }))
+  }
+  
+  // If stage is locked, show lessons as locked
+  return stage.lessons.map(lesson => ({ ...lesson, isLocked: true }))
+}
+
+const getStageDisplayData = (stageId: string): {
+  stage: Stage | undefined
+  isAccessible: boolean
+  blockingMessage: string
+  lessons: StageLesson[]
+} => {
+  const stage = getStageById(stageId)
+  if (!stage) {
+    return {
+      stage: undefined,
+      isAccessible: false,
+      blockingMessage: 'Stage not found',
+      lessons: []
+    }
+  }
+  
+  const requirements = getStageRequirements(stageId)
+  const lessons = getVisibleLessonsForStage(stageId)
+  
+  let blockingMessage = ''
+  if (!requirements.isUnlocked && requirements.progressNeeded.length > 0) {
+    blockingMessage = requirements.progressNeeded.join(', ')
+  }
+  
+  return {
+    stage,
+    isAccessible: requirements.isUnlocked,
+    blockingMessage,
+    lessons
+  }
+}
 
 export const TheoryScreenBody = () => {
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
-  const stageRefs = useRef<Record<string, any>>({})
+  const stageRefs = useRef<Record<string, View>>({})
 
   // Helper function to scroll to a stage
   const scrollToStage = (stageId: string, offset: number = 100) => {
     if (stageRefs.current[stageId] && scrollViewRef.current) {
       stageRefs.current[stageId].measureLayout(
-        scrollViewRef.current,
+        scrollViewRef.current as any, // eslint-disable-line @typescript-eslint/no-explicit-any
         (x: number, y: number) => {
           scrollViewRef.current?.scrollTo({
             y: Math.max(0, y - offset),
