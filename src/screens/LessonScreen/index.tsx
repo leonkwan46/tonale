@@ -45,27 +45,16 @@ export function LessonScreen() {
   }
 
   const handleAnswerSubmit = (isCorrect: boolean) => {
-    console.log('Answer submitted:', isCorrect ? 'Correct!' : 'Incorrect!')
     // AnswerInterface now handles the timing and progression
   }
 
   const handleNextQuestion = () => {
-    console.log('🚀 handleNextQuestion called!')
-    console.log('🚀 Current question index:', currentQuestionIndex)
-    console.log('🚀 Total questions:', questions.length)
-    console.log('🚀 Is last question:', isLastQuestion)
-    
     if (isLastQuestion) {
       // Lesson completed
-      console.log('🎉 Lesson completed!')
       // TODO: Handle lesson completion
     } else {
       // Move to next question
-      console.log('➡️ Moving to next question')
-      setCurrentQuestionIndex(prev => {
-        console.log('➡️ Setting question index from', prev, 'to', prev + 1)
-        return prev + 1
-      })
+      setCurrentQuestionIndex(prev => prev + 1)
     }
   }
 
