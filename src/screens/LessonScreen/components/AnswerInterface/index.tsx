@@ -29,9 +29,6 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
 
   // Reset state when questionData changes (new question)
   useEffect(() => {
-    console.log('🔄 Question changed, resetting state')
-    console.log('🔄 Previous question ID:', currentQuestionId)
-    console.log('🔄 New question ID:', questionData.id)
     setSelectedAnswer(null)
     setShowResult(false)
     setIsCorrect(null)
@@ -44,15 +41,12 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   // ==========================
   useEffect(() => {
     if (showResult && !isCorrect && selectedAnswer !== null && !showCorrectAnswer) {
-      console.log('❌ Wrong answer useEffect triggered, setting 3s timer')
       setShowCorrectAnswer(true)
       const timer = setTimeout(() => {
-        console.log('❌ Wrong answer timer fired, calling onNextQuestion')
         onNextQuestion()
       }, 3000) // 3 seconds delay
 
       return () => {
-        console.log('❌ Wrong answer timer cleaned up')
         clearTimeout(timer)
       }
     }
@@ -63,14 +57,11 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   // ==========================
   useEffect(() => {
     if (showResult && isCorrect && selectedAnswer !== null) {
-      console.log('✅ Correct answer useEffect triggered, setting 1.5s timer')
       const timer = setTimeout(() => {
-        console.log('✅ Correct answer timer fired, calling onNextQuestion')
         onNextQuestion()
       }, 1500) // 1.5 seconds for correct answer
 
       return () => {
-        console.log('✅ Correct answer timer cleaned up')
         clearTimeout(timer)
       }
     }
@@ -79,17 +70,13 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   const handleChoiceSelect = (choice: string) => {
     if (selectedAnswer !== null) return // Already answered
     
-    console.log('🎯 Choice selected:', choice)
     setSelectedAnswer(choice)
     const correct = choice === questionData.correctAnswer
-    console.log('🎯 Answer is correct:', correct)
-    console.log('🎯 Correct answer should be:', questionData.correctAnswer)
     setIsCorrect(correct)
     setShowResult(true)
     
     // Call parent callback
     onAnswerSubmit(correct)
-    console.log('🎯 State set - showResult:', true, 'isCorrect:', correct, 'selectedAnswer:', choice)
   }
 
   const renderAnswerComponent = () => {
