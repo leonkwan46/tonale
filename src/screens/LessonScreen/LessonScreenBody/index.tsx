@@ -17,16 +17,16 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
 
-  // Reset result state when question changes
+  const currentQuestion = questions[currentQuestionIndex]
+  const { question, visualComponent, type, explanation } = currentQuestion
+  const isLastQuestion = currentQuestionIndex === questions.length - 1
+
   useEffect(() => {
     setShowResult(false)
     setIsCorrect(null)
   }, [currentQuestionIndex])
 
   if (questions.length === 0) return null
-
-  const currentQuestion = questions[currentQuestionIndex]
-  const isLastQuestion = currentQuestionIndex === questions.length - 1
 
   const handleAnswerSubmit = (isCorrect: boolean) => {
     setShowResult(true)
@@ -47,25 +47,27 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
     <BodyContainer>
       <QuestionContainer>
         <QuestionText>
-          {currentQuestion.question}
+          {question}
         </QuestionText>
       </QuestionContainer>
 
       {/* Music Staff */}
-      <VisualQuestion visualComponent={currentQuestion.visualComponent} />
+      {visualComponent && (
+        <VisualQuestion visualComponent={visualComponent} />
+      )}
       
       {/* Answer Interface */}
       <AnswerInterface 
-        questionType={currentQuestion.type}
+        questionType={type}
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmit}
         onNextQuestion={handleNextQuestion}
       />
       
-      {showResult && currentQuestion.explanation && (
+      {showResult && explanation && (
         <ExplanationContainer>
           <ExplanationText isCorrect={isCorrect || false}>
-            {currentQuestion.explanation}
+            {explanation}
           </ExplanationText>
         </ExplanationContainer>
       )}

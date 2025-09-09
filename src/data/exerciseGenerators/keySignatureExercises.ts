@@ -1,28 +1,31 @@
 // Key signature exercise generators
+import { CLEFS } from '@leonkwan46/music-notation'
+import { getKeys } from '../helpers/exerciseHelpers'
 import {
     generateQuestionId,
     generateWrongChoices,
-    getGrade1Keys,
     getRandomItem
 } from '../helpers/questionHelpers'
-import { Question } from '../theoryData/types'
+import { Question, StageNumber } from '../theoryData/types'
 
 // Create a key signature identification question
-export const createKeySignatureQuestion = (): Question => {
-  const keys = getGrade1Keys()
+export const createKeySignatureQuestion = (stage: StageNumber = 1): Question => {
+  const keys = getKeys(stage)
   const correctKey = getRandomItem(keys)
+  
+  // Use full key names for choices (e.g., "C Major", "D Minor")
+  const keyNames = keys.map(key => key.toString())
   
   return {
     id: generateQuestionId('key-sig'),
-    question: `What key signature is this?`,
-    correctAnswer: correctKey,
-    choices: generateWrongChoices(keys, correctKey),
-    explanation: `${correctKey} is one of the Grade 1 key signatures.`,
+    question: 'What key signature is this?',
+    correctAnswer: correctKey.toString(),
+    choices: generateWrongChoices(keyNames, correctKey.toString()),
+    explanation: `${correctKey.toString()} is one of the Grade 1 key signatures.`,
     type: 'multipleChoice',
     visualComponent: {
-      type: 'staff',
-      clef: 'treble',
-      notes: [],
+      clef: CLEFS.TREBLE,
+      elements: [],
       timeSignature: '4/4',
       keyName: correctKey
     }
@@ -30,6 +33,6 @@ export const createKeySignatureQuestion = (): Question => {
 }
 
 // Create multiple key signature questions
-export const createKeySignatureQuestions = (count: number): Question[] => {
-  return Array.from({ length: count }, () => createKeySignatureQuestion())
+export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber = 1): Question[] => {
+  return Array.from({ length: questionsCount }, () => createKeySignatureQuestion(stage))
 }

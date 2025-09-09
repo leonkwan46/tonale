@@ -1,4 +1,5 @@
 import { Question } from '@/data/theoryData/types'
+import { useDevice } from '@/hooks'
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
@@ -20,6 +21,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   onAnswerSubmit,
   onNextQuestion
 }) => {
+  const { isTablet } = useDevice()
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
@@ -102,7 +104,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   }
 
   return (
-    <AnswerInterfaceContainer>
+    <AnswerInterfaceContainer isTablet={isTablet}>
       {renderAnswerComponent()}
     </AnswerInterfaceContainer>
   )

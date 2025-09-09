@@ -1,4 +1,4 @@
-import { generateQuestionsForLesson } from '@/data/questionGeneration/generateLessonQuestions'
+import { generateLessonQuestions } from '@/data/questionGeneration/generateLessonQuestions'
 import { getLessonById } from '@/data/theoryData'
 import { Question } from '@/data/theoryData/types'
 import { ScreenContainer } from '@/sharedComponents'
@@ -24,7 +24,7 @@ export function LessonScreen() {
       if (currentLesson) {
         // Use auto-generated questions if available, otherwise use hardcoded questions
         if (currentLesson.exerciseConfig) {
-          const generatedQuestions = generateQuestionsForLesson(lessonId)
+          const generatedQuestions = generateLessonQuestions(currentLesson.exerciseConfig)
           setQuestions(generatedQuestions)
         } else if (currentLesson.questions) {
           setQuestions(currentLesson.questions)

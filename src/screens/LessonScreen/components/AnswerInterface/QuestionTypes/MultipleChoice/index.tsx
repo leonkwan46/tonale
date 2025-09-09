@@ -1,5 +1,6 @@
 import React from 'react'
-import { ChoiceButton, ChoiceText, ChoicesContainer } from './MultipleChoice.styles'
+import { ChoiceRow, ChoicesContainer } from './MultipleChoice.styles'
+import { ChoiceButton } from './components'
 
 interface MultipleChoiceProps {
   choices: string[]
@@ -18,74 +19,44 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   showCorrectAnswer,
   onChoiceSelect
 }) => {
-  const getChoiceStyle = (choice: string) => {
-    // If showing correct answer after wrong selection, highlight correct answer
-    if (showCorrectAnswer && choice === correctAnswer) {
-      return {
-        backgroundColor: '#34C759',
-        borderColor: '#34C759'
-      }
+  // Group choices into rows of 2
+  const createRows = () => {
+    const rows = []
+    for (let i = 0; i < choices.length; i += 2) {
+      rows.push(choices.slice(i, i + 2))
     }
-    
-    if (!showResult || selectedAnswer !== choice) {
-      return {
-        backgroundColor: selectedAnswer === choice ? '#007AFF' : '#F2F2F7',
-        borderColor: selectedAnswer === choice ? '#007AFF' : '#E5E5EA'
-      }
-    }
-    
-    // Show result styling
-    if (choice === correctAnswer) {
-      return {
-        backgroundColor: '#34C759',
-        borderColor: '#34C759'
-      }
-    }
-    
-    if (selectedAnswer === choice && choice !== correctAnswer) {
-      return {
-        backgroundColor: '#FF3B30',
-        borderColor: '#FF3B30'
-      }
-    }
-    
-    return {
-      backgroundColor: '#F2F2F7',
-      borderColor: '#E5E5EA'
-    }
+    return rows
   }
 
-  const getTextColor = (choice: string) => {
-    // If showing correct answer after wrong selection, make correct answer text white
-    if (showCorrectAnswer && choice === correctAnswer) {
-      return '#FFFFFF'
-    }
-    
-    if (!showResult || selectedAnswer !== choice) {
-      return selectedAnswer === choice ? '#FFFFFF' : '#000000'
-    }
-    
-    return '#FFFFFF'
-  }
+  const rows = createRows()
 
   return (
     <ChoicesContainer>
-      {choices.map((choice, index) => {
-        const style = getChoiceStyle(choice)
-        return (
-          <ChoiceButton
-            key={index}
-            backgroundColor={style.backgroundColor}
-            borderColor={style.borderColor}
-            onPress={() => onChoiceSelect(choice)}
-            disabled={selectedAnswer !== null}
-          >
-            <ChoiceText color={getTextColor(choice)}>
-              {choice}
-            </ChoiceText>
-          </ChoiceButton>
-        )
-      })}
+      {rows.map((row, rowIndex) => (
+        <ChoiceRow key={rowIndex} isLastRow={rowIndex === rows.length - 1}>
+          {row.map((choice, colIndex) => {
+            const index = rowIndex * 2 + colIndex
+            const isSelected = selectedAnswer === choice
+            const isCorrect = choice === correctAnswer
+            const isIncorrect = isSelected && choice !== correctAnswer && showResult
+            const isLastInRow = colIndex === row.length - 1
+            
+            return (
+              <ChoiceButton
+                key={index}
+                choice={choice}
+                isSelected={isSelected}
+                isCorrect={isCorrect}
+                isIncorrect={isIncorrect}
+                showResult={showResult}
+                onPress={() => onChoiceSelect(choice)}
+                disabled={selectedAnswer !== null}
+                isLastInRow={isLastInRow}
+              />
+            )
+          })}
+        </ChoiceRow>
+      ))}
     </ChoicesContainer>
   )
 }
