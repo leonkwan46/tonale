@@ -1,40 +1,30 @@
 // Musical terms exercise generators
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
-import { Question } from '../theoryData/types'
-
-// Grade 1 musical terms
-const GRADE_1_TERMS = {
-  'Allegro': 'Fast tempo',
-  'Andante': 'Walking pace',
-  'Piano': 'Soft',
-  'Forte': 'Loud',
-  'Crescendo': 'Gradually getting louder',
-  'Diminuendo': 'Gradually getting softer',
-  'Legato': 'Smooth and connected',
-  'Staccato': 'Short and detached'
-}
+import { getAllStageOneTerms } from '../stageConfigs/stageOne/musicalTerms'
+import { Question, StageNumber } from '../theoryData/types'
 
 // Create a musical term question
-export const createMusicalTermQuestion = (): Question => {
-  const terms = Object.keys(GRADE_1_TERMS)
+export const createMusicalTermQuestion = (stage: StageNumber = 1): Question => {
+  const stageOneTerms = getAllStageOneTerms()
+  const terms = Object.keys(stageOneTerms)
   const correctTerm = getRandomItem(terms)
-  const correctDefinition = GRADE_1_TERMS[correctTerm as keyof typeof GRADE_1_TERMS]
+  const correctDefinition = stageOneTerms[correctTerm as keyof typeof stageOneTerms]
   
   return {
     id: generateQuestionId('musical-term'),
-    question: `What does "${correctTerm}" mean?`,
+    question: `What does '${correctTerm}' mean?`,
     correctAnswer: correctDefinition,
-    choices: generateWrongChoices(Object.values(GRADE_1_TERMS), correctDefinition),
-    explanation: `"${correctTerm}" means ${correctDefinition.toLowerCase()}.`,
+    choices: generateWrongChoices(Object.values(stageOneTerms), correctDefinition),
+    explanation: `'${correctTerm}' means ${correctDefinition}.`,
     type: 'multipleChoice'
   }
 }
 
 // Create multiple musical term questions
-export const createMusicalTermQuestions = (count: number): Question[] => {
-  return Array.from({ length: count }, () => createMusicalTermQuestion())
+export const createMusicalTermQuestions = (questionsCount: number, stage: StageNumber = 1): Question[] => {
+  return Array.from({ length: questionsCount }, () => createMusicalTermQuestion(stage))
 }

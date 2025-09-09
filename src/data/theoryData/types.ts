@@ -1,16 +1,14 @@
 // Types for lesson and stage data
+import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-notation'
+
+// Stage number type for exercise generation
+export type StageNumber = 1 | 2 | 3
+
 export interface VisualComponent {
-  type: 'note' | 'rest' | 'staff' | 'accidental' | 'timeSignature' | 'keySignature'
-  // Note-specific props
-  noteType?: string
-  pitch?: string
-  // Staff-specific props
-  clef?: 'treble' | 'bass'
-  notes?: Array<{ pitch: string, noteType: string, accidental: string | null }>
+  clef?: ClefType
+  elements?: MusicElementData[]
   timeSignature?: string
-  keyName?: string
-  // Accidental-specific props
-  accidental?: 'sharp' | 'flat' | 'natural'
+  keyName?: KeyName
 }
 
 export interface Question {
@@ -24,12 +22,9 @@ export interface Question {
 }
 
 export interface ExerciseConfig {
-  generators: {
-    generatorId: string
-    count: number
-    difficulty?: string
-  }[]
-  totalQuestions: number
+  generatorType: string
+  questionsCount: number
+  stage: StageNumber
 }
 
 export interface Lesson {
@@ -37,7 +32,7 @@ export interface Lesson {
   title: string
   description: string
   isLocked?: boolean  // Optional - provided by progress system
-  stars?: number      // Optional - provided by progress system
+  stars: number      // Optional - provided by progress system
   isFinalTest?: boolean
   estimatedTime?: number // in minutes
   questions?: Question[] // Optional - hardcoded questions for the lesson

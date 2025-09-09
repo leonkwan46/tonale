@@ -9,24 +9,24 @@ export const BodyContainer = styled.View(({ theme }) => ({
 }))
 
 export const QuestionContainer = styled.View`
-  margin-bottom: ${scale(20)}px;
+  margin-bottom: ${scale(20)};
 `
 
 export const QuestionText = styled.Text`
-  font-size: ${scale(18)}px;
+  font-size: ${scale(18)};
   font-weight: 600;
   text-align: center;
   color: #000000;
 `
 
 export const ExplanationContainer = styled.View`
-  margin-top: ${scale(16)}px;
+  margin-top: ${scale(16)};
 `
 
 export const ExplanationText = styled.Text<{
   isCorrect: boolean
 }>`
-  font-size: ${scale(14)}px;
+  font-size: ${scale(14)};
   color: ${props => props.isCorrect ? '#34C759' : '#FF3B30'};
   text-align: center;
   font-style: italic;
