@@ -57,7 +57,17 @@ export const lightTheme = {
     // Additional theme colors
     gold: '#FFD700',
     inputBackground: '#f8f9fa',
-    lockedNode: '#999'
+    lockedNode: '#999',
+    
+    // ChoiceButton depth colors
+    choiceButtonDepth: {
+      default: '#156382',
+      selected: '#0a5a7a',
+      correct: '#2a8a3a',
+      incorrect: '#b52a2a',
+      neutral: '#0a3a4a'
+    }
+    
   },
   // Use shared constants for consistent dimensions across themes
   ...sharedConstants
@@ -86,7 +96,17 @@ export const darkTheme = {
     // Additional theme colors
     gold: '#FFD700',
     inputBackground: '#1a1a1a',
-    lockedNode: '#444'
+    lockedNode: '#444',
+    
+    // ChoiceButton depth colors
+    choiceButtonDepth: {
+      default: '#156382',
+      selected: '#0a5a7a',
+      correct: '#2a8a3a',
+      incorrect: '#b52a2a',
+      neutral: '#0a3a4a'
+    }
+    
   },
   // Use shared constants for consistent dimensions across themes
   ...sharedConstants

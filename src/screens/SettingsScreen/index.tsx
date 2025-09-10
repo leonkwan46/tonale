@@ -1,4 +1,4 @@
-import { auth } from '@/config/firebaseAuth'
+import { auth } from '@/config/firebase/firebaseAuth'
 import { useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth'
 import { Alert, useColorScheme } from 'react-native'

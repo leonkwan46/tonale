@@ -1,21 +1,21 @@
-import { auth } from '@/config/firebaseAuth'
+import { auth } from '@/config/firebase/firebaseAuth'
 import { AppTheme } from '@/constants/Colors'
 import { createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-    withTiming
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming
 } from 'react-native-reanimated'
 
 import {
-    Container,
-    KeyboardContainer,
-    ScrollContainer,
-    ScrollContentContainer
+  Container,
+  KeyboardContainer,
+  ScrollContainer,
+  ScrollContentContainer
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
@@ -48,7 +48,7 @@ export function AuthScreen() {
   useEffect(() => {
     logoScale.value = withTiming(1.0, { duration: 1000, easing: Easing.out(Easing.ease) })
     modeTransition.value = authState.mode === 'login' ? 0 : 1
-  }, [authState.mode, logoScale, modeTransition])
+  }, [authState.mode])
   
   useEffect(() => {
     modeTransition.value = withSpring(authState.mode === 'login' ? 0 : 1, {
@@ -57,7 +57,7 @@ export function AuthScreen() {
     })
     setAuthState(prev => ({ ...prev, error: '' }))
     setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }))
-  }, [authState.mode, modeTransition])
+  }, [authState.mode])
   
   const updateFormData = (field: keyof AuthFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
