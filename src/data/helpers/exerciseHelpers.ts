@@ -70,16 +70,18 @@ export const getKeys = (stage: StageNumber) => {
   }
 }
 
-export const getNoteRange = (stage: StageNumber, clef?: string) => {
+export const getNoteRange = (stage: StageNumber, clef: string) => {
+  if (!clef) {
+    throw new Error('Clef must be specified for note range')
+  }
+  
   switch (stage) {
     case 1:
-      return STAGE_ONE_NOTE_RANGE(clef as any)
     case 2:
-      // TODO: Import and return STAGE_TWO_NOTE_RANGE when available
-      throw new Error('Stage 2 note range not yet implemented')
+      return STAGE_ONE_NOTE_RANGE(clef as any, stage)
     case 3:
-      // TODO: Import and return STAGE_THREE_NOTE_RANGE when available
-      throw new Error('Stage 3 note range not yet implemented')
+      // TODO: Add Stage 3 ranges when needed
+      return STAGE_ONE_NOTE_RANGE(clef as any, stage)
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
