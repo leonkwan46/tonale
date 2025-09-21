@@ -10,7 +10,7 @@ export const Content = styled.View(({ theme }) => ({
 
 export const Title = styled.Text(({ theme }) => ({
   fontSize: theme.typography['4xl'],
-  fontWeight: theme.fontWeight.bold as any,
+  fontWeight: theme.fontWeight.bold,
   color: theme.colors.text,
   marginBottom: theme.spacing.md,
   textAlign: 'center' as const,
@@ -19,7 +19,7 @@ export const Title = styled.Text(({ theme }) => ({
 
 export const Subtitle = styled.Text(({ theme }) => ({
   fontSize: theme.typography.xl,
-  fontWeight: theme.fontWeight.medium as any,
+  fontWeight: theme.fontWeight.medium,
   color: theme.colors.primary,
   marginBottom: theme.spacing.xl,
   textAlign: 'center' as const
@@ -27,7 +27,7 @@ export const Subtitle = styled.Text(({ theme }) => ({
 
 export const Description = styled.Text(({ theme }) => ({
   fontSize: theme.typography.lg,
-  fontWeight: theme.fontWeight.normal as any,
+  fontWeight: theme.fontWeight.normal,
   color: theme.colors.text,
   textAlign: 'center' as const,
   opacity: 0.7,

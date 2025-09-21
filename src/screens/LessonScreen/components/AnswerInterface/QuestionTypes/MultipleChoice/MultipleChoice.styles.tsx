@@ -6,7 +6,7 @@ export const ChoicesContainer = styled.View`
   width: 100%;
 `
 
-export const ChoiceRow = styled.View<{ isLastRow: boolean }>`
+export const ChoiceRow = styled.View<{ isLastRow: boolean; type: 'grid' | 'row' }>`
   flex-direction: row;
   justify-content: center;
   align-items: center;

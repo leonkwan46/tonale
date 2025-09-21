@@ -1,5 +1,6 @@
 import { useDevice } from '@/hooks'
 import React from 'react'
+import { LayoutType } from '../../index'
 import { ChoiceText, NodeContainer, NodeContentContainer, NodeDepth } from './ChoiceButton.styles'
 
 interface ChoiceButtonProps {
@@ -11,6 +12,7 @@ interface ChoiceButtonProps {
   onPress: () => void
   disabled?: boolean
   isLastInRow: boolean
+  layoutType: LayoutType
 }
 
 export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
@@ -21,7 +23,8 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
   showResult,
   onPress,
   disabled = false,
-  isLastInRow
+  isLastInRow,
+  layoutType
 }) => {
   const { isTablet } = useDevice()
 
@@ -42,18 +45,22 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
       onPress={onPress}
       disabled={disabled}
       isLastInRow={isLastInRow}
+      layoutType={layoutType}
     >
       <NodeDepth 
         buttonState={buttonState} 
         isTablet={isTablet}
+        layoutType={layoutType}
       />
       <NodeContentContainer 
         buttonState={buttonState} 
         isTablet={isTablet}
+        layoutType={layoutType}
       >
         <ChoiceText 
           buttonState={buttonState}
           isTablet={isTablet}
+          layoutType={layoutType}
         >
           {choice}
         </ChoiceText>

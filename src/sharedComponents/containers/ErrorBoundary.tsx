@@ -3,10 +3,15 @@ import styled from '@emotion/native'
 import { Component, ReactNode } from 'react'
 import { useColorScheme } from 'react-native'
 
+interface ErrorInfo {
+  componentStack?: string
+  [key: string]: unknown
+}
+
 interface ErrorBoundaryState {
   hasError: boolean
   error?: Error
-  errorInfo?: any
+  errorInfo?: ErrorInfo
 }
 
 interface ErrorBoundaryProps {
@@ -23,7 +28,7 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('🚨 Error Boundary caught an error:', error)
     console.error('🚨 Error Info:', errorInfo)
     console.error('🚨 Stack Trace:', error.stack)
@@ -39,7 +44,7 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
   }
 }
 
-function ErrorFallback({ error, errorInfo }: { error?: Error, errorInfo?: any }) {
+function ErrorFallback({ error, errorInfo }: { error?: Error, errorInfo?: ErrorInfo }) {
   const colorScheme = useColorScheme() ?? 'light'
   
   return (

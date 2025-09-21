@@ -2,6 +2,8 @@ import React from 'react'
 import { ChoiceRow, ChoicesContainer } from './MultipleChoice.styles'
 import { ChoiceButton } from './components'
 
+export type LayoutType = 'grid' | 'row'
+
 interface MultipleChoiceProps {
   choices: string[]
   correctAnswer: string
@@ -9,6 +11,7 @@ interface MultipleChoiceProps {
   showResult: boolean
   showCorrectAnswer: boolean
   onChoiceSelect: (choice: string) => void
+  type?: LayoutType
 }
 
 export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
@@ -17,15 +20,22 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   selectedAnswer,
   showResult,
   showCorrectAnswer,
-  onChoiceSelect
+  onChoiceSelect,
+  type = 'grid'
 }) => {
-  // Group choices into rows of 2
+  // Group choices into rows based on type
   const createRows = () => {
-    const rows = []
-    for (let i = 0; i < choices.length; i += 2) {
-      rows.push(choices.slice(i, i + 2))
+    if (type === 'row') {
+      // For row layout, put each choice in its own row
+      return choices.map(choice => [choice])
+    } else {
+      // For grid layout, group choices into rows of 2
+      const rows = []
+      for (let i = 0; i < choices.length; i += 2) {
+        rows.push(choices.slice(i, i + 2))
+      }
+      return rows
     }
-    return rows
   }
 
   const rows = createRows()
@@ -33,9 +43,9 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   return (
     <ChoicesContainer>
       {rows.map((row, rowIndex) => (
-        <ChoiceRow key={rowIndex} isLastRow={rowIndex === rows.length - 1}>
+        <ChoiceRow key={rowIndex} isLastRow={rowIndex === rows.length - 1} type={type}>
           {row.map((choice, colIndex) => {
-            const index = rowIndex * 2 + colIndex
+            const index = rowIndex * (type === 'row' ? 1 : 2) + colIndex
             const isSelected = selectedAnswer === choice
             const isCorrect = choice === correctAnswer
             const isIncorrect = isSelected && choice !== correctAnswer && showResult
@@ -52,6 +62,7 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
                 onPress={() => onChoiceSelect(choice)}
                 disabled={selectedAnswer !== null}
                 isLastInRow={isLastInRow}
+                layoutType={type}
               />
             )
           })}

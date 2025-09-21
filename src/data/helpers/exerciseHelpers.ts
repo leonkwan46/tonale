@@ -70,10 +70,10 @@ export const getKeys = (stage: StageNumber) => {
   }
 }
 
-export const getNoteRange = (stage: StageNumber) => {
+export const getNoteRange = (stage: StageNumber, clef?: string) => {
   switch (stage) {
     case 1:
-      return STAGE_ONE_NOTE_RANGE()
+      return STAGE_ONE_NOTE_RANGE(clef as any)
     case 2:
       // TODO: Import and return STAGE_TWO_NOTE_RANGE when available
       throw new Error('Stage 2 note range not yet implemented')
