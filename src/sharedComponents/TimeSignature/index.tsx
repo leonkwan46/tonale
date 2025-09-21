@@ -1,4 +1,4 @@
-import { TimeSignature as LibraryTimeSignature, parseTimeSignature, COMMON_TIME, CUT_TIME } from '@leonkwan46/music-notation'
+import { TimeSignature as LibraryTimeSignature, parseTimeSignature } from '@leonkwan46/music-notation'
 import React from 'react'
 
 interface TimeSignatureProps {

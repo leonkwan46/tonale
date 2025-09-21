@@ -1,5 +1,5 @@
 // Exercise-specific helper functions for music theory stages
-import { ACCIDENTALS, type AccidentalType } from '@leonkwan46/music-notation'
+import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
 import { STAGE_ONE_KEYS } from '../stageConfigs/stageOne/keySignatures'
 import { STAGE_ONE_NOTE_RANGE } from '../stageConfigs/stageOne/noteRange'
 import { STAGE_ONE_NOTE_TYPES } from '../stageConfigs/stageOne/noteTypes'
@@ -78,10 +78,10 @@ export const getNoteRange = (stage: StageNumber, clef: string) => {
   switch (stage) {
     case 1:
     case 2:
-      return STAGE_ONE_NOTE_RANGE(clef as any, stage)
+      return STAGE_ONE_NOTE_RANGE(clef as ClefType, stage)
     case 3:
       // TODO: Add Stage 3 ranges when needed
-      return STAGE_ONE_NOTE_RANGE(clef as any, stage)
+      return STAGE_ONE_NOTE_RANGE(clef as ClefType, stage)
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
