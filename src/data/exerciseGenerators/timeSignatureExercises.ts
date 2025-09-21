@@ -2,9 +2,9 @@
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
 import { getTimeSignatures } from '../helpers/exerciseHelpers'
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -82,7 +82,7 @@ const generateSmartWrongChoices = (correctTimeSignature: TimeSignatureType): str
 }
 
 // Create a time signature identification question
-export const createTimeSignatureQuestion = (stage: StageNumber = 1): Question => {
+export const createTimeSignatureQuestion = (stage: StageNumber): Question => {
   const timeSignatures = getTimeSignatures(stage)
   const correctTimeSig = getRandomItem(timeSignatures)
   const correctTimeSigString = timeSignatureToString(correctTimeSig)
@@ -106,6 +106,6 @@ export const createTimeSignatureQuestion = (stage: StageNumber = 1): Question =>
 }
 
 // Create multiple time signature questions
-export const createTimeSignatureQuestions = (questionsCount: number, stage: StageNumber = 1): Question[] => {
+export const createTimeSignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   return Array.from({ length: questionsCount }, () => createTimeSignatureQuestion(stage))
 }

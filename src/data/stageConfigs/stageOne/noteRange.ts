@@ -3,7 +3,7 @@ import type { ClefType, Note } from '@leonkwan46/music-notation'
 import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS } from '@leonkwan46/music-notation'
 import { StageNumber } from '../../theoryData/types'
 
-export const STAGE_ONE_NOTE_RANGE = (clef: ClefType, stage: StageNumber = 1) => {
+export const STAGE_ONE_NOTE_RANGE = (clef: ClefType, stage: StageNumber) => {
   // Choose the appropriate pitch definitions based on clef
   let pitchDefinitions
   switch (clef) {
