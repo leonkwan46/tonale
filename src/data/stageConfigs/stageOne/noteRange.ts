@@ -1,13 +1,19 @@
 // Stage One note range configuration
 import type { ClefType } from '@leonkwan46/music-notation'
-import { TREBLE_PITCH_DEFINITIONS } from '@leonkwan46/music-notation'
-import { BASS_PITCH_DEFINITIONS } from '@leonkwan46/music-notation/dist/components/Pitch/pitchDefinitions/BASS_PITCH_DEFINITIONS'
+import { TREBLE_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, ALTO_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS } from '@leonkwan46/music-notation'
 
 export const STAGE_ONE_NOTE_RANGE = (clef?: ClefType) => {
   // Choose the appropriate pitch definitions based on clef
-  const pitchDefinitions = clef === 'bass' ? BASS_PITCH_DEFINITIONS : TREBLE_PITCH_DEFINITIONS
+  const pitchDefinitions = (() => {
+    switch (clef) {
+      case 'bass': return BASS_PITCH_DEFINITIONS
+      case 'alto': return ALTO_PITCH_DEFINITIONS
+      case 'tenor': return TENOR_PITCH_DEFINITIONS
+      default: return TREBLE_PITCH_DEFINITIONS
+    }
+  })()
   
-  return pitchDefinitions.filter(note => {
+  return pitchDefinitions.filter((note: any) => {
     const pitch = note.pitch
     // Include natural notes and accidentals in Stage One range
     if (clef === 'bass') {
