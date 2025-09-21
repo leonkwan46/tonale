@@ -9,7 +9,7 @@ import {
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create a key signature identification question
-export const createKeySignatureQuestion = (stage: StageNumber = 1): Question => {
+export const createKeySignatureQuestion = (stage: StageNumber): Question => {
   const keys = getKeys(stage)
   const correctKey = getRandomItem(keys)
   
@@ -32,6 +32,6 @@ export const createKeySignatureQuestion = (stage: StageNumber = 1): Question => 
 }
 
 // Create multiple key signature questions
-export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber = 1): Question[] => {
+export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   return Array.from({ length: questionsCount }, () => createKeySignatureQuestion(stage))
 }

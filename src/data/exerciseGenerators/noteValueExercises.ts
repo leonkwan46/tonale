@@ -9,7 +9,7 @@ import {
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create a note value identification question
-export const createNoteValueQuestion = (stage: StageNumber = 1): Question => {
+export const createNoteValueQuestion = (stage: StageNumber): Question => {
   const stageNoteTypes = getNoteTypes(stage)
   const correctNoteType = getRandomItem(stageNoteTypes)
   
@@ -43,6 +43,6 @@ export const createNoteValueQuestion = (stage: StageNumber = 1): Question => {
 }
 
 // Create multiple note value questions
-export const createNoteValueQuestions = (questionsCount: number, stage: StageNumber = 1): Question[] => {
+export const createNoteValueQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   return Array.from({ length: questionsCount }, () => createNoteValueQuestion(stage))
 }

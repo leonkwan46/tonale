@@ -2,9 +2,9 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
 import { getNoteRange } from '../helpers/exerciseHelpers'
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -20,7 +20,7 @@ interface Note {
 
 // Create a note identification question
 export const createNoteIdentificationQuestion = (
-  stage: StageNumber = 1, 
+  stage: StageNumber, 
   clef: ClefType
 ): Question => {
   // Get pitches for the specified stage and clef (with accidentals if available)
@@ -62,7 +62,7 @@ export const createNoteIdentificationQuestion = (
 // Create multiple note identification questions
 export const createNoteIdentificationQuestions = (
   questionsCount: number, 
-  stage: StageNumber = 1,
+  stage: StageNumber,
   clef: ClefType
 ): Question[] => {
   return Array.from({ length: questionsCount }, () => createNoteIdentificationQuestion(stage, clef))

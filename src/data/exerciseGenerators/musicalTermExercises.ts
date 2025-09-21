@@ -1,14 +1,14 @@
 // Musical terms exercise generators
 import {
-  generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+    generateQuestionId,
+    generateWrongChoices,
+    getRandomItem
 } from '../helpers/questionHelpers'
 import { getAllStageOneTerms } from '../stageConfigs/stageOne/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create a musical term question
-export const createMusicalTermQuestion = (stage: StageNumber = 1): Question => {
+export const createMusicalTermQuestion = (stage: StageNumber): Question => {
   const stageOneTerms = getAllStageOneTerms()
   const terms = Object.keys(stageOneTerms)
   const correctTerm = getRandomItem(terms)
@@ -25,6 +25,6 @@ export const createMusicalTermQuestion = (stage: StageNumber = 1): Question => {
 }
 
 // Create multiple musical term questions
-export const createMusicalTermQuestions = (questionsCount: number, stage: StageNumber = 1): Question[] => {
+export const createMusicalTermQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   return Array.from({ length: questionsCount }, () => createMusicalTermQuestion(stage))
 }
