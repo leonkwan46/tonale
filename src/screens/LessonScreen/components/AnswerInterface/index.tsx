@@ -26,7 +26,6 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
-  const [currentQuestionId, setCurrentQuestionId] = useState(questionData.id)
 
   // Reset state when questionData changes (new question)
   useEffect(() => {
@@ -34,14 +33,13 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
     setShowResult(false)
     setIsCorrect(null)
     setShowCorrectAnswer(false)
-    setCurrentQuestionId(questionData.id)
   }, [questionData.id])
 
   // ==========================
   // Handle Wrong Answer
   // ==========================
   useEffect(() => {
-    if (showResult && !isCorrect && selectedAnswer !== null && !showCorrectAnswer) {
+    if (showResult && !isCorrect && selectedAnswer !== null) {
       setShowCorrectAnswer(true)
       const timer = setTimeout(() => {
         onNextQuestion()
@@ -51,7 +49,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         clearTimeout(timer)
       }
     }
-  }, [showResult, isCorrect, selectedAnswer])
+  }, [showResult, isCorrect, selectedAnswer, onNextQuestion])
 
   // ==========================
   // Handle Correct Answer
@@ -66,7 +64,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         clearTimeout(timer)
       }
     }
-  }, [showResult, isCorrect, selectedAnswer])
+  }, [showResult, isCorrect, selectedAnswer, onNextQuestion])
 
   const handleChoiceSelect = (choice: string) => {
     if (selectedAnswer !== null) return // Already answered
@@ -92,6 +90,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
             showResult={showResult}
             showCorrectAnswer={showCorrectAnswer}
             onChoiceSelect={handleChoiceSelect}
+            type={questionData.choices.length <= 4 ? 'row' : 'grid'}
           />
         )
       case QUESTION_TYPE.TRUE_FALSE:

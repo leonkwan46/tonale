@@ -48,7 +48,7 @@ export function AuthScreen() {
   useEffect(() => {
     logoScale.value = withTiming(1.0, { duration: 1000, easing: Easing.out(Easing.ease) })
     modeTransition.value = authState.mode === 'login' ? 0 : 1
-  }, [authState.mode])
+  }, [authState.mode, logoScale, modeTransition])
   
   useEffect(() => {
     modeTransition.value = withSpring(authState.mode === 'login' ? 0 : 1, {
@@ -57,7 +57,7 @@ export function AuthScreen() {
     })
     setAuthState(prev => ({ ...prev, error: '' }))
     setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }))
-  }, [authState.mode])
+  }, [authState.mode, modeTransition])
   
   const updateFormData = (field: keyof AuthFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))

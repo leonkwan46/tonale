@@ -2,9 +2,9 @@
 import { NOTES } from '@leonkwan46/music-notation'
 import { getNoteTypes } from '../helpers/exerciseHelpers'
 import {
-  generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+    generateQuestionId,
+    generateWrongChoices,
+    getRandomItem
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -36,8 +36,8 @@ export const createNoteValueQuestion = (stage: StageNumber = 1): Question => {
     explanation: `This is a ${correctAnswerString}.`,
     type: 'multipleChoice',
     visualComponent: {
-      clef: 'treble',
-      elements: [{ pitch: 'F4', type: correctNoteType, stem: 'up', ledgerLines: 0 }]
+      type: 'noteValue',
+      noteType: correctNoteType
     }
   }
 }

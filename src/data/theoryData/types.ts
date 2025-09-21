@@ -5,10 +5,18 @@ import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-nota
 export type StageNumber = 1 | 2 | 3
 
 export interface VisualComponent {
+  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'keySignature'
+  // MusicStaff specific properties
   clef?: ClefType
   elements?: MusicElementData[]
   timeSignature?: string
   keyName?: KeyName
+  // TimeSignature specific properties (when type is 'timeSignature')
+  timeSignatureValue?: string
+  // NoteValue specific properties (when type is 'noteValue')
+  noteType?: string
+  // KeySignature specific properties (when type is 'keySignature')
+  keySignatureValue?: string
 }
 
 export interface Question {

@@ -2,9 +2,9 @@
 import { CLEFS } from '@leonkwan46/music-notation'
 import { getKeys } from '../helpers/exerciseHelpers'
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -26,7 +26,6 @@ export const createKeySignatureQuestion = (stage: StageNumber = 1): Question => 
     visualComponent: {
       clef: CLEFS.TREBLE,
       elements: [],
-      timeSignature: '4/4',
       keyName: correctKey
     }
   }
