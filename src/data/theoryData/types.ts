@@ -14,7 +14,7 @@ export interface VisualComponent {
   // TimeSignature specific properties (when type is 'timeSignature')
   timeSignatureValue?: string
   // NoteValue specific properties (when type is 'noteValue')
-  noteType?: string
+  noteType?: string | { type: string; dots?: number }
   // KeySignature specific properties (when type is 'keySignature')
   keySignatureValue?: string
 }

@@ -5,6 +5,7 @@ import {
   createMusicalTermQuestions,
   createNoteIdentificationQuestions,
   createNoteValueQuestions,
+  createRestValueQuestions,
   createTimeSignatureQuestions
 } from '../exerciseGenerators'
 import { ExerciseConfig, Question } from '../theoryData/types'
@@ -15,6 +16,10 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
   switch (config.generatorType) {
     case 'noteValue':
       questions.push(...createNoteValueQuestions(config.questionsCount, config.stage))
+      break
+    
+    case 'restValue':
+      questions.push(...createRestValueQuestions(config.questionsCount, config.stage))
       break
     
     case 'noteIdentification':
@@ -38,13 +43,14 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       break
     
     case 'mixed':
-      const questionsPerType = Math.floor(config.questionsCount / 5)
-      const remaining = config.questionsCount - (questionsPerType * 5)
+      const questionsPerType = Math.floor(config.questionsCount / 6)
+      const remaining = config.questionsCount - (questionsPerType * 6)
       
       questions.push(...createNoteValueQuestions(questionsPerType + (remaining > 0 ? 1 : 0), config.stage))
-      questions.push(...createTimeSignatureQuestions(questionsPerType + (remaining > 1 ? 1 : 0), config.stage))
-      questions.push(...createNoteIdentificationQuestions(questionsPerType + (remaining > 2 ? 1 : 0), config.stage, CLEFS.TREBLE))
-      questions.push(...createKeySignatureQuestions(questionsPerType + (remaining > 3 ? 1 : 0), config.stage))
+      questions.push(...createRestValueQuestions(questionsPerType + (remaining > 1 ? 1 : 0), config.stage))
+      questions.push(...createTimeSignatureQuestions(questionsPerType + (remaining > 2 ? 1 : 0), config.stage))
+      questions.push(...createNoteIdentificationQuestions(questionsPerType + (remaining > 3 ? 1 : 0), config.stage, CLEFS.TREBLE))
+      questions.push(...createKeySignatureQuestions(questionsPerType + (remaining > 4 ? 1 : 0), config.stage))
       questions.push(...createMusicalTermQuestions(questionsPerType, config.stage))
       break
     
