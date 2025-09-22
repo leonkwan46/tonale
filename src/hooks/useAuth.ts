@@ -1,7 +1,7 @@
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native'
-import { auth } from '../config/firebaseAuth'
+import { auth } from '../config/firebase/firebaseAuth'
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
