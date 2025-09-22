@@ -1,45 +1,44 @@
 import { Question } from '@/data/theoryData/types'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
-import { BodyContainer, ExplanationContainer, ExplanationText, QuestionContainer, QuestionText } from './LessonScreenBody.styles'
+import { BodyContainer, QuestionContainer, QuestionText } from './LessonScreenBody.styles'
 
 interface LessonScreenBodyProps {
   questions: Question[]
+  currentQuestionIndex: number
+  onAnswerSubmit: (isCorrect: boolean) => void
+  onNextQuestion: () => void
   onLessonComplete?: () => void
 }
 
 export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
   questions,
+  currentQuestionIndex,
+  onAnswerSubmit,
+  onNextQuestion,
   onLessonComplete
 }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [showResult, setShowResult] = useState(false)
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
 
   const currentQuestion = questions[currentQuestionIndex]
-  const { question, visualComponent, type, explanation } = currentQuestion
+  const { question, visualComponent, type } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
 
-  useEffect(() => {
-    setShowResult(false)
-    setIsCorrect(null)
-  }, [currentQuestionIndex])
 
   if (questions.length === 0) return null
 
-  const handleAnswerSubmit = (isCorrect: boolean) => {
-    setShowResult(true)
-    setIsCorrect(isCorrect)
+  const handleAnswerSubmitInternal = (isCorrect: boolean) => {
+    // Pass the answer result to the parent component
+    onAnswerSubmit(isCorrect)
   }
 
-  const handleNextQuestion = () => {
+  const handleNextQuestionInternal = () => {
     if (isLastQuestion) {
       // Lesson completed
       onLessonComplete?.()
     } else {
       // Move to next question
-      setCurrentQuestionIndex(prev => prev + 1)
+      onNextQuestion()
     }
   }
 
@@ -60,17 +59,10 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
       <AnswerInterface 
         questionType={type}
         questionData={currentQuestion}
-        onAnswerSubmit={handleAnswerSubmit}
-        onNextQuestion={handleNextQuestion}
+        onAnswerSubmit={handleAnswerSubmitInternal}
+        onNextQuestion={handleNextQuestionInternal}
       />
       
-      {showResult && explanation && (
-        <ExplanationContainer>
-          <ExplanationText isCorrect={isCorrect || false}>
-            {explanation}
-          </ExplanationText>
-        </ExplanationContainer>
-      )}
     </BodyContainer>
   )
 }

@@ -1,5 +1,6 @@
 import { Question } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
+import { playSuccessSound } from '@/utils/soundUtils'
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
@@ -74,9 +75,15 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
     setIsCorrect(correct)
     setShowResult(true)
     
+    // Play success sound immediately when answer is correct
+    if (correct) {
+      playSuccessSound()
+    }
+    
     // Call parent callback
     onAnswerSubmit(correct)
   }
+
 
   const renderAnswerComponent = () => {
     switch (questionType) {
