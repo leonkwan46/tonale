@@ -1,6 +1,7 @@
 import { AppTheme } from '@/constants/Colors'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
+import type { ViewStyle } from 'react-native'
 import {
     AppTitle,
     LogoContainer,
@@ -14,7 +15,7 @@ interface LogoSectionProps {
   colorScheme: string
   authState: { mode: string }
   textColor: string
-  logoAnimatedStyle: any
+  logoAnimatedStyle: ViewStyle
   inputBackgroundColor: string
 }
 

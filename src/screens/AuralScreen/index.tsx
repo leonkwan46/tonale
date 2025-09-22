@@ -1,4 +1,4 @@
-import { ScreenContainer } from '@/components'
+import { ScreenContainer } from '@/sharedComponents'
 import React from 'react'
 import { Content, Description, Subtitle, Title } from './AuralScreen.styles'
 

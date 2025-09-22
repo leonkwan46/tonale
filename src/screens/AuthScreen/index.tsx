@@ -1,21 +1,21 @@
-import { auth } from '@/config/firebaseAuth'
+import { auth } from '@/config/firebase/firebaseAuth'
 import { AppTheme } from '@/constants/Colors'
 import { createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-    withTiming
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming
 } from 'react-native-reanimated'
 
 import {
-    Container,
-    KeyboardContainer,
-    ScrollContainer,
-    ScrollContentContainer
+  Container,
+  KeyboardContainer,
+  ScrollContainer,
+  ScrollContentContainer
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'

@@ -5,9 +5,9 @@ import { useState } from 'react'
 import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { UnifiedThemeProvider } from '@/components/UnifiedThemeProvider'
 import { SplashScreen } from '@/screens/SplashScreen'
+import { ErrorBoundary } from '@/sharedComponents/containers/ErrorBoundary'
+import { UnifiedThemeProvider } from '@/sharedComponents/containers/UnifiedThemeProvider'
 
 export default function RootLayout() {
   const [showSplash, setShowSplash] = useState(true)
@@ -36,6 +36,7 @@ export default function RootLayout() {
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="lesson" />
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="auto" />
