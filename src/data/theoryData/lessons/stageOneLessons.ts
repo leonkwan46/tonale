@@ -3,12 +3,24 @@ import { Lesson } from '../types'
 export const stageOneLessons: Lesson[] = [
   {
     id: 'lesson-1',
-    title: 'Note Values & Rests',
-    description: 'Learn about different note values, rests, tied notes, and dotted notes',
+    title: 'Note Values',
+    description: 'Learn about different note values and dotted notes',
     stars: 0,
     estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'noteValue',
+      questionsCount: 15,
+      stage: 1
+    }
+  },
+  {
+    id: 'lesson-1b',
+    title: 'Rest Values',
+    description: 'Learn about different rest values and dotted rests',
+    stars: 0,
+    estimatedTime: 15,
+    exerciseConfig: {
+      generatorType: 'restValue',
       questionsCount: 15,
       stage: 1
     }

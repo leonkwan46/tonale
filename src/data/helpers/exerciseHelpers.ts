@@ -2,7 +2,8 @@
 import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
 import { STAGE_ONE_KEYS } from '../stageSyllabusConfigs/keySignatures'
 import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabusConfigs/noteRange'
-import { STAGE_ONE_NOTE_TYPES } from '../stageSyllabusConfigs/noteTypes'
+import { STAGE_ONE_ALL_NOTE_TYPES, STAGE_ONE_DOTTED_NOTE_TYPES, STAGE_ONE_NOTE_TYPES } from '../stageSyllabusConfigs/noteTypes'
+import { STAGE_ONE_ALL_REST_TYPES, STAGE_ONE_DOTTED_REST_TYPES, STAGE_ONE_REST_TYPES } from '../stageSyllabusConfigs/restTypes'
 import { STAGE_ONE_TIME_SIGNATURES } from '../stageSyllabusConfigs/timeSignatures'
 import { StageNumber } from '../theoryData/types'
 
@@ -10,7 +11,7 @@ import { StageNumber } from '../theoryData/types'
 // Stage-Agnostic Exercise Helpers
 // ===============================
 
-export const getNoteTypes = (stage: StageNumber) => {
+export const getBasicNoteTypes = (stage: StageNumber) => {
   switch (stage) {
     case 1:
       return STAGE_ONE_NOTE_TYPES
@@ -20,6 +21,81 @@ export const getNoteTypes = (stage: StageNumber) => {
     case 3:
       // TODO: Import and return STAGE_THREE_NOTE_TYPES when available
       throw new Error('Stage 3 note types not yet implemented')
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
+  }
+}
+
+export const getDottedNoteTypes = (stage: StageNumber) => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_DOTTED_NOTE_TYPES
+    case 2:
+      // TODO: Import and return STAGE_TWO_DOTTED_NOTE_TYPES when available
+      throw new Error('Stage 2 dotted note types not yet implemented')
+    case 3:
+      // TODO: Import and return STAGE_THREE_DOTTED_NOTE_TYPES when available
+      throw new Error('Stage 3 dotted note types not yet implemented')
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
+  }
+}
+
+export const getAllNoteTypes = (stage: StageNumber) => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_ALL_NOTE_TYPES
+    case 2:
+      // TODO: Import and return STAGE_TWO_ALL_NOTE_TYPES when available
+      throw new Error('Stage 2 all note types not yet implemented')
+    case 3:
+      // TODO: Import and return STAGE_THREE_ALL_NOTE_TYPES when available
+      throw new Error('Stage 3 all note types not yet implemented')
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
+  }
+}
+
+export const getBasicRestTypes = (stage: StageNumber) => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_REST_TYPES
+    case 2:
+      // TODO: Import and return STAGE_TWO_REST_TYPES when available
+      throw new Error('Stage 2 rest types not yet implemented')
+    case 3:
+      // TODO: Import and return STAGE_THREE_REST_TYPES when available
+      throw new Error('Stage 3 rest types not yet implemented')
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
+  }
+}
+
+export const getDottedRestTypes = (stage: StageNumber) => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_DOTTED_REST_TYPES
+    case 2:
+      // TODO: Import and return STAGE_TWO_DOTTED_REST_TYPES when available
+      throw new Error('Stage 2 dotted rest types not yet implemented')
+    case 3:
+      // TODO: Import and return STAGE_THREE_DOTTED_REST_TYPES when available
+      throw new Error('Stage 3 dotted rest types not yet implemented')
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
+  }
+}
+
+export const getAllRestTypes = (stage: StageNumber) => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_ALL_REST_TYPES
+    case 2:
+      // TODO: Import and return STAGE_TWO_ALL_REST_TYPES when available
+      throw new Error('Stage 2 all rest types not yet implemented')
+    case 3:
+      // TODO: Import and return STAGE_THREE_ALL_REST_TYPES when available
+      throw new Error('Stage 3 all rest types not yet implemented')
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
@@ -90,7 +166,43 @@ export const getNoteRange = (stage: StageNumber, clef: string) => {
 // ===============================
 // Legacy Stage One Helpers (for backward compatibility)
 // ===============================
-export const getStageOneNoteTypes = () => getNoteTypes(1)
+export const getStageOneNoteTypes = () => getBasicNoteTypes(1)
+export const getStageOneDottedNoteTypes = () => getDottedNoteTypes(1)
+export const getStageOneAllNoteTypes = () => getAllNoteTypes(1)
+export const getStageOneRestTypes = () => getBasicRestTypes(1)
+export const getStageOneDottedRestTypes = () => getDottedRestTypes(1)
+export const getStageOneAllRestTypes = () => getAllRestTypes(1)
 export const getStageOneAccidentals = (): AccidentalType[] => getAccidentals(1)
 export const getStageOneTimeSignatures = () => getTimeSignatures(1)
 export const getStageOneKeys = () => getKeys(1)
+
+// ===============================
+// Utility Functions
+// ===============================
+
+// Check if a note/rest type is dotted
+export const isDotted = (noteType: string | { type: string; dots?: number }): boolean => {
+  if (typeof noteType === 'object' && noteType.type) {
+    return (noteType.dots || 0) > 0
+  }
+  return false
+}
+
+// Get the base type (without dots) from a note/rest type
+export const getBaseType = (noteType: string | { type: string; dots?: number }): string => {
+  if (typeof noteType === 'object' && noteType.type) {
+    return noteType.type
+  }
+  return noteType as string
+}
+
+// Check if a type is a rest
+export const isRest = (noteType: string | { type: string; dots?: number }): boolean => {
+  const baseType = getBaseType(noteType)
+  return baseType.includes('-rest')
+}
+
+// Check if a type is a note
+export const isNote = (noteType: string | { type: string; dots?: number }): boolean => {
+  return !isRest(noteType)
+}

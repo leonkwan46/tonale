@@ -4,11 +4,16 @@ import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
 import {
   Crotchet,
+  CrotchetRest,
   Minim,
+  MinimRest,
   MusicStaff,
   Quaver,
+  QuaverRest,
   Semibreve,
+  SemibreveRest,
   Semiquaver,
+  SemiquaverRest,
   parseTimeSignature as parseTimeSignatureFromLibrary
 } from '@leonkwan46/music-notation'
 import React from 'react'
@@ -18,9 +23,42 @@ interface VisualQuestionProps {
   visualComponent: VisualComponent
 }
 
-// Helper function to render individual note components
-const renderNoteComponent = (noteType: string) => {
+// Helper function to render individual note/rest components
+const renderNoteComponent = (noteType: string | { type: string; dots?: number }) => {
+  // Handle dotted note/rest objects
+  if (typeof noteType === 'object' && noteType.type) {
+    const { type, dots = 0 } = noteType
+    switch (type) {
+      // Notes
+      case 'semibreve':
+        return <Semibreve centered={true} dots={dots} />
+      case 'minim':
+        return <Minim stem='up' centered={true} dots={dots} />
+      case 'crotchet':
+        return <Crotchet stem='up' centered={true} dots={dots} />
+      case 'quaver':
+        return <Quaver stem='up' centered={true} dots={dots} />
+      case 'semiquaver':
+        return <Semiquaver stem='up' centered={true} dots={dots} />
+      // Rests
+      case 'semibreve-rest':
+        return <SemibreveRest centered={true} dots={dots} />
+      case 'minim-rest':
+        return <MinimRest centered={true} dots={dots} />
+      case 'crotchet-rest':
+        return <CrotchetRest centered={true} dots={dots} isOlderForm={false} />
+      case 'quaver-rest':
+        return <QuaverRest centered={true} dots={dots} />
+      case 'semiquaver-rest':
+        return <SemiquaverRest centered={true} dots={dots} />
+      default:
+        return <Crotchet stem='up' centered={true} dots={dots} />
+    }
+  }
+  
+  // Handle string note/rest types (legacy support)
   switch (noteType) {
+    // Notes
     case 'semibreve':
       return <Semibreve centered={true} />
     case 'minim':
@@ -31,6 +69,17 @@ const renderNoteComponent = (noteType: string) => {
       return <Quaver stem='up' centered={true} />
     case 'semiquaver':
       return <Semiquaver stem='up' centered={true} />
+    // Rests
+    case 'semibreve-rest':
+      return <SemibreveRest centered={true} />
+    case 'minim-rest':
+      return <MinimRest centered={true} />
+    case 'crotchet-rest':
+      return <CrotchetRest centered={true} isOlderForm={false} />
+    case 'quaver-rest':
+      return <QuaverRest centered={true} />
+    case 'semiquaver-rest':
+      return <SemiquaverRest centered={true} />
     default:
       return <Crotchet stem='up' centered={true} />
   }
@@ -75,9 +124,6 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       />
     )
   }
-
-  console.log('isTablet', isTablet)
-  console.log('isNoteIdentification', isNoteIdentification)
 
   return (
     <VisualQuestionContainer isTablet={isTablet} isNoteIdentification={isNoteIdentification || false}>

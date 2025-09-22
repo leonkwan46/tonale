@@ -1,20 +1,32 @@
 // Note value exercise generators
 import { NOTES } from '@leonkwan46/music-notation'
-import { getNoteTypes } from '../helpers/exerciseHelpers'
+import { getAllNoteTypes } from '../helpers/exerciseHelpers'
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create a note value identification question
 export const createNoteValueQuestion = (stage: StageNumber): Question => {
-  const stageNoteTypes = getNoteTypes(stage)
+  const stageNoteTypes = getAllNoteTypes(stage)
   const correctNoteType = getRandomItem(stageNoteTypes)
   
-  // Convert note type constant to readable string for choices
-  const noteTypeToString = (noteType: string) => {
+  // Convert note type constant or object to readable string for choices
+  const noteTypeToString = (noteType: string | { type: string; dots?: number }) => {
+    // Handle dotted note objects
+    if (typeof noteType === 'object' && noteType.type) {
+      const { type, dots = 0 } = noteType
+      const baseName = getBaseNoteName(type)
+      return dots > 0 ? `Dotted ${baseName}` : baseName
+    }
+    
+    // Handle string note types
+    return getBaseNoteName(noteType as string)
+  }
+  
+  const getBaseNoteName = (noteType: string) => {
     switch (noteType) {
       case NOTES.SEMIBREVE: return 'Semibreve'
       case NOTES.MINIM: return 'Minim'
