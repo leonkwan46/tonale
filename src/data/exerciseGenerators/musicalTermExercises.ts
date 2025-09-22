@@ -1,10 +1,10 @@
 // Musical terms exercise generators
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
-import { getAllStageOneTerms } from '../stageConfigs/stageOne/musicalTerms'
+import { getAllStageOneTerms } from '../stageSyllabusConfigs/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create a musical term question

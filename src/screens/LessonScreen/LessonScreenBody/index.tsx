@@ -51,7 +51,7 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
         </QuestionText>
       </QuestionContainer>
 
-      {/* Music Staff */}
+      {/* Music Element */}
       {visualComponent && (
         <VisualQuestion visualComponent={visualComponent} />
       )}

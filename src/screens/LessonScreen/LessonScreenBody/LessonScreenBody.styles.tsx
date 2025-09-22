@@ -3,13 +3,11 @@ import { scale } from 'react-native-size-matters'
 
 export const BodyContainer = styled.View(({ theme }) => ({
   flex: 1,
-  padding: theme.spacing.lg,
   backgroundColor: theme.colors.surface,
   borderRadius: theme.spacing.sm
 }))
 
 export const QuestionContainer = styled.View`
-  margin-bottom: ${scale(20)};
 `
 
 export const QuestionText = styled.Text`
@@ -20,7 +18,6 @@ export const QuestionText = styled.Text`
 `
 
 export const ExplanationContainer = styled.View`
-  margin-top: ${scale(16)};
 `
 
 export const ExplanationText = styled.Text<{

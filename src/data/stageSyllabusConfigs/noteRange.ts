@@ -1,7 +1,7 @@
 // Stage note range configuration
 import type { ClefType, Note } from '@leonkwan46/music-notation'
 import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS } from '@leonkwan46/music-notation'
-import { StageNumber } from '../../theoryData/types'
+import { StageNumber } from '../theoryData/types'
 
 // Helper function to get pitch definitions based on clef
 const getPitchDefinitions = (clef: ClefType) => {
