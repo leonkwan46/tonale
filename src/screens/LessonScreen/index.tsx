@@ -4,11 +4,7 @@ import { Question } from '@/data/theoryData/types'
 import { ScreenContainer } from '@/sharedComponents'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import {
-  BackButton,
-  BackButtonText,
-  Header
-} from './LessonScreen.styles'
+import { LessonHeader } from './components'
 import { LessonScreenBody } from './LessonScreenBody'
 
 export function LessonScreen() {
@@ -16,6 +12,8 @@ export function LessonScreen() {
   const { lessonId } = useLocalSearchParams<{ lessonId: string }>()
   const lesson = lessonId ? getLessonById(lessonId) : null
   const [questions, setQuestions] = useState<Question[]>([])
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [wrongAnswersCount, setWrongAnswersCount] = useState(0)
   
   // Generate questions when lesson loads
   useEffect(() => {
@@ -32,11 +30,31 @@ export function LessonScreen() {
       }
     }
   }, [lessonId])
+
+  // Check if test failed (3 wrong answers in final test)
+  useEffect(() => {
+    if (lesson?.isFinalTest && wrongAnswersCount >= 3) {
+      console.log('Test failed! Too many wrong answers.')
+      router.back()
+    }
+  }, [wrongAnswersCount, lesson?.isFinalTest, router])
   
   if (!lesson || questions.length === 0) return null
 
   const handleBackPress = () => {
     router.back()
+  }
+
+  const handleAnswerSubmit = (isCorrect: boolean) => {
+    if (!isCorrect) {
+      setWrongAnswersCount(prev => prev + 1)
+    }
+  }
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1)
+    }
   }
 
   const handleLessonComplete = () => {
@@ -46,14 +64,19 @@ export function LessonScreen() {
 
   return (
     <ScreenContainer>
-      <Header>
-        <BackButton onPress={handleBackPress}>
-          <BackButtonText>Go Back</BackButtonText>
-        </BackButton>
-      </Header>
+      <LessonHeader
+        lesson={lesson}
+        currentQuestionIndex={currentQuestionIndex}
+        totalQuestions={questions.length}
+        wrongAnswersCount={wrongAnswersCount}
+        onBackPress={handleBackPress}
+      />
       
       <LessonScreenBody
         questions={questions}
+        currentQuestionIndex={currentQuestionIndex}
+        onAnswerSubmit={handleAnswerSubmit}
+        onNextQuestion={handleNextQuestion}
         onLessonComplete={handleLessonComplete}
       />
     </ScreenContainer>
