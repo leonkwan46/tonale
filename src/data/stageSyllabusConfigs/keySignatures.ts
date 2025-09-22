@@ -1,0 +1,46 @@
+// Stage One key signatures configuration
+import { KEY_NAMES } from '@leonkwan46/music-notation'
+
+export const STAGE_ONE_KEYS = [
+  // Major keys
+  KEY_NAMES.C_MAJOR,
+  KEY_NAMES.G_MAJOR,
+  KEY_NAMES.D_MAJOR,
+  KEY_NAMES.F_MAJOR
+]
+
+export const STAGE_TWO_KEYS = [
+  // Major keys
+  KEY_NAMES.C_MAJOR,
+  KEY_NAMES.G_MAJOR,
+  KEY_NAMES.D_MAJOR,
+  KEY_NAMES.F_MAJOR,
+  KEY_NAMES.A_MAJOR,
+  KEY_NAMES.E_FLAT_MAJOR,
+  KEY_NAMES.B_FLAT_MAJOR,
+
+  // Minor keys
+  KEY_NAMES.A_MINOR,
+  KEY_NAMES.E_MINOR,
+  KEY_NAMES.D_MINOR
+]
+
+export const STAGE_THREE_KEYS = [
+  // Major keys
+  KEY_NAMES.C_MAJOR,
+  KEY_NAMES.G_MAJOR,
+  KEY_NAMES.D_MAJOR,
+  KEY_NAMES.F_MAJOR,
+  KEY_NAMES.A_MAJOR,
+  KEY_NAMES.E_FLAT_MAJOR,
+  KEY_NAMES.B_FLAT_MAJOR,
+  KEY_NAMES.B_MAJOR,
+  KEY_NAMES.D_FLAT_MAJOR,
+
+  // Minor keys
+  KEY_NAMES.A_MINOR,
+  KEY_NAMES.E_MINOR,
+  KEY_NAMES.D_MINOR,
+  KEY_NAMES.G_SHARP_MINOR,
+  KEY_NAMES.B_FLAT_MINOR
+]

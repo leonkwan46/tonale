@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import type { AuthFormData } from '../types'
+import type { ViewStyle } from 'react-native'
 import {
     ButtonIcon,
     ErrorContainer,
@@ -16,19 +16,20 @@ import {
     RequirementsText,
     TextInputStyled
 } from '../AuthScreen.styles'
+import type { AuthFormData, AuthState } from '../types'
 
 interface AuthFormProps {
-  authState: any
-  formData: any
+  authState: AuthState
+  formData: AuthFormData
   colorScheme: string
   textColor: string
   inputBackgroundColor: string
   borderColor: string
   updateFormData: (field: keyof AuthFormData, value: string) => void
-  updateAuthState: (updates: any) => void
+  updateAuthState: (updates: Partial<AuthState>) => void
   handleAuth: () => void
   handleGuestLogin: () => void
-  formAnimatedStyle: any
+  formAnimatedStyle: ViewStyle
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({
