@@ -1,9 +1,9 @@
 // Exercise-specific helper functions for music theory stages
 import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
-import { STAGE_ONE_KEYS } from '../stageConfigs/stageOne/keySignatures'
-import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageConfigs/stageOne/noteRange'
-import { STAGE_ONE_NOTE_TYPES } from '../stageConfigs/stageOne/noteTypes'
-import { STAGE_ONE_TIME_SIGNATURES } from '../stageConfigs/stageOne/timeSignatures'
+import { STAGE_ONE_KEYS } from '../stageSyllabusConfigs/keySignatures'
+import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabusConfigs/noteRange'
+import { STAGE_ONE_NOTE_TYPES } from '../stageSyllabusConfigs/noteTypes'
+import { STAGE_ONE_TIME_SIGNATURES } from '../stageSyllabusConfigs/timeSignatures'
 import { StageNumber } from '../theoryData/types'
 
 // ===============================

@@ -46,8 +46,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   const isNoteIdentification = visualComponent.clef && 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
-    (visualComponent.elements.some(element => element.ledgerLines > 0) || 
-     visualComponent.elements.some(element => element.accidental))
+    visualComponent.elements.some(element => element.ledgerLines > 0)
 
   const renderVisualContent = () => {
     // Handle specific visual types
@@ -77,8 +76,11 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     )
   }
 
+  console.log('isTablet', isTablet)
+  console.log('isNoteIdentification', isNoteIdentification)
+
   return (
-    <VisualQuestionContainer isTablet={isTablet}>
+    <VisualQuestionContainer isTablet={isTablet} isNoteIdentification={isNoteIdentification || false}>
       <DisplayCard extraHeight={isNoteIdentification}>
         {renderVisualContent()}
       </DisplayCard>
