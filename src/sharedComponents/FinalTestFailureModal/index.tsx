@@ -28,7 +28,7 @@ export const FinalTestFailureModal: React.FC<FinalTestFailureModalProps> = ({
         </TitleText>
         
         <DescriptionText isTablet={isTablet}>
-          Sorry, you've reached the maximum number of wrong answers. Don't worry, practice makes perfect! Review the lessons and try again.
+          Sorry, you&apos;ve reached the maximum number of wrong answers. Don&apos;t worry, practice makes perfect! Review the lessons and try again.
         </DescriptionText>
         
         <ButtonContainer isTablet={isTablet}>

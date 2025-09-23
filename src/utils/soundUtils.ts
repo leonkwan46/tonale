@@ -7,7 +7,7 @@ export const playSuccessSound = async () => {
     await player.play()
     
     // Clean up the player after it finishes playing
-    player.addListener('playbackStatusUpdate', (status: any) => {
+    player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
       if (status.isLoaded && status.didJustFinish) {
         player.remove()
       }

@@ -6,7 +6,7 @@ import { useRef } from 'react'
  * @param delay The debounce delay in milliseconds (default: 500ms)
  * @returns A debounced version of the callback
  */
-export const usePreventDoubleTap = <T extends (...args: any[]) => any>(
+export const usePreventDoubleTap = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number = 500
 ): T => {
