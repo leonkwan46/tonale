@@ -91,11 +91,11 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     return null
   }
 
-  // Check if this is a note identification exercise (has clef + elements with ledger lines/accidentals)
+  // Check if this is a note identification exercise (has clef + elements with pitch property)
   const isNoteIdentification = visualComponent.clef && 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
-    visualComponent.elements.some(element => element.ledgerLines > 0)
+    visualComponent.elements.some(element => element.pitch)
 
   const renderVisualContent = () => {
     // Handle specific visual types

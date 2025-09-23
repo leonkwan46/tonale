@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { scale } from 'react-native-size-matters'
 
 export const Header = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -11,19 +12,13 @@ export const Header = styled.View(({ theme }) => ({
 }))
 
 export const BackButton = styled.TouchableOpacity(({ theme }) => ({
-  width: 40,
-  height: 40,
-  borderRadius: 20,
+  width: scale(30),
+  height: scale(30),
+  borderRadius: scale(20),
   backgroundColor: theme.colors.primary,
   alignItems: 'center',
   justifyContent: 'center',
-  marginRight: theme.spacing.md
-}))
-
-export const BackButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.background,
-  fontSize: theme.typography.lg,
-  fontWeight: theme.fontWeight.bold
+  marginRight: scale(theme.spacing.md)
 }))
 
 export const ProgressTracker = styled.View(({ theme }) => ({
@@ -34,10 +29,6 @@ export const ProgressTracker = styled.View(({ theme }) => ({
   justifyContent: 'center'
 }))
 
-export const HeaderSpacer = styled.View(({ theme }) => ({
-  width: 80 // Same width as the back button to balance the layout
-}))
-
 export const ProgressText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   fontSize: theme.typography.xl,
@@ -45,14 +36,17 @@ export const ProgressText = styled.Text(({ theme }) => ({
 }))
 
 export const XMarksContainer = styled.View(({ theme }) => ({
+  position: 'absolute',
+  left: 0,
+  right: 0,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: theme.spacing.sm
+  gap: scale(theme.spacing.sm)
 }))
 
-export const XMark = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
-  fontSize: theme.typography.xl,
+export const XMark = styled.Text<{ isActive: boolean, isTablet: boolean }>(({ theme, isActive, isTablet }) => ({
+  fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
   fontWeight: theme.fontWeight.bold,
   color: isActive ? theme.colors.error : theme.colors.secondary,
   opacity: isActive ? 1 : 0.3

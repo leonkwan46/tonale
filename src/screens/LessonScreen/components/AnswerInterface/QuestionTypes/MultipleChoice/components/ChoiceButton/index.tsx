@@ -1,5 +1,5 @@
 import { useDevice } from '@/hooks'
-import React from 'react'
+import React, { useState } from 'react'
 import { LayoutType } from '../../index'
 import { ChoiceText, NodeContainer, NodeContentContainer, NodeDepth } from './ChoiceButton.styles'
 
@@ -13,6 +13,7 @@ interface ChoiceButtonProps {
   disabled?: boolean
   isLastInRow: boolean
   layoutType: LayoutType
+  isNoteIdentification?: boolean
 }
 
 export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
@@ -24,9 +25,11 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
   onPress,
   disabled = false,
   isLastInRow,
-  layoutType
+  layoutType,
+  isNoteIdentification = false
 }) => {
   const { isTablet } = useDevice()
+  const [isPressed, setIsPressed] = useState(false)
 
   const getButtonState = () => {
     if (showResult) {
@@ -39,28 +42,51 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
 
   const buttonState = getButtonState()
 
+  const handlePressIn = () => {
+    if (!disabled) {
+      setIsPressed(true)
+    }
+  }
+
+  const handlePressOut = () => {
+    setIsPressed(false)
+  }
+
+  const handlePress = () => {
+    if (!disabled) {
+      onPress()
+    }
+  }
+
   return (
     <NodeContainer 
-      isPressed={isSelected && !showResult}
-      onPress={onPress}
+      isPressed={isPressed}
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       disabled={disabled}
       isLastInRow={isLastInRow}
       layoutType={layoutType}
+      isNoteIdentification={isNoteIdentification}
+      isTablet={isTablet}
     >
       <NodeDepth 
         buttonState={buttonState} 
         isTablet={isTablet}
         layoutType={layoutType}
+        isNoteIdentification={isNoteIdentification}
       />
       <NodeContentContainer 
         buttonState={buttonState} 
         isTablet={isTablet}
         layoutType={layoutType}
+        isNoteIdentification={isNoteIdentification}
       >
         <ChoiceText 
           buttonState={buttonState}
           isTablet={isTablet}
           layoutType={layoutType}
+          isNoteIdentification={isNoteIdentification}
         >
           {choice}
         </ChoiceText>

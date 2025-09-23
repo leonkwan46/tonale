@@ -14,13 +14,19 @@ interface AnswerInterfaceProps {
   questionData: Question
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
+  isNoteIdentification?: boolean
+  wrongAnswersCount?: number
+  isFinalTest?: boolean
 }
 
 export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({ 
   questionType,
   questionData,
   onAnswerSubmit,
-  onNextQuestion
+  onNextQuestion,
+  isNoteIdentification = false,
+  wrongAnswersCount = 0,
+  isFinalTest = false
 }) => {
   const { isTablet } = useDevice()
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
@@ -37,35 +43,28 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   }, [questionData.id])
 
   // ==========================
-  // Handle Wrong Answer
+  // Handle Answer Result
   // ==========================
   useEffect(() => {
-    if (showResult && !isCorrect && selectedAnswer !== null) {
-      setShowCorrectAnswer(true)
-      const timer = setTimeout(() => {
-        onNextQuestion()
-      }, 3000) // 3 seconds delay
+    if (showResult && selectedAnswer !== null) {
+      if (!isCorrect) {
+        setShowCorrectAnswer(true)
+      }
+      
+      // Don't move to next question if final test failed (3 wrong answers)
+      const shouldProceed = !(isFinalTest && !isCorrect && wrongAnswersCount >= 3)
+      
+      if (shouldProceed) {
+        const timer = setTimeout(() => {
+          onNextQuestion()
+        }, 1500) // Same delay for both correct and incorrect answers
 
-      return () => {
-        clearTimeout(timer)
+        return () => {
+          clearTimeout(timer)
+        }
       }
     }
-  }, [showResult, isCorrect, selectedAnswer, onNextQuestion])
-
-  // ==========================
-  // Handle Correct Answer
-  // ==========================
-  useEffect(() => {
-    if (showResult && isCorrect && selectedAnswer !== null) {
-      const timer = setTimeout(() => {
-        onNextQuestion()
-      }, 1500) // 1.5 seconds for correct answer
-
-      return () => {
-        clearTimeout(timer)
-      }
-    }
-  }, [showResult, isCorrect, selectedAnswer, onNextQuestion])
+  }, [showResult, isCorrect, selectedAnswer, onNextQuestion, isFinalTest, wrongAnswersCount])
 
   const handleChoiceSelect = (choice: string) => {
     if (selectedAnswer !== null) return // Already answered
@@ -98,6 +97,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
             showCorrectAnswer={showCorrectAnswer}
             onChoiceSelect={handleChoiceSelect}
             type={questionData.choices.length <= 4 ? 'row' : 'grid'}
+            isNoteIdentification={isNoteIdentification}
           />
         )
       case QUESTION_TYPE.TRUE_FALSE:

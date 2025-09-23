@@ -1,8 +1,9 @@
 import { Question } from '@/data/theoryData/types'
 import React from 'react'
+import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
-import { BodyContainer, QuestionContainer, QuestionText } from './LessonScreenBody.styles'
+import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
 
 interface LessonScreenBodyProps {
   questions: Question[]
@@ -10,6 +11,8 @@ interface LessonScreenBodyProps {
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
   onLessonComplete?: () => void
+  wrongAnswersCount?: number
+  isFinalTest?: boolean
 }
 
 export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
@@ -17,12 +20,20 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
   currentQuestionIndex,
   onAnswerSubmit,
   onNextQuestion,
-  onLessonComplete
+  onLessonComplete,
+  wrongAnswersCount = 0,
+  isFinalTest = false
 }) => {
-
+  const { isTablet } = useDevice()
   const currentQuestion = questions[currentQuestionIndex]
   const { question, visualComponent, type } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
+
+  // Check if this is a note identification exercise (has clef + elements with pitch property)
+  const isNoteIdentification = visualComponent?.clef && 
+    visualComponent?.elements && 
+    visualComponent.elements.length > 0 &&
+    visualComponent.elements.some(element => element.pitch)
 
 
   if (questions.length === 0) return null
@@ -44,11 +55,9 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
 
   return (
     <BodyContainer>
-      <QuestionContainer>
-        <QuestionText>
-          {question}
-        </QuestionText>
-      </QuestionContainer>
+      <QuestionText isTablet={isTablet}>
+        {question}
+      </QuestionText>
 
       {/* Music Element */}
       {visualComponent && (
@@ -61,6 +70,9 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmitInternal}
         onNextQuestion={handleNextQuestionInternal}
+        isNoteIdentification={isNoteIdentification}
+        wrongAnswersCount={wrongAnswersCount}
+        isFinalTest={isFinalTest}
       />
       
     </BodyContainer>

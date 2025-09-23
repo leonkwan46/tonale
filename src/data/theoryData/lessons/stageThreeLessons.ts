@@ -26,8 +26,8 @@ export const stageThreeLessons: Lesson[] = [
     id: 'stage-3-final',
     title: 'Stage 3 Final Test',
     description: 'Test your advanced harmonic knowledge',
-    stars: 0,
     isFinalTest: true,
+    isPassed: false,
     estimatedTime: 60
   }
 ]
