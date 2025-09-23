@@ -6,10 +6,6 @@ export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isNoteId
   justify-content: flex-start;
   margin-bottom: ${({ isNoteIdentification }) => isNoteIdentification ? '20px' : '10px'};
 
-  ${({ isNoteIdentification }) => isNoteIdentification && `
-    transform: scale(0.6);    
-  `}
-
   ${({ isTablet }) => isTablet && `
     transform: scale(0.9);
     marginTop: ${scale(20)}px;

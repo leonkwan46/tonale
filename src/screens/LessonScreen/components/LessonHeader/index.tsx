@@ -1,10 +1,10 @@
 import { Lesson } from '@/data/theoryData/types'
 import React from 'react'
+import { useDevice } from '../../../../hooks'
+import { BackArrowIcon } from './BackArrowIcon'
 import {
   BackButton,
-  BackButtonText,
   Header,
-  HeaderSpacer,
   ProgressText,
   ProgressTracker,
   XMark,
@@ -26,25 +26,25 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
   wrongAnswersCount,
   onBackPress
 }) => {
+  const { isTablet } = useDevice()
+  
   return (
     <Header>
       <BackButton onPress={onBackPress}>
-        <BackButtonText>←</BackButtonText>
+        <BackArrowIcon size={16} />
       </BackButton>
       
       {lesson?.isFinalTest ? (
         <XMarksContainer>
-          <XMark isActive={wrongAnswersCount >= 1}>✗</XMark>
-          <XMark isActive={wrongAnswersCount >= 2}>✗</XMark>
-          <XMark isActive={wrongAnswersCount >= 3}>✗</XMark>
+          <XMark isActive={wrongAnswersCount >= 1} isTablet={isTablet}>✗</XMark>
+          <XMark isActive={wrongAnswersCount >= 2} isTablet={isTablet}>✗</XMark>
+          <XMark isActive={wrongAnswersCount >= 3} isTablet={isTablet}>✗</XMark>
         </XMarksContainer>
       ) : (
         <ProgressTracker>
           <ProgressText>{currentQuestionIndex + 1}/{totalQuestions}</ProgressText>
         </ProgressTracker>
       )}
-      
-      <HeaderSpacer />
     </Header>
   )
 }

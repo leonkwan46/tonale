@@ -40,8 +40,9 @@ export interface Lesson {
   title: string
   description: string
   isLocked?: boolean  // Optional - provided by progress system
-  stars: number      // Optional - provided by progress system
+  stars?: number      // Optional - provided by progress system (not used for final tests)
   isFinalTest?: boolean
+  isPassed?: boolean  // For final tests - indicates pass/fail status
   estimatedTime?: number // in minutes
   questions?: Question[] // Optional - hardcoded questions for the lesson
   exerciseConfig?: ExerciseConfig // Optional - auto-generated questions config
@@ -59,7 +60,6 @@ export interface Stage {
   lessons: StageLesson[]
   isCleared: boolean
   isUnlocked: boolean
-  requiredStars: number
   totalStars: number
   order: number // Stage sequence order
   prerequisiteStages?: string[] // Required stages to unlock this one
