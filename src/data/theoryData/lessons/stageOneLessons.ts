@@ -9,7 +9,7 @@ export const stageOneLessons: Lesson[] = [
     estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'noteValue',
-      questionsCount: 15,
+      questionsCount: 10,
       stage: 1
     }
   },
@@ -21,7 +21,7 @@ export const stageOneLessons: Lesson[] = [
     estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'restValue',
-      questionsCount: 15,
+      questionsCount: 10,
       stage: 1
     }
   },
@@ -33,7 +33,7 @@ export const stageOneLessons: Lesson[] = [
     estimatedTime: 20,
     exerciseConfig: {
       generatorType: 'timeSignature',
-      questionsCount: 15,
+      questionsCount: 10,
       stage: 1
     }
   },
@@ -45,7 +45,7 @@ export const stageOneLessons: Lesson[] = [
     estimatedTime: 18,
     exerciseConfig: {
       generatorType: 'noteIdentification',
-      questionsCount: 1,
+      questionsCount: 15,
       stage: 1
     }
   },
@@ -57,7 +57,7 @@ export const stageOneLessons: Lesson[] = [
     estimatedTime: 22,
     exerciseConfig: {
       generatorType: 'keySignature',
-      questionsCount: 15,
+      questionsCount: 10,
       stage: 1
     }
   },
@@ -69,7 +69,7 @@ export const stageOneLessons: Lesson[] = [
     estimatedTime: 25,
     exerciseConfig: {
       generatorType: 'musicalTerm',
-      questionsCount: 15,
+      questionsCount: 10,
       stage: 1
     }
   },
