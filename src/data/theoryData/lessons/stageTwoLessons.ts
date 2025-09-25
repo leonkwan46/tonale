@@ -40,8 +40,8 @@ export const stageTwoLessons: Lesson[] = [
     id: 'stage-2-final',
     title: 'Stage 2 Final Test',
     description: 'Test your knowledge of harmony and chord theory',
-    stars: 0,
     isFinalTest: true,
+    isPassed: false,
     estimatedTime: 50
   }
 ]

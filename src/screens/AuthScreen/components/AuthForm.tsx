@@ -1,20 +1,21 @@
+import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import type { ViewStyle } from 'react-native'
 import {
-    ButtonIcon,
-    ErrorContainer,
-    ErrorText,
-    EyeIcon,
-    FormSection,
-    InputContainer,
-    InputIcon,
-    InputWrapper,
-    PrimaryButton,
-    PrimaryButtonText,
-    RequirementsContainer,
-    RequirementsText,
-    TextInputStyled
+  ButtonIcon,
+  ErrorContainer,
+  ErrorText,
+  EyeIcon,
+  FormSection,
+  InputContainer,
+  InputIcon,
+  InputWrapper,
+  PrimaryButton,
+  PrimaryButtonText,
+  RequirementsContainer,
+  RequirementsText,
+  TextInputStyled
 } from '../AuthScreen.styles'
 import type { AuthFormData, AuthState } from '../types'
 
@@ -44,7 +45,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   handleAuth,
   handleGuestLogin,
   formAnimatedStyle
-}) => (
+}) => {
+  const theme = useTheme()
+  
+  return (
   <FormSection style={formAnimatedStyle}>
     {authState.error ? (
       <ErrorContainer>
@@ -57,7 +61,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     <InputContainer>
       <InputWrapper backgroundColor={inputBackgroundColor} borderColor={borderColor}>
         <InputIcon>
-          <Ionicons name="mail-outline" size={20} color="#FFD700" />
+          <Ionicons name="mail-outline" size={20} color={theme.colors.primary} />
         </InputIcon>
         <TextInputStyled
           placeholder="Email"
@@ -76,7 +80,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     <InputContainer>
       <InputWrapper backgroundColor={inputBackgroundColor} borderColor={borderColor}>
         <InputIcon>
-          <Ionicons name="lock-closed-outline" size={20} color="#FFD700" />
+          <Ionicons name="lock-closed-outline" size={20} color={theme.colors.primary} />
         </InputIcon>
         <TextInputStyled
           placeholder="Password"
@@ -92,7 +96,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           <Ionicons 
             name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'} 
             size={20} 
-            color="#FFD700" 
+            color={theme.colors.primary} 
           />
         </EyeIcon>
       </InputWrapper>
@@ -103,7 +107,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       <InputContainer>
         <InputWrapper backgroundColor={inputBackgroundColor} borderColor={borderColor}>
           <InputIcon>
-            <Ionicons name="lock-closed-outline" size={20} color="#FFD700" />
+            <Ionicons name="lock-closed-outline" size={20} color={theme.colors.primary} />
           </InputIcon>
           <TextInputStyled
             placeholder="Confirm Password"
@@ -119,7 +123,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             <Ionicons 
               name={authState.showConfirmPassword ? 'eye-outline' : 'eye-off-outline'} 
               size={20} 
-              color="#FFD700" 
+              color={theme.colors.primary} 
             />
           </EyeIcon>
         </InputWrapper>
@@ -156,4 +160,5 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       </ButtonIcon>
     </PrimaryButton>
   </FormSection>
-)
+  )
+}

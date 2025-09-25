@@ -44,7 +44,7 @@ export const createRestValueQuestion = (stage: StageNumber): Question => {
     question: 'What is this rest value?',
     correctAnswer: correctAnswerString,
     choices: generateWrongChoices(choiceStrings, correctAnswerString),
-    explanation: `This is a ${correctAnswerString}.`,
+    explanation: `The correct answer is ${correctAnswerString}.`,
     type: 'multipleChoice',
     visualComponent: {
       type: 'noteValue',
