@@ -45,7 +45,7 @@ export const createNoteValueQuestion = (stage: StageNumber): Question => {
     question: 'What is this note value?',
     correctAnswer: correctAnswerString,
     choices: generateWrongChoices(choiceStrings, correctAnswerString),
-    explanation: `This is a ${correctAnswerString}.`,
+    explanation: `The correct answer is ${correctAnswerString}.`,
     type: 'multipleChoice',
     visualComponent: {
       type: 'noteValue',

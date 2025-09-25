@@ -1,11 +1,12 @@
-import { refreshStageUnlockStatus } from './stages/stageDataHelpers'
+import { refreshStageUnlockStatus, stagesArray } from './stages/stageDataHelpers'
+import { Stage, StageLesson } from './types'
 
 // ============================================================================
 // THEORY DATA MANAGEMENT & PROGRESS SYSTEM
 // ============================================================================
 
 // Progress data cache
-let userProgressData: Record<string, { isLocked: boolean; stars: number }> = {}
+let userProgressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> = {}
 let lastProgressFetch: number = 0
 const PROGRESS_CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
@@ -48,7 +49,7 @@ export const refreshUserProgress = async (userId: string): Promise<void> => {
 }
 
 // Get progress data for a specific lesson
-export const getLessonProgress = (lessonId: string): { isLocked: boolean; stars: number } => {
+export const getLessonProgress = (lessonId: string): { isLocked: boolean; stars?: number; isPassed?: boolean } => {
   // Check if we have progress data
   if (userProgressData[lessonId]) {
     return userProgressData[lessonId]
@@ -57,7 +58,8 @@ export const getLessonProgress = (lessonId: string): { isLocked: boolean; stars:
   // Fallback to conservative defaults
   return { 
     isLocked: true,  // 🔒 Locked by default (conservative)
-    stars: 0         // ⭐ No progress by default
+    stars: 0,        // ⭐ No progress by default
+    isPassed: false  // ❌ Failed by default for final tests
   }
 }
 
@@ -84,6 +86,51 @@ export const updateLessonProgress = async (lessonId: string, stars: number): Pro
     console.error('Failed to sync progress to backend:', error)
     // Could implement retry logic here
   }
+}
+
+// Update final test progress (pass/fail)
+export const updateFinalTestProgress = async (lessonId: string, isPassed: boolean): Promise<void> => {
+  // Update locally first (optimistic update)
+  userProgressData[lessonId] = { 
+    isLocked: false, 
+    isPassed: isPassed 
+  }
+  
+  // Update the lesson data in the stage arrays to reflect the pass status
+  // This is important for stage clearing calculations
+  updateLessonDataInStages(lessonId, { isPassed })
+  
+  // Refresh stage unlock status (this will unlock next stage if current stage is cleared)
+  refreshStageUnlockStatus()
+  
+  // Sync to backend
+  try {
+    await fetch(`/api/user/progress/lesson/${lessonId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isPassed })
+    })
+    console.log('Final test progress synced to backend for lesson:', lessonId, 'Passed:', isPassed)
+  } catch (error) {
+    console.error('Failed to sync final test progress to backend:', error)
+    // Could implement retry logic here
+  }
+}
+
+// Helper function to update lesson data in stage arrays
+const updateLessonDataInStages = (lessonId: string, progressData: { stars?: number; isPassed?: boolean }): void => {
+  stagesArray.forEach((stage: Stage) => {
+    stage.lessons.forEach((lesson: StageLesson) => {
+      if (lesson.id === lessonId) {
+        if (progressData.stars !== undefined) {
+          lesson.stars = progressData.stars
+        }
+        if (progressData.isPassed !== undefined) {
+          lesson.isPassed = progressData.isPassed
+        }
+      }
+    })
+  })
 }
 
 // Clear progress data (on logout)

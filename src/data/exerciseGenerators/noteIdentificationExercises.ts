@@ -43,7 +43,7 @@ export const createNoteIdentificationQuestion = (
     id: generateQuestionId('note-id'),
     question: `What note is this in the ${clef} clef?`,
     correctAnswer: correctNoteData.letterName,
-    choices: generateWrongChoices(noteLetterNames, correctNoteData.letterName, 5),
+    choices: generateWrongChoices(noteLetterNames, correctNoteData.letterName, 3),
     explanation: `This note is ${correctNoteData.letterName} on the ${clef} clef.`,
     type: 'multipleChoice',
     visualComponent: {
