@@ -3,11 +3,16 @@ import { Stage, StageLesson } from '../types'
 
 // Helper function to calculate stage statistics
 const calculateStageStats = (lessons: typeof stageTwoLessons) => {
-  const totalStars = lessons.reduce((total, lesson) => total + (lesson.stars || 0), 0)
-  const requiredStars = lessons.length // At least 1 star per lesson
-  const isCleared = lessons.every(lesson => (lesson.stars || 0) >= 1) && totalStars >= requiredStars
+  const regularLessons = lessons.filter(lesson => !lesson.isFinalTest)
+  const finalTest = lessons.find(lesson => lesson.isFinalTest)
   
-  return { totalStars, requiredStars, isCleared }
+  const totalStars = regularLessons.reduce((total, lesson) => total + (lesson.stars || 0), 0)
+  
+  // Stage is cleared if final test is passed (final test is the ultimate gatekeeper)
+  const finalTestPassed = finalTest ? (finalTest.isPassed === true) : true // No final test = automatically passed
+  const isCleared = finalTestPassed
+  
+  return { totalStars, isCleared }
 }
 
 export const stage2: Stage = {

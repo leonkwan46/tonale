@@ -269,7 +269,8 @@ export const TheoryScreenBody = () => {
                             <LessonContent isPartial={shouldBePartial}>
                               <LessonSection 
                                 index={originalIndex} 
-                                lesson={lesson} 
+                                lesson={lesson}
+                                allStageLessons={lessonsToShow}
                               />
                             </LessonContent>
                           </PartialLessonContainer>

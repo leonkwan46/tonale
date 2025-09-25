@@ -9,7 +9,8 @@ export const STAGE_ONE_MUSICAL_TERMS = {
     'Piano': 'Soft',
     'Forte': 'Loud',
     'Crescendo': 'Gradually getting louder',
-    'Diminuendo': 'Gradually getting softer'
+    'Diminuendo': 'Gradually getting softer',
+    'Mezzo': 'Moderately'
   },
   articulation: {
     'Legato': 'Smooth and connected',
