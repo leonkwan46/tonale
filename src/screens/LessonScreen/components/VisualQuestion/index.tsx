@@ -1,6 +1,7 @@
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
+import { SMuFLSymbolByType, SMuFLSymbolType, getSymbolTypeFromTerm } from '@/sharedComponents/SMuFLSymbols'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
 import {
   Crotchet,
@@ -17,7 +18,7 @@ import {
   parseTimeSignature as parseTimeSignatureFromLibrary
 } from '@leonkwan46/music-notation'
 import React from 'react'
-import { VisualQuestionContainer } from './VisualQuestion.styles'
+import { SMuFLCard, VisualQuestionContainer } from './VisualQuestion.styles'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
@@ -95,7 +96,8 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   const isNoteIdentification = visualComponent.clef && 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
-    visualComponent.elements.some(element => element.pitch)
+    visualComponent.elements.some(element => element.pitch) &&
+    visualComponent.type !== 'smuflSymbol'
 
   const renderVisualContent = () => {
     // Handle specific visual types
@@ -105,6 +107,12 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     
     if (visualComponent.type === 'noteValue') {
       return renderNoteComponent(visualComponent.noteType || '')
+    }
+    
+    if (visualComponent.type === 'smuflSymbol') {
+      if (!visualComponent.symbolType) return null
+      const symbolType = getSymbolTypeFromTerm(visualComponent.symbolType) as SMuFLSymbolType
+      return <SMuFLSymbolByType type={symbolType} isTablet={isTablet} />
     }
     
     // Handle legacy MusicStaff usage
@@ -126,10 +134,16 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   }
 
   return (
-    <VisualQuestionContainer isTablet={isTablet} isNoteIdentification={isNoteIdentification || false}>
-      <DisplayCard extraHeight={isNoteIdentification}>
-        {renderVisualContent()}
-      </DisplayCard>
+    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'smuflSymbol'} isNoteIdentification={isNoteIdentification || false}>
+      {visualComponent.type === 'smuflSymbol' ? (
+        <SMuFLCard isTablet={isTablet}>
+          {renderVisualContent()}
+        </SMuFLCard>
+      ) : (
+        <DisplayCard extraHeight={isNoteIdentification}>
+          {renderVisualContent()}
+        </DisplayCard>
+      )}
     </VisualQuestionContainer>
   )
 }
