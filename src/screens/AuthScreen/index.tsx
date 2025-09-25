@@ -1,5 +1,5 @@
 import { auth } from '@/config/firebase/firebaseAuth'
-import { AppTheme } from '@/constants/Colors'
+import { useTheme } from '@emotion/react'
 import { createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { Platform, useColorScheme } from 'react-native'
@@ -11,6 +11,7 @@ import {
   withTiming
 } from 'react-native-reanimated'
 
+import { useDevice } from '../../hooks/useDevice'
 import {
   Container,
   KeyboardContainer,
@@ -25,6 +26,7 @@ import type { AuthFormData, AuthMode, AuthState } from './types'
 
 export function AuthScreen() {
   const colorScheme = useColorScheme() ?? 'light'
+  const theme = useTheme()
   
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
@@ -117,16 +119,15 @@ export function AuthScreen() {
   }))
   
   const formAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: modeTransition.value * -10 }],
-    opacity: 1 - Math.abs(modeTransition.value - (authState.mode === 'login' ? 0 : 1)) * 0.3
+    opacity: 1
   }))
   
   // Theme colors
-  const backgroundColor = AppTheme.backgroundColor(colorScheme)
-  const textColor = AppTheme.textColor(colorScheme)
-  const inputBackgroundColor = AppTheme.inputBackgroundColor(colorScheme)
-  const borderColor = AppTheme.borderColor(colorScheme)
-
+  const backgroundColor = theme.colors.background
+  const textColor = theme.colors.text
+  const inputBackgroundColor = theme.colors.surface
+  const borderColor = theme.colors.border
+  const { isTablet } = useDevice()
   return (
     <Container backgroundColor={backgroundColor}>
       <KeyboardContainer 
@@ -134,7 +135,7 @@ export function AuthScreen() {
         style={{ flex: 1 }}
       >
         <ScrollContainer 
-          contentContainerStyle={ScrollContentContainer}
+          contentContainerStyle={ScrollContentContainer({ isTablet })}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -170,15 +171,14 @@ export function AuthScreen() {
             formAnimatedStyle={formAnimatedStyle}
           />
           
-          {/* Guest Login (Login mode only) */}
-          {authState.mode === 'login' && (
-            <GuestLogin
-              loading={authState.loading}
-              borderColor={borderColor}
-              textColor={textColor}
-              onGuestLogin={handleGuestLogin}
-            />
-          )}
+          {/* Guest Login - Always present but conditionally visible */}
+          <GuestLogin
+            loading={authState.loading}
+            borderColor={borderColor}
+            textColor={textColor}
+            onGuestLogin={handleGuestLogin}
+            isVisible={authState.mode === 'login'}
+          />
         </ScrollContainer>
       </KeyboardContainer>
     </Container>

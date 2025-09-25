@@ -1,7 +1,7 @@
-import { AppTheme } from '@/constants/Colors'
 import styled from '@emotion/native'
 import { Platform, ScrollView, TouchableOpacity } from 'react-native'
 import Animated from 'react-native-reanimated'
+import { scale } from 'react-native-size-matters'
 
 // Common font weight utilities
 export const fontWeights = {
@@ -24,12 +24,12 @@ export const ScrollContainer = styled(ScrollView)`
   flex-grow: 1;
 `
 
-export const ScrollContentContainer = {
-  flexGrow: 1,
-  justifyContent: 'center' as const,
+export const ScrollContentContainer = ({ isTablet }: { isTablet: boolean }) => ({
+  marginTop: isTablet ? scale(40) : scale(50),
+  justifyContent: 'flex-start' as const,
   paddingHorizontal: 32,
   paddingVertical: 40
-}
+})
 
 // Logo section
 export const LogoSection = styled.View`
@@ -38,7 +38,7 @@ export const LogoSection = styled.View`
 `
 
 export const LogoContainer = styled(Animated.View)`
-  shadow-color: ${AppTheme.gold};
+  shadow-color: ${props => props.theme.colors.primary};
   shadow-offset: 0px 5px;
   shadow-opacity: 0.3;
   shadow-radius: 10px;
@@ -91,12 +91,12 @@ export const ToggleBackground = styled.View<{ backgroundColor: string }>`
   background-color: ${props => props.backgroundColor};
 `
 
-export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean; backgroundColor?: string }>`
+export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean }>`
   flex: 1;
   padding-vertical: 12px;
   border-radius: 8px;
   align-items: center;
-  background-color: ${props => props.isActive ? (props.backgroundColor || AppTheme.gold) : 'transparent'};
+  background-color: ${props => props.isActive ? props.theme.colors.primary : 'transparent'};
 `
 
 export const ToggleText = styled.Text<{ color: string }>`
@@ -108,6 +108,7 @@ export const ToggleText = styled.Text<{ color: string }>`
 // Form section
 export const FormSection = styled(Animated.View)`
   margin-bottom: 30px;
+  min-height: 200px;
 `
 
 export const ErrorContainer = styled.View`
@@ -171,14 +172,14 @@ export const RequirementsText = styled.Text<{ color: string }>`
 
 // Buttons
 export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number }>`
-  background-color: ${AppTheme.gold};
+  background-color: ${props => props.theme.colors.primary};
   flex-direction: row;
   align-items: center;
   justify-content: center;
   padding-vertical: 16px;
   border-radius: 12px;
   margin-top: 8px;
-  shadow-color: ${AppTheme.gold};
+  shadow-color: ${props => props.theme.colors.primary};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.3;
   shadow-radius: 8px;
