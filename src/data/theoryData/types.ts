@@ -5,7 +5,7 @@ import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-nota
 export type StageNumber = 1 | 2 | 3
 
 export interface VisualComponent {
-  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'keySignature'
+  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'keySignature' | 'smuflSymbol'
   // MusicStaff specific properties
   clef?: ClefType
   elements?: MusicElementData[]
@@ -17,6 +17,8 @@ export interface VisualComponent {
   noteType?: string | { type: string; dots?: number }
   // KeySignature specific properties (when type is 'keySignature')
   keySignatureValue?: string
+  // SMuFL Symbol specific properties (when type is 'smuflSymbol')
+  symbolType?: string
 }
 
 export interface Question {
@@ -27,6 +29,11 @@ export interface Question {
   explanation?: string
   type: 'multipleChoice' | 'trueFalse' | 'keyPress'
   visualComponent?: VisualComponent
+  metadata?: {
+    hasSymbol?: boolean
+    symbol?: string
+    category?: string
+  }
 }
 
 export interface ExerciseConfig {
