@@ -1,26 +1,30 @@
-import { getDisplayName, getSMuFLSymbol, isTextTerm } from '@/data/stageSyllabusConfigs/musicalTerms'
+import { getDisplayName, getSMuFLSymbol, isTextTerm, STAGE_ONE_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
-import { SMuFLSymbolContainer } from '@/sharedComponents/SMuFLSymbols/SMuFLSymbol.styles'
+import { SMuFLSymbolContainer, SMuFLSymbolText } from '@/sharedComponents/SMuFLSymbols/SMuFLSymbol.styles'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
+import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
+import { useTheme } from '@emotion/react'
+import { Ionicons } from '@expo/vector-icons'
 import {
   Crotchet,
   CrotchetRest,
   Minim,
   MinimRest,
   MusicStaff,
+  parseTimeSignature as parseTimeSignatureFromLibrary,
   Quaver,
   QuaverRest,
   Semibreve,
   SemibreveRest,
   Semiquaver,
   SemiquaverRest,
-  parseTimeSignature as parseTimeSignatureFromLibrary,
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
-import { SMuFLCard, VisualQuestionContainer } from './VisualQuestion.styles'
+import { scale } from 'react-native-size-matters'
+import { SMuFLCard, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
@@ -90,6 +94,7 @@ const renderNoteComponent = (noteType: string | { type: string; dots?: number })
 
 export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
   const { isTablet } = useDevice()
+  const theme = useTheme()
 
   // Check if this visual needs extra height (complex music staff with pitch elements)
   const needsExtraHeight = visualComponent.clef && 
@@ -116,6 +121,16 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   const isTempoText = visualComponent.symbolType ? isTextTerm(visualComponent.symbolType) : false
   const displayText = visualComponent.symbolType ? getDisplayName(visualComponent.symbolType) : ''
 
+  // TTS helpers
+  const isItalianMusicalTerm = visualComponent.symbolType && 
+    STAGE_ONE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS]
+  
+  const handleTTS = () => {
+    if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {
+      pronounceTerm(visualComponent.symbolType)
+    }
+  }
+
   return (
     <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'smuflSymbol'} needsExtraSpacing={needsExtraHeight || false}>
       {visualComponent.type === 'timeSignature' && (
@@ -131,10 +146,21 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       )}
       
       {visualComponent.type === 'smuflSymbol' && visualComponent.symbolType && (
-        <SMuFLCard isTablet={isTablet}>
+        <SMuFLCard isTablet={isTablet} isTempoText={isTempoText}>
           <SMuFLSymbolContainer isTablet={isTablet} isTempoText={isTempoText}>
-            {isTempoText ? displayText : symbolText}
+            <SMuFLSymbolText isTablet={isTablet} isTempoText={isTempoText}>
+              {isTempoText ? displayText : symbolText}
+            </SMuFLSymbolText>
           </SMuFLSymbolContainer>
+          {isItalianMusicalTerm && (
+            <TTSButton onPress={handleTTS}>
+              <Ionicons 
+                name="volume-high" 
+                size={scale(20)} 
+                color={theme.colors.text} 
+              />
+            </TTSButton>
+          )}
         </SMuFLCard>
       )}
       
