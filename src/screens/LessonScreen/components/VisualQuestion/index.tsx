@@ -1,4 +1,4 @@
-import { getDisplayName, getSMuFLSymbol, isTextTerm, STAGE_ONE_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
+import { getDisplayName, getSMuFLSymbol, isTextTerm, STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
@@ -123,7 +123,9 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
 
   // TTS helpers
   const isItalianMusicalTerm = visualComponent.symbolType && 
-    STAGE_ONE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS]
+    (STAGE_ONE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
+     STAGE_TWO_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
+     STAGE_THREE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS])
   
   const handleTTS = () => {
     if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {
