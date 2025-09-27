@@ -21,7 +21,74 @@ export const STAGE_ONE_ITALIAN_MUSICAL_TERMS = {
   'da capo': 'From the beginning',
   'd.c.': 'From the beginning',
   'fine': 'End',
-  'al fine': 'To the end'
+  'al fine': 'To the end',
+  'sforzando': 'Sudden strong accent',
+  'sforzato': 'Sudden strong accent'
+} as const
+
+// Stage Two Italian musical terms configuration (lowercase keys for consistency)
+export const STAGE_TWO_ITALIAN_MUSICAL_TERMS = {
+  'alla marcia': 'In march style',
+  'allargando': 'Broadening, getting slower and louder',
+  'con moto': 'With movement',
+  'con, col': 'With',
+  'dal segno': 'From the sign',
+  'd.s.': 'From the sign',
+  'e, ed': 'And',
+  'espressivo': 'Expressively',
+  'espress.': 'Expressively',
+  'grave': 'Very slow and solemn',
+  'grazioso': 'Gracefully',
+  'largo': 'Very slow and broad',
+  'lento': 'Slow',
+  'ma': 'But',
+  'meno': 'Less',
+  'meno mosso': 'Less movement',
+  'molto': 'Very',
+  'non troppo': 'Not too much',
+  'più': 'More',
+  'più mosso': 'More movement',
+  'poco': 'Little',
+  'poco a poco': 'Little by little',
+  'presto': 'Very fast',
+  'ritenuto': 'Held back',
+  'riten.': 'Held back',
+  'rit.': 'Held back',
+  'senza': 'Without',
+  'vivace': 'Lively and fast',
+  'vivo': 'Lively and fast'
+} as const
+
+// Stage Three Italian musical terms configuration (lowercase keys for consistency)
+export const STAGE_THREE_ITALIAN_MUSICAL_TERMS = {
+  'agitato': 'Agitated, restless',
+  'andantino': 'Slightly faster than andante',
+  'animato': 'Animated, lively',
+  'ben': 'Well',
+  'con forza': 'With force',
+  'energico': 'Energetically',
+  'giocoso': 'Playfully, humorously',
+  'leggiero': 'Lightly',
+  'maestoso': 'Majestically',
+  'marcato': 'Marked, emphasized',
+  'marc.': 'Marked, emphasized',
+  'pesante': 'Heavy, weighty',
+  'prestissimo': 'As fast as possible',
+  'prima': 'First',
+  'primo': 'First',
+  'risoluto': 'Resolutely, decisively',
+  'scherzando': 'Playfully, joking',
+  'semplice': 'Simply',
+  'sempre': 'Always',
+  'simile': 'In the same way',
+  'sim.': 'In the same way',
+  'sostenuto': 'Sustained',
+  'sost': 'Sustained',
+  'subito': 'Suddenly',
+  'sub.': 'Suddenly',
+  'tranquillo': 'Calmly, quietly',
+  'triste': 'Sadly',
+  'tristamente': 'Sadly'
 } as const
 
 // Display names for proper capitalization in UI
@@ -31,7 +98,31 @@ export const TERM_DISPLAY_NAMES = {
   'allegro': 'Allegro',
   'andante': 'Andante',
   'moderato': 'Moderato',
-  'd.c.': 'D.C.'
+  'd.c.': 'D.C.',
+  'd.s.': 'D.S.',
+  'allargando': 'Allargando',
+  'grave': 'Grave',
+  'largo': 'Largo',
+  'lento': 'Lento',
+  'presto': 'Presto',
+  'vivace': 'Vivace',
+  'vivo': 'Vivo',
+  'agitato': 'Agitato',
+  'andantino': 'Andantino',
+  'animato': 'Animato',
+  'energico': 'Energico',
+  'giocoso': 'Giocoso',
+  'leggiero': 'Leggiero',
+  'maestoso': 'Maestoso',
+  'marcato': 'Marcato',
+  'pesante': 'Pesante',
+  'prestissimo': 'Prestissimo',
+  'risoluto': 'Risoluto',
+  'scherzando': 'Scherzando',
+  'sostenuto': 'Sostenuto',
+  'tranquillo': 'Tranquillo',
+  'triste': 'Triste',
+  'tristamente': 'Tristamente'
 } as const
 
 // Stage One SMuFL symbols for dynamics (Unicode characters)
@@ -48,10 +139,13 @@ export const STAGE_ONE_SMuFL_SYMBOLS = {
   'decrescendo': '\u{1D193}', // decrescendo (U+1D193)
   'decresc.': '\u{1D193}', // decrescendo abbreviation
   'diminuendo': '\u{1D193}', // diminuendo (same as decrescendo)
-  'dim.': '\u{1D193}' // diminuendo abbreviation
+  'dim.': '\u{1D193}', // diminuendo abbreviation
+  'fp': '\u{E534}', // fortepiano (U+E534)
+  'sfz': '\u{E539}', // sforzando (U+1D194)
+  'sf': '\u{E536}' // sforzando abbreviation
 } as const
 
-// Helper function to get all terms (combines text terms and SMuFL symbol terms)
+// Helper function to get all Stage One terms (combines text terms and SMuFL symbol terms)
 export const getAllStageOneTerms = () => {
   // Add definitions for SMuFL symbol terms
   const smuflTermsWithDefinitions = {
@@ -66,10 +160,28 @@ export const getAllStageOneTerms = () => {
     'decrescendo': 'Gradually getting softer',
     'decresc.': 'Gradually getting softer',
     'diminuendo': 'Gradually getting softer',
-    'dim.': 'Gradually getting softer'
+    'dim.': 'Gradually getting softer',
+    'fp': 'Loud then immediately soft',
+    'sfz': 'Sudden strong accent',
+    'sf': 'Sudden strong accent'
   }
   
   return { ...STAGE_ONE_ITALIAN_MUSICAL_TERMS, ...smuflTermsWithDefinitions }
+}
+
+// Helper function to get all Stage Two terms
+export const getAllStageTwoTerms = () => {
+  return { ...STAGE_TWO_ITALIAN_MUSICAL_TERMS }
+}
+
+// Helper function to get all Stage Three terms
+export const getAllStageThreeTerms = () => {
+  return { ...STAGE_THREE_ITALIAN_MUSICAL_TERMS }
+}
+
+// Helper function to get all terms from all stages
+export const getAllMusicalTerms = () => {
+  return { ...getAllStageOneTerms(), ...getAllStageTwoTerms(), ...getAllStageThreeTerms() }
 }
 
 // Helper function to get SMuFL symbol for a term
