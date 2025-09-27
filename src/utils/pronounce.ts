@@ -1,9 +1,11 @@
-import { STAGE_ONE_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
+import { STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
 import * as Speech from 'expo-speech'
 
 const getLanguageForTerm = (term: string): string => {
-  // Italian terms (current)
-  if (STAGE_ONE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS]) {
+  // Italian terms (Stage One, Two, and Three)
+  if (STAGE_ONE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
+      STAGE_TWO_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
+      STAGE_THREE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS]) {
     return 'it-IT'
   }
   
