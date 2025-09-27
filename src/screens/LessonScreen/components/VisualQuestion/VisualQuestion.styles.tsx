@@ -1,10 +1,10 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLSymbol: boolean, isNoteIdentification: boolean }>`
+export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLSymbol: boolean, needsExtraSpacing: boolean }>`
   align-items: center;
   justify-content: flex-start;
-  marginBottom: ${({ isNoteIdentification, isTablet }) => isNoteIdentification || isTablet ? '20px' : '10px'};
+  marginBottom: ${({ needsExtraSpacing, isTablet }) => needsExtraSpacing || isTablet ? '20px' : '10px'};
 
   ${({ isTablet, isSMuFLSymbol }) => isTablet && !isSMuFLSymbol && `
     transform: scale(0.9);
