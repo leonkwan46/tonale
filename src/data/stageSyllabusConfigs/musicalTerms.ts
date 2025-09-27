@@ -1,5 +1,5 @@
-// Stage One musical terms configuration (lowercase keys for consistency)
-export const STAGE_ONE_MUSICAL_TERMS = {
+// Stage One Italian musical terms configuration (lowercase keys for consistency)
+export const STAGE_ONE_ITALIAN_MUSICAL_TERMS = {
   'a tempo': 'Return to original tempo',
   'accelerando': 'Gradually getting faster',
   'accel.': 'Gradually getting faster',
@@ -69,7 +69,7 @@ export const getAllStageOneTerms = () => {
     'dim.': 'Gradually getting softer'
   }
   
-  return { ...STAGE_ONE_MUSICAL_TERMS, ...smuflTermsWithDefinitions }
+  return { ...STAGE_ONE_ITALIAN_MUSICAL_TERMS, ...smuflTermsWithDefinitions }
 }
 
 // Helper function to get SMuFL symbol for a term
