@@ -16,7 +16,8 @@ import {
   SemibreveRest,
   Semiquaver,
   SemiquaverRest,
-  parseTimeSignature as parseTimeSignatureFromLibrary
+  parseTimeSignature as parseTimeSignatureFromLibrary,
+  type MusicElementData
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
 import { SMuFLCard, VisualQuestionContainer } from './VisualQuestion.styles'
@@ -150,7 +151,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
             clef={visualComponent.clef}
             timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
             keyName={visualComponent.keyName}
-            elements={(visualComponent.elements || []).map((element: any) => [element])}
+            elements={(visualComponent.elements || []).map((element: MusicElementData) => [element])}
           />
         </DisplayCard>
       )}
