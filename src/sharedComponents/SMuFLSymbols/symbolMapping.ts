@@ -6,7 +6,10 @@ export const TERM_TO_SYMBOL_MAP = {
   'Mezzo': 'MEZZO', 
   'Forte': 'FORTE',
   'Crescendo': 'CRESCENDO',
-  'Diminuendo': 'DECRESCENDO'
+  'Diminuendo': 'DECRESCENDO',
+  'Andante': 'ANDANTE',
+  'Allegro': 'ALLEGRO',
+  'Largo': 'LARGO'
 } as const
 
 // Type for valid term names

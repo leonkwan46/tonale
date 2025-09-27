@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { SMuFLSymbolContainer } from './SMuFLSymbol.styles'
 
 // SMuFL Symbol Types as const enum for better type safety
@@ -8,7 +8,11 @@ export const SMuFLSymbols = {
   MEZZO: '\u{1D190}',
   FORTE: '\u{1D191}',
   CRESCENDO: '\u{1D192}',
-  DECRESCENDO: '\u{1D193}'
+  DECRESCENDO: '\u{1D193}',
+  // Tempo markings
+  ANDANTE: 'Andante',
+  ALLEGRO: 'Allegro',
+  LARGO: 'Largo'
 } as const
 
 // Type for SMuFL symbol keys
@@ -23,9 +27,11 @@ export const getSMuFLSymbol = (type: SMuFLSymbolType): string => {
 export const SMuFLSymbolByType: React.FC<{ type: SMuFLSymbolType; isTablet?: boolean }> = ({ 
   type,
   isTablet
-}) => {
+}: { type: SMuFLSymbolType; isTablet?: boolean }) => {
+  const isTempoText = ['ANDANTE', 'ALLEGRO', 'LARGO'].includes(type)
+  
   return (
-    <SMuFLSymbolContainer isTablet={isTablet}>
+    <SMuFLSymbolContainer isTablet={isTablet} isTempoText={isTempoText}>
       {getSMuFLSymbol(type)}
     </SMuFLSymbolContainer>
   )
