@@ -32,16 +32,16 @@ jobs:
     - name: Install Expo CLI
       run: npm install -g @expo/cli
       
-    - name: Install Maestro
-      run: |
-        curl -Ls "https://get.maestro.mobile.dev" | bash
-        echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+    - name: Setup Maestro
+      uses: dniHze/maestro-test-action@v1
+      with:
+        version: 1.33.1  # Pin version for stability (avoiding 1.35.x issues)
         
     - name: Setup Expo
       run: |
         npx expo install --fix
         
-    - name: Create iOS Simulator
+    - name: Create and Start iOS Simulator
       run: |
         # List available simulators and iOS versions for debugging
         echo "Available simulators:"
@@ -58,8 +58,26 @@ jobs:
         xcrun simctl create "maestro-ios-test" "iPhone 13" "iOS-16-0" || \
         echo "Using existing simulator or creating with default settings"
         
-        # Boot the simulator
-        xcrun simctl boot "maestro-ios-test" || echo "Simulator already booted"
+        # Find the simulator by name and get its UDID
+        DEVICE_ID=$(xcrun simctl list devices available --json | jq -r '.devices[] | .[] | select(.name == "maestro-ios-test") | .udid' | head -n 1)
+        DEVICE_STATE=$(xcrun simctl list devices available --json | jq -r --arg DEVICE_ID "$DEVICE_ID" '.devices[] | .[] | select(.udid == $DEVICE_ID) | .state')
+        
+        if [ -z "$DEVICE_ID" ]; then
+          echo "No simulator found with name 'maestro-ios-test'"
+          exit 1
+        fi
+        
+        echo "Found simulator with DEVICE_ID=$DEVICE_ID"
+        echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
+        
+        if [ "$DEVICE_STATE" != "Booted" ]; then
+          echo "Booting simulator..."
+          xcrun simctl boot "$DEVICE_ID"
+          # Wait for simulator to boot
+          sleep 30
+        else
+          echo "Simulator is already booted"
+        fi
         
         # List all devices to verify
         echo "Available devices:"
@@ -93,15 +111,21 @@ jobs:
         xcrun simctl listapps "maestro-ios-test" | grep "Tonale" || echo "App may still be installing..."
         
     - name: Run iOS E2E tests
-      run: |
-        maestro test tests/e2e/app-launch.yaml
+      uses: dniHze/maestro-test-action@v1
+      with:
+        version: 1.33.1
+        flow: tests/e2e/
+        report: maestro-results/ios-report.xml
+        screenshots-dir: maestro-results/ios-screenshots
         
     - name: Upload iOS test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: e2e-test-results-ios
-        path: maestro-results/
+        path: |
+          maestro-results/ios-report.xml
+          maestro-results/ios-screenshots/
         
   e2e-tests-android:
     runs-on: ubuntu-latest
@@ -127,10 +151,10 @@ jobs:
     - name: Install Expo CLI
       run: npm install -g @expo/cli
       
-    - name: Install Maestro
-      run: |
-        curl -Ls "https://get.maestro.mobile.dev" | bash
-        echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+    - name: Setup Maestro
+      uses: dniHze/maestro-test-action@v1
+      with:
+        version: 1.33.1  # Pin version for stability (avoiding 1.35.x issues)
         
     - name: Setup Expo
       run: |
@@ -160,13 +184,14 @@ jobs:
           sleep 15
           echo "Android app installation complete"
           
-          # Run E2E tests
+          # Run E2E tests using Maestro CLI directly
           echo "Running Android E2E tests..."
-          maestro test tests/e2e/app-launch.yaml
+          export PATH="$PATH:$HOME/.maestro/bin"
+          maestro test --format=junit --output=maestro-results/android-report.xml --no-ansi tests/e2e/
         
     - name: Upload Android test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: e2e-test-results-android
-        path: maestro-results/
+        path: maestro-results/android-report.xml
