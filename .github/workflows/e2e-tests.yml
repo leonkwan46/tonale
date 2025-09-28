@@ -186,7 +186,7 @@ jobs:
         script: |
           # Build and install the app
           echo "Building and installing Android app..."
-          npx expo run:android --device
+          npx expo run:android --device emulator-5554
           
           # Wait for app to install and launch
           sleep 15
