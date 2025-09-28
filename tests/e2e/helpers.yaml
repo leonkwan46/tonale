@@ -1,0 +1,28 @@
+# Test Helpers and Utilities
+# This file contains reusable test steps and configurations
+
+---
+# Helper: Wait for app to be ready
+- assertVisible: "Tonale" # Main app identifier
+- assertVisible: "Home" # Home screen content
+
+---
+# Helper: Navigate to specific tab
+- tapOn: "Explore" # Navigate to explore tab
+- assertVisible: "Theory" # Verify we're on theory screen
+
+---
+# Helper: Start a lesson
+- tapOn: "Lesson 1" # Start first lesson
+- assertVisible: "Question" # Wait for question to load
+
+---
+# Helper: Answer a question
+- tapOn: "A" # Answer option A
+- assertVisible: "Correct" # Wait for feedback
+
+---
+# Helper: Complete lesson
+- tapOn: "Next" # Go to next question
+- assertVisible: "Complete" # Wait for completion
+- assertVisible: "★" # Wait for star rating

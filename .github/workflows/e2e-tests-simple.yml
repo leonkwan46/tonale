@@ -1,0 +1,59 @@
+name: E2E Tests (Simple)
+
+on:
+  push:
+    branches: [ main, staging ]
+  pull_request:
+    branches: [ main, staging ]
+  workflow_dispatch:
+
+jobs:
+  e2e-tests:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.MUSIC_NOTATION_SECRET_KEY }}
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.MUSIC_NOTATION_SECRET_KEY }}" > ~/.npmrc
+        echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        npm ci
+        
+    - name: Install Expo CLI
+      run: npm install -g @expo/cli
+      
+    - name: Install Maestro
+      run: |
+        curl -Ls "https://get.maestro.mobile.dev" | bash
+        echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+        
+    - name: Setup Expo
+      run: |
+        npx expo install --fix
+        
+    - name: Start Expo development server
+      run: |
+        npx expo start --clear --no-dev --minify &
+        sleep 60 # Wait for server to start
+        
+    - name: Run E2E tests
+      run: |
+        # Run Maestro app launch test
+        maestro test tests/e2e/app-launch.yaml
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: e2e-test-results
+        path: maestro-results/
