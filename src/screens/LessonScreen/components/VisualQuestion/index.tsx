@@ -1,24 +1,29 @@
+import { getDisplayName, getSMuFLSymbol, isTextTerm as isTextTermHelper, STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
-import { SMuFLSymbolByType, SMuFLSymbolType, getSymbolTypeFromTerm } from '@/sharedComponents/SMuFLSymbols'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
+import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
+import { useTheme } from '@emotion/react'
+import { Ionicons } from '@expo/vector-icons'
 import {
   Crotchet,
   CrotchetRest,
   Minim,
   MinimRest,
   MusicStaff,
+  parseTimeSignature as parseTimeSignatureFromLibrary,
   Quaver,
   QuaverRest,
   Semibreve,
   SemibreveRest,
   Semiquaver,
   SemiquaverRest,
-  parseTimeSignature as parseTimeSignatureFromLibrary
+  type MusicElementData
 } from '@leonkwan46/music-notation'
-import React from 'react'
-import { SMuFLCard, VisualQuestionContainer } from './VisualQuestion.styles'
+import * as React from 'react'
+import { scale } from 'react-native-size-matters'
+import { SMuFLCard, SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
@@ -86,62 +91,95 @@ const renderNoteComponent = (noteType: string | { type: string; dots?: number })
   }
 }
 
-export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }) => {
+export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
   const { isTablet } = useDevice()
-  if (!visualComponent) {
-    return null
-  }
+  const theme = useTheme()
 
-  // Check if this is a note identification exercise (has clef + elements with pitch property)
-  const isNoteIdentification = visualComponent.clef && 
+  // Check if this visual needs extra height (complex music staff with pitch elements)
+  const needsExtraHeight = visualComponent.clef && 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
     visualComponent.elements.some(element => element.pitch) &&
     visualComponent.type !== 'smuflSymbol'
 
-  const renderVisualContent = () => {
-    // Handle specific visual types
-    if (visualComponent.type === 'timeSignature') {
-      return <TimeSignature timeSignature={visualComponent.timeSignatureValue || ''} />
+  // Check if this should render individual notes (single element, no clef)
+  const shouldRenderIndividualNotes = visualComponent.type !== 'timeSignature' && 
+    visualComponent.type !== 'noteValue' && 
+    visualComponent.type !== 'smuflSymbol' && 
+    visualComponent.elements?.length === 1 && 
+    !visualComponent.clef
+
+  // Check if this should render music staff (default case)
+  const shouldRenderMusicStaff = visualComponent.type !== 'timeSignature' && 
+    visualComponent.type !== 'noteValue' && 
+    visualComponent.type !== 'smuflSymbol' && 
+    !(visualComponent.elements?.length === 1 && !visualComponent.clef)
+
+  // SMuFL symbol helpers
+  const symbolText = visualComponent.symbolType ? getSMuFLSymbol(visualComponent.symbolType) : ''
+  const isTextTerm = visualComponent.symbolType ? isTextTermHelper(visualComponent.symbolType) : false
+  const displayText = visualComponent.symbolType ? getDisplayName(visualComponent.symbolType) : ''
+
+  // TTS helpers
+  const isItalianMusicalTerm = visualComponent.symbolType && 
+    (STAGE_ONE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
+     STAGE_TWO_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
+     STAGE_THREE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS])
+  
+  const handleTTS = () => {
+    if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {
+      pronounceTerm(visualComponent.symbolType)
     }
-    
-    if (visualComponent.type === 'noteValue') {
-      return renderNoteComponent(visualComponent.noteType || '')
-    }
-    
-    if (visualComponent.type === 'smuflSymbol') {
-      if (!visualComponent.symbolType) return null
-      const symbolType = getSymbolTypeFromTerm(visualComponent.symbolType) as SMuFLSymbolType
-      return <SMuFLSymbolByType type={symbolType} isTablet={isTablet} />
-    }
-    
-    // Handle legacy MusicStaff usage
-    const useIndividualNotes = visualComponent.elements?.length === 1 && !visualComponent.clef
-    
-    if (useIndividualNotes) {
-      return renderNoteComponent(visualComponent.elements?.[0]?.type || '')
-    }
-    
-    return (
-      <MusicStaff
-        size={'xs'}
-        clef={visualComponent.clef}
-        timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
-        keyName={visualComponent.keyName}
-        elements={(visualComponent.elements || []).map(element => [element])}
-      />
-    )
   }
 
   return (
-    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'smuflSymbol'} isNoteIdentification={isNoteIdentification || false}>
-      {visualComponent.type === 'smuflSymbol' ? (
-        <SMuFLCard isTablet={isTablet}>
-          {renderVisualContent()}
+    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'smuflSymbol'} needsExtraSpacing={needsExtraHeight || false}>
+      {visualComponent.type === 'timeSignature' && (
+        <DisplayCard extraHeight={false}>
+          <TimeSignature timeSignature={visualComponent.timeSignatureValue || ''} />
+        </DisplayCard>
+      )}
+      
+      {visualComponent.type === 'noteValue' && (
+        <DisplayCard extraHeight={false}>
+          {renderNoteComponent(visualComponent.noteType || '')}
+        </DisplayCard>
+      )}
+      
+      {visualComponent.type === 'smuflSymbol' && visualComponent.symbolType && (
+        <SMuFLCard isTablet={isTablet} isTextTerm={isTextTerm}>
+          <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTerm}>
+            <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm}>
+              {isTextTerm ? displayText : symbolText}
+            </SMuFLSymbolText>
+          </SMuFLSymbolContainer>
+          {isItalianMusicalTerm && (
+            <TTSButton onPress={handleTTS}>
+              <Ionicons 
+                name="volume-high" 
+                size={scale(20)} 
+                color={theme.colors.text} 
+              />
+            </TTSButton>
+          )}
         </SMuFLCard>
-      ) : (
-        <DisplayCard extraHeight={isNoteIdentification}>
-          {renderVisualContent()}
+      )}
+      
+      {shouldRenderIndividualNotes && (
+        <DisplayCard extraHeight={false}>
+          {renderNoteComponent(visualComponent.elements?.[0]?.type || '')}
+        </DisplayCard>
+      )}
+      
+      {shouldRenderMusicStaff && (
+        <DisplayCard extraHeight={needsExtraHeight}>
+          <MusicStaff
+            size={'xs'}
+            clef={visualComponent.clef}
+            timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
+            keyName={visualComponent.keyName}
+            elements={(visualComponent.elements || []).map((element: MusicElementData) => [element])}
+          />
         </DisplayCard>
       )}
     </VisualQuestionContainer>

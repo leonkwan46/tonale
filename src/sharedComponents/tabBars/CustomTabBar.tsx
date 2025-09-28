@@ -1,7 +1,7 @@
+import * as React from 'react'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import React from 'react'
 import { Platform, TouchableOpacity, useColorScheme } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scale, verticalScale } from 'react-native-size-matters'
