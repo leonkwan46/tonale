@@ -1,8 +1,7 @@
-import { getDisplayName, getSMuFLSymbol, isTextTerm, STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
+import { getDisplayName, getSMuFLSymbol, isTextTerm as isTextTermHelper, STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
-import { SMuFLSymbolContainer, SMuFLSymbolText } from '@/sharedComponents/SMuFLSymbols/SMuFLSymbol.styles'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
@@ -24,7 +23,7 @@ import {
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
 import { scale } from 'react-native-size-matters'
-import { SMuFLCard, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
+import { SMuFLCard, SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
@@ -118,7 +117,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
 
   // SMuFL symbol helpers
   const symbolText = visualComponent.symbolType ? getSMuFLSymbol(visualComponent.symbolType) : ''
-  const isTempoText = visualComponent.symbolType ? isTextTerm(visualComponent.symbolType) : false
+  const isTextTerm = visualComponent.symbolType ? isTextTermHelper(visualComponent.symbolType) : false
   const displayText = visualComponent.symbolType ? getDisplayName(visualComponent.symbolType) : ''
 
   // TTS helpers
@@ -148,10 +147,10 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       )}
       
       {visualComponent.type === 'smuflSymbol' && visualComponent.symbolType && (
-        <SMuFLCard isTablet={isTablet} isTempoText={isTempoText}>
-          <SMuFLSymbolContainer isTablet={isTablet} isTempoText={isTempoText}>
-            <SMuFLSymbolText isTablet={isTablet} isTempoText={isTempoText}>
-              {isTempoText ? displayText : symbolText}
+        <SMuFLCard isTablet={isTablet} isTextTerm={isTextTerm}>
+          <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTerm}>
+            <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm}>
+              {isTextTerm ? displayText : symbolText}
             </SMuFLSymbolText>
           </SMuFLSymbolContainer>
           {isItalianMusicalTerm && (
