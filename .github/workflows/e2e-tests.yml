@@ -103,12 +103,12 @@ jobs:
         
         # Build and install the app
         echo "Building and installing iOS app..."
-        npx expo run:ios --device "maestro-ios-test" --no-build-cache
+        npx expo run:ios --device $DEVICE_ID --no-build-cache
         
         # Wait for app to install and launch
         sleep 15
         echo "iOS app installation complete"
-      timeout-minutes: 15
+      timeout-minutes: 30
         
     - name: Verify iOS setup
       run: |
@@ -188,7 +188,10 @@ jobs:
           echo "Building and installing Android app..."
           # List available devices first
           adb devices
-          npx expo run:android --device
+          # Get the device ID from adb
+          DEVICE_ID=$(adb devices | grep emulator | awk '{print $1}' | head -n 1)
+          echo "Using device: $DEVICE_ID"
+          npx expo run:android --device $DEVICE_ID
           
           # Wait for app to install and launch
           sleep 15
