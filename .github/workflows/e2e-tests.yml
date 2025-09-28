@@ -50,22 +50,30 @@ jobs:
         echo "Available iOS runtimes:"
         xcrun simctl list runtimes | grep iOS
         
-        # Try to create iPhone 16 with iOS 18.0, fallback to iPhone 15 with iOS 17.0, then iPhone 14 with iOS 16.4
+        # Try to create iPhone 16 with available iOS runtimes
         echo "Creating iOS simulator..."
-        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-0" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 15" "iOS-17-0" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 14" "iOS-16-4" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 13" "iOS-16-0" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-4" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-5" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-6" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 15" "iOS-18-4" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 14" "iOS-18-4" || \
         echo "Using existing simulator or creating with default settings"
         
-        # Find the simulator by name and get its UDID
+        # Find the simulator by name and get its UDID, or use any available iPhone
         DEVICE_ID=$(xcrun simctl list devices available --json | jq -r '.devices[] | .[] | select(.name == "maestro-ios-test") | .udid' | head -n 1)
-        DEVICE_STATE=$(xcrun simctl list devices available --json | jq -r --arg DEVICE_ID "$DEVICE_ID" '.devices[] | .[] | select(.udid == $DEVICE_ID) | .state')
+        
+        # If our custom simulator wasn't created, use any available iPhone 16 or 15
+        if [ -z "$DEVICE_ID" ]; then
+          echo "Custom simulator not found, using any available iPhone..."
+          DEVICE_ID=$(xcrun simctl list devices available --json | jq -r '.devices[] | .[] | select(.name | contains("iPhone 16") or contains("iPhone 15")) | .udid' | head -n 1)
+        fi
         
         if [ -z "$DEVICE_ID" ]; then
-          echo "No simulator found with name 'maestro-ios-test'"
+          echo "No suitable iPhone simulator found"
           exit 1
         fi
+        
+        DEVICE_STATE=$(xcrun simctl list devices available --json | jq -r --arg DEVICE_ID "$DEVICE_ID" '.devices[] | .[] | select(.udid == $DEVICE_ID) | .state')
         
         echo "Found simulator with DEVICE_ID=$DEVICE_ID"
         echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
