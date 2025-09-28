@@ -52,14 +52,14 @@ jobs:
         
         # Try to create iPhone 16 with iOS 18.0, fallback to iPhone 15 with iOS 17.0, then iPhone 14 with iOS 16.4
         echo "Creating iOS simulator..."
-        xcrun simctl create "Maestro iOS Test" "iPhone 16" "iOS-18-0" || \
-        xcrun simctl create "Maestro iOS Test" "iPhone 15" "iOS-17-0" || \
-        xcrun simctl create "Maestro iOS Test" "iPhone 14" "iOS-16-4" || \
-        xcrun simctl create "Maestro iOS Test" "iPhone 13" "iOS-16-0" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-0" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 15" "iOS-17-0" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 14" "iOS-16-4" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 13" "iOS-16-0" || \
         echo "Using existing simulator or creating with default settings"
         
         # Boot the simulator
-        xcrun simctl boot "Maestro iOS Test" || echo "Simulator already booted"
+        xcrun simctl boot "maestro-ios-test" || echo "Simulator already booted"
         
         # List all devices to verify
         echo "Available devices:"
@@ -71,9 +71,13 @@ jobs:
         # Wait for simulator to be fully ready
         sleep 10
         
+        # List available simulators for debugging
+        echo "Available simulators:"
+        xcrun simctl list devices | grep "maestro-ios-test"
+        
         # Build and install the app
         echo "Building and installing iOS app..."
-        npx expo run:ios --device "Maestro iOS Test" --no-build-cache
+        npx expo run:ios --device "maestro-ios-test" --no-build-cache
         
         # Wait for app to install and launch
         sleep 15
@@ -83,10 +87,10 @@ jobs:
     - name: Verify iOS setup
       run: |
         # Check if simulator is running
-        xcrun simctl list devices | grep "Maestro iOS Test" | grep "Booted"
+        xcrun simctl list devices | grep "maestro-ios-test" | grep "Booted"
         
         # Check if app is installed
-        xcrun simctl listapps "Maestro iOS Test" | grep "Tonale" || echo "App may still be installing..."
+        xcrun simctl listapps "maestro-ios-test" | grep "Tonale" || echo "App may still be installing..."
         
     - name: Run iOS E2E tests
       run: |
@@ -128,56 +132,35 @@ jobs:
         curl -Ls "https://get.maestro.mobile.dev" | bash
         echo "$HOME/.maestro/bin" >> $GITHUB_PATH
         
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-        
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-        
     - name: Setup Expo
       run: |
         npx expo install --fix
         
-    - name: Install Android system image
-      run: |
-        # Try to install Android 33 first, fallback to Android 30 if not available
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "system-images;android-33;google_apis;x86_64" || \
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;google_apis;x86_64"
-      timeout-minutes: 10
+    - name: Run Android E2E tests with emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        target: google_apis
+        arch: x86_64
+        profile: Nexus 6
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        script: |
+          # Build and install the app
+          echo "Building and installing Android app..."
+          npx expo run:android --device
+          
+          # Wait for app to install and launch
+          sleep 15
+          echo "Android app installation complete"
+          
+          # Run E2E tests
+          echo "Running Android E2E tests..."
+          maestro test tests/e2e/app-launch.yaml
         
-    - name: Create Android emulator
-      run: |
-        # Try Android 33 first, fallback to Android 30
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n maestro_android_test -k "system-images;android-33;google_apis;x86_64" --force || \
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n maestro_android_test -k "system-images;android-30;google_apis;x86_64" --force
-      timeout-minutes: 5
-        
-    - name: Start Android emulator
-      run: |
-        $ANDROID_HOME/emulator/emulator -avd maestro_android_test -no-audio -no-window -no-snapshot &
-        echo "Waiting for emulator to start..."
-        adb wait-for-device
-        echo "Emulator is ready"
-        # Unlock the emulator screen
-        adb shell input keyevent 82
-        sleep 5
-        
-    - name: Build and install Android app
-      run: |
-        npx expo run:android --device
-        sleep 10 # Wait for app to install
-      timeout-minutes: 10
-        
-    - name: Run Android E2E tests
-      run: |
-        maestro test tests/e2e/app-launch.yaml
-        
-    - name: Upload test results
+    - name: Upload Android test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: e2e-test-results
+        name: e2e-test-results-android
         path: maestro-results/
