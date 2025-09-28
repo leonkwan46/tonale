@@ -1,22 +1,25 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTempoText?: boolean }>(({ theme, isTablet, isTempoText }) => ({
+export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  padding: isTempoText 
-    ? (isTablet ? scale(8) : scale(12)) 
-    : (isTablet ? scale(16) : scale(20))
+  padding: isTextTerm
+    ? (isTablet ? scale(8) : scale(12))
+    : null,
+  marginTop: isTablet && !isTextTerm ? scale(10) : scale(-10)
 }))
 
-export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTempoText?: boolean }>(({ theme, isTablet, isTempoText }) => ({
-  fontFamily: isTempoText ? 'Times New Roman' : 'Bravura',
-  fontSize: isTempoText 
+export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
+  fontFamily: isTextTerm ? 'Times New Roman' : 'Bravura',
+  fontSize: isTextTerm 
     ? (isTablet ? scale(18) : scale(24)) 
     : (isTablet ? scale(24) : scale(40)),
-  color: theme.colors.text,
+  fontStyle: isTextTerm ? 'italic' : 'normal',
+  fontWeight: isTextTerm ? '500' : 'normal',
+  color: '#000',
   textAlign: 'center',
-  fontStyle: isTempoText ? 'italic' : 'normal',
-  fontWeight: isTempoText ? '500' : 'normal'
+  textAlignVertical: 'center',
+  paddingHorizontal: scale(15)
 }))

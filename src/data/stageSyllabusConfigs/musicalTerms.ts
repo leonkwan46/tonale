@@ -21,9 +21,7 @@ export const STAGE_ONE_ITALIAN_MUSICAL_TERMS = {
   'da capo': 'From the beginning',
   'd.c.': 'From the beginning',
   'fine': 'End',
-  'al fine': 'To the end',
-  'sforzando': 'Sudden strong accent',
-  'sforzato': 'Sudden strong accent'
+  'al fine': 'To the end'
 } as const
 
 // Stage Two Italian musical terms configuration (lowercase keys for consistency)
@@ -80,6 +78,8 @@ export const STAGE_THREE_ITALIAN_MUSICAL_TERMS = {
   'scherzando': 'Playfully, joking',
   'semplice': 'Simply',
   'sempre': 'Always',
+  'sforzando': 'Sudden strong accent',
+  'sforzato': 'Sudden strong accent',
   'simile': 'In the same way',
   'sim.': 'In the same way',
   'sostenuto': 'Sustained',
@@ -128,55 +128,59 @@ export const TERM_DISPLAY_NAMES = {
 // Stage One SMuFL symbols for dynamics (Unicode characters)
 // Check https://www.w3.org/2021/03/smufl14/ for the full list of symbols
 export const STAGE_ONE_SMuFL_SYMBOLS = {
-  'p': '\u{1D18F}', // piano (U+1D18F)
-  'f': '\u{1D191}', // forte (U+1D191)
-  'pp': '\u{E52B}', // pianissimo (U+E52B)
-  'ff': '\u{E52F}', // fortissimo (U+E52F)
-  'mf': '\u{E52D}', // mezzo forte (mezzo + forte)
-  'mp': '\u{E52C}', // mezzo piano (mezzo + piano)
-  'crescendo': '\u{1D192}', // crescendo (U+1D192)
-  'cresc.': '\u{1D192}', // crescendo abbreviation
-  'decrescendo': '\u{1D193}', // decrescendo (U+1D193)
-  'decresc.': '\u{1D193}', // decrescendo abbreviation
-  'diminuendo': '\u{1D193}', // diminuendo (same as decrescendo)
-  'dim.': '\u{1D193}', // diminuendo abbreviation
-  'fp': '\u{E534}', // fortepiano (U+E534)
-  'sfz': '\u{E539}', // sforzando (U+1D194)
-  'sf': '\u{E536}' // sforzando abbreviation
+  'p': '\u{1D18F}',
+  'f': '\u{1D191}',
+  'pp': '\u{E52B}',
+  'ff': '\u{E52F}',
+  'mf': '\u{E52D}',
+  'mp': '\u{E52C}',
+  'crescendo': '\u{1D192}',
+  'cresc.': '\u{1D192}',
+  'decrescendo': '\u{1D193}',
+  'decresc.': '\u{1D193}',
+  'diminuendo': '\u{1D193}',
+  'dim.': '\u{1D193}'
+} as const
+export const STAGE_TWO_SMuFL_SYMBOLS = {
+  'fp': '\u{E534}'
+} as const
+export const STAGE_THREE_SMuFL_SYMBOLS = {
+  'sfz': '\u{E539}',
+  'sf': '\u{E536}'
+} as const
+
+// Add definitions for SMuFL symbol terms
+const smuflTermsWithDefinitions = {
+  'p': 'Soft',
+  'f': 'Loud',
+  'pp': 'Very soft',
+  'ff': 'Very loud',
+  'mf': 'Moderately loud',
+  'mp': 'Moderately soft',
+  'crescendo': 'Gradually getting louder',
+  'cresc.': 'Gradually getting louder',
+  'decrescendo': 'Gradually getting softer',
+  'decresc.': 'Gradually getting softer',
+  'diminuendo': 'Gradually getting softer',
+  'dim.': 'Gradually getting softer',
+  'fp': 'Loud then immediately soft',
+  'sfz': 'Sudden strong accent',
+  'sf': 'Sudden strong accent'
 } as const
 
 // Helper function to get all Stage One terms (combines text terms and SMuFL symbol terms)
 export const getAllStageOneTerms = () => {
-  // Add definitions for SMuFL symbol terms
-  const smuflTermsWithDefinitions = {
-    'p': 'Soft',
-    'f': 'Loud',
-    'pp': 'Very soft',
-    'ff': 'Very loud',
-    'mf': 'Moderately loud',
-    'mp': 'Moderately soft',
-    'crescendo': 'Gradually getting louder',
-    'cresc.': 'Gradually getting louder',
-    'decrescendo': 'Gradually getting softer',
-    'decresc.': 'Gradually getting softer',
-    'diminuendo': 'Gradually getting softer',
-    'dim.': 'Gradually getting softer',
-    'fp': 'Loud then immediately soft',
-    'sfz': 'Sudden strong accent',
-    'sf': 'Sudden strong accent'
-  }
-  
   return { ...STAGE_ONE_ITALIAN_MUSICAL_TERMS, ...smuflTermsWithDefinitions }
 }
 
 // Helper function to get all Stage Two terms
 export const getAllStageTwoTerms = () => {
-  return { ...STAGE_TWO_ITALIAN_MUSICAL_TERMS }
+  return { ...STAGE_TWO_ITALIAN_MUSICAL_TERMS, ...smuflTermsWithDefinitions }
 }
 
 // Helper function to get all Stage Three terms
 export const getAllStageThreeTerms = () => {
-  return { ...STAGE_THREE_ITALIAN_MUSICAL_TERMS }
+  return { ...STAGE_THREE_ITALIAN_MUSICAL_TERMS, ...smuflTermsWithDefinitions }
 }
 
 // Helper function to get all terms from all stages
