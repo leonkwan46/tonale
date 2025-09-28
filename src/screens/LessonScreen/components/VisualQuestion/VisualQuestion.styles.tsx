@@ -13,15 +13,38 @@ export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLS
   `}
 `
 
-export const SMuFLCard = styled.View<{ isTablet: boolean, isTempoText?: boolean }>(({ theme, isTablet, isTempoText }) => ({
+export const SMuFLCard = styled.View<{ isTablet: boolean, isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
   backgroundColor: theme.colors.background,
   borderRadius: 16,
   borderWidth: 1,
   borderColor: '#000',
   width: '100%',
   maxWidth: isTablet ? 600 : 380,
-  minHeight: isTempoText ? (isTablet ? scale(115) : scale(135)) : (isTablet ? scale(115) : scale(135)),
+  minHeight: isTextTerm ? (isTablet ? scale(115) : scale(135)) : (isTablet ? scale(115) : scale(135)),
   position: 'relative'
+}))
+
+export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: isTextTerm
+    ? (isTablet ? scale(8) : scale(12))
+    : null,
+  marginTop: isTablet && !isTextTerm ? scale(10) : scale(-10)
+}))
+
+export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
+  fontFamily: isTextTerm ? 'Times New Roman' : 'Bravura',
+  fontSize: isTextTerm 
+    ? (isTablet ? scale(18) : scale(24)) 
+    : (isTablet ? scale(24) : scale(40)),
+  fontStyle: isTextTerm ? 'italic' : 'normal',
+  fontWeight: isTextTerm ? '500' : 'normal',
+  color: '#000',
+  textAlign: 'center',
+  textAlignVertical: 'center',
+  paddingHorizontal: scale(15)
 }))
 
 export const TTSButton = styled.TouchableOpacity(({ theme }) => ({
