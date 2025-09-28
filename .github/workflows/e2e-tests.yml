@@ -1,4 +1,4 @@
-name: E2E Tests
+name: E2E Tests (iOS + Android)
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  e2e-tests:
+  e2e-tests-ios:
     runs-on: macos-latest
     
     steps:
@@ -41,14 +41,91 @@ jobs:
       run: |
         npx expo install --fix
         
-    - name: Start Expo development server
+    - name: Create iOS Simulator
       run: |
-        npx expo start --clear --no-dev --minify &
-        sleep 60 # Wait for server to start and bundle
+        # Create iPhone 15 simulator for testing
+        xcrun simctl create "Maestro iOS Test" "iPhone 15" "iOS-17-0" || echo "Simulator already exists"
+        xcrun simctl boot "Maestro iOS Test" || echo "Simulator already booted"
+        xcrun simctl list devices
+      timeout-minutes: 5
         
-    - name: Run E2E tests
+    - name: Build and install iOS app
       run: |
-        # Run Maestro app launch test
+        npx expo run:ios --device "Maestro iOS Test" --no-build-cache
+      timeout-minutes: 10
+        
+    - name: Run iOS E2E tests
+      run: |
+        maestro test tests/e2e/app-launch.yaml
+        
+    - name: Upload iOS test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: e2e-test-results-ios
+        path: maestro-results/
+        
+  e2e-tests-android:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.MUSIC_NOTATION_SECRET_KEY }}
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.MUSIC_NOTATION_SECRET_KEY }}" > ~/.npmrc
+        echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        npm ci
+        
+    - name: Install Expo CLI
+      run: npm install -g @expo/cli
+      
+    - name: Install Maestro
+      run: |
+        curl -Ls "https://get.maestro.mobile.dev" | bash
+        echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+        
+    - name: Setup Expo
+      run: |
+        npx expo install --fix
+        
+    - name: Create Android emulator
+      run: |
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n maestro_android_test -k "system-images;android-33;google_apis;x86_64" --force
+      timeout-minutes: 5
+        
+    - name: Start Android emulator
+      run: |
+        $ANDROID_HOME/emulator/emulator -avd maestro_android_test -no-audio -no-window &
+        adb wait-for-device
+        adb shell input keyevent 82
+        
+    - name: Build and install Android app
+      run: |
+        npx expo run:android --device
+        sleep 10 # Wait for app to install
+      timeout-minutes: 10
+        
+    - name: Run Android E2E tests
+      run: |
         maestro test tests/e2e/app-launch.yaml
         
     - name: Upload test results
