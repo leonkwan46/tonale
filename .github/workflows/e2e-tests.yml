@@ -50,13 +50,13 @@ jobs:
         echo "Available iOS runtimes:"
         xcrun simctl list runtimes | grep iOS
         
-        # Try to create iPhone 16 with available iOS runtimes
+        # Try to create iPhone 16 with available iOS runtimes (using full runtime identifiers)
         echo "Creating iOS simulator..."
-        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-4" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-5" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 16" "iOS-18-6" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 15" "iOS-18-4" || \
-        xcrun simctl create "maestro-ios-test" "iPhone 14" "iOS-18-4" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "com.apple.CoreSimulator.SimRuntime.iOS-18-4" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "com.apple.CoreSimulator.SimRuntime.iOS-18-5" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 16" "com.apple.CoreSimulator.SimRuntime.iOS-18-6" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 15" "com.apple.CoreSimulator.SimRuntime.iOS-18-4" || \
+        xcrun simctl create "maestro-ios-test" "iPhone 14" "com.apple.CoreSimulator.SimRuntime.iOS-18-4" || \
         echo "Using existing simulator or creating with default settings"
         
         # Find the simulator by name and get its UDID, or use any available iPhone
