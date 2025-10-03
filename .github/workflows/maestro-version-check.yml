@@ -1,9 +1,10 @@
 name: Maestro Version Check
 on:
+  pull_request:
+    branches: [ staging ]
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ staging ]
+
 jobs:
   maestro-version-check:
     runs-on: ubuntu-latest
