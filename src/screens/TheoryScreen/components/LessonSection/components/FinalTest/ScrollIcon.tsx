@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import Svg, { Defs, G, Path } from 'react-native-svg'

@@ -1,7 +1,8 @@
 import { Colors, ColorScheme } from '@/constants/Colors'
 import { useAuth } from '@/hooks/useAuth'
 import styled from '@emotion/native'
-import React, { useCallback, useEffect, useState } from 'react'
+import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
 import Animated, {
     Easing,

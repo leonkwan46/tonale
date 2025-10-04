@@ -1,7 +1,7 @@
-import * as React from 'react'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import * as React from 'react'
 import { Platform, TouchableOpacity, useColorScheme } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scale, verticalScale } from 'react-native-size-matters'
@@ -83,7 +83,7 @@ const getTabIcon = (routeName: string) => {
   switch (routeName) {
     case 'index':
       return 'home'
-    case 'explore':
+    case 'theory':
       return 'book'
     case 'aural':
       return 'musical-notes'
@@ -98,7 +98,7 @@ const getTabLabel = (routeName: string) => {
   switch (routeName) {
     case 'index':
       return 'Home'
-    case 'explore':
+    case 'theory':
       return 'Theory'
     case 'aural':
       return 'Aural'
@@ -150,6 +150,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
         return (
           <TabButton
             key={route.key}
+            testID={`tab-${route.name}`}
             onPress={onPress}
             activeOpacity={0.7}
             isTablet={isTablet}

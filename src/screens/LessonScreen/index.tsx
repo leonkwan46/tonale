@@ -6,7 +6,8 @@ import { Question } from '@/data/theoryData/types'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
 import { calculateStars } from '@/utils/starCalculation'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { LessonHeader } from './components'
 import { LessonScreenBody } from './LessonScreenBody'
 
@@ -77,7 +78,7 @@ export function LessonScreen() {
         const nextStage = getNextLockedStage()
         if (nextStage) {
           // Navigate to the theory screen to show the newly unlocked stage
-          router.push('/(tabs)/explore')
+          router.push('/(tabs)/theory')
         } else {
           // Navigate back to theory screen
           router.back()

@@ -28,17 +28,22 @@ const TTS_CONFIG = {
 export const pronounceTerm = (term: string): void => {
   if (!term) return
   
-  // Stop any ongoing speech
-  Speech.stop()
-  
-  // Get appropriate language for the term
-  const language = getLanguageForTerm(term)
-  
-  // Speak the term
-  Speech.speak(term, {
-    language,
-    ...TTS_CONFIG
-  })
+  try {
+    // Stop any ongoing speech
+    Speech.stop()
+    
+    // Get appropriate language for the term
+    const language = getLanguageForTerm(term)
+    
+    // Speak the term
+    Speech.speak(term, {
+      language,
+      ...TTS_CONFIG,
+      onError: (error) => console.error('TTS Error:', error)
+    })
+  } catch (error) {
+    console.error('TTS Error:', error)
+  }
 }
 
 export const canPronounceTerm = (term: string): boolean => {
