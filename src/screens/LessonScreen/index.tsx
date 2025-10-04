@@ -77,7 +77,7 @@ export function LessonScreen() {
         const nextStage = getNextLockedStage()
         if (nextStage) {
           // Navigate to the theory screen to show the newly unlocked stage
-          router.push('/(tabs)/explore')
+          router.push('/(tabs)/theory')
         } else {
           // Navigate back to theory screen
           router.back()
