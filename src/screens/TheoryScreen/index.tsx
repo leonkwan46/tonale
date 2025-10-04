@@ -1,5 +1,5 @@
 import { ScreenContainer } from '@/sharedComponents'
-import React from 'react'
+import * as React from 'react'
 import { TheoryScreenBody } from './TheoryScreenBody'
 
 export function TheoryScreen() {
