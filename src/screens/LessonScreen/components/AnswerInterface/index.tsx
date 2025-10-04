@@ -90,6 +90,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         return (
           <MultipleChoice
             key={questionData.id}
+            testID={`correct-answer-${questionData.correctAnswer}`}
             choices={questionData.choices}
             correctAnswer={questionData.correctAnswer}
             selectedAnswer={selectedAnswer}

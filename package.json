@@ -8,10 +8,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test:e2e": "maestro test tests/e2e/app-launch.yaml",
-    "test:e2e:all": "maestro test tests/e2e/",
-    "test:e2e:setup": "./scripts/test-e2e-setup.sh"
-  },
+    "test:e2e": "maestro test tests/e2e"
+    },
   "dependencies": {
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.14.0",
