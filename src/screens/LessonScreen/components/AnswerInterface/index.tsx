@@ -1,7 +1,8 @@
 import { Question } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { playSuccessSound } from '@/utils/soundUtils'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
 import { KeyPress } from './QuestionTypes/KeyPress'
@@ -90,6 +91,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         return (
           <MultipleChoice
             key={questionData.id}
+            testID={`correct-answer-${questionData.correctAnswer}`}
             choices={questionData.choices}
             correctAnswer={questionData.correctAnswer}
             selectedAnswer={selectedAnswer}

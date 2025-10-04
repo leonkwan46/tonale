@@ -1,5 +1,5 @@
 import { Lesson } from '@/data/theoryData/types'
-import React from 'react'
+import * as React from 'react'
 import { useDevice } from '../../../../hooks'
 import { BackArrowIcon } from './BackArrowIcon'
 import {
@@ -30,7 +30,7 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
   
   return (
     <Header>
-      <BackButton onPress={onBackPress}>
+      <BackButton testID="back-button" onPress={onBackPress}>
         <BackArrowIcon size={16} />
       </BackButton>
       
@@ -42,7 +42,7 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
         </XMarksContainer>
       ) : (
         <ProgressTracker>
-          <ProgressText>{currentQuestionIndex + 1}/{totalQuestions}</ProgressText>
+          <ProgressText testID="question-counter">{currentQuestionIndex + 1}/{totalQuestions}</ProgressText>
         </ProgressTracker>
       )}
     </Header>

@@ -4,7 +4,8 @@ import {
   stagesArray
 } from '@/data/theoryData'
 import { Stage, StageLesson } from '@/data/theoryData/types'
-import React, { useEffect, useRef, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Animated, ScrollView, Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'

@@ -1,0 +1,98 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- assertVisible: "Tonale"
+- assertVisible: "Email"
+- assertVisible: "Password"
+- tapOn: "Email"
+- inputText: "test@test.com"
+- tapOn: "Password"
+- inputText: "test123"
+- tapOn: 
+    id: "auth-submit-button"
+- assertVisible: "Welcome to Tonale"
+
+# Navigate to Theory tab using testID
+- tapOn: 
+    id: "tab-theory"
+
+# Find and tap the "Note Values" lesson (first lesson in the list)
+- assertVisible: 
+    id: "lesson-title-lesson-1"
+
+# Tap the note values lesson
+- tapOn: 
+    id: "lesson-title-lesson-1"
+
+# Wait for lesson to load and verify answer choices are visible
+- assertVisible: 
+    id: "choice-.*"
+
+# Verify we're on question 1/10
+- assertVisible: 
+    id: "question-counter"
+- assertVisible: "1/10"
+
+# Find the correct answer testID (format: correct-answer-{noteType})
+- assertVisible: 
+    id: "correct-answer-.*"
+
+# Tap the correct answer
+- tapOn: 
+    id: "correct-choice-.*"
+
+# Wait for next question and verify counter updated to 2/10
+- assertVisible: "2/10"
+
+# Tap the correct answer again
+- assertVisible: 
+    id: "correct-choice-.*"
+- tapOn: 
+    id: "correct-choice-.*"
+
+# Continue answering questions until lesson completion
+# Answer all remaining questions to reach 10/10
+- assertVisible: "3/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "4/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "5/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "6/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "7/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "8/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "9/10"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "10/10"
+- tapOn: 
+    id: "correct-choice-.*"
+
+# Verify lesson completion screen appears
+- assertVisible: "Continue"
+- assertVisible: "Retry"
+
+# Click on Continue button
+- tapOn: "Continue"
+
+- assertVisible: 
+    id: "lesson-title-lesson-1"
+
+# Tap the note values lesson
+- tapOn: 
+    id: "lesson-title-lesson-1"
+
+# Click back button to return to lesson list
+- tapOn: 
+    id: "back-button"

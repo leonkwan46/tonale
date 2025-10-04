@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { useDevice } from '../../hooks'
 import { DisplayCardContainer } from './DisplayCard.styles'
 

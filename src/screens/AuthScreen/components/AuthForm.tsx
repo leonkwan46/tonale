@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
+import * as React from 'react'
 import type { ViewStyle } from 'react-native'
 import {
   ButtonIcon,
@@ -45,7 +45,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   handleAuth,
   handleGuestLogin,
   formAnimatedStyle
-}) => {
+}: AuthFormProps) => {
   const theme = useTheme()
   
   return (
@@ -141,6 +141,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
 
     {/* Primary Button */}
     <PrimaryButton
+      testID="auth-submit-button"
       opacity={authState.loading ? 0.7 : 1}
       onPress={handleAuth}
       disabled={authState.loading}

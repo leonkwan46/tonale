@@ -66,7 +66,7 @@ export default function TabLayout() {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen name="index" />
-      <Tabs.Screen name="explore" />
+      <Tabs.Screen name="theory" />
       <Tabs.Screen name="aural" />
       <Tabs.Screen name="settings" />
     </Tabs>
