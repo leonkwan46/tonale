@@ -1,6 +1,6 @@
 import { Stage } from '@/data/theoryData'
 import styled from '@emotion/native'
-import React from 'react'
+import * as React from 'react'
 import { Animated, Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import { StarLogo } from './LessonSection/components/Logo'

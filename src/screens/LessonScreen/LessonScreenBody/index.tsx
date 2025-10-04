@@ -1,5 +1,5 @@
 import { Question } from '@/data/theoryData/types'
-import React from 'react'
+import * as React from 'react'
 import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'

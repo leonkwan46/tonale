@@ -1,5 +1,6 @@
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { Animated } from 'react-native'
 import { useDevice } from '../../hooks'
 import {

@@ -1,5 +1,6 @@
 import { useDevice } from '@/hooks'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { LayoutType } from '../../index'
 import { ChoiceText, NodeContainer, NodeContentContainer, NodeDepth } from './ChoiceButton.styles'
 
