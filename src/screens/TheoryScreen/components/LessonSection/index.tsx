@@ -2,7 +2,8 @@ import { Lesson } from '@/data/theoryData'
 import { usePreventDoubleTap } from '@/hooks'
 import { WarningModal } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { CardButton, Description, FinalTest } from './components'
 import { LessonSectionContainer } from './LessonSection.styles'
 
@@ -12,17 +13,17 @@ interface LessonSectionProps {
   allStageLessons?: Lesson[]
 }
 
-export const LessonSection: React.FC<LessonSectionProps> = ({ index, lesson, allStageLessons = [] }) => {
+export const LessonSection: React.FC<LessonSectionProps> = ({ index, lesson, allStageLessons = [] }: LessonSectionProps) => {
   const router = useRouter()
   const [showWarningModal, setShowWarningModal] = useState(false)
   
   const components = (isPressed: boolean) => index % 2 === 0 && !lesson.isFinalTest
     ? [
     <CardButton key="card" isPressed={isPressed} isLocked={lesson.isLocked} stars={lesson.stars} />, 
-    <Description key="desc" title={lesson.title} description={lesson.description} />
+    <Description key="desc" title={lesson.title} description={lesson.description} testID={`lesson-title-${lesson.id}`} />
     ]
     : [
-    <Description key="desc" title={lesson.title} description={lesson.description} />, 
+    <Description key="desc" title={lesson.title} description={lesson.description} testID={`lesson-title-${lesson.id}`} />, 
     <CardButton key="card" isPressed={isPressed} isLocked={lesson.isLocked} stars={lesson.stars} />
     ]
 
@@ -59,13 +60,14 @@ export const LessonSection: React.FC<LessonSectionProps> = ({ index, lesson, all
       <LessonSectionContainer 
         onPress={handlePress}
       >
-        {({ pressed }) => 
+        {({ pressed }: { pressed: boolean }) => 
           lesson.isFinalTest ? (
             <FinalTest 
               key="final" 
               isPressed={pressed} 
               title={lesson.title} 
-              description={lesson.description} 
+              description={lesson.description}
+              testID={`lesson-title-${lesson.id}`}
             />
           ) : (
             components(pressed)

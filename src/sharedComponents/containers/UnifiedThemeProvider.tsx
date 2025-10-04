@@ -1,7 +1,7 @@
 import { darkTheme, lightTheme, navigationDarkTheme, navigationLightTheme } from '@/constants/theme'
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react'
 import { ThemeProvider } from '@react-navigation/native'
-import React from 'react'
+import * as React from 'react'
 import { useColorScheme } from 'react-native'
 
 interface UnifiedThemeProviderProps {

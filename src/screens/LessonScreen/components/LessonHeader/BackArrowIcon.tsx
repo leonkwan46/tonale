@@ -1,6 +1,6 @@
 import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
-import React from 'react'
+import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import Svg, { Path } from 'react-native-svg'
 
