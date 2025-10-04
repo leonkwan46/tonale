@@ -13,6 +13,7 @@ interface MultipleChoiceProps {
   onChoiceSelect: (choice: string) => void
   type?: LayoutType
   isNoteIdentification?: boolean
+  testID?: string
 }
 
 export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
@@ -23,7 +24,8 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   showCorrectAnswer,
   onChoiceSelect,
   type = 'grid',
-  isNoteIdentification = false
+  isNoteIdentification = false,
+  testID
 }) => {
   // Group choices into rows based on type
   const createRows = () => {
@@ -43,7 +45,7 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   const rows = createRows()
 
   return (
-    <ChoicesContainer>
+    <ChoicesContainer testID={testID}>
       {rows.map((row, rowIndex) => (
         <ChoiceRow key={rowIndex} isLastRow={rowIndex === rows.length - 1} type={type}>
           {row.map((choice, colIndex) => {
@@ -66,6 +68,7 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
                 isLastInRow={isLastInRow}
                 layoutType={type}
                 isNoteIdentification={isNoteIdentification}
+                testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
               />
             )
           })}

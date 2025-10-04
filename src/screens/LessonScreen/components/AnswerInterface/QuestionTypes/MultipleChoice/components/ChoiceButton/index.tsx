@@ -14,6 +14,7 @@ interface ChoiceButtonProps {
   isLastInRow: boolean
   layoutType: LayoutType
   isNoteIdentification?: boolean
+  testID?: string
 }
 
 export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
@@ -26,7 +27,8 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
   disabled = false,
   isLastInRow,
   layoutType,
-  isNoteIdentification = false
+  isNoteIdentification = false,
+  testID
 }) => {
   const { isTablet } = useDevice()
   const [isPressed, setIsPressed] = useState(false)
@@ -60,6 +62,7 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
 
   return (
     <NodeContainer 
+      testID={testID || `choice-${choice}`}
       isPressed={isPressed}
       onPress={handlePress}
       onPressIn={handlePressIn}

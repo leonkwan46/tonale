@@ -55,7 +55,10 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
 
   return (
     <BodyContainer>
-      <QuestionText isTablet={isTablet}>
+      <QuestionText 
+        testID="question-text"
+        isTablet={isTablet}
+      >
         {question}
       </QuestionText>
 
