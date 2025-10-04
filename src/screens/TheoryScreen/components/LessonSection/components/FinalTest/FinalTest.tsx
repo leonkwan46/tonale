@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {
   FinalTestContainer,
   FinalTestContent,
@@ -15,13 +15,15 @@ interface FinalTestProps {
   title: string
   description: string
   isPressed?: boolean
+  testID?: string
 }
 
 export const FinalTest: React.FC<FinalTestProps> = ({ 
   isPressed = false, 
   title,
-  description
-}) => {
+  description,
+  testID
+}: FinalTestProps) => {
   return (
     <FinalTestContainer isPressed={isPressed} isLocked={false}>
       <FinalTestDepth />
@@ -39,7 +41,7 @@ export const FinalTest: React.FC<FinalTestProps> = ({
         
         {/* Main Content */}
         <FinalTestTextContainer>
-          <FinalTestTitle>{title}</FinalTestTitle>
+          <FinalTestTitle testID={testID}>{title}</FinalTestTitle>
           {description && (
             <FinalTestDescription>{description}</FinalTestDescription>
           )}

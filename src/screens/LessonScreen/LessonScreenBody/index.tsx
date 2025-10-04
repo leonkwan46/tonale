@@ -1,5 +1,5 @@
 import { Question } from '@/data/theoryData/types'
-import React from 'react'
+import * as React from 'react'
 import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
@@ -55,7 +55,10 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
 
   return (
     <BodyContainer>
-      <QuestionText isTablet={isTablet}>
+      <QuestionText 
+        testID="question-text"
+        isTablet={isTablet}
+      >
         {question}
       </QuestionText>
 
