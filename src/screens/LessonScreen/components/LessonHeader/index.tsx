@@ -35,11 +35,14 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
       </BackButton>
       
       {lesson?.isFinalTest ? (
-        <XMarksContainer>
-          <XMark isActive={wrongAnswersCount >= 1} isTablet={isTablet}>✗</XMark>
-          <XMark isActive={wrongAnswersCount >= 2} isTablet={isTablet}>✗</XMark>
-          <XMark isActive={wrongAnswersCount >= 3} isTablet={isTablet}>✗</XMark>
-        </XMarksContainer>
+        <ProgressTracker>
+          <ProgressText testID="question-counter">{currentQuestionIndex + 1}/{totalQuestions}</ProgressText>
+          <XMarksContainer>
+            <XMark isActive={wrongAnswersCount >= 1} isTablet={isTablet}>✗</XMark>
+            <XMark isActive={wrongAnswersCount >= 2} isTablet={isTablet}>✗</XMark>
+            <XMark isActive={wrongAnswersCount >= 3} isTablet={isTablet}>✗</XMark>
+          </XMarksContainer>
+        </ProgressTracker>
       ) : (
         <ProgressTracker>
           <ProgressText testID="question-counter">{currentQuestionIndex + 1}/{totalQuestions}</ProgressText>

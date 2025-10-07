@@ -111,6 +111,7 @@ export const StarRatingModal: React.FC<StarRatingModalProps> = ({
         
         <ButtonContainer isTablet={isTablet}>
           <ModalButton
+            testID="retry-button"
             variant="outlined"
             isTablet={isTablet}
             onPress={onRetry}
@@ -121,6 +122,7 @@ export const StarRatingModal: React.FC<StarRatingModalProps> = ({
           </ModalButton>
           
           <ModalButton
+            testID="continue-button"
             variant="filled"
             isTablet={isTablet}
             onPress={onContinue}
