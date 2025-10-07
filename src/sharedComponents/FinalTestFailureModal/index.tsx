@@ -33,6 +33,7 @@ export const FinalTestFailureModal: React.FC<FinalTestFailureModalProps> = ({
         
         <ButtonContainer isTablet={isTablet}>
           <ModalButton
+            testID="exit-button"
             variant="outlined"
             isTablet={isTablet}
             onPress={onExit}
@@ -43,6 +44,7 @@ export const FinalTestFailureModal: React.FC<FinalTestFailureModalProps> = ({
           </ModalButton>
           
           <ModalButton
+            testID="retry-test-button"
             variant="filled"
             isTablet={isTablet}
             onPress={onRetry}
