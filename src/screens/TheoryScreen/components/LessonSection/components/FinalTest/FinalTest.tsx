@@ -25,28 +25,22 @@ export const FinalTest: React.FC<FinalTestProps> = ({
   testID
 }: FinalTestProps) => {
   return (
-    <FinalTestContainer isPressed={isPressed} isLocked={false}>
-      <FinalTestDepth />
-      <FinalTestContent isLocked={false}>
-        <FinalTestGradient 
-          colors={['#ff6b6b', '#FF4500', '#ffd43b']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        />
-        
-        {/* Scroll Icon */}
-        <FinalTestIconContainer>
-          <ScrollIcon size={24} />
-        </FinalTestIconContainer>
-        
-        {/* Main Content */}
-        <FinalTestTextContainer>
-          <FinalTestTitle testID={testID}>{title}</FinalTestTitle>
-          {description && (
-            <FinalTestDescription>{description}</FinalTestDescription>
-          )}
-        </FinalTestTextContainer>
-      </FinalTestContent>
-    </FinalTestContainer>
+<FinalTestContainer testID={testID} isPressed={isPressed} isLocked={false}>
+  <FinalTestDepth />
+  <FinalTestContent isLocked={false}>
+    <FinalTestGradient 
+      colors={['#ff6b6b', '#FF4500', '#ffd43b']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    />
+    <FinalTestIconContainer>
+      <ScrollIcon size={24} />
+    </FinalTestIconContainer>
+    <FinalTestTextContainer>
+      <FinalTestTitle>{title}</FinalTestTitle>
+      {description && <FinalTestDescription>{description}</FinalTestDescription>}
+    </FinalTestTextContainer>
+  </FinalTestContent>
+</FinalTestContainer>
   )
 }
