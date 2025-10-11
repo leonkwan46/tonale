@@ -14,7 +14,7 @@ export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLS
 `
 
 export const SMuFLCard = styled.View<{ isTablet: boolean, isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
-  backgroundColor: theme.colors.background,
+  backgroundColor: '#FFFFFF',
   borderRadius: 16,
   borderWidth: 1,
   borderColor: '#000',
