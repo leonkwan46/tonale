@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "476539409264",
+    "project_id": "tonale",
+    "storage_bucket": "tonale.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476539409264:android:220ff66da40c1f78cc35b5",
+        "android_client_info": {
+          "package_name": "com.leonkwan46.tonale"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6agGfTfLp3Ax0mbg4-ikukR33_9S6CpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
