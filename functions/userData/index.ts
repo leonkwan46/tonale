@@ -5,7 +5,7 @@ import * as functions from 'firebase-functions'
 
 // Create user data
 export const createUserData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
+  if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
 
@@ -28,7 +28,7 @@ export const createUserData = functions.https.onCall(async (data, context) => {
 
 // Read user data
 export const getUserData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
+  if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
 
@@ -53,7 +53,7 @@ export const getUserData = functions.https.onCall(async (data, context) => {
 
 // Update user data
 export const updateUserData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
+  if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
 
@@ -74,7 +74,7 @@ export const updateUserData = functions.https.onCall(async (data, context) => {
 
 // Delete user data
 export const deleteUserData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
+  if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
 
