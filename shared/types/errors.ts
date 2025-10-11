@@ -12,4 +12,3 @@ export function isFirebaseError(error: unknown): error is FirebaseError {
     typeof (error as FirebaseError).code === 'string'
   )
 }
-
