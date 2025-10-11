@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
+import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -12,3 +13,10 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
+export const functions = getFunctions(app)
+
+// Connect to emulators in development
+if (__DEV__) {
+  connectFunctionsEmulator(functions, 'localhost', 5001)
+  connectFirestoreEmulator(db, 'localhost', 8080)
+}
