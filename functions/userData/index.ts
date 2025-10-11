@@ -2,9 +2,10 @@ import type { GetUserDataResponse, UserDataSuccessResponse, UserProfile } from '
 import * as admin from 'firebase-admin'
 import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore'
 import * as functions from 'firebase-functions'
+import type { CallableContext } from 'firebase-functions/v1/https'
 
 // Create user data
-export const createUserData = functions.https.onCall(async (data, context) => {
+export const createUserData = functions.https.onCall(async (data: any, context: CallableContext) => {
   if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
@@ -27,7 +28,7 @@ export const createUserData = functions.https.onCall(async (data, context) => {
 })
 
 // Read user data
-export const getUserData = functions.https.onCall(async (data, context) => {
+export const getUserData = functions.https.onCall(async (data: any, context: CallableContext) => {
   if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
@@ -52,7 +53,7 @@ export const getUserData = functions.https.onCall(async (data, context) => {
 })
 
 // Update user data
-export const updateUserData = functions.https.onCall(async (data, context) => {
+export const updateUserData = functions.https.onCall(async (data: any, context: CallableContext) => {
   if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
@@ -73,7 +74,7 @@ export const updateUserData = functions.https.onCall(async (data, context) => {
 })
 
 // Delete user data
-export const deleteUserData = functions.https.onCall(async (data, context) => {
+export const deleteUserData = functions.https.onCall(async (data: any, context: CallableContext) => {
   if (!context?.auth) {
     throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
   }
