@@ -8,8 +8,9 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test:e2e": "./scripts/run-e2e-tests.sh"
-    },
+    "test:e2e": "./scripts/run-e2e-tests.sh",
+    "firebase": "firebase emulators:start"
+  },
   "dependencies": {
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.14.0",
@@ -37,6 +38,7 @@
     "expo-system-ui": "~6.0.7",
     "expo-web-browser": "~15.0.7",
     "firebase": "^11.9.1",
+    "firebase-functions": "^6.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.4",
@@ -54,9 +56,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/node": "^24.7.2",
     "@types/react": "~19.1.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "typescript": "~5.9.2"
   },
   "private": true
