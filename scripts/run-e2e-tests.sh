@@ -16,6 +16,18 @@ interrupted=false
 # Handle interrupt signal (Ctrl+C)
 trap 'interrupted=true; echo -e "\n${YELLOW}⚠️  Test execution interrupted by user${NC}"; exit 130' INT
 
+# Check if Firebase emulators are running
+echo -e "${BLUE}🔍 Checking Firebase emulators...${NC}"
+if ! lsof -i :9099 > /dev/null 2>&1 || ! lsof -i :8080 > /dev/null 2>&1 || ! lsof -i :5001 > /dev/null 2>&1; then
+    echo -e "${RED}❌ Firebase emulators are not running${NC}"
+    echo -e "${YELLOW}Please start the emulators first:${NC}"
+    echo -e "${GREEN}npm run firebase${NC}"
+    echo ""
+    exit 1
+fi
+echo -e "${GREEN}✅ Firebase emulators detected${NC}"
+echo ""
+
 # Automatically discover all e2e test files
 test_files=($(find tests/e2e -name "*.yaml" -type f | sort))
 
