@@ -1,22 +1,24 @@
 import { auth } from '@/config/firebase/firebaseAuth'
+import { createUserData } from '@/config/firebase/functions'
+import { useUser } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import { createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withTiming
 } from 'react-native-reanimated'
 
 import { useDevice } from '../../hooks/useDevice'
 import {
-  Container,
-  KeyboardContainer,
-  ScrollContainer,
-  ScrollContentContainer
+    Container,
+    KeyboardContainer,
+    ScrollContainer,
+    ScrollContentContainer
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
@@ -27,6 +29,7 @@ import type { AuthFormData, AuthMode, AuthState } from './types'
 export function AuthScreen() {
   const colorScheme = useColorScheme() ?? 'light'
   const theme = useTheme()
+  const { fetchProfile } = useUser()
   
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
@@ -94,6 +97,8 @@ export function AuthScreen() {
         await signInWithEmailAndPassword(auth, formData.email, formData.password)
       } else {
         await createUserWithEmailAndPassword(auth, formData.email, formData.password)
+        await createUserData({ email: formData.email })
+        await fetchProfile()
       }
     } catch (err) {
       updateAuthState({ error: (err as Error).message || `Failed to ${authState.mode}` })
