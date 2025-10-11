@@ -35,3 +35,13 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 expo-env.d.ts
+
+# Firebase
+*-debug.log
+*-debug.*.log
+*.log
+functions/lib/
+
+# Shared types should only contain .ts files
+shared/**/*.js
+shared/**/*.js.map
