@@ -6,6 +6,7 @@
     "noEmit": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@shared/*": ["./shared/*"],
       "@firebase/auth": ["./node_modules/firebase/node_modules/@firebase/auth/dist/index.rn.d.ts"]
     }
   },
