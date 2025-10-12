@@ -1,7 +1,7 @@
 import { generateLessonQuestions } from '@/data/questionGeneration/generateLessonQuestions'
 import { getLessonById } from '@/data/theoryData'
 import { getNextLockedStage } from '@/data/theoryData/stages/stageDataHelpers'
-import { updateFinalTestProgress, updateLessonProgress } from '@/data/theoryData/theoryDataHelpers'
+import { forceRefreshProgress, updateFinalTestProgress, updateLessonProgress } from '@/data/theoryData/theoryDataHelpers'
 import { Question } from '@/data/theoryData/types'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
 import { calculateStars } from '@/utils/starCalculation'
@@ -63,56 +63,48 @@ export function LessonScreen() {
     }
   }
 
-  const handleLessonComplete = () => {
+  const handleLessonComplete = async () => {
     if (lesson?.isFinalTest) {
-      // For final tests, check if passed (less than 3 wrong answers)
       const isPassed = wrongAnswersCount < 3
       
-      // Update final test progress
       if (lessonId) {
-        updateFinalTestProgress(lessonId, isPassed, wrongAnswersCount)
+        await updateFinalTestProgress(lessonId, isPassed, wrongAnswersCount)
+        await forceRefreshProgress()
       }
       
       if (isPassed) {
-        // Check if there's a next stage to unlock
         const nextStage = getNextLockedStage()
         if (nextStage) {
-          // Navigate to the theory screen to show the newly unlocked stage
           router.push('/(tabs)/theory')
         } else {
-          // Navigate back to theory screen
           router.back()
         }
       } else {
-        // Navigate back (user was already sent back when they hit 3 wrong answers)
         router.back()
       }
     } else {
-      // Regular lesson completion with stars
       const stars = calculateStars(questions.length, wrongAnswersCount)
       setEarnedStars(stars)
       setShowStarModal(true)
       
-      // Update progress in background
       if (lessonId) {
-        updateLessonProgress(lessonId, stars, wrongAnswersCount)
+        await updateLessonProgress(lessonId, stars, wrongAnswersCount)
       }
     }
   }
 
-  const handleModalContinue = () => {
+  const handleModalContinue = async () => {
     setShowStarModal(false)
+    await forceRefreshProgress()
     router.back()
   }
 
   const handleModalRetry = () => {
     setShowStarModal(false)
-    // Reset lesson state
     setCurrentQuestionIndex(0)
     setWrongAnswersCount(0)
     setEarnedStars(0)
     
-    // Regenerate questions for fresh lesson
     if (lesson) {
       if (lesson.exerciseConfig) {
         const generatedQuestions = generateLessonQuestions(lesson.exerciseConfig)
@@ -125,11 +117,9 @@ export function LessonScreen() {
 
   const handleFailureModalRetry = () => {
     setShowFailureModal(false)
-    // Reset lesson state
     setCurrentQuestionIndex(0)
     setWrongAnswersCount(0)
     
-    // Regenerate questions for fresh lesson
     if (lesson) {
       if (lesson.exerciseConfig) {
         const generatedQuestions = generateLessonQuestions(lesson.exerciseConfig)
