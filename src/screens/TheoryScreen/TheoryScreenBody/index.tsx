@@ -4,8 +4,9 @@ import {
   stagesArray
 } from '@/data/theoryData'
 import { Stage, StageLesson } from '@/data/theoryData/types'
+import { useFocusEffect } from 'expo-router'
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Animated, ScrollView, Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'
@@ -61,6 +62,7 @@ export const TheoryScreenBody = () => {
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
+  const [refreshKey, setRefreshKey] = useState(0) // Force re-render when progress updates
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
 
@@ -91,7 +93,11 @@ export const TheoryScreenBody = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Initialize collapsed states for cleared stages
+  useFocusEffect(
+    useCallback(() => {
+      setRefreshKey(prev => prev + 1)
+    }, [])
+  )
   useEffect(() => {
     const initialCollapsedState: Record<string, boolean> = {}
     const initialVisibleState: Record<string, boolean> = {}
@@ -119,7 +125,7 @@ export const TheoryScreenBody = () => {
     })
     setCollapsedStages(initialCollapsedState)
     setVisibleStages(initialVisibleState)
-  }, [])
+  }, [refreshKey])
 
   const toggleStageCollapse = (stageId: string) => {
     const isCurrentlyCollapsed = collapsedStages[stageId]
