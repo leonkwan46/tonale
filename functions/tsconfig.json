@@ -11,14 +11,14 @@
     "esModuleInterop": true,
     "baseUrl": "..",
     "paths": {
-      "@shared/*": ["shared/*"]
+      "@types": ["types"]
     }
   },
   "compileOnSave": true,
   "include": [
     "*.ts",
     "**/*.ts",
-    "../shared/**/*.ts"
+    "../types/**/*.ts"
   ]
 }
 

@@ -1,8 +1,8 @@
-import type { GetUserDataResponse, UserDataSuccessResponse, UserProfile } from '@shared/types'
+import type { GetUserDataResponse, UserDataSuccessResponse, UserProfile } from '@types'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../firebase'
 
-export type { UserProfile } from '@shared/types'
+export type { UserProfile } from '@types'
 
 // CRUD operations for userData
 export const createUserData = httpsCallable<UserProfile, UserDataSuccessResponse>(
