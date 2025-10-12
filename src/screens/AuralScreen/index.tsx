@@ -1,5 +1,5 @@
-import { ScreenContainer } from '@/components'
-import React from 'react'
+import { ScreenContainer } from '@/sharedComponents'
+import * as React from 'react'
 import { Content, Description, Subtitle, Title } from './AuralScreen.styles'
 
 export function AuralScreen() {

@@ -3,9 +3,9 @@ import { Tabs } from 'expo-router'
 import React from 'react'
 import { useColorScheme } from 'react-native'
 
-import { CustomTabBar } from '@/components'
 import { Colors } from '@/constants/Colors'
 import { useAuth } from '@/hooks/useAuth'
+import { CustomTabBar } from '@/sharedComponents'
 
 const ErrorContainer = styled.View`
   flex: 1;
@@ -66,7 +66,7 @@ export default function TabLayout() {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen name="index" />
-      <Tabs.Screen name="explore" />
+      <Tabs.Screen name="theory" />
       <Tabs.Screen name="aural" />
       <Tabs.Screen name="settings" />
     </Tabs>

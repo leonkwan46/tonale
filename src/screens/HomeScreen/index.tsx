@@ -1,8 +1,17 @@
-import { ScreenContainer } from '@/components'
-import React from 'react'
+import { ScreenContainer } from '@/sharedComponents'
+import * as React from 'react'
+import { useEffect } from 'react'
+import { loadSMuFLFonts } from '../../utils/fontLoader'
 import { Content, Description, Subtitle, Title } from './HomeScreen.styles'
 
 export function HomeScreen() {
+  useEffect(() => {
+    const loadFonts = async () => {
+      await loadSMuFLFonts()
+    }
+    loadFonts()
+  }, [])
+
   return (
     <ScreenContainer>
       <Content>

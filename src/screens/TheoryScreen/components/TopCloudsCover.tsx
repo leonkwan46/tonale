@@ -1,6 +1,7 @@
 import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useEffect, useRef } from 'react'
+import * as React from 'react'
+import { useEffect, useRef } from 'react'
 import { Animated, Dimensions, Easing } from 'react-native'
 import { scale } from 'react-native-size-matters'
 

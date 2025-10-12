@@ -1,9 +1,9 @@
-import React from 'react'
+import * as React from 'react'
 import {
-    ToggleBackground,
-    ToggleButton,
-    ToggleContainer,
-    ToggleText
+  ToggleBackground,
+  ToggleButton,
+  ToggleContainer,
+  ToggleText
 } from '../AuthScreen.styles'
 
 interface ModeToggleProps {
@@ -18,7 +18,8 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({
   setMode,
   textColor,
   inputBackgroundColor
-}) => (
+}) => {  
+  return (
   <ToggleContainer>
     <ToggleBackground backgroundColor={inputBackgroundColor}>
       <ToggleButton
@@ -39,4 +40,5 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({
       </ToggleButton>
     </ToggleBackground>
   </ToggleContainer>
-)
+  )
+}

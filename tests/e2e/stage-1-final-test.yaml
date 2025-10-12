@@ -1,0 +1,137 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- assertVisible: "Tonale"
+- assertVisible: "Email"
+- assertVisible: "Password"
+- tapOn: "Email"
+- inputText: "test@test.com"
+- tapOn: "Password"
+- inputText: "test123"
+- tapOn: 
+    id: "auth-submit-button"
+- assertVisible: "Welcome to Tonale"
+
+# Navigate to Theory tab using testID
+- tapOn: 
+    id: "tab-theory"
+
+# Scroll up to find the "Stage 1 Final Test" lesson (it should be at the top)
+- scrollUntilVisible:   
+    element:
+      id: "lesson-title-stage-1-final"
+    direction: UP
+    speed: 100
+- tapOn: 
+    id: "lesson-title-stage-1-final"
+
+# Handle the final test warning modal
+- assertVisible: "Final Test Warning"
+- assertVisible: "Continue"
+- tapOn: "Continue"
+- assertVisible: 
+    id: "choice-.*"
+
+# Answer all 25 questions correctly to complete the final test
+- assertVisible: "1/25"
+- assertVisible: 
+    id: "correct-answer-.*"
+- tapOn: 
+    id: "correct-choice-.*"
+- assertVisible: "2/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "3/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "4/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "5/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "6/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "7/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "8/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "9/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "10/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "11/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "12/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "13/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "14/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "15/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "16/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "17/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "18/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "19/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "20/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "21/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "22/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "23/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "24/25"
+- tapOn: 
+    id: "correct-choice-.*"
+
+- assertVisible: "25/25"
+- tapOn: 
+    id: "correct-choice-.*"

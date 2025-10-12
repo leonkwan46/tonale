@@ -1,9 +1,9 @@
+import { Stage } from '@/data/theoryData'
 import styled from '@emotion/native'
-import React from 'react'
+import * as React from 'react'
 import { Animated, Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
-import { StarLogo } from '../LessonSection/components/Logo'
-import { Stage } from '../sampleData'
+import { StarLogo } from './LessonSection/components/Logo'
 
 interface StageHeaderProps {
   stage: Stage
@@ -83,8 +83,9 @@ export const StageHeader: React.FC<StageHeaderProps> = ({
   onToggle, 
   showToggle = true 
 }) => {
-  const totalStars = stage.lessons.reduce((sum, lesson) => sum + lesson.stars, 0)
-  const maxStars = stage.lessons.length * 3
+  const regularLessons = stage.lessons.filter(lesson => !lesson.isFinalTest)
+  const totalStars = regularLessons.reduce((sum, lesson) => sum + (lesson.stars || 0), 0)
+  const maxStars = regularLessons.length * 3
   const progressPercentage = maxStars > 0 ? (totalStars / maxStars) * 100 : 0
   const isPerfect = totalStars === maxStars
 

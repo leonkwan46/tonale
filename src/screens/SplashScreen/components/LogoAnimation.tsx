@@ -1,7 +1,8 @@
 import { Colors, ColorScheme } from '@/constants/Colors'
 import { Ionicons } from '@expo/vector-icons'
 import styled from '@emotion/native'
-import React, { useEffect } from 'react'
+import * as React from 'react'
+import { useEffect } from 'react'
 import Animated, {
   Easing,
   useAnimatedStyle,
