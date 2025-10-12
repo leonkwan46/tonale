@@ -41,6 +41,8 @@ expo-env.d.ts
 *-debug.*.log
 *.log
 functions/lib/
+google-services.json
+GoogleService-Info.plist
 
 # Shared types should only contain .ts files
 shared/**/*.js
