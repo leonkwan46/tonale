@@ -20,6 +20,7 @@ module.exports = defineConfig([
       // Prevent React namespace usage for hooks
       'react/jsx-no-undef': 'error',
       'react/react-in-jsx-scope': 'off',
+      'eol-last': ['error', 'always'],
       // Custom rule to prevent React namespace usage
       'no-restricted-syntax': [
         'error',
