@@ -5,9 +5,10 @@ const expoConfig = require('eslint-config-expo/flat')
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ['dist/*', 'functions/*'],
+    ignores: ['dist/*', 'functions/*', 'node_modules/*'],
   },
   {
+    files: ['**/*.ts', '**/*.tsx', 'types/**/*.ts'],
     settings: {
       'import/resolver': {
         typescript: {

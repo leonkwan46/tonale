@@ -1,4 +1,9 @@
-// Types for lesson and stage data
+// ============================================================================
+// FRONTEND/DOMAIN TYPES
+// Business logic types used by React components and data layer
+// Backend/API types are in shared/types/
+// ============================================================================
+
 import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-notation'
 
 // Stage number type for exercise generation
@@ -42,20 +47,36 @@ export interface ExerciseConfig {
   stage: StageNumber
 }
 
+// ============================================================================
+// LESSON TYPES (Domain Model)
+// ============================================================================
+
+/**
+ * Lesson - Core lesson definition with runtime progress overlay
+ * Used throughout the app for lesson data + progress state
+ */
 export interface Lesson {
   id: string
   title: string
   description: string
-  isLocked?: boolean  // Optional - provided by progress system
-  stars?: number      // Optional - provided by progress system (not used for final tests)
-  isFinalTest?: boolean
-  isPassed?: boolean  // For final tests - indicates pass/fail status
   estimatedTime?: number // in minutes
-  questions?: Question[] // Optional - hardcoded questions for the lesson
-  exerciseConfig?: ExerciseConfig // Optional - auto-generated questions config
+  
+  // Lesson type
+  isFinalTest?: boolean // true for final tests, undefined/false for regular lessons
+  
+  // Runtime progress (overlay from progress system)
+  isLocked?: boolean    // Provided by progress system
+  stars?: number        // 0-3 for regular lessons
+  isPassed?: boolean    // true/false for final tests
+  
+  // Content definition
+  questions?: Question[]          // Hardcoded questions (rarely used)
+  exerciseConfig?: ExerciseConfig // Auto-generated questions config
 }
 
-// Lesson within a stage context (includes stageId)
+/**
+ * StageLesson - Lesson with stage context
+ */
 export interface StageLesson extends Lesson {
   stageId: string
 }

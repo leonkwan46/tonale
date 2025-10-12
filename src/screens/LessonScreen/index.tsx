@@ -70,7 +70,7 @@ export function LessonScreen() {
       
       // Update final test progress
       if (lessonId) {
-        updateFinalTestProgress(lessonId, isPassed)
+        updateFinalTestProgress(lessonId, isPassed, wrongAnswersCount)
       }
       
       if (isPassed) {
@@ -95,7 +95,7 @@ export function LessonScreen() {
       
       // Update progress in background
       if (lessonId) {
-        updateLessonProgress(lessonId, stars)
+        updateLessonProgress(lessonId, stars, wrongAnswersCount)
       }
     }
   }

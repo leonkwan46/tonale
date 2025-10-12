@@ -1,9 +1,10 @@
 import { getUserData } from '@/config/firebase/functions'
-import { isFirebaseError, type UserProfile } from '@shared/types'
+import { initializeUserProgress } from '@/data/theoryData/theoryDataHelpers'
+import { isFirebaseError, type UserProfile } from '@types'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import React, { createContext, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { auth } from '../../config/firebase/firebaseAuth'
+import { auth } from '../../config/firebase/firebase'
 
 export interface UserContextType {
   user: User | null
@@ -52,6 +53,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           if (!isNewUser) {
             // Existing user logging in - fetch their profile
             await fetchProfile()
+          }
+          
+          // Initialize lesson progress for ALL users (new and existing)
+          // New users will have empty progress, existing users will load their data
+          try {
+            await initializeUserProgress(user.uid)
+            console.log('✅ Lesson progress initialized for user:', user.uid)
+          } catch (error) {
+            console.error('❌ Failed to initialize lesson progress:', error)
           }
         } else {
           setUser(null)

@@ -1,4 +1,4 @@
-import { auth } from '@/config/firebase/firebaseAuth'
+import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
 import { useTheme } from '@emotion/react'

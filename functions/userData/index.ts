@@ -1,4 +1,4 @@
-import type { GetUserDataResponse, UserDataSuccessResponse, UserProfile } from '@shared/types'
+import type { GetUserDataResponse, UserDataSuccessResponse, UserProfile } from '@types'
 import * as admin from 'firebase-admin'
 import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore'
 import * as functions from 'firebase-functions'
@@ -16,9 +16,15 @@ export const createUserData = functions.https.onCall(async (data: any, context: 
   try {
     await admin.firestore().collection('users').doc(userId).set({
       ...userData,
+      progress: {
+        lessons: {},  // Initialize empty lesson progress
+        stages: {}    // Initialize empty stage progress
+      },
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp()
     })
+
+    console.log(`✅ Created user document for ${userId} with initialized progress structure`)
 
     return { success: true, message: 'User data created successfully' } as UserDataSuccessResponse
   } catch (error) {
