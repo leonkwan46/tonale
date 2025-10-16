@@ -5,9 +5,17 @@ const expoConfig = require('eslint-config-expo/flat')
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ['dist/*'],
+    ignores: ['dist/*', 'functions/*', 'node_modules/*'],
   },
   {
+    files: ['**/*.ts', '**/*.tsx', 'types/**/*.ts'],
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json',
+        },
+      },
+    },
     rules: {
       // Enforce no semicolons
       'semi': ['error', 'never'],
@@ -15,6 +23,8 @@ module.exports = defineConfig([
       'quotes': ['error', 'single'],
       // Enforce trailing commas
       'comma-dangle': ['error', 'never'],
+      // Enforce exactly one newline at end of file
+      'eol-last': ['error', 'always'],
       // Warn about any types
       '@typescript-eslint/no-explicit-any': 'warn',
       // Prevent React namespace usage for hooks

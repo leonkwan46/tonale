@@ -43,8 +43,6 @@ export const isStaging = (): boolean => {
   return getEnvironment().environment === 'staging'
 }
 
-
-
 export const isProduction = (): boolean => {
   return getEnvironment().environment === 'production'
 }
