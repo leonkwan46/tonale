@@ -1,9 +1,9 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/hooks'
 import { Stack, useRouter } from 'expo-router'
 import { useEffect } from 'react'
 
 export default function AuthLayout() {
-  const { user, loading } = useAuth()
+  const { user, loading } = useUser()
   const router = useRouter()
   
   // Use an effect for navigation

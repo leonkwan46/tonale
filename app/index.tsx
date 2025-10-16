@@ -1,8 +1,8 @@
-import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/hooks'
 import { Redirect } from 'expo-router'
 
 export default function Index() {
-  const { user, loading } = useAuth()
+  const { user, loading } = useUser()
   
   // While loading, return nothing
   if (loading) return null

@@ -1,123 +1,200 @@
+import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebase/functions/lessonProgress'
+import { LESSON_PROGRESS_CACHE_KEY, PROGRESS_CACHE_DURATION } from '@/constants/cache'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { LessonProgressCache } from '@types'
 import { refreshStageUnlockStatus, stagesArray } from './stages/stageDataHelpers'
 import { Stage, StageLesson } from './types'
 
-// ============================================================================
-// THEORY DATA MANAGEMENT & PROGRESS SYSTEM
-// ============================================================================
-
-// Progress data cache
 let userProgressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> = {}
 let lastProgressFetch: number = 0
-const PROGRESS_CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
+let currentUserId: string = ''
 
-// Initialize user progress after authentication
+const saveProgressCache = async (
+  userId: string, 
+  data: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
+): Promise<void> => {
+  try {
+    const cache: LessonProgressCache = {
+      userId,
+      timestamp: Date.now(),
+      data
+    }
+    await AsyncStorage.setItem(LESSON_PROGRESS_CACHE_KEY, JSON.stringify(cache))
+  } catch (error) {
+    console.error('Failed to save progress to device cache:', error)
+  }
+}
+const loadProgressCache = async (userId: string): Promise<LessonProgressCache | null> => {
+  try {
+    const cached = await AsyncStorage.getItem(LESSON_PROGRESS_CACHE_KEY)
+    if (!cached) return null
+    
+    const cache: LessonProgressCache = JSON.parse(cached)
+    
+    if (cache.userId !== userId) {
+      await clearProgressCache()
+      return null
+    }
+    
+    return cache
+  } catch (error) {
+    console.error('Failed to load progress from device cache:', error)
+    return null
+  }
+}
+const clearProgressCache = async (): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(LESSON_PROGRESS_CACHE_KEY)
+  } catch (error) {
+    console.error('Failed to clear progress cache:', error)
+  }
+}
 export const initializeUserProgress = async (userId: string): Promise<void> => {
   try {
-    console.log('Fetching user progress for:', userId)
+    currentUserId = userId
     
-    // Simulate API call - replace with actual endpoint
-    const response = await fetch(`/api/user/progress?userId=${userId}`)
-    const progressData = await response.json()
+    const cachedData = await loadProgressCache(userId)
+    if (cachedData) {
+      userProgressData = cachedData.data
+      lastProgressFetch = cachedData.timestamp
+      syncProgressDataToStages()
+      refreshStageUnlockStatus()
+    }
     
-    // Store progress data
-    userProgressData = progressData.lessons || {}
-    lastProgressFetch = Date.now()
+    const result = await getAllLessonProgressFn()
     
-    // Refresh stage unlock status based on new progress
-    refreshStageUnlockStatus()
-    
-    console.log('User progress initialized:', userProgressData)
+    if (result.data.success) {
+      const lessonsData = result.data.data
+      userProgressData = Object.keys(lessonsData).reduce((acc, lessonId) => {
+        const lessonProgress = lessonsData[lessonId]
+        acc[lessonId] = {
+          isLocked: false,
+          stars: lessonProgress.stars,
+          isPassed: lessonProgress.isPassed
+        }
+        return acc
+      }, {} as Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>)
+      
+      lastProgressFetch = Date.now()
+      syncProgressDataToStages()
+      refreshStageUnlockStatus()
+      await saveProgressCache(userId, userProgressData)
+    }
   } catch (error) {
     console.error('Failed to fetch user progress:', error)
-    // Fallback to default locked state
-    userProgressData = {}
-    lastProgressFetch = Date.now()
+    if (Object.keys(userProgressData).length === 0) {
+      userProgressData = {}
+      lastProgressFetch = Date.now()
+    }
   }
 }
 
-// Smart refresh - only fetch if cache is stale
 export const refreshUserProgress = async (userId: string): Promise<void> => {
   const now = Date.now()
   const shouldRefresh = (now - lastProgressFetch) > PROGRESS_CACHE_DURATION
   
   if (shouldRefresh || Object.keys(userProgressData).length === 0) {
-    console.log('Refreshing user progress (cache stale or empty)')
     await initializeUserProgress(userId)
-  } else {
-    console.log('Using cached user progress')
   }
 }
-
-// Get progress data for a specific lesson
+export const forceRefreshProgress = async (): Promise<void> => {
+  if (!currentUserId) return
+  
+  try {
+    const result = await getAllLessonProgressFn()
+    
+    if (result.data.success) {
+      const lessonsData = result.data.data
+      userProgressData = Object.keys(lessonsData).reduce((acc, lessonId) => {
+        const lessonProgress = lessonsData[lessonId]
+        acc[lessonId] = {
+          isLocked: false,
+          stars: lessonProgress.stars,
+          isPassed: lessonProgress.isPassed
+        }
+        return acc
+      }, {} as Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>)
+      
+      lastProgressFetch = Date.now()
+      syncProgressDataToStages()
+      refreshStageUnlockStatus()
+      await saveProgressCache(currentUserId, userProgressData)
+    }
+  } catch (error) {
+    console.error('Failed to force refresh progress:', error)
+  }
+}
 export const getLessonProgress = (lessonId: string): { isLocked: boolean; stars?: number; isPassed?: boolean } => {
-  // Check if we have progress data
   if (userProgressData[lessonId]) {
     return userProgressData[lessonId]
   }
   
-  // Fallback to conservative defaults
   return { 
-    isLocked: true,  // 🔒 Locked by default (conservative)
-    stars: 0,        // ⭐ No progress by default
-    isPassed: false  // ❌ Failed by default for final tests
+    isLocked: true,
+    stars: 0,
+    isPassed: false
   }
 }
-
-// Update lesson progress (after completion)
-export const updateLessonProgress = async (lessonId: string, stars: number): Promise<void> => {
-  // Update locally first (optimistic update)
+export const updateLessonProgress = async (
+  lessonId: string, 
+  stars: number, 
+  wrongAnswersCount: number = 0
+): Promise<void> => {
+  const validStars = Math.max(0, Math.min(3, stars))
+  
   userProgressData[lessonId] = { 
     isLocked: false, 
-    stars: Math.max(0, Math.min(3, stars)) 
+    stars: validStars
   }
   
-  // Refresh stage unlock status
+  updateLessonDataInStages(lessonId, { stars: validStars })
+  syncProgressDataToStages()
   refreshStageUnlockStatus()
   
-  // Sync to backend
   try {
-    await fetch(`/api/user/progress/lesson/${lessonId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ stars })
+    await updateLessonProgressFn({
+      lessonId,
+      lessonType: 'regular',
+      stars: validStars,
+      wrongAnswersCount
     })
-    console.log('Progress synced to backend for lesson:', lessonId)
+    
+    if (currentUserId) {
+      await saveProgressCache(currentUserId, userProgressData)
+    }
   } catch (error) {
     console.error('Failed to sync progress to backend:', error)
-    // Could implement retry logic here
   }
 }
-
-// Update final test progress (pass/fail)
-export const updateFinalTestProgress = async (lessonId: string, isPassed: boolean): Promise<void> => {
-  // Update locally first (optimistic update)
+export const updateFinalTestProgress = async (
+  lessonId: string, 
+  isPassed: boolean,
+  wrongAnswersCount: number = 0
+): Promise<void> => {
   userProgressData[lessonId] = { 
     isLocked: false, 
     isPassed: isPassed 
   }
   
-  // Update the lesson data in the stage arrays to reflect the pass status
-  // This is important for stage clearing calculations
   updateLessonDataInStages(lessonId, { isPassed })
-  
-  // Refresh stage unlock status (this will unlock next stage if current stage is cleared)
+  syncProgressDataToStages()
   refreshStageUnlockStatus()
   
-  // Sync to backend
   try {
-    await fetch(`/api/user/progress/lesson/${lessonId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ isPassed })
+    await updateLessonProgressFn({
+      lessonId,
+      lessonType: 'finalTest',
+      isPassed,
+      wrongAnswersCount
     })
-    console.log('Final test progress synced to backend for lesson:', lessonId, 'Passed:', isPassed)
+    
+    if (currentUserId) {
+      await saveProgressCache(currentUserId, userProgressData)
+    }
   } catch (error) {
     console.error('Failed to sync final test progress to backend:', error)
-    // Could implement retry logic here
   }
 }
-
-// Helper function to update lesson data in stage arrays
 const updateLessonDataInStages = (lessonId: string, progressData: { stars?: number; isPassed?: boolean }): void => {
   stagesArray.forEach((stage: Stage) => {
     stage.lessons.forEach((lesson: StageLesson) => {
@@ -133,20 +210,38 @@ const updateLessonDataInStages = (lessonId: string, progressData: { stars?: numb
   })
 }
 
-// Clear progress data (on logout)
-export const clearUserProgress = (): void => {
+const syncProgressDataToStages = (): void => {
+  stagesArray.forEach((stage: Stage) => {
+    stage.lessons.forEach((lesson: StageLesson) => {
+      const progressData = userProgressData[lesson.id]
+      if (progressData) {
+        lesson.isLocked = progressData.isLocked
+        lesson.stars = progressData.stars
+        lesson.isPassed = progressData.isPassed
+      }
+    })
+    
+    const regularLessons = stage.lessons.filter(lesson => !lesson.isFinalTest)
+    const finalTest = stage.lessons.find(lesson => lesson.isFinalTest)
+    
+    stage.totalStars = regularLessons.reduce((total, lesson) => total + (lesson.stars || 0), 0)
+    stage.isCleared = finalTest ? (finalTest.isPassed === true) : false
+  })
+}
+export const clearUserProgress = async (): Promise<void> => {
   userProgressData = {}
   lastProgressFetch = 0
+  currentUserId = ''
+  await clearProgressCache()
 }
 
-// Check if progress data is loaded
 export const isProgressLoaded = (): boolean => {
   return Object.keys(userProgressData).length > 0
 }
 
-// Get cache status
 export const getCacheStatus = (): { isStale: boolean; lastFetch: number } => {
   const now = Date.now()
   const isStale = (now - lastProgressFetch) > PROGRESS_CACHE_DURATION
   return { isStale, lastFetch: lastProgressFetch }
 }
+

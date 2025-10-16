@@ -1,5 +1,5 @@
-import styled from '@emotion/native'
-import { scale } from 'react-native-size-matters'
+import styled from '@emotion/native';
+import { scale } from 'react-native-size-matters';
 
 export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLSymbol: boolean, needsExtraSpacing: boolean }>`
   align-items: center;

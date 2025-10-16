@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "rootDir": "..",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "esModuleInterop": true,
+    "baseUrl": "..",
+    "paths": {
+      "@types": ["types"]
+    }
+  },
+  "compileOnSave": true,
+  "include": [
+    "*.ts",
+    "**/*.ts",
+    "../types/**/*.ts"
+  ]
+}
+

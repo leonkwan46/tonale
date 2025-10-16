@@ -1,5 +1,5 @@
 import { Colors, ColorScheme } from '@/constants/Colors'
-import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/hooks'
 import styled from '@emotion/native'
 import * as React from 'react'
 import { useCallback, useEffect, useState } from 'react'
@@ -18,7 +18,7 @@ interface SplashScreenProps {
 
 export function SplashScreen({ onComplete }: SplashScreenProps) {
   const colorScheme = useColorScheme() ?? 'light'
-  const { loading: authLoading } = useAuth()
+  const { loading: authLoading } = useUser()
   
   const [isTransitioning, setIsTransitioning] = useState(false)
 
