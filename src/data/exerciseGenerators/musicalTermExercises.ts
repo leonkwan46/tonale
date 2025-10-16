@@ -1,8 +1,8 @@
 // Enhanced musical terms exercise generators with SMuFL support
 import {
-  generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+    generateQuestionId,
+    generateWrongChoices,
+    getRandomItem
 } from '../helpers/questionHelpers'
 import { getAllStageOneTerms, getDisplayName, getSMuFLSymbol } from '../stageSyllabusConfigs/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
@@ -27,7 +27,7 @@ export const createMusicalTermQuestion = (stage: StageNumber, includeSymbol = tr
     explanation: `The symbol shown represents '${getDisplayName(correctTerm)}' which means ${correctDefinition}.`,
     type: 'multipleChoice',
     visualComponent: {
-      type: 'smuflSymbol',
+      type: 'termAndSign',
       symbolType: correctTerm
     },
     metadata: {

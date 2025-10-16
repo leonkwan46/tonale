@@ -23,7 +23,8 @@ import {
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
 import { scale } from 'react-native-size-matters'
-import { SMuFLCard, SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
+import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
+import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
@@ -100,19 +101,19 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
     visualComponent.elements.some(element => element.pitch) &&
-    visualComponent.type !== 'smuflSymbol'
+    visualComponent.type !== 'termAndSign'
 
   // Check if this should render individual notes (single element, no clef)
   const shouldRenderIndividualNotes = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
-    visualComponent.type !== 'smuflSymbol' && 
+    visualComponent.type !== 'termAndSign' && 
     visualComponent.elements?.length === 1 && 
     !visualComponent.clef
 
   // Check if this should render music staff (default case)
   const shouldRenderMusicStaff = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
-    visualComponent.type !== 'smuflSymbol' && 
+    visualComponent.type !== 'termAndSign' && 
     !(visualComponent.elements?.length === 1 && !visualComponent.clef)
 
   // SMuFL symbol helpers
@@ -133,7 +134,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   }
 
   return (
-    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'smuflSymbol'} needsExtraSpacing={needsExtraHeight || false}>
+    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'termAndSign'} needsExtraSpacing={needsExtraHeight || false}>
       {visualComponent.type === 'timeSignature' && (
         <DisplayCard extraHeight={false}>
           <TimeSignature timeSignature={visualComponent.timeSignatureValue || ''} />
@@ -146,7 +147,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
         </DisplayCard>
       )}
       
-      {visualComponent.type === 'smuflSymbol' && visualComponent.symbolType && (
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && (
         <SMuFLCard isTablet={isTablet} isTextTerm={isTextTerm}>
           <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTerm}>
             <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm}>
@@ -185,3 +186,4 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     </VisualQuestionContainer>
   )
 }
+

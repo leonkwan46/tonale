@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 
 export const DisplayCardContainer = styled.View<{ isTablet: boolean; extraHeight?: boolean }>(({ theme, isTablet, extraHeight }) => ({
-  backgroundColor: theme.colors.background,
+  backgroundColor: '#ffffff',
   borderRadius: 16,
   borderWidth: 1,
   borderColor: theme.colors.border,

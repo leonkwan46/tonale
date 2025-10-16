@@ -13,17 +13,6 @@ export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLS
   `}
 `
 
-export const SMuFLCard = styled.View<{ isTablet: boolean, isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
-  backgroundColor: theme.colors.background,
-  borderRadius: 16,
-  borderWidth: 1,
-  borderColor: '#000',
-  width: '100%',
-  maxWidth: isTablet ? 600 : 380,
-  minHeight: isTextTerm ? (isTablet ? scale(115) : scale(135)) : (isTablet ? scale(115) : scale(135)),
-  position: 'relative'
-}))
-
 export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
   flex: 1,
   justifyContent: 'center',

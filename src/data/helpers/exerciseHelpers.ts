@@ -1,10 +1,10 @@
 // Exercise-specific helper functions for music theory stages
 import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
-import { STAGE_ONE_KEYS } from '../stageSyllabusConfigs/keySignatures'
+import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../stageSyllabusConfigs/keySignatures'
 import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabusConfigs/noteRange'
 import { STAGE_ONE_ALL_NOTE_TYPES, STAGE_ONE_DOTTED_NOTE_TYPES, STAGE_ONE_NOTE_TYPES } from '../stageSyllabusConfigs/noteTypes'
 import { STAGE_ONE_ALL_REST_TYPES, STAGE_ONE_DOTTED_REST_TYPES, STAGE_ONE_REST_TYPES } from '../stageSyllabusConfigs/restTypes'
-import { STAGE_ONE_TIME_SIGNATURES } from '../stageSyllabusConfigs/timeSignatures'
+import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES } from '../stageSyllabusConfigs/timeSignatures'
 import { StageNumber } from '../theoryData/types'
 
 // ===============================
@@ -121,11 +121,9 @@ export const getTimeSignatures = (stage: StageNumber) => {
     case 1:
       return STAGE_ONE_TIME_SIGNATURES
     case 2:
-      // TODO: Import and return STAGE_TWO_TIME_SIGNATURES when available
-      throw new Error('Stage 2 time signatures not yet implemented')
+      return STAGE_TWO_TIME_SIGNATURES
     case 3:
-      // TODO: Import and return STAGE_THREE_TIME_SIGNATURES when available
-      throw new Error('Stage 3 time signatures not yet implemented')
+      return STAGE_THREE_TIME_SIGNATURES
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
@@ -136,11 +134,9 @@ export const getKeys = (stage: StageNumber) => {
     case 1:
       return STAGE_ONE_KEYS
     case 2:
-      // TODO: Import and return STAGE_TWO_KEYS when available
-      throw new Error('Stage 2 keys not yet implemented')
+      return STAGE_TWO_KEYS
     case 3:
-      // TODO: Import and return STAGE_THREE_KEYS when available
-      throw new Error('Stage 3 keys not yet implemented')
+      return STAGE_THREE_KEYS
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
@@ -162,19 +158,6 @@ export const getNoteRange = (stage: StageNumber, clef: string) => {
       throw new Error(`Invalid stage: ${stage}`)
   }
 }
-
-// ===============================
-// Legacy Stage One Helpers (for backward compatibility)
-// ===============================
-export const getStageOneNoteTypes = () => getBasicNoteTypes(1)
-export const getStageOneDottedNoteTypes = () => getDottedNoteTypes(1)
-export const getStageOneAllNoteTypes = () => getAllNoteTypes(1)
-export const getStageOneRestTypes = () => getBasicRestTypes(1)
-export const getStageOneDottedRestTypes = () => getDottedRestTypes(1)
-export const getStageOneAllRestTypes = () => getAllRestTypes(1)
-export const getStageOneAccidentals = (): AccidentalType[] => getAccidentals(1)
-export const getStageOneTimeSignatures = () => getTimeSignatures(1)
-export const getStageOneKeys = () => getKeys(1)
 
 // ===============================
 // Utility Functions
