@@ -1,23 +1,21 @@
-// Time signature exercise generators
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
 import { getTimeSignatures } from '../helpers/exerciseHelpers'
 import {
+  capitalize,
+  generateMultipleChoiceOptions,
   generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+  shuffleArray
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Helper function to convert TimeSignatureType to string
-const timeSignatureToString = (timeSignature: TimeSignatureType): string => {
+const formatAsNotation = (timeSignature: TimeSignatureType): string => {
   if (typeof timeSignature === 'string') {
-    return timeSignature // Keep 'common' as 'common', 'cut' as 'cut'
+    return timeSignature
   }
   return `${timeSignature.topNumber}/${timeSignature.bottomNumber}`
 }
 
-// Helper function to get note value name from bottom number
-const getNoteValueFromBottomNumber = (bottomNumber: number): string => {
+const getNoteValueName = (bottomNumber: number): string => {
   switch (bottomNumber) {
     case 1: return 'semibreve'
     case 2: return 'minim'
@@ -29,83 +27,135 @@ const getNoteValueFromBottomNumber = (bottomNumber: number): string => {
   }
 }
 
-// Helper function to create time signature meaning string
-const createTimeSignatureMeaning = (timeSignature: TimeSignatureType): string => {
+const formatAsText = (timeSignature: TimeSignatureType): string => {
   if (typeof timeSignature === 'string') {
     if (timeSignature === 'common') return '4 Crotchet Beats'
     if (timeSignature === 'cut') return '2 Minim Beats'
   }
   const beatCount = timeSignature.topNumber
-  const noteValue = getNoteValueFromBottomNumber(timeSignature.bottomNumber)
-  return `${beatCount} ${noteValue.charAt(0).toUpperCase() + noteValue.slice(1)} Beats`
+  const noteValueName = getNoteValueName(timeSignature.bottomNumber)
+  return `${beatCount} ${capitalize(noteValueName)} Beats`
 }
 
-// Helper function to generate smart wrong choices based on the correct time signature
-const generateSmartWrongChoices = (correctTimeSignature: TimeSignatureType): string[] => {
-  const correctBeatCount = typeof correctTimeSignature === 'string' 
-    ? (correctTimeSignature === 'common' ? 4 : 2)
-    : correctTimeSignature.topNumber
+const generateWrongAnswers = (timeSignature: TimeSignatureType): string[] => {
+  const beatCount = typeof timeSignature === 'string' 
+    ? (timeSignature === 'common' ? 4 : 2)
+    : timeSignature.topNumber
   
-  const correctNoteValue = typeof correctTimeSignature === 'string'
-    ? (correctTimeSignature === 'common' ? 'crotchet' : 'minim')
-    : getNoteValueFromBottomNumber(correctTimeSignature.bottomNumber)
+  const noteValueName = typeof timeSignature === 'string'
+    ? (timeSignature === 'common' ? 'crotchet' : 'minim')
+    : getNoteValueName(timeSignature.bottomNumber)
   
-  const wrongChoices: string[] = []
+  const allNoteValues = ['minim', 'crotchet', 'quaver']
+  const alternativeNoteValues = allNoteValues.filter(value => value !== noteValueName)
+  const alternativeBeatCounts = [2, 3, 4].filter(count => count !== beatCount)
   
-  // Wrong choice 1: Same beat count but wrong note value (tests bottom number understanding)
-  if (correctNoteValue === 'crotchet') {
-    wrongChoices.push(`${correctBeatCount} Minim Beats`)
-    wrongChoices.push(`${correctBeatCount} Quaver Beats`)
-  } else if (correctNoteValue === 'minim') {
-    wrongChoices.push(`${correctBeatCount} Crotchet Beats`)
-    wrongChoices.push(`${correctBeatCount} Quaver Beats`)
-  } else if (correctNoteValue === 'quaver') {
-    wrongChoices.push(`${correctBeatCount} Crotchet Beats`)
-    wrongChoices.push(`${correctBeatCount} Minim Beats`)
+  const wrongAnswers: string[] = []
+  
+  alternativeNoteValues.slice(0, 1).forEach(noteValue => {
+    wrongAnswers.push(`${beatCount} ${capitalize(noteValue)} Beats`)
+  })
+  
+  alternativeBeatCounts.slice(0, 1).forEach(count => {
+    wrongAnswers.push(`${count} ${capitalize(noteValueName)} Beats`)
+  })
+  
+  if (alternativeBeatCounts.length > 1 && alternativeNoteValues.length > 0) {
+    wrongAnswers.push(`${alternativeBeatCounts[1]} ${capitalize(alternativeNoteValues[0])} Beats`)
   }
   
-  // Wrong choice 2: Different beat count but same note value (tests top number understanding)
-  const otherBeatCounts = [2, 3, 4].filter(count => count !== correctBeatCount)
-  if (otherBeatCounts.length > 0) {
-    const capitalizedNoteValue = correctNoteValue.charAt(0).toUpperCase() + correctNoteValue.slice(1)
-    wrongChoices.push(`${otherBeatCounts[0]} ${capitalizedNoteValue} Beats`)
-  }
-  
-  // Wrong choice 3: Different beat count and different note value
-  if (otherBeatCounts.length > 1) {
-    const differentNoteValue = correctNoteValue === 'crotchet' ? 'minim' : 'crotchet'
-    const capitalizedDifferentNoteValue = differentNoteValue.charAt(0).toUpperCase() + differentNoteValue.slice(1)
-    wrongChoices.push(`${otherBeatCounts[1]} ${capitalizedDifferentNoteValue} Beats`)
-  }
-  
-  return wrongChoices
+  return wrongAnswers
 }
 
-// Create a time signature identification question
-export const createTimeSignatureQuestion = (stage: StageNumber): Question => {
-  const timeSignatures = getTimeSignatures(stage)
-  const correctTimeSig = getRandomItem(timeSignatures)
-  const correctTimeSigString = timeSignatureToString(correctTimeSig)
-  const correctAnswerString = createTimeSignatureMeaning(correctTimeSig)
-  
-  // Generate smart wrong choices that test understanding of both top and bottom numbers
-  const smartWrongChoices = generateSmartWrongChoices(correctTimeSig)
+
+const buildQuestion = (timeSignature: TimeSignatureType): Question => {
+  const notation = formatAsNotation(timeSignature)
+  const correctAnswer = formatAsText(timeSignature)
+  const wrongAnswers = generateWrongAnswers(timeSignature)
   
   return {
     id: generateQuestionId('time-sig'),
-    question: `What does the ${correctTimeSigString} time signature mean?`,
-    correctAnswer: correctAnswerString,
-    choices: generateWrongChoices(smartWrongChoices, correctAnswerString),
-    explanation: `The ${correctTimeSigString} time signature means ${correctAnswerString}.`,
+    question: `What does the ${notation} time signature mean?`,
+    correctAnswer,
+    choices: generateMultipleChoiceOptions(wrongAnswers, correctAnswer),
+    explanation: `The ${notation} time signature means ${correctAnswer}.`,
     type: 'multipleChoice',
     visualComponent: {
       type: 'timeSignature',
-      timeSignatureValue: correctTimeSigString
+      timeSignatureValue: notation
     }
   }
 }
 
-// Create multiple time signature questions
+const isSameTimeSignature = (ts1: TimeSignatureType, ts2: TimeSignatureType): boolean => {
+  const isString = typeof ts1 === 'string' && typeof ts2 === 'string'
+  const isObject = typeof ts1 === 'object' && typeof ts2 === 'object'
+  
+  if (isString) return ts1 === ts2
+  if (isObject) return ts1.topNumber === ts2.topNumber && ts1.bottomNumber === ts2.bottomNumber
+  return false
+}
+
+const isValidNextTimeSignature = (
+  candidate: TimeSignatureType,
+  last: TimeSignatureType | undefined,
+  secondLast: TimeSignatureType | undefined
+): boolean => {
+  if (!last) return true
+  if (isSameTimeSignature(candidate, last)) return false
+  if (secondLast && isSameTimeSignature(candidate, secondLast)) return false
+  return true
+}
+
+const createShuffledPool = (
+  available: TimeSignatureType[],
+  lastSelected?: TimeSignatureType,
+  secondLastSelected?: TimeSignatureType
+): TimeSignatureType[] => {
+  const maxAttempts = 10
+  
+  for (let i = 0; i < maxAttempts; i++) {
+    const pool = shuffleArray([...available])
+    
+    if (isValidNextTimeSignature(pool[0], lastSelected, secondLastSelected)) {
+      return pool
+    }
+  }
+  
+  return shuffleArray([...available])
+}
+
 export const createTimeSignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createTimeSignatureQuestion(stage))
+  const availableTimeSignatures = getTimeSignatures(stage)
+  
+  if (availableTimeSignatures.length === 1) {
+    return Array.from({ length: questionsCount }, () => 
+      buildQuestion(availableTimeSignatures[0])
+    )
+  }
+  
+  const timeSignatures: TimeSignatureType[] = []
+  let pool = shuffleArray([...availableTimeSignatures])
+  let poolIndex = 0
+  
+  while (timeSignatures.length < questionsCount) {
+    if (poolIndex >= pool.length) {
+      const last = timeSignatures[timeSignatures.length - 1]
+      const secondLast = timeSignatures[timeSignatures.length - 2]
+      pool = createShuffledPool(availableTimeSignatures, last, secondLast)
+      poolIndex = 0
+    }
+    
+    const candidate = pool[poolIndex]
+    const last = timeSignatures[timeSignatures.length - 1]
+    const secondLast = timeSignatures[timeSignatures.length - 2]
+    
+    if (isValidNextTimeSignature(candidate, last, secondLast)) {
+      timeSignatures.push(candidate)
+    }
+    
+    poolIndex++
+  }
+  
+  return timeSignatures.map(buildQuestion)
 }

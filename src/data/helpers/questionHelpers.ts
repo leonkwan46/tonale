@@ -1,30 +1,31 @@
-// General utility functions for generating questions
-// Get random item from array
+import { randomUUID } from 'expo-crypto'
+
 export const getRandomItem = <T>(array: T[]): T => {
   return array[Math.floor(Math.random() * array.length)]
 }
 
-// Generate wrong choices for multiple choice questions
-export const generateWrongChoices = (
+export const generateMultipleChoiceOptions = (
   allOptions: string[], 
   correctAnswer: string, 
-  count: number = 3
+  wrongChoicesCount: number = 3
 ): string[] => {
   const wrongChoices = allOptions
     .filter(option => option !== correctAnswer)
     .sort(() => Math.random() - 0.5)
-    .slice(0, count)
+    .slice(0, wrongChoicesCount)
   
   return [...wrongChoices, correctAnswer]
     .sort(() => Math.random() - 0.5)
 }
 
-// Generate unique question ID
 export const generateQuestionId = (prefix: string): string => {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+  return `${prefix}-${randomUUID()}`
 }
 
-// Shuffle array
 export const shuffleArray = <T>(array: T[]): T[] => {
   return [...array].sort(() => Math.random() - 0.5)
+}
+
+export const capitalize = (text: string): string => {
+  return text.charAt(0).toUpperCase() + text.slice(1)
 }
