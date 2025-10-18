@@ -1,37 +1,38 @@
-// Key signature exercise generators
-import { CLEFS } from '@leonkwan46/music-notation'
+import { CLEFS, type KeyName } from '@leonkwan46/music-notation'
 import { getKeys } from '../helpers/exerciseHelpers'
 import {
+  generateMultipleChoiceOptions,
   generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+  selectRandomItems
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Create a key signature identification question
-export const createKeySignatureQuestion = (stage: StageNumber): Question => {
-  const keys = getKeys(stage)
-  const correctKey = getRandomItem(keys)
-  
-  // Use full key names for choices (e.g., "C Major", "D Minor")
-  const keyNames = keys.map(key => key.toString())
-  
+const isSameKey = (key1: KeyName, key2: KeyName): boolean => {
+  return key1 === key2
+}
+
+const buildQuestion = (keyToTest: KeyName, stage: StageNumber): Question => {
   return {
     id: generateQuestionId('key-sig'),
     question: 'What key signature is this?',
-    correctAnswer: correctKey.toString(),
-    choices: generateWrongChoices(keyNames, correctKey.toString()),
-    explanation: `${correctKey.toString()} is one of the Grade 1 key signatures.`,
+    correctAnswer: keyToTest,
+    choices: generateMultipleChoiceOptions(
+      getKeys(stage),
+      keyToTest
+    ),
+    explanation: `${keyToTest} is one of the Grade 1 key signatures.`,
     type: 'multipleChoice',
     visualComponent: {
       clef: CLEFS.TREBLE,
       elements: [],
-      keyName: correctKey
+      keyName: keyToTest
     }
   }
 }
 
-// Create multiple key signature questions
 export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createKeySignatureQuestion(stage))
+  const availableKeys = getKeys(stage)
+  const keysToTest = selectRandomItems(availableKeys, questionsCount, isSameKey)
+  return keysToTest.map(keyToTest => buildQuestion(keyToTest, stage))
 }
+

@@ -4,7 +4,7 @@ import {
   capitalize,
   generateMultipleChoiceOptions,
   generateQuestionId,
-  shuffleArray
+  selectRandomItems
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -67,11 +67,19 @@ const generateWrongAnswers = (timeSignature: TimeSignatureType): string[] => {
   return wrongAnswers
 }
 
+const isSameTimeSignature = (ts1: TimeSignatureType, ts2: TimeSignatureType): boolean => {
+  const isString = typeof ts1 === 'string' && typeof ts2 === 'string'
+  const isObject = typeof ts1 === 'object' && typeof ts2 === 'object'
+  
+  if (isString) return ts1 === ts2
+  if (isObject) return ts1.topNumber === ts2.topNumber && ts1.bottomNumber === ts2.bottomNumber
+  return false
+}
 
-const buildQuestion = (timeSignature: TimeSignatureType): Question => {
-  const notation = formatAsNotation(timeSignature)
-  const correctAnswer = formatAsText(timeSignature)
-  const wrongAnswers = generateWrongAnswers(timeSignature)
+const buildQuestion = (correctTimeSignature: TimeSignatureType): Question => {
+  const notation = formatAsNotation(correctTimeSignature)
+  const correctAnswer = formatAsText(correctTimeSignature)
+  const wrongAnswers = generateWrongAnswers(correctTimeSignature)
   
   return {
     id: generateQuestionId('time-sig'),
@@ -87,75 +95,8 @@ const buildQuestion = (timeSignature: TimeSignatureType): Question => {
   }
 }
 
-const isSameTimeSignature = (ts1: TimeSignatureType, ts2: TimeSignatureType): boolean => {
-  const isString = typeof ts1 === 'string' && typeof ts2 === 'string'
-  const isObject = typeof ts1 === 'object' && typeof ts2 === 'object'
-  
-  if (isString) return ts1 === ts2
-  if (isObject) return ts1.topNumber === ts2.topNumber && ts1.bottomNumber === ts2.bottomNumber
-  return false
-}
-
-const isValidNextTimeSignature = (
-  candidate: TimeSignatureType,
-  last: TimeSignatureType | undefined,
-  secondLast: TimeSignatureType | undefined
-): boolean => {
-  if (!last) return true
-  if (isSameTimeSignature(candidate, last)) return false
-  if (secondLast && isSameTimeSignature(candidate, secondLast)) return false
-  return true
-}
-
-const createShuffledPool = (
-  available: TimeSignatureType[],
-  lastSelected?: TimeSignatureType,
-  secondLastSelected?: TimeSignatureType
-): TimeSignatureType[] => {
-  const maxAttempts = 10
-  
-  for (let i = 0; i < maxAttempts; i++) {
-    const pool = shuffleArray([...available])
-    
-    if (isValidNextTimeSignature(pool[0], lastSelected, secondLastSelected)) {
-      return pool
-    }
-  }
-  
-  return shuffleArray([...available])
-}
-
 export const createTimeSignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   const availableTimeSignatures = getTimeSignatures(stage)
-  
-  if (availableTimeSignatures.length === 1) {
-    return Array.from({ length: questionsCount }, () => 
-      buildQuestion(availableTimeSignatures[0])
-    )
-  }
-  
-  const timeSignatures: TimeSignatureType[] = []
-  let pool = shuffleArray([...availableTimeSignatures])
-  let poolIndex = 0
-  
-  while (timeSignatures.length < questionsCount) {
-    if (poolIndex >= pool.length) {
-      const last = timeSignatures[timeSignatures.length - 1]
-      const secondLast = timeSignatures[timeSignatures.length - 2]
-      pool = createShuffledPool(availableTimeSignatures, last, secondLast)
-      poolIndex = 0
-    }
-    
-    const candidate = pool[poolIndex]
-    const last = timeSignatures[timeSignatures.length - 1]
-    const secondLast = timeSignatures[timeSignatures.length - 2]
-    
-    if (isValidNextTimeSignature(candidate, last, secondLast)) {
-      timeSignatures.push(candidate)
-    }
-    
-    poolIndex++
-  }
-  
-  return timeSignatures.map(buildQuestion)
+  const timeSignaturesToTest = selectRandomItems(availableTimeSignatures, questionsCount, isSameTimeSignature)
+  return timeSignaturesToTest.map(buildQuestion)
 }
