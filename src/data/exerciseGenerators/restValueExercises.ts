@@ -1,10 +1,10 @@
-import { getAllRestTypes } from '../helpers/exerciseHelpers';
+import { getAllRestTypes } from '../helpers/exerciseHelpers'
 import {
   generateMultipleChoiceOptions,
   generateQuestionId,
   selectRandomItems
-} from '../helpers/questionHelpers';
-import { Question, StageNumber } from '../theoryData/types';
+} from '../helpers/questionHelpers'
+import { Question, StageNumber } from '../theoryData/types'
 
 type RestType = 'semibreve-rest' | 'minim-rest' | 'crotchet-rest' | 'quaver-rest' | 'semiquaver-rest';
 
