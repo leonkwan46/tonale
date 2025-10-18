@@ -1,4 +1,9 @@
-import { TimeSignature as LibraryTimeSignature, parseTimeSignature } from '@leonkwan46/music-notation'
+import {
+  CommonTime,
+  CutTime,
+  TimeSignature as LibraryTimeSignature,
+  parseTimeSignature
+} from '@leonkwan46/music-notation'
 import * as React from 'react'
 
 interface TimeSignatureProps {
@@ -10,16 +15,14 @@ export const TimeSignature: React.FC<TimeSignatureProps> = ({
 }) => {
   const parsedTimeSignature = parseTimeSignature(timeSignature)
   
-  // Handle string time signatures (common, cut)
   if (typeof parsedTimeSignature === 'string') {
     return parsedTimeSignature === 'common' ? (
-      <LibraryTimeSignature topNumber={4} bottomNumber={4} centered={true} />
+      <CommonTime centered={true} />
     ) : (
-      <LibraryTimeSignature topNumber={2} bottomNumber={2} centered={true} />
+      <CutTime centered={true} />
     )
   }
   
-  // Handle numeric time signatures
   return (
     <LibraryTimeSignature 
       topNumber={parsedTimeSignature.topNumber}

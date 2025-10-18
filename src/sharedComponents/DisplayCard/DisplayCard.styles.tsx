@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 
 export const DisplayCardContainer = styled.View<{ isTablet: boolean; extraHeight?: boolean }>(({ theme, isTablet, extraHeight }) => ({
-  backgroundColor: '#FFFFFF',
+  backgroundColor: '#ffffff',
   borderRadius: 16,
   borderWidth: 1,
   borderColor: theme.colors.border,
@@ -10,7 +10,6 @@ export const DisplayCardContainer = styled.View<{ isTablet: boolean; extraHeight
   width: '100%',
   maxWidth: isTablet ? 460 : 360,
   minHeight: extraHeight ? 300 : 200,
-  // Tablet specific styles for increasing the size of music staff
   ...(isTablet && {
     transform: [{ scale: 1.4 }]
   })

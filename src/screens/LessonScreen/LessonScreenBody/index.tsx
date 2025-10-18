@@ -1,5 +1,6 @@
 import { Question } from '@/data/theoryData/types'
 import * as React from 'react'
+import { useCallback } from 'react'
 import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
@@ -29,29 +30,24 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
   const { question, visualComponent, type } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
 
-  // Check if this is a note identification exercise (has clef + elements with pitch property)
   const isNoteIdentification = visualComponent?.clef && 
     visualComponent?.elements && 
     visualComponent.elements.length > 0 &&
     visualComponent.elements.some(element => element.pitch)
 
-
-  if (questions.length === 0) return null
-
-  const handleAnswerSubmitInternal = (isCorrect: boolean) => {
-    // Pass the answer result to the parent component
+  const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
-  }
+  }, [onAnswerSubmit])
 
-  const handleNextQuestionInternal = () => {
+  const handleNextQuestionInternal = useCallback(() => {
     if (isLastQuestion) {
-      // Lesson completed
       onLessonComplete?.()
     } else {
-      // Move to next question
       onNextQuestion()
     }
-  }
+  }, [isLastQuestion, onLessonComplete, onNextQuestion])
+
+  if (questions.length === 0) return null
 
   return (
     <BodyContainer>

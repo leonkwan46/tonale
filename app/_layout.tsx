@@ -12,7 +12,9 @@ export default function RootLayout() {
   const [showSplash, setShowSplash] = useState(true)
   
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf')
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Bravura: require('../assets/fonts/Bravura.otf'),
+    BravuraText: require('../assets/fonts/BravuraText.otf')
   })
 
   return (

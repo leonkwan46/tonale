@@ -1,6 +1,6 @@
 import { Question } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
-import { playSuccessSound } from '@/utils/soundUtils'
+import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
@@ -78,6 +78,8 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
     // Play success sound immediately when answer is correct
     if (correct) {
       playSuccessSound()
+    } else {
+      playErrorSound()
     }
     
     // Call parent callback

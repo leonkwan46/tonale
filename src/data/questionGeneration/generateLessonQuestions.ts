@@ -52,13 +52,13 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       questions.push(...createNoteIdentificationQuestions(questionsPerType + (remaining > 3 ? 1 : 0), config.stage, CLEFS.TREBLE))
       questions.push(...createKeySignatureQuestions(questionsPerType + (remaining > 4 ? 1 : 0), config.stage))
       questions.push(...createMusicalTermQuestions(questionsPerType, config.stage))
-      break
+      
+      return questions.sort(() => Math.random() - 0.5)
     
     default:
       console.warn(`Unknown generator type: ${config.generatorType}`)
   }
   
-  // Shuffle questions to mix different types
-  return questions.sort(() => Math.random() - 0.5)
+  return questions
 }
 
