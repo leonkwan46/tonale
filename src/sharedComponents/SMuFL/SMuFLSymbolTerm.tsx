@@ -5,8 +5,8 @@
  * @see https://w3c.github.io/smufl/latest/index.html
  */
 
-import styled from '@emotion/native'
-import { scale } from 'react-native-size-matters'
+import styled from '@emotion/native';
+import { scale } from 'react-native-size-matters';
 
 export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
   flex: 1,
