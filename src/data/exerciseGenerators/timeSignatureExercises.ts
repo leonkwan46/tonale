@@ -1,10 +1,10 @@
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
 import { getTimeSignatures } from '../helpers/exerciseHelpers'
 import {
-  capitalize,
-  generateMultipleChoiceOptions,
-  generateQuestionId,
-  shuffleArray
+    capitalize,
+    generateQuestionId,
+    generateWrongChoices,
+    shuffleArray
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -77,7 +77,7 @@ const buildQuestion = (timeSignature: TimeSignatureType): Question => {
     id: generateQuestionId('time-sig'),
     question: `What does the ${notation} time signature mean?`,
     correctAnswer,
-    choices: generateMultipleChoiceOptions(wrongAnswers, correctAnswer),
+    choices: generateWrongChoices(wrongAnswers, correctAnswer),
     explanation: `The ${notation} time signature means ${correctAnswer}.`,
     type: 'multipleChoice',
     visualComponent: {

@@ -4,7 +4,7 @@ export const getRandomItem = <T>(array: T[]): T => {
   return array[Math.floor(Math.random() * array.length)]
 }
 
-export const generateMultipleChoiceOptions = (
+export const generateWrongChoices = (
   allOptions: string[], 
   correctAnswer: string, 
   wrongChoicesCount: number = 3
