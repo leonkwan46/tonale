@@ -44,7 +44,7 @@ const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3):
 }
 
 // Helper function to render individual note/rest components
-const renderNoteComponent = (noteType: NoteType | { type: string; dots?: number; isTuplet?: boolean }) => {
+const renderNoteComponent = (noteType: any) => {
   // Handle dotted note/rest objects
   if (typeof noteType === 'object' && noteType.type) {
     const { type, dots = 0 } = noteType
@@ -72,12 +72,13 @@ const renderNoteComponent = (noteType: NoteType | { type: string; dots?: number;
       case 'semiquaver-rest':
         return <SemiquaverRest centered={true} dots={dots} />
       default:
-        return <Crotchet stem='up' centered={true} dots={dots} />
+        throw new Error(`Unknown note type in object: ${type}`)
     }
   }
   
   // Handle string note/rest types (legacy support)
-  switch (noteType) {
+  if (typeof noteType === 'string') {
+    switch (noteType) {
     // Notes
     case 'semibreve':
       return <Semibreve centered={true} />
@@ -101,8 +102,11 @@ const renderNoteComponent = (noteType: NoteType | { type: string; dots?: number;
     case 'semiquaver-rest':
       return <SemiquaverRest centered={true} />
     default:
-      return <Crotchet stem='up' centered={true} />
+      throw new Error(`Unknown note type: ${noteType}`)
+    }
   }
+  
+  throw new Error(`Invalid noteType: ${JSON.stringify(noteType)}`)
 }
 
 export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
@@ -156,16 +160,16 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       
       {visualComponent.type === 'noteValue' && (
         <DisplayCard extraHeight={false}>
-          {renderNoteComponent(visualComponent.noteType || '')}
+          {renderNoteComponent(visualComponent.noteType)}
         </DisplayCard>
       )}
       
       {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
         <DisplayCard extraHeight={false}>
           <Tuplets
-            noteType={visualComponent.tupletConfig.noteType}
+            noteType={visualComponent.tupletConfig.noteType as any}
             numberOfNotes={visualComponent.tupletConfig.numberOfNotes}
-            elements={generateTripletElements(visualComponent.tupletConfig.noteType, visualComponent.tupletConfig.numberOfNotes)}
+            elements={generateTripletElements(visualComponent.tupletConfig.noteType as any, visualComponent.tupletConfig.numberOfNotes)}
           />
         </DisplayCard>
       )}
@@ -191,7 +195,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       
       {shouldRenderIndividualNotes && (
         <DisplayCard extraHeight={false}>
-          {renderNoteComponent(visualComponent.elements?.[0]?.type || '')}
+          {renderNoteComponent(visualComponent.elements?.[0]?.type)}
         </DisplayCard>
       )}
       
