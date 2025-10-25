@@ -12,6 +12,7 @@ import {
   Minim,
   MinimRest,
   MusicStaff,
+  NoteType,
   parseTimeSignature as parseTimeSignatureFromLibrary,
   Quaver,
   QuaverRest,
@@ -19,6 +20,7 @@ import {
   SemibreveRest,
   Semiquaver,
   SemiquaverRest,
+  Tuplets,
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
@@ -30,8 +32,19 @@ interface VisualQuestionProps {
   visualComponent: VisualComponent
 }
 
+// Helper function to generate triplet elements for display
+const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3): MusicElementData[][] => {
+  const elements: MusicElementData[][] = []
+  
+  for (let i = 0; i < numberOfNotes; i++) {
+    elements.push([{ type: noteType, pitch: 'C4' }])
+  }
+  
+  return elements
+}
+
 // Helper function to render individual note/rest components
-const renderNoteComponent = (noteType: string | { type: string; dots?: number }) => {
+const renderNoteComponent = (noteType: NoteType | { type: string; dots?: number; isTuplet?: boolean }) => {
   // Handle dotted note/rest objects
   if (typeof noteType === 'object' && noteType.type) {
     const { type, dots = 0 } = noteType
@@ -144,6 +157,16 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       {visualComponent.type === 'noteValue' && (
         <DisplayCard extraHeight={false}>
           {renderNoteComponent(visualComponent.noteType || '')}
+        </DisplayCard>
+      )}
+      
+      {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
+        <DisplayCard extraHeight={false}>
+          <Tuplets
+            noteType={visualComponent.tupletConfig.noteType}
+            numberOfNotes={visualComponent.tupletConfig.numberOfNotes}
+            elements={generateTripletElements(visualComponent.tupletConfig.noteType, visualComponent.tupletConfig.numberOfNotes)}
+          />
         </DisplayCard>
       )}
       

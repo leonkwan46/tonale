@@ -2,9 +2,9 @@ import { Lesson } from '../types'
 
 export const stageOneLessons: Lesson[] = [
   {
-    id: 'lesson-1',
+    id: 'stage-1-lesson-1',
     title: 'Note Values',
-    description: 'Learn about different note values and dotted notes',
+    description: 'Learn basic note values',
     stars: 0,
     estimatedTime: 15,
     exerciseConfig: {
@@ -14,9 +14,9 @@ export const stageOneLessons: Lesson[] = [
     }
   },
   {
-    id: 'lesson-2',
+    id: 'stage-1-lesson-2',
     title: 'Rest Values',
-    description: 'Learn about different rest values and dotted rests',
+    description: 'Learn basic rest values',
     stars: 0,
     estimatedTime: 15,
     exerciseConfig: {
@@ -26,9 +26,9 @@ export const stageOneLessons: Lesson[] = [
     }
   },
   {
-    id: 'lesson-3',
+    id: 'stage-1-lesson-3',
     title: 'Time Signatures',
-    description: 'Learn about 2/4, 3/4, and 4/4 time signatures and note grouping',
+    description: 'Learn 2/4, 3/4, and 4/4 time signatures',
     stars: 0,
     estimatedTime: 20,
     exerciseConfig: {
@@ -38,50 +38,50 @@ export const stageOneLessons: Lesson[] = [
     }
   },
   {
-    id: 'lesson-4',
-    title: 'Clefs & Note Names',
-    description: 'Learn to identify notes on treble and bass clefs, including middle C',
+    id: 'stage-1-lesson-4',
+    title: 'Treble Clef Notes',
+    description: 'Learn treble clef note names',
     stars: 0,
-    estimatedTime: 18,
+    estimatedTime: 12,
     exerciseConfig: {
-      generatorType: 'noteIdentification',
-      questionsCount: 15,
-      stage: 1
-    }
-  },
-  {
-    id: 'lesson-5',
-    title: 'Major Scales & Key Signatures',
-    description: 'Learn about C, G, D, and F major scales and their key signatures',
-    stars: 0,
-    estimatedTime: 22,
-    exerciseConfig: {
-      generatorType: 'keySignature',
+      generatorType: 'trebleClef',
       questionsCount: 10,
       stage: 1
     }
   },
   {
-    id: 'lesson-6',
-    title: 'Musical Terms & Signs',
-    description: 'Learn tempo markings, dynamics, and articulation signs',
+    id: 'stage-1-lesson-5',
+    title: 'Bass Clef Notes',
+    description: 'Learn bass clef note names',
     stars: 0,
-    estimatedTime: 25,
+    estimatedTime: 12,
+    exerciseConfig: {
+      generatorType: 'bassClef',
+      questionsCount: 10,
+      stage: 1
+    }
+  },
+  {
+    id: 'stage-1-lesson-6',
+    title: 'Dynamics',
+    description: 'Learn basic dynamic markings',
+    stars: 0,
+    estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'musicalTerm',
-      questionsCount: 10,
+      questionsCount: 8,
       stage: 1
     }
   },
   {
     id: 'stage-1-final',
     title: 'Stage 1 Final Test',
-    description: 'Test your knowledge of basic music theory concepts',
+    description: 'Test all Stage 1 concepts',
     isFinalTest: true,
     isPassed: false,
     estimatedTime: 45,
     exerciseConfig: {
-      generatorType: 'mixed',
+      generatorType: 'stage-1-final',
       questionsCount: 25,
       stage: 1
     }

@@ -10,20 +10,18 @@ import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-nota
 export type StageNumber = 1 | 2 | 3
 
 export interface VisualComponent {
-  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'keySignature' | 'termAndSign'
-  // MusicStaff specific properties
+  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'termAndSign' | 'triplet'
   clef?: ClefType
   elements?: MusicElementData[]
   timeSignature?: string
   keyName?: KeyName
-  // TimeSignature specific properties (when type is 'timeSignature')
   timeSignatureValue?: string
-  // NoteValue specific properties (when type is 'noteValue')
-  noteType?: string | { type: string; dots?: number }
-  // KeySignature specific properties (when type is 'keySignature')
-  keySignatureValue?: string
-  // SMuFL Symbol specific properties (when type is 'termAndSign')
+  noteType?: string | { type: string; dots?: number; isTuplet?: boolean }
   symbolType?: string
+  tupletConfig?: {
+    noteType: string  // Base note type for the tuplet
+    numberOfNotes: number  // Number of notes in the tuplet (3 for triplets, 2 for duplets, etc.)
+  }
 }
 
 export interface Question {
