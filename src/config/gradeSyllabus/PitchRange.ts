@@ -114,9 +114,9 @@ export const GRADE_FIVE_ALTO_PITCH_RANGE = [
 export type GradeFiveAltoPitchRange = (typeof GRADE_FIVE_ALTO_PITCH_RANGE)[number]
 
 export const GRADE_FIVE_TENOR_PITCH_RANGE = [
-    'A2', 'B2', 'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5',
-    'A♯2', 'B♯2', 'C♯3', 'D♯3', 'E♯3', 'F♯3', 'G♯3', 'A♯3', 'B♯3', 'C♯4', 'D♯4', 'E♯4', 'F♯4', 'G♯4', 'A♯4', 'B♯4', 'C♯5', 'D♯5', 'E♯5',
-    'A♭2', 'B♭2', 'C♭3', 'D♭3', 'E♭3', 'F♭3', 'G♭3', 'A♭3', 'B♭3', 'C♭4', 'D♭4', 'E♭4', 'F♭4', 'G♭4', 'A♭4', 'B♭4', 'C♭5', 'D♭5', 'E♭5'
+  'A2', 'B2', 'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5',
+  'A♯2', 'B♯2', 'C♯3', 'D♯3', 'E♯3', 'F♯3', 'G♯3', 'A♯3', 'B♯3', 'C♯4', 'D♯4', 'E♯4', 'F♯4', 'G♯4', 'A♯4', 'B♯4', 'C♯5', 'D♯5', 'E♯5',
+  'A♭2', 'B♭2', 'C♭3', 'D♭3', 'E♭3', 'F♭3', 'G♭3', 'A♭3', 'B♭3', 'C♭4', 'D♭4', 'E♭4', 'F♭4', 'G♭4', 'A♭4', 'B♭4', 'C♭5', 'D♭5', 'E♭5'
 ] as const
 export type GradeFiveTenorPitchRange = (typeof GRADE_FIVE_TENOR_PITCH_RANGE)[number]
 
@@ -137,20 +137,8 @@ export type GradeFivePitchRange = (typeof GRADE_FIVE_PITCH_RANGE)[number]
 // Less Common Pitches
 // ====================
 
-export const LESS_COMMON_SINGLE_ACCIDENTALS = [
+export const LESS_COMMON_ACCIDENTALS = [
   'A♯', 'E♯', 'B♯',
   'C♭', 'F♭', 'G♭'
 ] as const
-export type LessCommonSingleAccidentals = (typeof LESS_COMMON_SINGLE_ACCIDENTALS)[number]
-
-export const LESS_COMMON_DOUBLE_ACCIDENTALS = [
-  'F𝄪', 'C𝄪', 'G𝄪', 'D𝄪', 'A𝄪',
-  'B𝄫', 'E𝄫', 'A𝄫', 'D𝄫', 'G𝄫'
-] as const
-export type LessCommonDoubleAccidentals = (typeof LESS_COMMON_DOUBLE_ACCIDENTALS)[number]
-
-export const LESS_COMMON_PITCH_RANGE = [
-  ...LESS_COMMON_SINGLE_ACCIDENTALS,
-  ...LESS_COMMON_DOUBLE_ACCIDENTALS
-] as const
-export type LessCommonPitchRange = (typeof LESS_COMMON_PITCH_RANGE)[number]
+export type LessCommonAccidentals = (typeof LESS_COMMON_ACCIDENTALS)[number]

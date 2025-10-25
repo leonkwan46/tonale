@@ -1,60 +1,48 @@
-// Interval exercise generators
 import { NOTES } from '@leonkwan46/music-notation'
+import { calculateInterval, transposeByInterval, type Interval } from '../helpers/intervalHelpers'
 import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Interval definitions for GRADE 1
-const INTERVAL_DEFINITIONS = {
-  '2nd': 'Second',
-  '3rd': 'Third', 
-  '4th': 'Fourth',
-  '5th': 'Fifth',
-  '6th': 'Sixth',
-  '7th': 'Seventh',
-  '8th': 'Octave'
-} as const
+const INTERVAL_NUMBERS = [2, 3, 4, 5, 6, 7, 8]
 
-// Create an interval identification question
 export const createIntervalQuestion = (stage: StageNumber): Question => {
-  const intervals = Object.keys(INTERVAL_DEFINITIONS)
-  const correctInterval = getRandomItem(intervals)
-  const correctDefinition = INTERVAL_DEFINITIONS[correctInterval as keyof typeof INTERVAL_DEFINITIONS]
+  const intervalNumber = getRandomItem(INTERVAL_NUMBERS) as 2 | 3 | 4 | 5 | 6 | 7 | 8
+  
+  const tonic = 'C4'
+  const intervalObj: Interval = {
+    number: intervalNumber,
+    type: 'perfect',
+    semitones: 0,
+    compound: false,
+    simpleName: ''
+  }
+  
+  const targetPitch = transposeByInterval(tonic, intervalObj)
+  const calculatedInterval = calculateInterval(tonic, targetPitch)
+  
+  // Generate wrong choices using actual interval names
+  const wrongChoices = generateWrongChoices([
+    'Perfect 2nd', 'Major 3rd', 'Perfect 4th', 'Perfect 5th', 
+    'Major 6th', 'Major 7th', 'Perfect Octave'
+  ], calculatedInterval.simpleName)
   
   return {
     id: generateQuestionId('interval'),
     question: 'What interval is this above the tonic?',
-    correctAnswer: correctDefinition,
-    choices: generateWrongChoices(Object.values(INTERVAL_DEFINITIONS), correctDefinition),
-    explanation: `The interval above the tonic is a ${correctDefinition} (${correctInterval}).`,
+    correctAnswer: calculatedInterval.simpleName,
+    choices: wrongChoices,
+    explanation: `The interval above the tonic is a ${calculatedInterval.simpleName} (${calculatedInterval.semitones} semitones).`,
     type: 'multipleChoice',
     visualComponent: {
       clef: 'treble',
       elements: [
-        { pitch: 'C4', type: NOTES.CROTCHET },
-        { pitch: getIntervalPitch('C4', correctInterval), type: NOTES.CROTCHET }
+        { pitch: tonic, type: NOTES.CROTCHET },
+        { pitch: targetPitch, type: NOTES.CROTCHET }
       ]
     }
   }
 }
 
-// Helper function to get the pitch for a given interval above a tonic
-const getIntervalPitch = (tonic: string, interval: string): string => {
-  const pitchMap: Record<string, Record<string, string>> = {
-    'C4': {
-      '2nd': 'D4',
-      '3rd': 'E4', 
-      '4th': 'F4',
-      '5th': 'G4',
-      '6th': 'A4',
-      '7th': 'B4',
-      '8th': 'C5'
-    }
-  }
-  
-  return pitchMap[tonic]?.[interval] || 'C4'
-}
-
-// Create multiple interval questions
 export const createIntervalQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   return Array.from({ length: questionsCount }, () => createIntervalQuestion(stage))
 }
