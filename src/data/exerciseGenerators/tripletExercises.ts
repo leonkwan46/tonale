@@ -1,6 +1,6 @@
 // Triplet exercise generators
 import { NOTES } from '@leonkwan46/music-notation'
-import { GRADE_THREE_TRIPLET_TIME_VALUES, GRADE_TWO_TRIPLET_TIME_VALUES } from '../../config/gradeSyllabus/TimeValues'
+import { GRADE_THREE_TRIPLET_NOTE_VALUES, GRADE_TWO_TRIPLET_NOTE_VALUES } from '../../config/gradeSyllabus/NoteValues'
 import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -11,9 +11,9 @@ export const createTripletIdentificationQuestion = (stage: StageNumber): Questio
   
   let selectedConfig
   if (stage === 3) {
-    selectedConfig = getRandomItem([...GRADE_THREE_TRIPLET_TIME_VALUES])
+    selectedConfig = getRandomItem([...GRADE_THREE_TRIPLET_NOTE_VALUES])
   } else {
-    selectedConfig = getRandomItem([...GRADE_TWO_TRIPLET_TIME_VALUES])
+    selectedConfig = getRandomItem([...GRADE_TWO_TRIPLET_NOTE_VALUES])
   }
   
   const wrongAnswers = [
@@ -45,9 +45,9 @@ export const createTripletValueQuestion = (stage: StageNumber): Question => {
   // Get appropriate tuplet configurations based on stage
   let selectedConfig
   if (stage === 3) {
-    selectedConfig = getRandomItem([...GRADE_THREE_TRIPLET_TIME_VALUES])
+    selectedConfig = getRandomItem([...GRADE_THREE_TRIPLET_NOTE_VALUES])
   } else {
-    selectedConfig = getRandomItem([...GRADE_TWO_TRIPLET_TIME_VALUES])
+    selectedConfig = getRandomItem([...GRADE_TWO_TRIPLET_NOTE_VALUES])
   }
   
   const noteTypeNames: Record<string, string> = {
@@ -92,9 +92,9 @@ export const createTripletComparisonQuestion = (stage: StageNumber): Question =>
   // Get appropriate tuplet configurations based on stage
   let selectedConfig
   if (stage === 3) {
-    selectedConfig = getRandomItem([...GRADE_THREE_TRIPLET_TIME_VALUES])
+    selectedConfig = getRandomItem([...GRADE_THREE_TRIPLET_NOTE_VALUES])
   } else {
-    selectedConfig = getRandomItem([...GRADE_TWO_TRIPLET_TIME_VALUES])
+    selectedConfig = getRandomItem([...GRADE_TWO_TRIPLET_NOTE_VALUES])
   }
   
   const noteTypeNames: Record<string, string> = {
