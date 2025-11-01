@@ -1,0 +1,35 @@
+import {
+  GRADE_FIVE_CHORDS,
+  GRADE_FOUR_CHORDS,
+  GRADE_ONE_CHORDS,
+  GRADE_THREE_CHORDS,
+  GRADE_TWO_CHORDS
+} from '../../config/gradeSyllabus/Chords'
+
+export const STAGE_ONE_TRIADS = GRADE_ONE_CHORDS
+
+export const STAGE_TWO_TRIADS = {
+  ...GRADE_ONE_CHORDS,
+  ...GRADE_TWO_CHORDS
+} as const
+
+export const STAGE_THREE_TRIADS = {
+  ...GRADE_ONE_CHORDS,
+  ...GRADE_TWO_CHORDS,
+  ...GRADE_THREE_CHORDS
+} as const
+
+export const STAGE_FOUR_TRIADS = {
+  ...GRADE_ONE_CHORDS,
+  ...GRADE_TWO_CHORDS,
+  ...GRADE_THREE_CHORDS,
+  ...GRADE_FOUR_CHORDS
+} as const
+
+export const STAGE_FIVE_TRIADS = {
+  ...GRADE_ONE_CHORDS,
+  ...GRADE_TWO_CHORDS,
+  ...GRADE_THREE_CHORDS,
+  ...GRADE_FOUR_CHORDS,
+  ...GRADE_FIVE_CHORDS
+} as const

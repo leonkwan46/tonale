@@ -1,17 +1,17 @@
 // Generate questions for a lesson based on exercise configuration
 import { CLEFS } from '@leonkwan46/music-notation'
 import {
-  createArticulationQuestions,
-  createIntervalQuestions,
-  createKeySignatureQuestions,
-  createMusicalTermQuestions,
-  createNoteGroupingQuestions,
-  createNoteIdentificationQuestions,
-  createNoteValueQuestions,
-  createRestValueQuestions,
-  createTimeSignatureQuestions,
-  createTriadQuestions,
-  createTripletQuestions
+    createArticulationQuestions,
+    createIntervalQuestions,
+    createKeySignatureQuestions,
+    createMusicalTermQuestions,
+    createNoteGroupingQuestions,
+    createNoteIdentificationQuestions,
+    createNoteValueQuestions,
+    createRestValueQuestions,
+    createTimeSignatureQuestions,
+    createTriadQuestions,
+    createTripletQuestions
 } from '../exerciseGenerators'
 import { ExerciseConfig, Question } from '../theoryData/types'
 
@@ -69,7 +69,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       break
     
     case 'triad':
-      questions.push(...createTriadQuestions(config.questionsCount, config.stage))
+      questions.push(...createTriadQuestions(config.questionsCount, config.stage, 'treble'))
       break
     
     case 'triplet':
@@ -109,7 +109,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       questions.push(...createArticulationQuestions(stage2QuestionsPerType + (stage2Remaining > 8 ? 1 : 0), config.stage))
       questions.push(...createKeySignatureQuestions(stage2QuestionsPerType + (stage2Remaining > 9 ? 1 : 0), config.stage))
       questions.push(...createIntervalQuestions(stage2QuestionsPerType, config.stage))
-      questions.push(...createTriadQuestions(stage2QuestionsPerType, config.stage))
+      questions.push(...createTriadQuestions(stage2QuestionsPerType, config.stage, 'treble'))
       
       return questions.sort(() => Math.random() - 0.5)
     

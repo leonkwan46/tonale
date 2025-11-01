@@ -6,7 +6,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Dotted Notes & Rests',
     description: 'Learn dotted note and rest values',
     stars: 0,
-    estimatedTime: 20,
     exerciseConfig: {
       generatorType: 'dottedValues',
       questionsCount: 12,
@@ -18,7 +17,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Note Grouping, Ties & Slurs',
     description: 'Learn how notes connect and group within bars',
     stars: 0,
-    estimatedTime: 25,
     exerciseConfig: {
       generatorType: 'noteGrouping',
       questionsCount: 10,
@@ -30,7 +28,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Tempo Terms',
     description: 'Learn tempo markings and changes',
     stars: 0,
-    estimatedTime: 20,
     exerciseConfig: {
       generatorType: 'musicalTerm',
       questionsCount: 10,
@@ -42,7 +39,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Articulation & Expression',
     description: 'Learn articulation and expression markings',
     stars: 0,
-    estimatedTime: 20,
     exerciseConfig: {
       generatorType: 'articulation',
       questionsCount: 10,
@@ -54,7 +50,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Major Scales & Key Signatures',
     description: 'Learn C, G, D, and F major scales',
     stars: 0,
-    estimatedTime: 22,
     exerciseConfig: {
       generatorType: 'keySignature',
       questionsCount: 10,
@@ -66,7 +61,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Intervals',
     description: 'Learn intervals above the tonic',
     stars: 0,
-    estimatedTime: 25,
     exerciseConfig: {
       generatorType: 'interval',
       questionsCount: 10,
@@ -78,7 +72,6 @@ export const stageTwoLessons: Lesson[] = [
     title: 'Tonic Triads',
     description: 'Learn tonic triads in root position',
     stars: 0,
-    estimatedTime: 25,
     exerciseConfig: {
       generatorType: 'triad',
       questionsCount: 10,
@@ -91,7 +84,6 @@ export const stageTwoLessons: Lesson[] = [
     description: 'Test all Stage 2 concepts',
     isFinalTest: true,
     isPassed: false,
-    estimatedTime: 50,
     exerciseConfig: {
       generatorType: 'stage-2-final',
       questionsCount: 30,

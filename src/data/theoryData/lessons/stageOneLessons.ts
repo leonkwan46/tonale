@@ -6,7 +6,6 @@ export const stageOneLessons: Lesson[] = [
     title: 'Note Values',
     description: 'Learn basic note values',
     stars: 0,
-    estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'noteValue',
       questionsCount: 10,
@@ -18,7 +17,6 @@ export const stageOneLessons: Lesson[] = [
     title: 'Rest Values',
     description: 'Learn basic rest values',
     stars: 0,
-    estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'restValue',
       questionsCount: 10,
@@ -30,7 +28,6 @@ export const stageOneLessons: Lesson[] = [
     title: 'Time Signatures',
     description: 'Learn 2/4, 3/4, and 4/4 time signatures',
     stars: 0,
-    estimatedTime: 20,
     exerciseConfig: {
       generatorType: 'timeSignature',
       questionsCount: 10,
@@ -42,7 +39,6 @@ export const stageOneLessons: Lesson[] = [
     title: 'Treble Clef Notes',
     description: 'Learn treble clef note names',
     stars: 0,
-    estimatedTime: 12,
     exerciseConfig: {
       generatorType: 'trebleClef',
       questionsCount: 10,
@@ -54,7 +50,6 @@ export const stageOneLessons: Lesson[] = [
     title: 'Bass Clef Notes',
     description: 'Learn bass clef note names',
     stars: 0,
-    estimatedTime: 12,
     exerciseConfig: {
       generatorType: 'bassClef',
       questionsCount: 10,
@@ -66,7 +61,6 @@ export const stageOneLessons: Lesson[] = [
     title: 'Dynamics',
     description: 'Learn basic dynamic markings',
     stars: 0,
-    estimatedTime: 15,
     exerciseConfig: {
       generatorType: 'musicalTerm',
       questionsCount: 8,
@@ -79,7 +73,6 @@ export const stageOneLessons: Lesson[] = [
     description: 'Test all Stage 1 concepts',
     isFinalTest: true,
     isPassed: false,
-    estimatedTime: 45,
     exerciseConfig: {
       generatorType: 'stage-1-final',
       questionsCount: 25,

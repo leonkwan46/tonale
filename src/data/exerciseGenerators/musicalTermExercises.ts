@@ -1,30 +1,70 @@
-// Enhanced musical terms exercise generators with SMuFL support
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  ARTICULATION_SIGNS_DEFINITIONS,
+  ArticulationSignsDefinitionsKeys,
+  DYNAMIC_SYMBOLS_DEFINITIONS,
+  DynamicSymbolsDefinitionKeys,
+  GRADE_ONE_EXPRESSION_TERMS,
+  GRADE_ONE_TEMPO_TERMS,
+  GradeOneExpressionTermsKeys,
+  GradeOneTempoTermsKeys,
+  TERM_DISPLAY_NAMES,
+  TermDisplayNamesKeys
+} from '../../config/gradeSyllabus'
+import {
+  generateQuestionId,
+  generateWrongChoices,
+  getRandomItem
 } from '../helpers/questionHelpers'
-import { getAllStageOneTerms, getDisplayName, getSMuFLSymbol } from '../stageSyllabusConfigs/musicalTerms'
+import {
+  STAGE_ONE_MUSICAL_TERMS,
+  STAGE_TWO_MUSICAL_TERMS
+} from '../stageSyllabus/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Create a musical term question with SMuFL symbol
-export const createMusicalTermQuestion = (stage: StageNumber, includeSymbol = true): Question => {
-  // Get all terms
-  const allTerms = getAllStageOneTerms()
-  const allKeys = Object.keys(allTerms)
-  const correctTerm = getRandomItem(allKeys)
-  const correctDefinition = allTerms[correctTerm as keyof typeof allTerms]
-  const symbol = getSMuFLSymbol(correctTerm)
+export const createMusicalTermQuestion = (stage: StageNumber): Question => {
+  let stageMusicalTerms: Record<string, string>
   
-  // Generic question text - the symbol will be shown in the visual component
-  const questionText = 'What is this musical term/sign?'
+  switch (stage) {
+    case 1:
+      stageMusicalTerms = STAGE_ONE_MUSICAL_TERMS
+      break
+    case 2:
+      stageMusicalTerms = STAGE_TWO_MUSICAL_TERMS
+      break
+    default:
+      throw new Error(`Invalid stage: ${stage}. Only stages 1 and 2 are currently supported.`)
+  }
+  
+  const correctTerm = getRandomItem(Object.keys(stageMusicalTerms))
+  
+  const correctDefinition = DYNAMIC_SYMBOLS_DEFINITIONS[correctTerm as DynamicSymbolsDefinitionKeys ] ||
+                          GRADE_ONE_TEMPO_TERMS[correctTerm as GradeOneTempoTermsKeys] ||
+                          GRADE_ONE_EXPRESSION_TERMS[correctTerm as GradeOneExpressionTermsKeys] ||
+                          ARTICULATION_SIGNS_DEFINITIONS[correctTerm as ArticulationSignsDefinitionsKeys]
+  
+  if (!correctDefinition) {
+    throw new Error(`No definition found for term: ${correctTerm}`)
+  }
+  
+  const allDefinitions = {
+    ...DYNAMIC_SYMBOLS_DEFINITIONS,
+    ...GRADE_ONE_TEMPO_TERMS,
+    ...GRADE_ONE_EXPRESSION_TERMS,
+    ...ARTICULATION_SIGNS_DEFINITIONS
+  }
+  
+  const distinctDefinitions = Object.fromEntries(
+    Object.entries(allDefinitions).filter(([key, value], index, arr) => 
+      arr.findIndex(([k, v]) => v === value) === index
+    )
+  )
   
   return {
     id: generateQuestionId('musical-term-smufl'),
-    question: questionText,
+    question: 'What is this musical term/sign?',
     correctAnswer: correctDefinition,
-    choices: generateWrongChoices(Object.values(allTerms), correctDefinition),
-    explanation: `The symbol shown represents '${getDisplayName(correctTerm)}' which means ${correctDefinition}.`,
+    choices: generateWrongChoices(Object.values(distinctDefinitions), correctDefinition),
+    explanation: `The term '${TERM_DISPLAY_NAMES[correctTerm as TermDisplayNamesKeys] || correctTerm}' means ${correctDefinition}.`,
     type: 'multipleChoice',
     visualComponent: {
       type: 'termAndSign',
@@ -32,25 +72,17 @@ export const createMusicalTermQuestion = (stage: StageNumber, includeSymbol = tr
     },
     metadata: {
       hasSymbol: true,
-      symbol,
+      symbol: correctTerm,
       category: 'musical-term'
     }
   }
 }
 
-// Create dynamics-specific questions with SMuFL symbols (alias for createMusicalTermQuestions)
-export const createDynamicsQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return createMusicalTermQuestions(questionsCount, stage, true)
-}
-
-
-// Create multiple dynamics-focused musical term questions with SMuFL symbols
 export const createMusicalTermQuestions = (
   questionsCount: number, 
-  stage: StageNumber, 
-  includeSymbol = true
+  stage: StageNumber
 ): Question[] => {
   return Array.from({ length: questionsCount }, () => 
-    createMusicalTermQuestion(stage, includeSymbol)
+    createMusicalTermQuestion(stage)
   )
 }

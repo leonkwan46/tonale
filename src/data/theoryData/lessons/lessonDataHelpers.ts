@@ -2,7 +2,7 @@ import { stagesArray } from '../stages/stageDataHelpers'
 import { stage1 } from '../stages/stageOne'
 import { stage3 } from '../stages/stageThree'
 import { stage2 } from '../stages/stageTwo'
-import { getLessonProgress, updateLessonProgress } from '../theoryDataHelpers'
+import { getLessonProgress } from '../theoryDataHelpers'
 import { Lesson, StageLesson } from '../types'
 import { stageOneLessons } from './stageOneLessons'
 import { stageThreeLessons } from './stageThreeLessons'
@@ -57,9 +57,4 @@ export const getStageLessonById = (id: string): StageLesson | undefined => {
     ...lesson,
     stageId: stage?.id || ''
   }
-}
-
-// Legacy function - now uses the new progress system
-export const updateLessonStars = async (lessonId: string, stars: number): Promise<void> => {
-  await updateLessonProgress(lessonId, stars)
 }

@@ -1,10 +1,10 @@
 // Exercise-specific helper functions for music theory stages
 import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
-import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../stageSyllabusConfigs/keySignatures'
-import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabusConfigs/noteRange'
-import { STAGE_ONE_ALL_NOTE_TYPES, STAGE_ONE_DOTTED_NOTE_TYPES, STAGE_ONE_NOTE_TYPES } from '../stageSyllabusConfigs/noteTypes'
-import { STAGE_ONE_ALL_REST_TYPES, STAGE_ONE_DOTTED_REST_TYPES, STAGE_ONE_REST_TYPES } from '../stageSyllabusConfigs/restTypes'
-import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES } from '../stageSyllabusConfigs/timeSignatures'
+import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../stageSyllabus/keySignatures'
+import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabus/noteRange'
+import { STAGE_ONE_ALL_NOTE_TYPES, STAGE_ONE_DOTTED_NOTE_TYPES, STAGE_ONE_NOTE_TYPES } from '../stageSyllabus/noteTypes'
+import { STAGE_ONE_ALL_REST_TYPES, STAGE_ONE_DOTTED_REST_TYPES, STAGE_ONE_REST_TYPES } from '../stageSyllabus/restTypes'
+import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES } from '../stageSyllabus/timeSignatures'
 import { StageNumber } from '../theoryData/types'
 
 // ===============================

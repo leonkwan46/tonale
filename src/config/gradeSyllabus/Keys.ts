@@ -157,9 +157,9 @@ export const GRADE_FIVE_RELATIVE_KEYS = {
 } as const
 export type GradeFiveRelativeKeys = typeof GRADE_FIVE_RELATIVE_KEYS
 
-// =========================
-// FULL MAP OF RELATIVE KEYS
-// =========================
+// ======
+// Global
+// ======
 export const FULL_MAP_OF_RELATIVE_KEYS = {
   ...GRADE_ONE_RELATIVE_KEYS,
   ...GRADE_TWO_RELATIVE_KEYS,
@@ -168,3 +168,21 @@ export const FULL_MAP_OF_RELATIVE_KEYS = {
   ...GRADE_FIVE_RELATIVE_KEYS
 } as const
 export type FullMapOfRelativeKeys = typeof FULL_MAP_OF_RELATIVE_KEYS
+
+export const ALL_MAJOR_KEYS = [
+  ...GRADE_ONE_MAJOR_KEYS,
+  ...GRADE_TWO_MAJOR_KEYS,
+  ...GRADE_THREE_MAJOR_KEYS,
+  ...GRADE_FOUR_MAJOR_KEYS,
+  ...GRADE_FIVE_MAJOR_KEYS
+] as const
+export type AllMajorKeys = typeof ALL_MAJOR_KEYS
+
+export const ALL_MINOR_KEYS = [
+  ...GRADE_ONE_MINOR_KEYS,
+  ...GRADE_TWO_MINOR_KEYS,
+  ...GRADE_THREE_MINOR_KEYS,
+  ...GRADE_FOUR_MINOR_KEYS,
+  ...GRADE_FIVE_MINOR_KEYS
+] as const
+export type AllMinorKeys = typeof ALL_MINOR_KEYS

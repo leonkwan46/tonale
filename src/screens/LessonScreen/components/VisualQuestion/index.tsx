@@ -1,4 +1,5 @@
-import { getDisplayName, getSMuFLSymbol, isTextTerm as isTextTermHelper, STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
+import { GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus/MusicalTerms'
+import { STAGE_ONE_MUSICAL_TERMS } from '@/data/stageSyllabus/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
@@ -134,15 +135,18 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     !(visualComponent.elements?.length === 1 && !visualComponent.clef)
 
   // SMuFL symbol helpers
-  const symbolText = visualComponent.symbolType ? getSMuFLSymbol(visualComponent.symbolType) : ''
-  const isTextTerm = visualComponent.symbolType ? isTextTermHelper(visualComponent.symbolType) : false
-  const displayText = visualComponent.symbolType ? getDisplayName(visualComponent.symbolType) : ''
+  const symbolText = visualComponent.symbolType ? 
+    GRADE_ONE_DYNAMIC_SYMBOLS[visualComponent.symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS] ||
+    GRADE_ONE_ARTICULATION_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS] || 
+    '' : ''
+  const isTextTerm = visualComponent.symbolType ? 
+    !(visualComponent.symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) && 
+    !(visualComponent.symbolType in GRADE_ONE_ARTICULATION_SIGNS) : false
+  const displayText = visualComponent.symbolType ? TERM_DISPLAY_NAMES[visualComponent.symbolType as keyof typeof TERM_DISPLAY_NAMES] || visualComponent.symbolType : ''
 
   // TTS helpers
   const isItalianMusicalTerm = visualComponent.symbolType && 
-    (STAGE_ONE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
-     STAGE_TWO_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
-     STAGE_THREE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS])
+    STAGE_ONE_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_MUSICAL_TERMS]
   
   const handleTTS = () => {
     if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {

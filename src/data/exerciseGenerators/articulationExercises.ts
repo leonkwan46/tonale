@@ -1,6 +1,6 @@
 // Articulation and expression exercise generators
 import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
-import { getStageOneArticulationTerms } from '../stageSyllabusConfigs/musicalTerms'
+import { getStageOneArticulationTerms } from '../stageSyllabus/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create an articulation term question

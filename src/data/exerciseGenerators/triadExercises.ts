@@ -1,53 +1,113 @@
-// Triad exercise generators
-import { NOTES } from '@leonkwan46/music-notation'
+import { NOTES, type ClefType } from '@leonkwan46/music-notation'
+import {
+  GRADE_ONE_BASS_PITCH_RANGE,
+  GRADE_ONE_TREBLE_PITCH_RANGE,
+  GRADE_THREE_BASS_PITCH_RANGE,
+  GRADE_THREE_TREBLE_PITCH_RANGE,
+  GRADE_TWO_BASS_PITCH_RANGE,
+  GRADE_TWO_TREBLE_PITCH_RANGE
+} from '../../config/gradeSyllabus/PitchRange'
 import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { STAGE_ONE_TRIADS, STAGE_THREE_TRIADS, STAGE_TWO_TRIADS } from '../stageSyllabus/triads'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Triad definitions for GRADE 1 (tonic triads in root position)
-const TRIAD_DEFINITIONS = {
-  'C major': 'C-E-G',
-  'G major': 'G-B-D',
-  'D major': 'D-F#-A',
-  'F major': 'F-A-C'
-} as const
-
-// Create a triad identification question
-export const createTriadQuestion = (stage: StageNumber): Question => {
-  const triads = Object.keys(TRIAD_DEFINITIONS)
-  const correctTriad = getRandomItem(triads)
-  const correctDefinition = TRIAD_DEFINITIONS[correctTriad as keyof typeof TRIAD_DEFINITIONS]
+export const createTriadQuestion = (stage: StageNumber, clef: ClefType): Question => {
+  const availableChords = getChordsByStage(stage)
+  const chordKeys = Object.keys(availableChords)
+  const selectedChordKey = getRandomItem(chordKeys)
+  const selectedChordNotes = availableChords[selectedChordKey as keyof typeof availableChords]
+  
+  const correctAnswer = selectedChordNotes.join('-')
+  const allChordAnswers = Object.values(availableChords).map(notes => notes.join('-'))
+  const choices = generateWrongChoices(allChordAnswers, correctAnswer)
+  
+  const chordPitches = addRegister(selectedChordNotes, clef, stage)
   
   return {
     id: generateQuestionId('triad'),
     question: 'What are the notes in this tonic triad?',
-    correctAnswer: correctDefinition,
-    choices: generateWrongChoices(Object.values(TRIAD_DEFINITIONS), correctDefinition),
-    explanation: `The ${correctTriad} tonic triad consists of ${correctDefinition}.`,
+    correctAnswer,
+    choices,
+    explanation: `The ${selectedChordKey} tonic triad consists of ${correctAnswer}.`,
     type: 'multipleChoice',
     visualComponent: {
-      clef: 'treble',
+      clef,
       elements: [
-        { pitch: getTriadNotes(correctTriad)[0], type: NOTES.CROTCHET },
-        { pitch: getTriadNotes(correctTriad)[1], type: NOTES.CROTCHET },
-        { pitch: getTriadNotes(correctTriad)[2], type: NOTES.CROTCHET }
+        { pitch: chordPitches[0], type: NOTES.CROTCHET },
+        { pitch: chordPitches[1], type: NOTES.CROTCHET },
+        { pitch: chordPitches[2], type: NOTES.CROTCHET }
       ]
     }
   }
 }
 
-// Helper function to get the notes for a given triad
-const getTriadNotes = (triad: string): string[] => {
-  const triadMap: Record<string, string[]> = {
-    'C major': ['C4', 'E4', 'G4'],
-    'G major': ['G4', 'B4', 'D5'],
-    'D major': ['D4', 'F#4', 'A4'],
-    'F major': ['F4', 'A4', 'C5']
+const getChordsByStage = (stage: StageNumber) => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_TRIADS
+    case 2:
+      return STAGE_TWO_TRIADS
+    case 3:
+      return STAGE_THREE_TRIADS
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
   }
-  
-  return triadMap[triad] || ['C4', 'E4', 'G4']
 }
 
-// Create multiple triad questions
-export const createTriadQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createTriadQuestion(stage))
+const getPitchRange = (stage: StageNumber, clef: ClefType) => {
+  // Note: Currently supports stages 1-3. For stages 4-5, additional clefs (alto, tenor) 
+  // will be supported and require extending StageNumber type and adding more pitch ranges.
+  switch (stage) {
+    case 1:
+      return clef === 'treble' ? GRADE_ONE_TREBLE_PITCH_RANGE : GRADE_ONE_BASS_PITCH_RANGE
+    case 2:
+      return clef === 'treble' ? GRADE_TWO_TREBLE_PITCH_RANGE : GRADE_TWO_BASS_PITCH_RANGE
+    case 3:
+      return clef === 'treble' ? GRADE_THREE_TREBLE_PITCH_RANGE : GRADE_THREE_BASS_PITCH_RANGE
+    default:
+      throw new Error(`Invalid stage: ${stage}`)
+  }
+}
+
+const addRegister = (notes: readonly string[], clef: ClefType, stage: StageNumber): string[] => {
+  const allowedPitches = getPitchRange(stage, clef)
+  
+  const getBaseRegister = (clef: ClefType): number => {
+    switch (clef) {
+      case 'treble':
+        return 4
+      case 'bass':
+        return 3
+      case 'alto':
+        return 3
+      case 'tenor':
+        return 3
+      default:
+        return 4
+    }
+  }
+  
+  const baseRegister = getBaseRegister(clef)
+  
+  return notes.map((note, index) => {
+    let register = baseRegister
+    if (index > 0 && note < notes[0]) {
+      register = baseRegister + 1
+    }
+    
+    const pitch = `${note}${register}`
+    
+    if (!allowedPitches.includes(pitch as never)) {
+      const nextPitch = `${note}${register + 1}`
+      if (allowedPitches.includes(nextPitch as never)) {
+        return nextPitch
+      }
+    }
+    
+    return pitch
+  })
+}
+
+export const createTriadQuestions = (questionsCount: number, stage: StageNumber, clef: ClefType): Question[] => {
+  return Array.from({ length: questionsCount }, () => createTriadQuestion(stage, clef))
 }

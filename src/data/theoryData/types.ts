@@ -57,7 +57,6 @@ export interface Lesson {
   id: string
   title: string
   description: string
-  estimatedTime?: number // in minutes
   
   // Lesson type
   isFinalTest?: boolean // true for final tests, undefined/false for regular lessons

@@ -1,5 +1,6 @@
 import { KEY_NAMES } from '@leonkwan46/music-notation'
 import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, AllHarmonicMinorScale, AllMajorScale } from './Scales'
+import { ALL_MAJOR_KEYS, ALL_MINOR_KEYS, GRADE_ONE_MINOR_KEYS } from './Keys'
 
 // ======================
 // HELPER FUNCTIONS
@@ -153,8 +154,8 @@ export const GRADE_FOUR_MINOR_KEYS = [
 ] as const
 
 
-export const GRADE_FOUR_MAJOR_PRIMARY_CHORDS = generatePrimaryChordsWithInversions(GRADE_FOUR_MAJOR_KEYS, 'major')
-export const GRADE_FOUR_MINOR_PRIMARY_CHORDS = generatePrimaryChordsWithInversions(GRADE_FOUR_MINOR_KEYS, 'minor')
+export const GRADE_FOUR_MAJOR_PRIMARY_CHORDS = generatePrimaryChordsWithInversions([...GRADE_ONE_MAJOR_KEYS, ...GRADE_TWO_MAJOR_KEYS, ...GRADE_THREE_MAJOR_KEYS, ...GRADE_FOUR_MAJOR_KEYS], 'major')
+export const GRADE_FOUR_MINOR_PRIMARY_CHORDS = generatePrimaryChordsWithInversions([...GRADE_ONE_MINOR_KEYS, ...GRADE_TWO_MINOR_KEYS, ...GRADE_THREE_MINOR_KEYS, ...GRADE_FOUR_MINOR_KEYS], 'minor')
 
 export const GRADE_FOUR_CHORDS = {
   ...GRADE_FOUR_MAJOR_PRIMARY_CHORDS,
@@ -176,8 +177,8 @@ export const GRADE_FIVE_MINOR_KEYS = [
   KEY_NAMES.E_FLAT_MINOR
 ] as const
 
-export const GRADE_FIVE_MAJOR_CHORDS = generatePrimaryChordsWithInversions(GRADE_FIVE_MAJOR_KEYS, 'major')
-export const GRADE_FIVE_MINOR_CHORDS = generatePrimaryChordsWithInversions(GRADE_FIVE_MINOR_KEYS, 'minor')
+export const GRADE_FIVE_MAJOR_CHORDS = generatePrimaryChordsWithInversions(ALL_MAJOR_KEYS, 'major')
+export const GRADE_FIVE_MINOR_CHORDS = generatePrimaryChordsWithInversions(ALL_MINOR_KEYS, 'minor')
 
 export const GRADE_FIVE_CHORDS = {
   ...GRADE_FIVE_MAJOR_CHORDS,
