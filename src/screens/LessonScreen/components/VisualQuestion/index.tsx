@@ -210,7 +210,9 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
             clef={visualComponent.clef}
             timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
             keyName={visualComponent.keyName}
-            elements={(visualComponent.elements || []).map((element: MusicElementData) => [element])}
+            elements={visualComponent.isChord 
+              ? [visualComponent.elements || []] 
+              : (visualComponent.elements || []).map((element: MusicElementData) => [element])}
           />
         </DisplayCard>
       )}

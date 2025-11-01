@@ -70,7 +70,7 @@ export const stageOneLessons: Lesson[] = [
   {
     id: 'stage-1-final',
     title: 'Stage 1 Test',
-    description: 'Test all Stage 1 concepts',
+    description: 'Test all Stage 1 knowledge',
     isFinalTest: true,
     isPassed: false,
     exerciseConfig: {

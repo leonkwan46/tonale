@@ -2,8 +2,16 @@
 import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
 import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../stageSyllabus/keySignatures'
 import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabus/noteRange'
-import { STAGE_ONE_ALL_NOTE_TYPES, STAGE_ONE_DOTTED_NOTE_TYPES, STAGE_ONE_NOTE_TYPES } from '../stageSyllabus/noteTypes'
-import { STAGE_ONE_ALL_REST_TYPES, STAGE_ONE_DOTTED_REST_TYPES, STAGE_ONE_REST_TYPES } from '../stageSyllabus/restTypes'
+import {
+    STAGE_ONE_ALL_NOTE_TYPES,
+    STAGE_ONE_ALL_REST_TYPES,
+    STAGE_ONE_NOTE_TYPES,
+    STAGE_ONE_REST_TYPES,
+    STAGE_TWO_ALL_NOTE_TYPES,
+    STAGE_TWO_ALL_REST_TYPES,
+    STAGE_TWO_DOTTED_NOTE_TYPES,
+    STAGE_TWO_DOTTED_REST_TYPES
+} from '../stageSyllabus/noteValues'
 import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES } from '../stageSyllabus/timeSignatures'
 import { StageNumber } from '../theoryData/types'
 
@@ -16,8 +24,7 @@ export const getBasicNoteTypes = (stage: StageNumber) => {
     case 1:
       return STAGE_ONE_NOTE_TYPES
     case 2:
-      // TODO: Import and return STAGE_TWO_NOTE_TYPES when available
-      throw new Error('Stage 2 note types not yet implemented')
+      return []
     case 3:
       // TODO: Import and return STAGE_THREE_NOTE_TYPES when available
       throw new Error('Stage 3 note types not yet implemented')
@@ -29,10 +36,9 @@ export const getBasicNoteTypes = (stage: StageNumber) => {
 export const getDottedNoteTypes = (stage: StageNumber) => {
   switch (stage) {
     case 1:
-      return STAGE_ONE_DOTTED_NOTE_TYPES
+      return []
     case 2:
-      // TODO: Import and return STAGE_TWO_DOTTED_NOTE_TYPES when available
-      throw new Error('Stage 2 dotted note types not yet implemented')
+      return STAGE_TWO_DOTTED_NOTE_TYPES
     case 3:
       // TODO: Import and return STAGE_THREE_DOTTED_NOTE_TYPES when available
       throw new Error('Stage 3 dotted note types not yet implemented')
@@ -46,8 +52,7 @@ export const getAllNoteTypes = (stage: StageNumber) => {
     case 1:
       return STAGE_ONE_ALL_NOTE_TYPES
     case 2:
-      // TODO: Import and return STAGE_TWO_ALL_NOTE_TYPES when available
-      throw new Error('Stage 2 all note types not yet implemented')
+      return STAGE_TWO_ALL_NOTE_TYPES
     case 3:
       // TODO: Import and return STAGE_THREE_ALL_NOTE_TYPES when available
       throw new Error('Stage 3 all note types not yet implemented')
@@ -61,8 +66,7 @@ export const getBasicRestTypes = (stage: StageNumber) => {
     case 1:
       return STAGE_ONE_REST_TYPES
     case 2:
-      // TODO: Import and return STAGE_TWO_REST_TYPES when available
-      throw new Error('Stage 2 rest types not yet implemented')
+      return []
     case 3:
       // TODO: Import and return STAGE_THREE_REST_TYPES when available
       throw new Error('Stage 3 rest types not yet implemented')
@@ -74,10 +78,9 @@ export const getBasicRestTypes = (stage: StageNumber) => {
 export const getDottedRestTypes = (stage: StageNumber) => {
   switch (stage) {
     case 1:
-      return STAGE_ONE_DOTTED_REST_TYPES
+      return []
     case 2:
-      // TODO: Import and return STAGE_TWO_DOTTED_REST_TYPES when available
-      throw new Error('Stage 2 dotted rest types not yet implemented')
+      return STAGE_TWO_DOTTED_REST_TYPES
     case 3:
       // TODO: Import and return STAGE_THREE_DOTTED_REST_TYPES when available
       throw new Error('Stage 3 dotted rest types not yet implemented')
@@ -91,8 +94,7 @@ export const getAllRestTypes = (stage: StageNumber) => {
     case 1:
       return STAGE_ONE_ALL_REST_TYPES
     case 2:
-      // TODO: Import and return STAGE_TWO_ALL_REST_TYPES when available
-      throw new Error('Stage 2 all rest types not yet implemented')
+      return STAGE_TWO_ALL_REST_TYPES
     case 3:
       // TODO: Import and return STAGE_THREE_ALL_REST_TYPES when available
       throw new Error('Stage 3 all rest types not yet implemented')

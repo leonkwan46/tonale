@@ -23,10 +23,12 @@ export const STAGE_ONE_MUSICAL_TERMS = {
 } as const
 
 export const STAGE_TWO_MUSICAL_TERMS = {
-  ...GRADE_ONE_EXPRESSION_TERMS,
-  ...GRADE_ONE_PERFORMANCE_TERMS,
   ...GRADE_ONE_TEMPO_TERMS,
-  ...GRADE_ONE_ARTICULATION_TERMS
+  ...GRADE_ONE_EXPRESSION_TERMS
+} as const
+
+export const STAGE_THREE_MUSICAL_TERMS = {
+  ...GRADE_ONE_PERFORMANCE_TERMS
 } as const
 
 // Helper function to get Stage One articulation terms

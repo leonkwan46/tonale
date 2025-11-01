@@ -8,7 +8,7 @@ export const stageTwoLessons: Lesson[] = [
     stars: 0,
     exerciseConfig: {
       generatorType: 'dottedValues',
-      questionsCount: 12,
+      questionsCount: 10,
       stage: 2
     }
   },
@@ -26,7 +26,7 @@ export const stageTwoLessons: Lesson[] = [
   {
     id: 'stage-2-lesson-3',
     title: 'Tempo & Expression Terms',
-    description: 'Learn tempo markings, changes, and expression terms',
+    description: 'Learn tempo markings and expression terms',
     stars: 0,
     exerciseConfig: {
       generatorType: 'musicalTerm',
@@ -36,19 +36,8 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-lesson-4',
-    title: 'Articulation & Expression',
-    description: 'Learn articulation and expression markings',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'articulation',
-      questionsCount: 10,
-      stage: 2
-    }
-  },
-  {
-    id: 'stage-2-lesson-5',
     title: 'Major Scales & Key Signatures',
-    description: 'Learn C, G, D, and F major scales',
+    description: 'Learn A, E♭, and B♭ major scales and relative minors',
     stars: 0,
     exerciseConfig: {
       generatorType: 'keySignature',
@@ -57,7 +46,7 @@ export const stageTwoLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-2-lesson-6',
+    id: 'stage-2-lesson-5',
     title: 'Intervals',
     description: 'Learn intervals above the tonic',
     stars: 0,
@@ -68,7 +57,7 @@ export const stageTwoLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-2-lesson-7',
+    id: 'stage-2-lesson-6',
     title: 'Tonic Triads',
     description: 'Learn tonic triads in root position',
     stars: 0,
@@ -80,8 +69,8 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-final',
-    title: 'Final Test (Grade 1)',
-    description: 'Test all Stage 2 concepts',
+    title: 'Stage 2 Test',
+    description: 'Test all Stage 2 knowledge',
     isFinalTest: true,
     isPassed: false,
     exerciseConfig: {

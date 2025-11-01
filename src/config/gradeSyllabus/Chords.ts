@@ -1,13 +1,13 @@
 import { KEY_NAMES } from '@leonkwan46/music-notation'
-import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, AllHarmonicMinorScale, AllMajorScale } from './Scales'
 import { ALL_MAJOR_KEYS, ALL_MINOR_KEYS, GRADE_ONE_MINOR_KEYS } from './Keys'
+import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, AllHarmonicMinorScale, AllMajorScale } from './Scales'
 
 // ======================
 // HELPER FUNCTIONS
 // ======================
 
-const getTonicTriad = (scale: readonly string[]): readonly string[] => {
-  return [scale[0], scale[2], scale[4]] as const
+const getTonicTriad = (scale: readonly string[]): readonly (readonly string[])[] => {
+  return [[scale[0]], [scale[2]], [scale[4]]] as const
 }
 
 const getChordFromScaleDegree = (scale: readonly string[], degree: 1 | 2 | 4 | 5): readonly string[] => {
@@ -27,7 +27,7 @@ const getChordInversions = (chord: readonly string[]): { root: readonly string[]
 }
 
 const generateChords = (keys: readonly string[], scaleType: 'major' | 'minor') => {
-  const chords: Record<string, readonly string[]> = {}
+  const chords: Record<string, readonly (readonly string[])[]> = {}
   
   for (const key of keys) {
     const scale = scaleType === 'major' 

@@ -1,4 +1,6 @@
-import type { Note } from '@leonkwan46/music-notation'
+import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type ClefType, type Note } from '@leonkwan46/music-notation'
+import { STAGE_ONE_INTERVALS, STAGE_THREE_INTERVALS, STAGE_TWO_INTERVALS } from '../stageSyllabus/intervals'
+import { StageNumber } from '../theoryData/types'
 
 const NOTE_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 
@@ -249,3 +251,80 @@ export function transposeByInterval(pitch: string | Note, interval: Interval): s
 }
 
 export type { IntervalNumber, IntervalType }
+
+// ======================
+// PITCH DEFINITIONS HELPERS
+// ======================
+
+export const getPitchDefinitionsForClef = (clef: ClefType): Note[] => {
+  switch (clef) {
+    case 'treble':
+      return TREBLE_PITCH_DEFINITIONS
+    case 'bass':
+      return BASS_PITCH_DEFINITIONS
+    case 'alto':
+      return ALTO_PITCH_DEFINITIONS
+    case 'tenor':
+      return TENOR_PITCH_DEFINITIONS
+    default:
+      return TREBLE_PITCH_DEFINITIONS
+  }
+}
+
+export const findNoteFromPitch = (pitch: string, pitchDefinitions: Note[]): Note | undefined => {
+  return pitchDefinitions.find((note: Note) => note.pitch === pitch)
+}
+
+export const getNotesForPitches = (tonic: string, target: string, clef: ClefType) => {
+  const pitchDefinitions = getPitchDefinitionsForClef(clef)
+  const tonicNote = findNoteFromPitch(tonic, pitchDefinitions)
+  const targetNote = findNoteFromPitch(target, pitchDefinitions)
+  
+  if (!tonicNote || !targetNote) {
+    throw new Error(`Could not find pitch definitions for tonic: ${tonic} or target: ${target} in clef: ${clef}`)
+  }
+  
+  return { tonicNote, targetNote }
+}
+
+// ======================
+// STAGE INTERVALS HELPERS
+// ======================
+
+export const getStageIntervals = (stage: StageNumber): readonly string[] => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_INTERVALS
+    case 2:
+      return STAGE_TWO_INTERVALS
+    case 3:
+      return STAGE_THREE_INTERVALS
+    default:
+      return STAGE_ONE_INTERVALS
+  }
+}
+
+const getOrdinalIntervalName = (interval: Interval, stageIntervals: readonly string[]): string => {
+  const simpleNumber = interval.number <= 8 ? interval.number : ((interval.number - 1) % 7) + 1
+  // Map interval number to index in stage intervals array: 2nd=0, 3rd=1, ..., 8ve=6
+  const index = simpleNumber === 8 ? 6 : simpleNumber - 2
+  if (index >= 0 && index < stageIntervals.length) {
+    return stageIntervals[index]
+  }
+  // Fallback (should not happen)
+  return simpleNumber === 8 ? '8ve' : `${simpleNumber}${simpleNumber === 2 ? 'nd' : simpleNumber === 3 ? 'rd' : 'th'}`
+}
+
+const getQualityIntervalName = (interval: Interval, stageIntervals: readonly string[]): string => {
+  // Handle "Perfect 8th" -> "Perfect Octave" mapping for Stage 3
+  const normalisedSimpleName = interval.simpleName.replace(/8th$/, 'Octave')
+  return stageIntervals.find(name => name === normalisedSimpleName || name === interval.simpleName) || interval.simpleName
+}
+
+export const getIntervalNameForStage = (interval: Interval, stage: StageNumber, stageIntervals: readonly string[]): string => {
+  if (stage === 1 || stage === 2) {
+    return getOrdinalIntervalName(interval, stageIntervals)
+  }
+  
+  return getQualityIntervalName(interval, stageIntervals)
+}

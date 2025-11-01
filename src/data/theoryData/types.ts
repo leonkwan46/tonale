@@ -18,6 +18,7 @@ export interface VisualComponent {
   timeSignatureValue?: string
   noteType?: string | { type: string; dots?: number; isTuplet?: boolean }
   symbolType?: string
+  isChord?: boolean
   tupletConfig?: {
     noteType: string  // Base note type for the tuplet
     numberOfNotes: number  // Number of notes in the tuplet (3 for triplets, 2 for duplets, etc.)

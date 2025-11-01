@@ -3,9 +3,13 @@ import {
   ArticulationSignsDefinitionsKeys,
   DYNAMIC_SYMBOLS_DEFINITIONS,
   DynamicSymbolsDefinitionKeys,
+  GRADE_ONE_ARTICULATION_TERMS,
   GRADE_ONE_EXPRESSION_TERMS,
+  GRADE_ONE_PERFORMANCE_TERMS,
   GRADE_ONE_TEMPO_TERMS,
+  GradeOneArticulationTermsKeys,
   GradeOneExpressionTermsKeys,
+  GradeOnePerformanceTermsKeys,
   GradeOneTempoTermsKeys,
   TERM_DISPLAY_NAMES,
   TermDisplayNamesKeys
@@ -17,6 +21,7 @@ import {
 } from '../helpers/questionHelpers'
 import {
   STAGE_ONE_MUSICAL_TERMS,
+  STAGE_THREE_MUSICAL_TERMS,
   STAGE_TWO_MUSICAL_TERMS
 } from '../stageSyllabus/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
@@ -31,8 +36,11 @@ export const createMusicalTermQuestion = (stage: StageNumber): Question => {
     case 2:
       stageMusicalTerms = STAGE_TWO_MUSICAL_TERMS
       break
+    case 3:
+      stageMusicalTerms = STAGE_THREE_MUSICAL_TERMS
+      break
     default:
-      throw new Error(`Invalid stage: ${stage}. Only stages 1 and 2 are currently supported.`)
+      throw new Error(`Invalid stage: ${stage}. Only stages 1, 2, and 3 are currently supported.`)
   }
   
   const correctTerm = getRandomItem(Object.keys(stageMusicalTerms))
@@ -40,6 +48,8 @@ export const createMusicalTermQuestion = (stage: StageNumber): Question => {
   const correctDefinition = DYNAMIC_SYMBOLS_DEFINITIONS[correctTerm as DynamicSymbolsDefinitionKeys ] ||
                           GRADE_ONE_TEMPO_TERMS[correctTerm as GradeOneTempoTermsKeys] ||
                           GRADE_ONE_EXPRESSION_TERMS[correctTerm as GradeOneExpressionTermsKeys] ||
+                          GRADE_ONE_ARTICULATION_TERMS[correctTerm as GradeOneArticulationTermsKeys] ||
+                          GRADE_ONE_PERFORMANCE_TERMS[correctTerm as GradeOnePerformanceTermsKeys] ||
                           ARTICULATION_SIGNS_DEFINITIONS[correctTerm as ArticulationSignsDefinitionsKeys]
   
   if (!correctDefinition) {
@@ -50,6 +60,8 @@ export const createMusicalTermQuestion = (stage: StageNumber): Question => {
     ...DYNAMIC_SYMBOLS_DEFINITIONS,
     ...GRADE_ONE_TEMPO_TERMS,
     ...GRADE_ONE_EXPRESSION_TERMS,
+    ...GRADE_ONE_ARTICULATION_TERMS,
+    ...GRADE_ONE_PERFORMANCE_TERMS,
     ...ARTICULATION_SIGNS_DEFINITIONS
   }
   

@@ -1,14 +1,18 @@
-import { NOTES } from '@leonkwan46/music-notation'
-import { calculateInterval, transposeByInterval, type Interval } from '../helpers/intervalHelpers'
+// Interval exercise generators
+import { NOTES, type ClefType } from '@leonkwan46/music-notation'
+import { calculateInterval, getIntervalNameForStage, getNotesForPitches, getStageIntervals, transposeByInterval, type Interval } from '../helpers/intervalHelpers'
 import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-const INTERVAL_NUMBERS = [2, 3, 4, 5, 6, 7, 8]
+const INTERVAL_NUMBERS = [2, 3, 4, 5, 6, 7, 8] as const
+const TONIC_PITCH = 'C4'
 
-export const createIntervalQuestion = (stage: StageNumber): Question => {
+// ======================
+// MAIN EXPORT FUNCTIONS
+// ======================
+
+export const createIntervalQuestion = (stage: StageNumber, clef: ClefType = 'treble'): Question => {
   const intervalNumber = getRandomItem(INTERVAL_NUMBERS) as 2 | 3 | 4 | 5 | 6 | 7 | 8
-  
-  const tonic = 'C4'
   const intervalObj: Interval = {
     number: intervalNumber,
     type: 'perfect',
@@ -17,32 +21,42 @@ export const createIntervalQuestion = (stage: StageNumber): Question => {
     simpleName: ''
   }
   
-  const targetPitch = transposeByInterval(tonic, intervalObj)
-  const calculatedInterval = calculateInterval(tonic, targetPitch)
+  const targetPitch = transposeByInterval(TONIC_PITCH, intervalObj)
+  const calculatedInterval = calculateInterval(TONIC_PITCH, targetPitch)
   
-  // Generate wrong choices using actual interval names
-  const wrongChoices = generateWrongChoices([
-    'Perfect 2nd', 'Major 3rd', 'Perfect 4th', 'Perfect 5th', 
-    'Major 6th', 'Major 7th', 'Perfect Octave'
-  ], calculatedInterval.simpleName)
+  const { tonicNote, targetNote } = getNotesForPitches(TONIC_PITCH, targetPitch, clef)
+  const stageIntervals = getStageIntervals(stage)
+  const correctAnswer = getIntervalNameForStage(calculatedInterval, stage, stageIntervals)
   
   return {
     id: generateQuestionId('interval'),
     question: 'What interval is this above the tonic?',
-    correctAnswer: calculatedInterval.simpleName,
-    choices: wrongChoices,
+    correctAnswer,
+    choices: generateWrongChoices([...stageIntervals], correctAnswer),
     explanation: `The interval above the tonic is a ${calculatedInterval.simpleName} (${calculatedInterval.semitones} semitones).`,
     type: 'multipleChoice',
     visualComponent: {
-      clef: 'treble',
+      clef,
       elements: [
-        { pitch: tonic, type: NOTES.CROTCHET },
-        { pitch: targetPitch, type: NOTES.CROTCHET }
+        {
+          pitch: tonicNote.pitch,
+          type: NOTES.CROTCHET,
+          accidental: tonicNote.accidental,
+          stem: tonicNote.stem,
+          ledgerLines: tonicNote.ledgerLines
+        },
+        {
+          pitch: targetNote.pitch,
+          type: NOTES.CROTCHET,
+          accidental: targetNote.accidental,
+          stem: targetNote.stem,
+          ledgerLines: targetNote.ledgerLines
+        }
       ]
     }
   }
 }
 
-export const createIntervalQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createIntervalQuestion(stage))
+export const createIntervalQuestions = (questionsCount: number, stage: StageNumber, clef: ClefType = 'treble'): Question[] => {
+  return Array.from({ length: questionsCount }, () => createIntervalQuestion(stage, clef))
 }

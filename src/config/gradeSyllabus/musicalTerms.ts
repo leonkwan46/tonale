@@ -30,7 +30,8 @@ export type GradeOneArticulationTerms = (typeof GRADE_ONE_ARTICULATION_TERMS)[Gr
 
 export const GRADE_ONE_EXPRESSION_TERMS = {
   'cantabile': 'In a singing style',
-  'dolce': 'Sweetly'
+  'dolce': 'Sweetly',
+  'sostenuto': 'Sustained'
 } as const
 export type GradeOneExpressionTermsKeys = keyof typeof GRADE_ONE_EXPRESSION_TERMS
 export type GradeOneExpressionTerms = (typeof GRADE_ONE_EXPRESSION_TERMS)[GradeOneExpressionTermsKeys]

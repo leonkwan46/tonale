@@ -10,7 +10,7 @@ import { Question, StageNumber } from '../theoryData/types'
 // Create a rest value identification question (rests only)
 export const createRestValueQuestion = (stage: StageNumber): Question => {
   const stageRestTypes = getAllRestTypes(stage)
-  const correctRestType = getRandomItem(stageRestTypes)
+  const correctRestType = getRandomItem(stageRestTypes as (string | { type: string; dots?: number })[])
   
   // Convert rest type constant or object to readable string for choices
   const restTypeToString = (restType: string | { type: string; dots?: number }) => {
