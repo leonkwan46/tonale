@@ -36,7 +36,10 @@ echo -e "${GREEN}✅ Firebase emulators detected${NC}"
 echo ""
 
 # Automatically discover all e2e test files
-test_files=($(find tests/e2e -name "*.yaml" -type f | sort))
+# Separate regular tests from final tests, ensuring final tests run last
+regular_tests=($(find tests/e2e -name "*.yaml" -type f ! -name "*-final*.yaml" | sort))
+final_tests=($(find tests/e2e -name "*-final*.yaml" -type f | sort))
+test_files=("${regular_tests[@]}" "${final_tests[@]}")
 
 echo -e "${BLUE}🧪 Running E2E Tests...${NC}"
 echo ""

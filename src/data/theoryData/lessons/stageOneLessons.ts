@@ -58,18 +58,18 @@ export const stageOneLessons: Lesson[] = [
   },
   {
     id: 'stage-1-lesson-6',
-    title: 'Dynamics',
-    description: 'Learn basic dynamic markings',
+    title: 'Dynamics & Articulation',
+    description: 'Learn dynamic markings and articulation signs',
     stars: 0,
     exerciseConfig: {
       generatorType: 'musicalTerm',
-      questionsCount: 8,
+      questionsCount: 10,
       stage: 1
     }
   },
   {
     id: 'stage-1-final',
-    title: 'Stage 1 Final Test',
+    title: 'Stage 1 Test',
     description: 'Test all Stage 1 concepts',
     isFinalTest: true,
     isPassed: false,

@@ -17,8 +17,8 @@ const calculateStageStats = (lessons: typeof stageOneLessons) => {
 
 export const stage1: Stage = {
   id: 'stage-1',
-  title: 'Music Theory Fundamentals',
-  description: 'Master the basic building blocks of music theory',
+  title: 'Foundation',
+  description: 'Build rhythmic literacy, note reading, and expressive awareness',
   lessons: stageOneLessons.map(lesson => ({ ...lesson, stageId: 'stage-1' } as StageLesson)),
   order: 1,
   isUnlocked: true, // First stage is always unlocked

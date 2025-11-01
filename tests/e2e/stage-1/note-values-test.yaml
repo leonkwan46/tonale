@@ -18,13 +18,10 @@ appId: com.leonkwan46.tonale
 - tapOn: 
     id: "tab-theory"
 
-- scrollUntilVisible:   
-    element:
-      id: "lesson-title-lesson-6"
-    direction: UP
-    speed: 100
+- assertVisible: 
+    id: "lesson-title-stage-1-lesson-1"
 - tapOn: 
-    id: "lesson-title-lesson-6"
+    id: "lesson-title-stage-1-lesson-1"
 
 - assertVisible: 
     id: "choice-.*"
@@ -69,8 +66,8 @@ appId: com.leonkwan46.tonale
 - tapOn: "Continue"
 
 - assertVisible: 
-    id: "lesson-title-lesson-6"
+    id: "lesson-title-stage-1-lesson-1"
 - tapOn: 
-    id: "lesson-title-lesson-6"
+    id: "lesson-title-stage-1-lesson-1"
 - tapOn: 
     id: "back-button"

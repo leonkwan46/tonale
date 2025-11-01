@@ -25,8 +25,8 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-lesson-3',
-    title: 'Tempo Terms',
-    description: 'Learn tempo markings and changes',
+    title: 'Tempo & Expression Terms',
+    description: 'Learn tempo markings, changes, and expression terms',
     stars: 0,
     exerciseConfig: {
       generatorType: 'musicalTerm',
@@ -80,7 +80,7 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-final',
-    title: 'Stage 2 Final Test',
+    title: 'Final Test (Grade 1)',
     description: 'Test all Stage 2 concepts',
     isFinalTest: true,
     isPassed: false,

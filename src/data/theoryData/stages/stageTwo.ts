@@ -17,8 +17,8 @@ const calculateStageStats = (lessons: typeof stageTwoLessons) => {
 
 export const stage2: Stage = {
   id: 'stage-2',
-  title: 'Harmony and Chord Theory',
-  description: 'Dive deeper into harmonic relationships and chord progressions',
+  title: 'Complete Grade 1',
+  description: 'Expand rhythm skills, introduce scales, intervals, and expressive vocabulary',
   lessons: stageTwoLessons.map(lesson => ({ ...lesson, stageId: 'stage-2' } as StageLesson)),
   order: 2,
   prerequisiteStages: ['stage-1'],

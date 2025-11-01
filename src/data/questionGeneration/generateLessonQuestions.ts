@@ -91,7 +91,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       return questions.sort(() => Math.random() - 0.5)
     
     case 'stage-2-final':
-      // Stage 2 final test: All Stage 1 concepts + dotted notes, grouping, tempo, articulation, scales, intervals, triads
+      // Grade 1 final test: All Stage 1 concepts + dotted notes, grouping, tempo, expression, articulation, scales, intervals, triads
       const stage2QuestionsPerType = Math.floor(config.questionsCount / 10)
       const stage2Remaining = config.questionsCount - (stage2QuestionsPerType * 10)
       

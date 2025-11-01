@@ -19,7 +19,7 @@ appId: com.leonkwan46.tonale
 - tapOn: 
     id: "tab-theory"
 
-# Scroll up to find the "Stage 1 Final Test" lesson (it should be at the top)
+# Scroll up to find the "Stage 1 Test" lesson (it should be at the top)
 - scrollUntilVisible:   
     element:
       id: "lesson-title-stage-1-final"
