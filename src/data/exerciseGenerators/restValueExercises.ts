@@ -5,6 +5,7 @@ import {
   generateWrongChoices,
   getRandomItem
 } from '../helpers/questionHelpers'
+import { ensureFourChoicesForStage2, restTypeToString } from '../helpers/timeValueHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
 // Create a rest value identification question (rests only)
@@ -12,32 +13,9 @@ export const createRestValueQuestion = (stage: StageNumber): Question => {
   const stageRestTypes = getAllRestTypes(stage)
   const correctRestType = getRandomItem(stageRestTypes as (string | { type: string; dots?: number })[])
   
-  // Convert rest type constant or object to readable string for choices
-  const restTypeToString = (restType: string | { type: string; dots?: number }) => {
-    // Handle dotted rest objects
-    if (typeof restType === 'object' && restType.type) {
-      const { type, dots = 0 } = restType
-      const baseName = getBaseRestName(type)
-      return dots > 0 ? `Dotted ${baseName}` : baseName
-    }
-    
-    // Handle string rest types (legacy support)
-    return getBaseRestName(restType as string)
-  }
-  
-  const getBaseRestName = (restType: string) => {
-    switch (restType) {
-      case 'semibreve-rest': return 'Semibreve Rest'
-      case 'minim-rest': return 'Minim Rest'
-      case 'crotchet-rest': return 'Crotchet Rest'
-      case 'quaver-rest': return 'Quaver Rest'
-      case 'semiquaver-rest': return 'Semiquaver Rest'
-      default: return restType.toLowerCase()
-    }
-  }
-  
   const correctAnswerString = restTypeToString(correctRestType)
-  const choiceStrings = stageRestTypes.map(restTypeToString)
+  let choiceStrings = stageRestTypes.map(restTypeToString)
+  choiceStrings = ensureFourChoicesForStage2(stage, choiceStrings, correctAnswerString, true)
   
   return {
     id: generateQuestionId('rest-value'),

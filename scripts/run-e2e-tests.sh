@@ -35,10 +35,34 @@ fi
 echo -e "${GREEN}✅ Firebase emulators detected${NC}"
 echo ""
 
+# Check for stage parameter
+STAGE="${1:-}"
+TEST_DIR="tests/e2e"
+
+# If stage is specified, only run tests for that stage
+if [ -n "$STAGE" ]; then
+    if [ "$STAGE" = "stage-1" ] || [ "$STAGE" = "stage-2" ]; then
+        TEST_DIR="tests/e2e/$STAGE"
+        echo -e "${BLUE}📁 Running tests for: $STAGE${NC}"
+        echo ""
+        if [ ! -d "$TEST_DIR" ]; then
+            echo -e "${RED}❌ Test directory not found: $TEST_DIR${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${RED}❌ Invalid stage: $STAGE${NC}"
+        echo -e "${YELLOW}Valid stages: stage-1, stage-2${NC}"
+        exit 1
+    fi
+else
+    echo -e "${BLUE}📁 Running all e2e tests${NC}"
+    echo ""
+fi
+
 # Automatically discover all e2e test files
 # Separate regular tests from final tests, ensuring final tests run last
-regular_tests=($(find tests/e2e -name "*.yaml" -type f ! -name "*-final*.yaml" | sort))
-final_tests=($(find tests/e2e -name "*-final*.yaml" -type f | sort))
+regular_tests=($(find "$TEST_DIR" -name "*.yaml" -type f ! -name "*-final*.yaml" | sort))
+final_tests=($(find "$TEST_DIR" -name "*-final*.yaml" -type f | sort))
 test_files=("${regular_tests[@]}" "${final_tests[@]}")
 
 echo -e "${BLUE}🧪 Running E2E Tests...${NC}"
