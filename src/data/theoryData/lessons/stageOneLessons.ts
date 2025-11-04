@@ -58,6 +58,28 @@ export const stageOneLessons: Lesson[] = [
   },
   {
     id: 'stage-1-lesson-6',
+    title: 'Accidentals',
+    description: 'Learn sharps, flats, and naturals',
+    stars: 0,
+    exerciseConfig: {
+      generatorType: 'accidentals',
+      questionsCount: 10,
+      stage: 1
+    }
+  },
+  {
+    id: 'stage-1-lesson-7',
+    title: 'Semitones and Tones',
+    description: 'Learn the difference between semitones and tones',
+    stars: 0,
+    exerciseConfig: {
+      generatorType: 'semitonesTones',
+      questionsCount: 10,
+      stage: 1
+    }
+  },
+  {
+    id: 'stage-1-lesson-8',
     title: 'Dynamics & Articulation',
     description: 'Learn dynamic markings and articulation signs',
     stars: 0,

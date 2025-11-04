@@ -23,7 +23,7 @@ export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm
   marginTop: isTablet && !isTextTerm ? scale(10) : scale(-10)
 }))
 
-export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
+export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean; isWideDynamic?: boolean }>(({ theme, isTablet, isTextTerm, isWideDynamic }) => ({
   fontFamily: isTextTerm ? 'Times New Roman' : 'Bravura',
   fontSize: isTextTerm 
     ? (isTablet ? scale(18) : scale(24)) 
@@ -33,7 +33,8 @@ export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: bo
   color: '#000',
   textAlign: 'center',
   textAlignVertical: 'center',
-  paddingHorizontal: scale(15)
+  paddingHorizontal: scale(15),
+  transform: isWideDynamic ? [{ scaleX: 4 }] : []
 }))
 
 export const TTSButton = styled.TouchableOpacity(({ theme }) => ({

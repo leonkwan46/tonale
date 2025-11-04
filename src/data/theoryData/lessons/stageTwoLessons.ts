@@ -47,6 +47,17 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-lesson-5',
+    title: 'Scale Degrees',
+    description: 'Learn scale degrees (1st-8th) within one octave and above the tonic',
+    stars: 0,
+    exerciseConfig: {
+      generatorType: 'scaleDegrees',
+      questionsCount: 10,
+      stage: 2
+    }
+  },
+  {
+    id: 'stage-2-lesson-6',
     title: 'Intervals',
     description: 'Learn intervals above the tonic',
     stars: 0,
@@ -57,7 +68,7 @@ export const stageTwoLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-2-lesson-6',
+    id: 'stage-2-lesson-7',
     title: 'Tonic Triads',
     description: 'Learn tonic triads in root position',
     stars: 0,

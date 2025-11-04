@@ -7,8 +7,11 @@ export const getRandomItem = <T>(array: readonly T[]): T => {
 export const generateWrongChoices = (
   allOptions: string[], 
   correctAnswer: string, 
-  wrongChoicesCount: number = 3
+  wrongChoicesCount: number = 3,
+  preserveOrder: boolean = false
 ): string[] => {
+  if (preserveOrder) return allOptions
+  
   const wrongChoices = allOptions
     .filter(option => option !== correctAnswer)
     .sort(() => Math.random() - 0.5)

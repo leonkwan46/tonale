@@ -1,4 +1,4 @@
-import { GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus/MusicalTerms'
+import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus/MusicalTerms'
 import { STAGE_ONE_MUSICAL_TERMS } from '@/data/stageSyllabus/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
@@ -13,6 +13,7 @@ import {
   Minim,
   MinimRest,
   MusicStaff,
+  NOTES,
   NoteType,
   parseTimeSignature as parseTimeSignatureFromLibrary,
   Quaver,
@@ -42,6 +43,18 @@ const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3):
   }
   
   return elements
+}
+
+// Helper function to render articulation signs with individual note components
+const renderArticulationSign = (symbolType: string) => {
+  return (
+    <Crotchet 
+      stem='up' 
+      centered={true}
+      isStaccato={symbolType === 'staccato'}
+      isAccent={symbolType === 'accent'}
+    />
+  )
 }
 
 // Helper function to render individual note/rest components
@@ -137,12 +150,32 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   // SMuFL symbol helpers
   const symbolText = visualComponent.symbolType ? 
     GRADE_ONE_DYNAMIC_SYMBOLS[visualComponent.symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS] ||
-    GRADE_ONE_ARTICULATION_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS] || 
+    GRADE_ONE_ARTICULATION_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS] ||
+    GRADE_ONE_ACCIDENTAL_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ACCIDENTAL_SIGNS] || 
     '' : ''
   const isTextTerm = visualComponent.symbolType ? 
     !(visualComponent.symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) && 
-    !(visualComponent.symbolType in GRADE_ONE_ARTICULATION_SIGNS) : false
+    !(visualComponent.symbolType in GRADE_ONE_ARTICULATION_SIGNS) &&
+    !(visualComponent.symbolType in GRADE_ONE_ACCIDENTAL_SIGNS) : false
   const displayText = visualComponent.symbolType ? TERM_DISPLAY_NAMES[visualComponent.symbolType as keyof typeof TERM_DISPLAY_NAMES] || visualComponent.symbolType : ''
+  
+  // Special handling for slur and tie
+  const isSlurOrTie = visualComponent.symbolType === 'slur' || visualComponent.symbolType === 'tie'
+  
+  // Special handling for articulation signs (display with notation library)
+  const isArticulationSign = visualComponent.symbolType === 'staccato' || 
+                             visualComponent.symbolType === 'accent' || 
+                             visualComponent.symbolType === 'fermata'
+  const needsStaffForArticulation = visualComponent.symbolType === 'fermata' // Fermata needs staff positioning
+  const useIndividualNoteForArticulation = isArticulationSign && !needsStaffForArticulation
+  
+  // Widen crescendo/decrescendo/diminuendo using CSS transform
+  const isWideDynamic = visualComponent.symbolType === 'crescendo' || 
+                        visualComponent.symbolType === 'decrescendo' || 
+                        visualComponent.symbolType === 'diminuendo' ||
+                        visualComponent.symbolType === 'cresc.' || 
+                        visualComponent.symbolType === 'decresc.' || 
+                        visualComponent.symbolType === 'dim.'
 
   // TTS helpers
   const isItalianMusicalTerm = visualComponent.symbolType && 
@@ -178,10 +211,10 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
         </DisplayCard>
       )}
       
-      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && (
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && !isSlurOrTie && !isArticulationSign && (
         <SMuFLCard isTablet={isTablet} isTextTerm={isTextTerm}>
           <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTerm}>
-            <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm}>
+            <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm} isWideDynamic={isWideDynamic}>
               {isTextTerm ? displayText : symbolText}
             </SMuFLSymbolText>
           </SMuFLSymbolContainer>
@@ -195,6 +228,42 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
             </TTSButton>
           )}
         </SMuFLCard>
+      )}
+      
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isSlurOrTie && (
+        <DisplayCard extraHeight={false}>
+          <MusicStaff
+            size={'sml'}
+            clef={'treble'}
+            elements={
+              visualComponent.symbolType === 'tie' 
+                ? [[{ pitch: 'F4', type: NOTES.MINIM, stem: 'up', tieStart: true }], [{ pitch: 'F4', type: NOTES.MINIM, stem: 'up', tieEnd: true }]]
+                : [[{ pitch: 'C4', type: NOTES.CROTCHET, ledgerLines: 1, stem: 'up', slurStart: true }], [{ pitch: 'E4', type: NOTES.CROTCHET, stem: 'up' }], [{ pitch: 'G4', type: NOTES.CROTCHET, stem: 'up', slurEnd: true }]]
+            }
+          />
+        </DisplayCard>
+      )}
+      
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && useIndividualNoteForArticulation && (
+        <DisplayCard extraHeight={false}>
+          {renderArticulationSign(visualComponent.symbolType)}
+        </DisplayCard>
+      )}
+      
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isArticulationSign && needsStaffForArticulation && (
+        <DisplayCard extraHeight={false}>
+          <MusicStaff
+            size={'xs'}
+            elements={[[
+              {
+                pitch: 'F4',
+                type: NOTES.CROTCHET,
+                stem: 'up',
+                hasFermata: true
+              }
+            ]]}
+          />
+        </DisplayCard>
       )}
       
       {shouldRenderIndividualNotes && (

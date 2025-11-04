@@ -150,14 +150,14 @@ export {
 // MUSICAL TERMS
 // ======================
 export {
-    ARTICULATION_SIGNS_DEFINITIONS, ArticulationSignsDefinitions, ArticulationSignsDefinitionsKeys, DYNAMIC_SYMBOLS_DEFINITIONS, DynamicSymbolsDefinitionKeys, DynamicSymbolsDefinitions, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_ARTICULATION_TERMS, GRADE_ONE_DYNAMIC_SYMBOLS, GRADE_ONE_EXPRESSION_TERMS, GRADE_ONE_PERFORMANCE_TERMS,
+    ARTICULATION_SIGNS_DEFINITIONS, ArticulationSignsDefinitions, ArticulationSignsDefinitionsKeys, DYNAMIC_SYMBOLS_DEFINITIONS, DynamicSymbolsDefinitionKeys, DynamicSymbolsDefinitions, GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_ARTICULATION_TERMS, GRADE_ONE_DYNAMIC_SYMBOLS, GRADE_ONE_EXPRESSION_TERMS, GRADE_ONE_PERFORMANCE_TERMS,
     // Grade 1
     GRADE_ONE_TEMPO_TERMS, GRADE_THREE_ARTICULATION_TERMS, GRADE_THREE_DYNAMIC_SYMBOLS, GRADE_THREE_EXPRESSION_TERMS, GRADE_THREE_ITALIAN_WORDS, GRADE_THREE_MODIFIER_TERMS,
     // Grade 3
     GRADE_THREE_TEMPO_TERMS, GRADE_TWO_DYNAMIC_SYMBOLS, GRADE_TWO_EXPRESSION_TERMS, GRADE_TWO_ITALIAN_WORDS, GRADE_TWO_MODIFIER_TERMS,
     GRADE_TWO_PERFORMANCE_TERMS,
     // Grade 2
-    GRADE_TWO_TEMPO_TERMS, GradeOneArticulationSigns, GradeOneArticulationSignsKeys, GradeOneArticulationTerms, GradeOneArticulationTermsKeys, GradeOneDynamicSymbols, GradeOneDynamicSymbolsKeys, GradeOneExpressionTerms, GradeOneExpressionTermsKeys,
+    GRADE_TWO_TEMPO_TERMS, GradeOneAccidentalSigns, GradeOneAccidentalSignsKeys, GradeOneArticulationSigns, GradeOneArticulationSignsKeys, GradeOneArticulationTerms, GradeOneArticulationTermsKeys, GradeOneDynamicSymbols, GradeOneDynamicSymbolsKeys, GradeOneExpressionTerms, GradeOneExpressionTermsKeys,
     GradeOnePerformanceTerms, GradeOnePerformanceTermsKeys,
     // Types
     GradeOneTempoTerms, GradeOneTempoTermsKeys, GradeThreeArticulationTerms, GradeThreeArticulationTermsKeys, GradeThreeDynamicSymbols, GradeThreeDynamicSymbolsKeys, GradeThreeExpressionTerms, GradeThreeExpressionTermsKeys, GradeThreeItalianWords, GradeThreeItalianWordsKeys, GradeThreeModifierTerms, GradeThreeModifierTermsKeys, GradeThreeTempoTerms, GradeThreeTempoTermsKeys, GradeTwoDynamicSymbols, GradeTwoDynamicSymbolsKeys, GradeTwoExpressionTerms, GradeTwoExpressionTermsKeys, GradeTwoItalianWords, GradeTwoItalianWordsKeys, GradeTwoModifierTerms, GradeTwoModifierTermsKeys,

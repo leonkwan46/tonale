@@ -63,7 +63,7 @@ function normalizeAccidental(accidental: string): number {
   }
 }
 
-function getSemitoneDistance(pitch1: string | Note, pitch2: string | Note): number {
+export function getSemitoneDistance(pitch1: string | Note, pitch2: string | Note): number {
   const parsed1 = parsePitch(pitch1 as string)
   const parsed2 = parsePitch(pitch2 as string)
   

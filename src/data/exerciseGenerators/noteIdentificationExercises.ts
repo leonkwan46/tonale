@@ -2,9 +2,9 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
 import { getNoteRange } from '../helpers/exerciseHelpers'
 import {
-  generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+    generateQuestionId,
+    generateWrongChoices,
+    getRandomItem
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -43,7 +43,7 @@ export const createNoteIdentificationQuestion = (
     id: generateQuestionId('note-id'),
     question: `What note is this in the ${clef} clef?`,
     correctAnswer: correctNoteData.letterName,
-    choices: generateWrongChoices(noteLetterNames, correctNoteData.letterName, 3),
+    choices: generateWrongChoices(noteLetterNames, correctNoteData.letterName),
     explanation: `This note is ${correctNoteData.letterName} on the ${clef} clef.`,
     type: 'multipleChoice',
     visualComponent: {

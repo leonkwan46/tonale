@@ -1,6 +1,7 @@
 // Generate questions for a lesson based on exercise configuration
 import { CLEFS } from '@leonkwan46/music-notation'
 import {
+    createAccidentalQuestions,
     createArticulationQuestions,
     createIntervalQuestions,
     createKeySignatureQuestions,
@@ -9,6 +10,8 @@ import {
     createNoteIdentificationQuestions,
     createNoteValueQuestions,
     createRestValueQuestions,
+    createScaleDegreeQuestions,
+    createSemitoneToneQuestions,
     createTimeSignatureQuestions,
     createTriadQuestions,
     createTripletQuestions
@@ -33,6 +36,14 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
     
     case 'bassClef':
       questions.push(...createNoteIdentificationQuestions(config.questionsCount, config.stage, CLEFS.BASS))
+      break
+    
+    case 'accidentals':
+      questions.push(...createAccidentalQuestions(config.questionsCount, config.stage))
+      break
+    
+    case 'semitonesTones':
+      questions.push(...createSemitoneToneQuestions(config.questionsCount, config.stage))
       break
     
     case 'timeSignature':
@@ -64,6 +75,10 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       questions.push(...createArticulationQuestions(config.questionsCount, config.stage))
       break
     
+    case 'scaleDegrees':
+      questions.push(...createScaleDegreeQuestions(config.questionsCount, config.stage, 'treble'))
+      break
+    
     case 'interval':
       questions.push(...createIntervalQuestions(config.questionsCount, config.stage))
       break
@@ -77,23 +92,25 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       break
     
     case 'stage-1-final':
-      // Stage 1 final test: Note values, rest values, time signatures, treble/bass clef notes, dynamics
-      const stage1QuestionsPerType = Math.floor(config.questionsCount / 6)
-      const stage1Remaining = config.questionsCount - (stage1QuestionsPerType * 6)
+      // Stage 1 final test: Note values, rest values, time signatures, treble/bass clef notes, accidentals, semitones/tones, dynamics
+      const stage1QuestionsPerType = Math.floor(config.questionsCount / 8)
+      const stage1Remaining = config.questionsCount - (stage1QuestionsPerType * 8)
       
       questions.push(...createNoteValueQuestions(stage1QuestionsPerType + (stage1Remaining > 0 ? 1 : 0), config.stage))
       questions.push(...createRestValueQuestions(stage1QuestionsPerType + (stage1Remaining > 1 ? 1 : 0), config.stage))
       questions.push(...createTimeSignatureQuestions(stage1QuestionsPerType + (stage1Remaining > 2 ? 1 : 0), config.stage))
       questions.push(...createNoteIdentificationQuestions(stage1QuestionsPerType + (stage1Remaining > 3 ? 1 : 0), config.stage, CLEFS.TREBLE))
       questions.push(...createNoteIdentificationQuestions(stage1QuestionsPerType + (stage1Remaining > 4 ? 1 : 0), config.stage, CLEFS.BASS))
-      questions.push(...createMusicalTermQuestions(stage1QuestionsPerType + (stage1Remaining > 5 ? 1 : 0), config.stage)) // Dynamics
+      questions.push(...createAccidentalQuestions(stage1QuestionsPerType + (stage1Remaining > 5 ? 1 : 0), config.stage))
+      questions.push(...createSemitoneToneQuestions(stage1QuestionsPerType + (stage1Remaining > 6 ? 1 : 0), config.stage))
+      questions.push(...createMusicalTermQuestions(stage1QuestionsPerType + (stage1Remaining > 7 ? 1 : 0), config.stage)) // Dynamics
       
       return questions.sort(() => Math.random() - 0.5)
     
     case 'stage-2-final':
-      // Grade 1 final test: All Stage 1 concepts + dotted notes, grouping, tempo, expression, articulation, scales, intervals, triads
-      const stage2QuestionsPerType = Math.floor(config.questionsCount / 10)
-      const stage2Remaining = config.questionsCount - (stage2QuestionsPerType * 10)
+      // Grade 1 final test: All Stage 1 concepts + dotted notes, grouping, tempo, expression, articulation, scales, scale degrees, intervals, triads
+      const stage2QuestionsPerType = Math.floor(config.questionsCount / 12)
+      const stage2Remaining = config.questionsCount - (stage2QuestionsPerType * 12)
       
       // Stage 1 concepts
       questions.push(...createNoteValueQuestions(stage2QuestionsPerType + (stage2Remaining > 0 ? 1 : 0), config.stage))
@@ -101,13 +118,16 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       questions.push(...createTimeSignatureQuestions(stage2QuestionsPerType + (stage2Remaining > 2 ? 1 : 0), config.stage))
       questions.push(...createNoteIdentificationQuestions(stage2QuestionsPerType + (stage2Remaining > 3 ? 1 : 0), config.stage, CLEFS.TREBLE))
       questions.push(...createNoteIdentificationQuestions(stage2QuestionsPerType + (stage2Remaining > 4 ? 1 : 0), config.stage, CLEFS.BASS))
-      questions.push(...createMusicalTermQuestions(stage2QuestionsPerType + (stage2Remaining > 5 ? 1 : 0), config.stage)) // Dynamics
+      questions.push(...createAccidentalQuestions(stage2QuestionsPerType + (stage2Remaining > 5 ? 1 : 0), config.stage))
+      questions.push(...createSemitoneToneQuestions(stage2QuestionsPerType + (stage2Remaining > 6 ? 1 : 0), config.stage))
+      questions.push(...createMusicalTermQuestions(stage2QuestionsPerType + (stage2Remaining > 7 ? 1 : 0), config.stage)) // Dynamics
       
       // Stage 2 concepts
-      questions.push(...createNoteGroupingQuestions(stage2QuestionsPerType + (stage2Remaining > 6 ? 1 : 0), config.stage))
-      questions.push(...createMusicalTermQuestions(stage2QuestionsPerType + (stage2Remaining > 7 ? 1 : 0), config.stage)) // Tempo terms
-      questions.push(...createArticulationQuestions(stage2QuestionsPerType + (stage2Remaining > 8 ? 1 : 0), config.stage))
-      questions.push(...createKeySignatureQuestions(stage2QuestionsPerType + (stage2Remaining > 9 ? 1 : 0), config.stage))
+      questions.push(...createNoteGroupingQuestions(stage2QuestionsPerType + (stage2Remaining > 8 ? 1 : 0), config.stage))
+      questions.push(...createMusicalTermQuestions(stage2QuestionsPerType + (stage2Remaining > 9 ? 1 : 0), config.stage)) // Tempo terms
+      questions.push(...createArticulationQuestions(stage2QuestionsPerType + (stage2Remaining > 10 ? 1 : 0), config.stage))
+      questions.push(...createKeySignatureQuestions(stage2QuestionsPerType + (stage2Remaining > 11 ? 1 : 0), config.stage))
+      questions.push(...createScaleDegreeQuestions(stage2QuestionsPerType, config.stage, 'treble'))
       questions.push(...createIntervalQuestions(stage2QuestionsPerType, config.stage))
       questions.push(...createTriadQuestions(stage2QuestionsPerType, config.stage, 'treble'))
       

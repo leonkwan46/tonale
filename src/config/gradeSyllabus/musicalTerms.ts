@@ -46,10 +46,10 @@ export type GradeOnePerformanceTermsKeys = keyof typeof GRADE_ONE_PERFORMANCE_TE
 export type GradeOnePerformanceTerms = (typeof GRADE_ONE_PERFORMANCE_TERMS)[GradeOnePerformanceTermsKeys]
 
 export const GRADE_ONE_DYNAMIC_SYMBOLS = {
-  'p': '\u{1D18F}',
-  'f': '\u{1D191}',
-  'pp': '\u{E52B}',
-  'ff': '\u{E52F}',
+  'p': ' \u{1D18F}',
+  'f': '  \u{1D191} ',
+  'pp': ' \u{E52B}',
+  'ff': '  \u{E52F}',
   'mf': '\u{E52D}',
   'mp': '\u{E52C}',
   'crescendo': '\u{1D192}',
@@ -63,12 +63,20 @@ export type GradeOneDynamicSymbolsKeys = keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS
 export type GradeOneDynamicSymbols = (typeof GRADE_ONE_DYNAMIC_SYMBOLS)[GradeOneDynamicSymbolsKeys]
 
 export const GRADE_ONE_ARTICULATION_SIGNS = {
-  // 'slur': '', // TODO
-  // 'tie': '', // TODO
-  'staccato': '\u{E1D5}\u{1D17C}',
-  'accent': '\u{E1D5}\u{1D17D}',
-  'fermata': '\u{E1D5}\u{E4C1}'
+  'slur': '',
+  'tie': '',
+  'staccato': '',
+  'accent': '',
+  'fermata': ''
 } as const
+
+export const GRADE_ONE_ACCIDENTAL_SIGNS = {
+  'sharp': '♯',
+  'flat': '♭',
+  'natural': '♮'
+} as const
+export type GradeOneAccidentalSignsKeys = keyof typeof GRADE_ONE_ACCIDENTAL_SIGNS
+export type GradeOneAccidentalSigns = (typeof GRADE_ONE_ACCIDENTAL_SIGNS)[GradeOneAccidentalSignsKeys]
 export type GradeOneArticulationSignsKeys = keyof typeof GRADE_ONE_ARTICULATION_SIGNS
 export type GradeOneArticulationSigns = (typeof GRADE_ONE_ARTICULATION_SIGNS)[GradeOneArticulationSignsKeys]
   
@@ -262,8 +270,8 @@ export type DynamicSymbolsDefinitionKeys = keyof typeof DYNAMIC_SYMBOLS_DEFINITI
 export type DynamicSymbolsDefinitions = (typeof DYNAMIC_SYMBOLS_DEFINITIONS)[DynamicSymbolsDefinitionKeys]
 
 export const ARTICULATION_SIGNS_DEFINITIONS = {
-  'slur': 'Smooth connection between notes',
-  'tie': 'Hold note for combined duration',
+  'slur': 'Smoothly connected',
+  'tie': 'Held together',
   'staccato': 'Short and detached',
   'accent': 'Emphasized note',
   'pause': 'Hold note longer than written',
