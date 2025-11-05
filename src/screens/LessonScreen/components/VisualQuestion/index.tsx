@@ -58,7 +58,7 @@ const renderArticulationSign = (symbolType: string) => {
 }
 
 // Helper function to render individual note/rest components
-const renderNoteComponent = (noteType: any) => {
+const renderNoteComponent = (noteType: VisualComponent['noteType']) => {
   // Handle dotted note/rest objects
   if (typeof noteType === 'object' && noteType.type) {
     const { type, dots = 0 } = noteType
@@ -204,9 +204,9 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
         <DisplayCard extraHeight={false}>
           <Tuplets
-            noteType={visualComponent.tupletConfig.noteType as any}
+            noteType={visualComponent.tupletConfig.noteType as NoteType}
             numberOfNotes={visualComponent.tupletConfig.numberOfNotes}
-            elements={generateTripletElements(visualComponent.tupletConfig.noteType as any, visualComponent.tupletConfig.numberOfNotes)}
+            elements={generateTripletElements(visualComponent.tupletConfig.noteType as NoteType, visualComponent.tupletConfig.numberOfNotes)}
           />
         </DisplayCard>
       )}

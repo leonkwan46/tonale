@@ -4,6 +4,8 @@
 // Frontend domain types are in src/data/theoryData/types.ts
 // ============================================================================
 
+import type { Timestamp } from 'firebase/firestore'
+
 // Lesson type discriminator (for API validation)
 export type LessonType = 'regular' | 'finalTest'
 
@@ -16,8 +18,8 @@ export interface LessonProgress {
   lessonId: string
   attempts: number
   wrongAnswersCount: number
-  completedAt: any // Firestore Timestamp (FirebaseFirestore.Timestamp on client, admin.firestore.Timestamp on server)
-  lastAttemptAt: any // Firestore Timestamp
+  completedAt: Timestamp // Firestore Timestamp (FirebaseFirestore.Timestamp on client, admin.firestore.Timestamp on server)
+  lastAttemptAt: Timestamp // Firestore Timestamp
   
   // Optional fields based on lesson type
   stars?: number        // Present for regular lessons (0-3)
