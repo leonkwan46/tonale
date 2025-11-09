@@ -253,5 +253,6 @@ export {
     GradeThreeModifierTerms,
     GradeThreeModifierTermsKeys,
     GradeThreeTempoTerms,
-    GradeThreeTempoTermsKeys
+    GradeThreeTempoTermsKeys,
+    MUSICAL_TERM_TTS_OVERRIDES
 } from './MusicalTerms'

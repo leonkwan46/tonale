@@ -211,6 +211,53 @@ export type GradeThreeDynamicSymbolsKeys = keyof typeof GRADE_THREE_DYNAMIC_SYMB
 export type GradeThreeDynamicSymbols = (typeof GRADE_THREE_DYNAMIC_SYMBOLS)[GradeThreeDynamicSymbolsKeys]
 
 // ======================
+// TTS OVERRIDES
+// ======================
+
+export const MUSICAL_TERM_TTS_OVERRIDES = {
+  'p': { text: 'piano', language: 'it-IT' },
+  'f': { text: 'forte', language: 'it-IT' },
+  'pp': { text: 'pianissimo', language: 'it-IT' },
+  'ff': { text: 'fortissimo', language: 'it-IT' },
+  'mf': { text: 'mezzo forte', language: 'it-IT' },
+  'mp': { text: 'mezzo piano', language: 'it-IT' },
+  'fp': { text: 'forte piano', language: 'it-IT' },
+  'sf': { text: 'sforzando', language: 'it-IT' },
+  'sfz': { text: 'sforzando', language: 'it-IT' },
+  'crescendo': { text: 'crescendo', language: 'it-IT' },
+  'cresc.': { text: 'crescendo', language: 'it-IT' },
+  'decrescendo': { text: 'decrescendo', language: 'it-IT' },
+  'decresc.': { text: 'decrescendo', language: 'it-IT' },
+  'diminuendo': { text: 'diminuendo', language: 'it-IT' },
+  'dim.': { text: 'diminuendo', language: 'it-IT' },
+  'staccato': { text: 'staccato', language: 'it-IT' },
+  'stacc.': { text: 'staccato', language: 'it-IT' },
+  'accelerando': { text: 'accelerando', language: 'it-IT' },
+  'accel.': { text: 'accelerando', language: 'it-IT' },
+  'rallentando': { text: 'rallentando', language: 'it-IT' },
+  'rall.': { text: 'rallentando', language: 'it-IT' },
+  'ritardando': { text: 'ritardando', language: 'it-IT' },
+  'ritard.': { text: 'ritardando', language: 'it-IT' },
+  'rit.': { text: 'ritardando', language: 'it-IT' },
+  'espressivo': { text: 'espressivo', language: 'it-IT' },
+  'espress.': { text: 'espressivo', language: 'it-IT' },
+  'ritenuto': { text: 'ritenuto', language: 'it-IT' },
+  'riten.': { text: 'ritenuto', language: 'it-IT' },
+  'marcato': { text: 'marcato', language: 'it-IT' },
+  'marc.': { text: 'marcato', language: 'it-IT' },
+  'sostenuto': { text: 'sostenuto', language: 'it-IT' },
+  'sost': { text: 'sostenuto', language: 'it-IT' },
+  'subito': { text: 'subito', language: 'it-IT' },
+  'sub.': { text: 'subito', language: 'it-IT' },
+  'simile': { text: 'simile', language: 'it-IT' },
+  'sim.': { text: 'simile', language: 'it-IT' },
+  'da capo': { text: 'da capo', language: 'it-IT' },
+  'd.c.': { text: 'da capo', language: 'it-IT' },
+  'dal segno': { text: 'dal segno', language: 'it-IT' },
+  'd.s.': { text: 'dal segno', language: 'it-IT' }
+} as const
+
+// ======================
 // DISPLAY NAMES
 // ======================
 

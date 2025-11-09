@@ -1,5 +1,4 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
-import { STAGE_ONE_MUSICAL_TERMS } from '@/data/stageSyllabus/musicalTerms'
 import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
@@ -39,7 +38,7 @@ const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3):
   const elements: MusicElementData[][] = []
   
   for (let i = 0; i < numberOfNotes; i++) {
-    elements.push([{ type: noteType, pitch: 'C4' }])
+    elements.push([{ type: noteType, pitch: 'F4' }])
   }
   
   return elements
@@ -178,9 +177,8 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
                         visualComponent.symbolType === 'dim.'
 
   // TTS helpers
-  const isItalianMusicalTerm = visualComponent.symbolType && 
-    STAGE_ONE_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_MUSICAL_TERMS]
-  
+  const shouldShowTTSButton = visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)
+
   const handleTTS = () => {
     if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {
       pronounceTerm(visualComponent.symbolType)
@@ -218,7 +216,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
               {isTextTerm ? displayText : symbolText}
             </SMuFLSymbolText>
           </SMuFLSymbolContainer>
-          {isItalianMusicalTerm && (
+          {shouldShowTTSButton && (
             <TTSButton onPress={handleTTS}>
               <Ionicons 
                 name="volume-high" 
