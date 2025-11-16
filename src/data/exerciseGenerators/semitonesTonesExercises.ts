@@ -1,8 +1,7 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { getNotesForPitches } from '../helpers/intervalHelpers'
+import { getIntervalPairs, getNotesForPitches } from '../helpers/intervalHelpers'
 import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../helpers/questionHelpers'
-import { getIntervalPairs } from '../helpers/intervalHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
 const INTERVAL_ORDER = ['Semitone', 'Tone'] as const

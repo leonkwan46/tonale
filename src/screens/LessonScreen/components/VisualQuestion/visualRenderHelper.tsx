@@ -3,7 +3,6 @@ import {
   CrotchetRest,
   Minim,
   MinimRest,
-  NOTES,
   NoteType,
   Quaver,
   QuaverRest,
