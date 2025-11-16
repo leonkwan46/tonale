@@ -1,4 +1,4 @@
-import { ARTICULATION_SIGNS_DEFINITIONS } from '../../config/gradeSyllabus/MusicalTerms'
+import { ARTICULATION_SIGNS_DEFINITIONS } from '../../config/gradeSyllabus/musicalTerms'
 import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
 import { generateQuestionId, generateWrongChoices } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'

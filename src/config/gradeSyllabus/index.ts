@@ -255,4 +255,4 @@ export {
     GradeThreeTempoTerms,
     GradeThreeTempoTermsKeys,
     MUSICAL_TERM_TTS_OVERRIDES
-} from './MusicalTerms'
+} from './musicalTerms'
