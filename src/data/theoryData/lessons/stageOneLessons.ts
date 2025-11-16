@@ -3,41 +3,19 @@ import { Lesson } from '../types'
 export const stageOneLessons: Lesson[] = [
   {
     id: 'stage-1-lesson-1',
-    title: 'Note Values',
-    description: 'Learn basic note values',
+    title: 'Quaver & Semiquaver',
+    description: 'Identify quaver and semiquaver notes and rests, including their beat values',
     stars: 0,
     exerciseConfig: {
-      generatorType: 'noteValue',
+      generatorType: 'noteRestValue',
       questionsCount: 10,
       stage: 1
     }
   },
   {
     id: 'stage-1-lesson-2',
-    title: 'Rest Values',
-    description: 'Learn basic rest values',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'restValue',
-      questionsCount: 10,
-      stage: 1
-    }
-  },
-  {
-    id: 'stage-1-lesson-3',
-    title: 'Time Signatures',
-    description: 'Learn 2/4, 3/4, and 4/4 time signatures',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'timeSignature',
-      questionsCount: 10,
-      stage: 1
-    }
-  },
-  {
-    id: 'stage-1-lesson-4',
     title: 'Treble Clef Notes',
-    description: 'Learn treble clef note names',
+    description: 'Read treble clef notes from middle C up to G5',
     stars: 0,
     exerciseConfig: {
       generatorType: 'trebleClef',
@@ -46,9 +24,9 @@ export const stageOneLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-1-lesson-5',
+    id: 'stage-1-lesson-3',
     title: 'Bass Clef Notes',
-    description: 'Learn bass clef note names',
+    description: 'Read bass clef notes from F2 up to D4',
     stars: 0,
     exerciseConfig: {
       generatorType: 'bassClef',
@@ -57,20 +35,20 @@ export const stageOneLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-1-lesson-6',
-    title: 'Accidentals',
-    description: 'Learn sharps, flats, and naturals',
+    id: 'stage-1-lesson-4',
+    title: 'Ties & Slurs',
+    description: 'Tell the difference between ties and slurs',
     stars: 0,
     exerciseConfig: {
-      generatorType: 'accidentals',
+      generatorType: 'symbols',
       questionsCount: 10,
       stage: 1
     }
   },
   {
-    id: 'stage-1-lesson-7',
-    title: 'Semitones and Tones',
-    description: 'Learn the difference between semitones and tones',
+    id: 'stage-1-lesson-5',
+    title: 'Semitones & Tones',
+    description: 'Understand half steps and whole steps',
     stars: 0,
     exerciseConfig: {
       generatorType: 'semitonesTones',
@@ -79,9 +57,9 @@ export const stageOneLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-1-lesson-8',
+    id: 'stage-1-lesson-6',
     title: 'Dynamics & Articulation',
-    description: 'Learn dynamic markings and articulation signs',
+    description: 'Recognise dynamics and articulation markings',
     stars: 0,
     exerciseConfig: {
       generatorType: 'musicalTerm',

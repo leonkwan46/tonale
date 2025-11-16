@@ -3,18 +3,21 @@ import { CLEFS } from '@leonkwan46/music-notation'
 import {
     createAccidentalQuestions,
     createArticulationQuestions,
+  createDottedValueQuestions,
     createIntervalQuestions,
     createKeySignatureQuestions,
     createMusicalTermQuestions,
     createNoteGroupingQuestions,
     createNoteIdentificationQuestions,
-    createNoteValueQuestions,
+    createNoteValueNameQuestions,
+  createNoteValueQuestions,
+    createRestValueNameQuestions,
     createRestValueQuestions,
     createScaleDegreeQuestions,
     createSemitoneToneQuestions,
+  createSymbolQuestions,
     createTimeSignatureQuestions,
-    createTriadQuestions,
-    createTripletQuestions
+    createTriadQuestions
 } from '../exerciseGenerators'
 import { ExerciseConfig, Question } from '../theoryData/types'
 
@@ -22,6 +25,38 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
   const questions: Question[] = []
   
   switch (config.generatorType) {
+    case 'noteRestValue': {
+      const halfCount = Math.floor(config.questionsCount / 2)
+      const remaining = config.questionsCount - (halfCount * 2)
+      questions.push(...createNoteValueNameQuestions(halfCount + (remaining > 0 ? 1 : 0), config.stage))
+      questions.push(...createRestValueNameQuestions(halfCount + (remaining > 1 ? 1 : 0), config.stage))
+      break
+    }
+    
+    case 'noteNameValue':
+      questions.push(...createNoteValueNameQuestions(config.questionsCount, config.stage))
+      break
+    
+    case 'restNameValue':
+      questions.push(...createRestValueNameQuestions(config.questionsCount, config.stage))
+      break
+    case 'stage-0-final':
+      const stage0QuestionTypes = 7
+      const stage0QuestionsPerType = Math.floor(config.questionsCount / stage0QuestionTypes)
+      const stage0Remaining = config.questionsCount - (stage0QuestionsPerType * stage0QuestionTypes)
+
+      const extra = (offset: number) => (stage0Remaining > offset ? 1 : 0)
+
+      questions.push(...createNoteValueNameQuestions(stage0QuestionsPerType + extra(0), config.stage))
+      questions.push(...createRestValueNameQuestions(stage0QuestionsPerType + extra(1), config.stage))
+      questions.push(...createAccidentalQuestions(stage0QuestionsPerType + extra(2), config.stage))
+      questions.push(...createNoteIdentificationQuestions(stage0QuestionsPerType + extra(3), config.stage, CLEFS.TREBLE))
+      questions.push(...createNoteIdentificationQuestions(stage0QuestionsPerType + extra(4), config.stage, CLEFS.BASS))
+      questions.push(...createTimeSignatureQuestions(stage0QuestionsPerType + extra(5), config.stage))
+      questions.push(...createMusicalTermQuestions(stage0QuestionsPerType + extra(6), config.stage))
+
+      return questions.sort(() => Math.random() - 0.5)
+
     case 'noteValue':
       questions.push(...createNoteValueQuestions(config.questionsCount, config.stage))
       break
@@ -59,24 +94,19 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       break
     
     case 'dottedValues':
-      // Split questions between dotted notes and dotted rests
-      const dottedNotesCount = Math.ceil(config.questionsCount / 2)
-      const dottedRestsCount = config.questionsCount - dottedNotesCount
-      questions.push(...createNoteValueQuestions(dottedNotesCount, config.stage))
-      questions.push(...createRestValueQuestions(dottedRestsCount, config.stage))
+      questions.push(...createDottedValueQuestions(config.questionsCount, config.stage))
       break
     
     case 'noteGrouping':
       questions.push(...createNoteGroupingQuestions(config.questionsCount, config.stage))
       break
     
-    
-    case 'articulation':
-      questions.push(...createArticulationQuestions(config.questionsCount, config.stage))
+    case 'symbols':
+      questions.push(...createSymbolQuestions(config.questionsCount, config.stage))
       break
     
     case 'scaleDegrees':
-      questions.push(...createScaleDegreeQuestions(config.questionsCount, config.stage, 'treble'))
+      questions.push(...createScaleDegreeQuestions(config.questionsCount, config.stage))
       break
     
     case 'interval':
@@ -84,11 +114,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       break
     
     case 'triad':
-      questions.push(...createTriadQuestions(config.questionsCount, config.stage, 'treble'))
-      break
-    
-    case 'triplet':
-      questions.push(...createTripletQuestions(config.questionsCount, config.stage))
+      questions.push(...createTriadQuestions(config.questionsCount, config.stage))
       break
     
     case 'stage-1-final':
@@ -127,9 +153,9 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
       questions.push(...createMusicalTermQuestions(stage2QuestionsPerType + (stage2Remaining > 9 ? 1 : 0), config.stage)) // Tempo terms
       questions.push(...createArticulationQuestions(stage2QuestionsPerType + (stage2Remaining > 10 ? 1 : 0), config.stage))
       questions.push(...createKeySignatureQuestions(stage2QuestionsPerType + (stage2Remaining > 11 ? 1 : 0), config.stage))
-      questions.push(...createScaleDegreeQuestions(stage2QuestionsPerType, config.stage, 'treble'))
+      questions.push(...createScaleDegreeQuestions(stage2QuestionsPerType, config.stage))
       questions.push(...createIntervalQuestions(stage2QuestionsPerType, config.stage))
-      questions.push(...createTriadQuestions(stage2QuestionsPerType, config.stage, 'treble'))
+      questions.push(...createTriadQuestions(stage2QuestionsPerType, config.stage))
       
       return questions.sort(() => Math.random() - 0.5)
     
