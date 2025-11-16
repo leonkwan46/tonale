@@ -105,7 +105,17 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
           />
         )
       case QUESTION_TYPE.TRUE_FALSE:
-        return <TrueFalse />
+        return (
+          <TrueFalse
+            choices={questionData.choices}
+            correctAnswer={questionData.correctAnswer}
+            selectedAnswer={selectedAnswer}
+            showResult={showResult}
+            showCorrectAnswer={showCorrectAnswer}
+            onChoiceSelect={handleChoiceSelect}
+            testID={`correct-answer-${questionData.correctAnswer}`}
+          />
+        )
       case QUESTION_TYPE.KEY_PRESS:
         return <KeyPress />
       default:

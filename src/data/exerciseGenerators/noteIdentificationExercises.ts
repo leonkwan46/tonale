@@ -41,6 +41,7 @@ export const createNoteIdentificationQuestion = (
     type: 'multipleChoice',
     visualComponent: {
       clef: clef,
+      size: 'xs',
       elements: [{ 
         pitch: correctNoteData.pitch, 
         type: NOTES.CROTCHET,

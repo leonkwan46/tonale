@@ -1,8 +1,9 @@
 import { useDevice } from '@/hooks'
 import * as React from 'react'
 import { useState } from 'react'
-import { LayoutType } from '../..'
 import { ChoiceText, NodeContainer, NodeContentContainer, NodeDepth } from './ChoiceButton.styles'
+
+export type LayoutType = 'grid' | 'row'
 
 interface ChoiceButtonProps {
   choice: string

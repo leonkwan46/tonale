@@ -31,13 +31,15 @@ export const createSemitoneToneQuestion = (
     type: 'multipleChoice',
     visualComponent: {
       clef,
+      size: 'xs',
       elements: [
         {
           pitch: tonicNote.pitch,
           type: NOTES.CROTCHET,
           accidental: tonicNote.accidental,
           stem: tonicNote.stem,
-          ledgerLines: tonicNote.ledgerLines
+          ledgerLines: tonicNote.ledgerLines,
+          spacing: 80 // TODO: This need to be updated, when we fixed library
         },
         {
           pitch: targetNote.pitch,

@@ -25,6 +25,7 @@ export interface VisualComponent {
   }
   enableTTS?: boolean
   renderAsSymbol?: boolean
+  size?: 'xs' | 'sml' | 'med' | 'lg' | 'xl' | 'xxl'
 }
 
 export interface Question {

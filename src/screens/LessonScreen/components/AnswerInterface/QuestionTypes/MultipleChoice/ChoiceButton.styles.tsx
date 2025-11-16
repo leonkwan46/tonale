@@ -1,6 +1,6 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
-import { LayoutType } from '../..'
+import { LayoutType } from './ChoiceButton'
 
 type ButtonState = 'default' | 'selected' | 'correct' | 'incorrect' | 'neutral'
 

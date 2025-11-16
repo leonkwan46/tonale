@@ -140,7 +140,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isSlurOrTie && (
         <DisplayCard extraHeight={false}>
           <MusicStaff
-            size={'sml'}
+            size={visualComponent.size}
             clef={'treble'}
             elements={
               visualComponent.symbolType === 'tie' 
@@ -171,7 +171,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isArticulationSign && needsStaffForArticulation && (
         <DisplayCard extraHeight={false}>
           <MusicStaff
-            size={'xs'}
+            size={visualComponent.size}
             clef={'treble'}
             elements={[[
               {
@@ -196,7 +196,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       {shouldRenderMusicStaff && (
         <DisplayCard extraHeight={needsExtraHeight}>
           <MusicStaff
-            size={'xs'}
+            size={visualComponent.size}
             clef={visualComponent.clef}
             timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
             keyName={visualComponent.keyName}

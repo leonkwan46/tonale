@@ -1,35 +1,34 @@
 import { NOTES } from '@leonkwan46/music-notation'
 import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { generateQuestionId, getRandomItem } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
 type GroupingConcept = 'beaming' | 'grouping'
-
-const BEAMING_DEFINITION = 'Correct grouping of notes within beats'
-
-const BEAMING_WRONG_ANSWERS = [
-  'Incorrect grouping across beats',
-  'Notes grouped by pitch',
-  'All notes connected',
-  'Random note placement'
-]
 
 export const createBeamingQuestion = (stage: StageNumber): Question => {
   return {
     id: generateQuestionId('beaming'),
     question: 'Is this note grouping correct for the time signature?',
-    correctAnswer: BEAMING_DEFINITION,
-    choices: generateWrongChoices(BEAMING_WRONG_ANSWERS, BEAMING_DEFINITION),
+    correctAnswer: 'False',
+    choices: ['True', 'False'],
     explanation: 'Notes should be grouped to show the beat structure of the time signature.',
-    type: 'multipleChoice',
+    type: 'trueFalse',
     visualComponent: {
       clef: 'treble',
+      size: 'lg',
       timeSignature: '4/4',
       elements: [
-        { pitch: 'C4', type: NOTES.QUAVER },
-        { pitch: 'D4', type: NOTES.QUAVER },
-        { pitch: 'E4', type: NOTES.QUAVER },
-        { pitch: 'F4', type: NOTES.QUAVER }
+        // { barlineType: 'none', type: 'barline', spacing: -10 }, // TODO: We need to introduce empty space as element in library
+        { pitch: 'C4', type: NOTES.QUAVER, spacing: 40 },
+        { pitch: 'D4', type: NOTES.QUAVER, spacing: 40 },
+        { pitch: 'E4', type: NOTES.QUAVER, spacing: 40 },
+        { pitch: 'F4', type: NOTES.QUAVER, spacing: 40 },
+        { barlineType: 'single', type: 'barline', spacing: 60 },
+        { pitch: 'F4', type: NOTES.QUAVER, spacing: 40 },
+        { pitch: 'G4', type: NOTES.QUAVER, spacing: 40 },
+        { pitch: 'A4', type: NOTES.QUAVER, spacing: 40 },
+        { pitch: 'B4', type: NOTES.QUAVER, spacing: 40 },
+        { barlineType: 'final', type: 'barline', spacing: 60 }
       ]
     }
   }

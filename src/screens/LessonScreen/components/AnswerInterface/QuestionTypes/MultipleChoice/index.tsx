@@ -1,8 +1,6 @@
 import * as React from 'react'
+import { ChoiceButton, LayoutType } from './ChoiceButton'
 import { ChoiceRow, ChoicesContainer } from './MultipleChoice.styles'
-import { ChoiceButton } from './components'
-
-export type LayoutType = 'grid' | 'row'
 
 interface MultipleChoiceProps {
   choices: string[]
