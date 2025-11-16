@@ -1,6 +1,16 @@
-import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type ClefType, type Note } from '@leonkwan46/music-notation'
+import { type ClefType, type Note } from '@leonkwan46/music-notation'
+import {
+  GRADE_ONE_BASS_PITCH_RANGE,
+  GRADE_ONE_TREBLE_PITCH_RANGE,
+  GRADE_TWO_BASS_PITCH_RANGE,
+  GRADE_TWO_TREBLE_PITCH_RANGE,
+  LESS_COMMON_ACCIDENTALS,
+  PRE_GRADE_BASS_PITCH_RANGE,
+  PRE_GRADE_TREBLE_PITCH_RANGE
+} from '../../config/gradeSyllabus/PitchRange'
 import { STAGE_ONE_INTERVALS, STAGE_THREE_INTERVALS, STAGE_TWO_INTERVALS } from '../stageSyllabus/intervals'
 import { StageNumber } from '../theoryData/types'
+import { getPitchDefinitionsForClef } from './exerciseHelpers'
 
 const NOTE_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 
@@ -33,7 +43,7 @@ interface ParsedPitch {
   octave: number
 }
 
-function parsePitch(pitch: string): ParsedPitch {
+const parsePitch = (pitch: string): ParsedPitch => {
   if (typeof pitch === 'object' && pitch !== null) {
     const note = pitch as Note
     return {
@@ -52,7 +62,7 @@ function parsePitch(pitch: string): ParsedPitch {
   return { noteLetter, accidental, octave }
 }
 
-function normalizeAccidental(accidental: string): number {
+const normaliseAccidental = (accidental: string): number => {
   switch (accidental) {
     case '𝄪': return 2
     case '♯': case '#': return 1
@@ -63,7 +73,7 @@ function normalizeAccidental(accidental: string): number {
   }
 }
 
-export function getSemitoneDistance(pitch1: string | Note, pitch2: string | Note): number {
+export const getSemitoneDistance = (pitch1: string | Note, pitch2: string | Note): number => {
   const parsed1 = parsePitch(pitch1 as string)
   const parsed2 = parsePitch(pitch2 as string)
   
@@ -71,13 +81,13 @@ export function getSemitoneDistance(pitch1: string | Note, pitch2: string | Note
     'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
   }
   
-  const semitones1 = baseSemitonesMap[parsed1.noteLetter] + normalizeAccidental(parsed1.accidental) + (parsed1.octave * 12)
-  const semitones2 = baseSemitonesMap[parsed2.noteLetter] + normalizeAccidental(parsed2.accidental) + (parsed2.octave * 12)
+  const semitones1 = baseSemitonesMap[parsed1.noteLetter] + normaliseAccidental(parsed1.accidental) + (parsed1.octave * 12)
+  const semitones2 = baseSemitonesMap[parsed2.noteLetter] + normaliseAccidental(parsed2.accidental) + (parsed2.octave * 12)
   
   return Math.abs(semitones2 - semitones1)
 }
 
-function getIntervalNumber(noteLetter1: string, noteLetter2: string, octave1: number, octave2: number): number {
+const getIntervalNumber = (noteLetter1: string, noteLetter2: string, octave1: number, octave2: number): number => {
   const index1 = NOTE_LETTERS.indexOf(noteLetter1.toUpperCase())
   const index2 = NOTE_LETTERS.indexOf(noteLetter2.toUpperCase())
   
@@ -101,16 +111,16 @@ function getIntervalNumber(noteLetter1: string, noteLetter2: string, octave1: nu
   return totalDistance + 1
 }
 
-function isCompoundInterval(intervalNumber: number): boolean {
+const isCompoundInterval = (intervalNumber: number): boolean => {
   return intervalNumber > 8
 }
 
-function getSimpleInterval(intervalNumber: number): number {
+const getSimpleInterval = (intervalNumber: number): number => {
   if (intervalNumber <= 8) return intervalNumber
   return ((intervalNumber - 1) % 7) + 1
 }
 
-function getIntervalType(intervalNumber: number, semitones: number): IntervalType {
+const getIntervalType = (intervalNumber: number, semitones: number): IntervalType => {
   const simpleInterval = getSimpleInterval(intervalNumber)
   
   if (simpleInterval in PERFECT_INTERVALS) {
@@ -133,7 +143,7 @@ function getIntervalType(intervalNumber: number, semitones: number): IntervalTyp
   return 'perfect'
 }
 
-function getIntervalName(interval: Interval): string {
+const getIntervalName = (interval: Interval): string => {
   const { number, type, compound } = interval
   const simpleNumber = getSimpleInterval(number)
   
@@ -147,16 +157,16 @@ function getIntervalName(interval: Interval): string {
   return name
 }
 
-function getOrdinal(num: number): string {
+const getOrdinal = (num: number): string => {
   const suffixes = ['th', 'st', 'nd', 'rd']
   const v = num % 100
   return num + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0])
 }
 
-export function calculateInterval(
+export const calculateInterval = (
   fromPitch: string | Note,
   toPitch: string | Note
-): Interval {
+): Interval => {
   const parsed1 = parsePitch(fromPitch as string)
   const parsed2 = parsePitch(toPitch as string)
   
@@ -175,7 +185,7 @@ export function calculateInterval(
   }
 }
 
-export function invertInterval(interval: Interval): Interval {
+export const invertInterval = (interval: Interval): Interval => {
   const { number, type, semitones } = interval
   
   const simpleNumber = getSimpleInterval(number)
@@ -216,11 +226,11 @@ export function invertInterval(interval: Interval): Interval {
   }
 }
 
-export function intervalsAreEnharmonic(interval1: Interval, interval2: Interval): boolean {
+export const intervalsAreEnharmonic = (interval1: Interval, interval2: Interval): boolean => {
   return interval1.semitones === interval2.semitones
 }
 
-export function transposeByInterval(pitch: string | Note, interval: Interval): string {
+export const transposeByInterval = (pitch: string | Note, interval: Interval): string => {
   const parsed = parsePitch(pitch as string)
   const { number, semitones } = interval
   
@@ -235,7 +245,7 @@ export function transposeByInterval(pitch: string | Note, interval: Interval): s
     'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
   }
   
-  const currentSemitones = baseSemitonesMap[parsed.noteLetter] + normalizeAccidental(parsed.accidental)
+  const currentSemitones = baseSemitonesMap[parsed.noteLetter] + normaliseAccidental(parsed.accidental)
   const targetSemitones = currentSemitones + semitones
   const newBaseSemitones = baseSemitonesMap[newNoteLetter]
   const accidentalOffset = targetSemitones - newBaseSemitones - (newOctave * 12)
@@ -252,33 +262,199 @@ export function transposeByInterval(pitch: string | Note, interval: Interval): s
 
 export type { IntervalNumber, IntervalType }
 
+export const resolveTargetPitchByDirection = (
+  fromPitch: string | Note,
+  targetLetter: string,
+  targetAccidental: string = '',
+  direction: 'up' | 'down'
+): string => {
+  const from = (typeof fromPitch === 'string' ? parsePitch(fromPitch) : parsePitch((fromPitch as Note).pitch))
+  const fromIndex = NOTE_LETTERS.indexOf(from.noteLetter.toUpperCase())
+  const toIndex = NOTE_LETTERS.indexOf(targetLetter.toUpperCase())
+  if (fromIndex === -1 || toIndex === -1) {
+    throw new Error(`Invalid note letter(s): from=${from.noteLetter}, to=${targetLetter}`)
+  }
+  let octave = from.octave
+  if (direction === 'up') {
+    if (toIndex <= fromIndex) octave += 1
+  } else {
+    if (toIndex > fromIndex) octave -= 1
+  }
+  let acc = targetAccidental
+  if (acc === 'b') acc = '♭'
+  if (acc === '#') acc = '♯'
+  return `${targetLetter.toUpperCase()}${acc}${octave}`
+}
+
 // ======================
 // PITCH DEFINITIONS HELPERS
 // ======================
 
-export const getPitchDefinitionsForClef = (clef: ClefType): Note[] => {
+// moved to exerciseHelpers.ts as a shared helper
+
+/**
+ * Get cumulative pitch range for interval and semitones/tones exercises
+ * Returns all pitches from PRE_GRADE up to and including the current stage (cumulative)
+ */
+const getCumulativePitchRangeForStage = (stage: StageNumber, clef: ClefType): string[] => {
   switch (clef) {
-    case 'treble':
-      return TREBLE_PITCH_DEFINITIONS
     case 'bass':
-      return BASS_PITCH_DEFINITIONS
-    case 'alto':
-      return ALTO_PITCH_DEFINITIONS
-    case 'tenor':
-      return TENOR_PITCH_DEFINITIONS
+      switch (stage) {
+        case 0:
+          return PRE_GRADE_BASS_PITCH_RANGE.map(pitch => pitch as string)
+        case 1:
+        case 2:
+          return [...PRE_GRADE_BASS_PITCH_RANGE, ...GRADE_ONE_BASS_PITCH_RANGE].map(pitch => pitch as string)
+        case 3:
+        case 4:
+          return [...PRE_GRADE_BASS_PITCH_RANGE, ...GRADE_ONE_BASS_PITCH_RANGE, ...GRADE_TWO_BASS_PITCH_RANGE].map(pitch => pitch as string)
+        default:
+          throw new Error(`Stage ${stage} cumulative bass pitch range not yet implemented`)
+      }
+    case 'treble':
+      switch (stage) {
+        case 0:
+          return PRE_GRADE_TREBLE_PITCH_RANGE.map(pitch => pitch as string)
+        case 1:
+        case 2:
+          return [...PRE_GRADE_TREBLE_PITCH_RANGE, ...GRADE_ONE_TREBLE_PITCH_RANGE].map(pitch => pitch as string)
+        case 3:
+        case 4:
+          return [...PRE_GRADE_TREBLE_PITCH_RANGE, ...GRADE_ONE_TREBLE_PITCH_RANGE, ...GRADE_TWO_TREBLE_PITCH_RANGE].map(pitch => pitch as string)
+        default:
+          throw new Error(`Stage ${stage} cumulative treble pitch range not yet implemented`)
+      }
     default:
-      return TREBLE_PITCH_DEFINITIONS
+      throw new Error(`Unsupported clef for cumulative pitch range: ${clef}`)
   }
 }
 
-export const findNoteFromPitch = (pitch: string, pitchDefinitions: Note[]): Note | undefined => {
+/**
+ * Get Note objects for interval and semitones/tones exercises
+ * Uses cumulative ranges (all pitches learned up to the current stage)
+ */
+export const getIntervalExerciseNoteDefinitions = (stage: StageNumber, clef: ClefType): Note[] => {
+  const pitchDefinitions = getPitchDefinitionsForClef(clef)
+  const pitchRange = getCumulativePitchRangeForStage(stage, clef)
+  
+  return pitchDefinitions.filter((note: Note) => {
+    return pitchRange.includes(note.pitch)
+  })
+}
+
+// ======================
+// SEMITONES/TONES HELPERS
+// ======================
+
+export const hasLessCommonAccidental = (pitch: string): boolean => {
+  const parsed = parsePitch(pitch)
+  const noteWithAccidental = `${parsed.noteLetter}${parsed.accidental}`
+  return (LESS_COMMON_ACCIDENTALS as readonly string[]).includes(noteWithAccidental)
+}
+
+export const isValidIntervalPair = (pitch1: string, pitch2: string): boolean => {
+  if (hasLessCommonAccidental(pitch1) || hasLessCommonAccidental(pitch2)) {
+    return false
+  }
+  
+  const parsed1 = parsePitch(pitch1)
+  const parsed2 = parsePitch(pitch2)
+  const isNaturalSemitone =
+    (parsed1.noteLetter === 'E' && parsed2.noteLetter === 'F') ||
+    (parsed1.noteLetter === 'F' && parsed2.noteLetter === 'E') ||
+    (parsed1.noteLetter === 'B' && parsed2.noteLetter === 'C') ||
+    (parsed1.noteLetter === 'C' && parsed2.noteLetter === 'B')
+  
+  if (isNaturalSemitone) {
+    const hasAcc1 = parsed1.accidental !== '' && parsed1.accidental !== '♮'
+    const hasAcc2 = parsed2.accidental !== '' && parsed2.accidental !== '♮'
+    
+    if (hasAcc1 !== hasAcc2) {
+      return false
+    }
+    
+    if (hasAcc1 && hasAcc2) {
+      const isSharp1 = parsed1.accidental === '#' || parsed1.accidental === '♯'
+      const isSharp2 = parsed2.accidental === '#' || parsed2.accidental === '♯'
+      if (isSharp1 !== isSharp2) {
+        return false
+      }
+    }
+  }
+  
+  return true
+}
+
+export const calculateAbsoluteSemitone = (pitch: string): number => {
+  const noteLetterSemitones: Record<string, number> = {
+    'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
+  }
+  const parsed = parsePitch(pitch)
+  const accidentalOffset = normaliseAccidental(parsed.accidental)
+  return noteLetterSemitones[parsed.noteLetter] + accidentalOffset + (parsed.octave * 12)
+}
+
+export const extractNotePrefix = (pitch: string): string => {
+  const parsed = parsePitch(pitch)
+  return `${parsed.noteLetter}${parsed.accidental}`
+}
+
+export const getIntervalPairs = (
+  stage: StageNumber,
+  clef: ClefType
+): { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' }[] => {
+  const stageNotes = getIntervalExerciseNoteDefinitions(stage, clef)
+  const allowedPitches = stageNotes.map(note => note.pitch)
+  const resultPairs: { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' }[] = []
+  
+  if (allowedPitches.length === 0) {
+    return resultPairs
+  }
+
+  const semitoneToPitchesMap = new Map<number, string[]>()
+  for (const pitch of allowedPitches) {
+    const semitone = calculateAbsoluteSemitone(pitch)
+    const pitchesAtSemitone = semitoneToPitchesMap.get(semitone)
+    if (pitchesAtSemitone) {
+      pitchesAtSemitone.push(pitch)
+    } else {
+      semitoneToPitchesMap.set(semitone, [pitch])
+    }
+  }
+
+  const seenPairKeys = new Set<string>()
+
+  for (const pitchA of allowedPitches) {
+    const semitone = calculateAbsoluteSemitone(pitchA)
+    for (const offset of [1, 2] as const) {
+      const targetPitches = semitoneToPitchesMap.get(semitone + offset)
+      if (!targetPitches || targetPitches.length === 0) continue
+      for (const pitchB of targetPitches) {
+        if (!isValidIntervalPair(pitchA, pitchB)) continue
+        const [lowerPitch, higherPitch] = pitchA < pitchB ? [pitchA, pitchB] : [pitchB, pitchA]
+        const pairKey = `${lowerPitch}|${higherPitch}`
+        if (seenPairKeys.has(pairKey)) continue
+        seenPairKeys.add(pairKey)
+        resultPairs.push({
+          pitch1: lowerPitch,
+          pitch2: higherPitch,
+          intervalType: offset === 1 ? 'semitone' : 'tone'
+        })
+      }
+    }
+  }
+  
+  return resultPairs
+}
+
+export const findNoteFromPitchDefinitions = (pitch: string, pitchDefinitions: Note[]): Note | undefined => {
   return pitchDefinitions.find((note: Note) => note.pitch === pitch)
 }
 
 export const getNotesForPitches = (tonic: string, target: string, clef: ClefType) => {
   const pitchDefinitions = getPitchDefinitionsForClef(clef)
-  const tonicNote = findNoteFromPitch(tonic, pitchDefinitions)
-  const targetNote = findNoteFromPitch(target, pitchDefinitions)
+  const tonicNote = findNoteFromPitchDefinitions(tonic, pitchDefinitions)
+  const targetNote = findNoteFromPitchDefinitions(target, pitchDefinitions)
   
   if (!tonicNote || !targetNote) {
     throw new Error(`Could not find pitch definitions for tonic: ${tonic} or target: ${target} in clef: ${clef}`)

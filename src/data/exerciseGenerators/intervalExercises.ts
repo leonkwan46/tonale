@@ -1,32 +1,25 @@
-// Interval exercise generators
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { calculateInterval, getIntervalNameForStage, getNotesForPitches, getStageIntervals, transposeByInterval, type Interval } from '../helpers/intervalHelpers'
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalExerciseNoteDefinitions, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../helpers/intervalHelpers'
+import { generateQuestionId, generateWrongChoices } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-const INTERVAL_NUMBERS = [2, 3, 4, 5, 6, 7, 8] as const
-const TONIC_PITCH = 'C4'
+const CLEFS: ClefType[] = ['treble', 'bass']
 
-// ======================
-// MAIN EXPORT FUNCTIONS
-// ======================
-
-export const createIntervalQuestion = (stage: StageNumber, clef: ClefType = 'treble'): Question => {
-  const intervalNumber = getRandomItem(INTERVAL_NUMBERS) as 2 | 3 | 4 | 5 | 6 | 7 | 8
-  const intervalObj: Interval = {
-    number: intervalNumber,
-    type: 'perfect',
-    semitones: 0,
-    compound: false,
-    simpleName: ''
-  }
-  
-  const targetPitch = transposeByInterval(TONIC_PITCH, intervalObj)
-  const calculatedInterval = calculateInterval(TONIC_PITCH, targetPitch)
-  
-  const { tonicNote, targetNote } = getNotesForPitches(TONIC_PITCH, targetPitch, clef)
+export const createIntervalQuestion = (
+  stage: StageNumber, 
+  clef: ClefType,
+  tonicPitch: string,
+  targetPitch: string
+): Question => {
   const stageIntervals = getStageIntervals(stage)
+
+  const { tonicNote, targetNote } = getNotesForPitches(tonicPitch, targetPitch, clef)
+  const calculatedInterval = calculateInterval(tonicPitch, targetPitch)
   const correctAnswer = getIntervalNameForStage(calculatedInterval, stage, stageIntervals)
+  if (!stageIntervals.includes(correctAnswer)) {
+    throw new Error(`Interval ${correctAnswer} is not part of stage ${stage} syllabus`)
+  }
   
   return {
     id: generateQuestionId('interval'),
@@ -57,6 +50,95 @@ export const createIntervalQuestion = (stage: StageNumber, clef: ClefType = 'tre
   }
 }
 
-export const createIntervalQuestions = (questionsCount: number, stage: StageNumber, clef: ClefType = 'treble'): Question[] => {
-  return Array.from({ length: questionsCount }, () => createIntervalQuestion(stage, clef))
+const getQuestionKey = (question: Question): string | null => {
+  return question.correctAnswer ?? null
+}
+
+const generateQuestionsForClef = (stage: StageNumber, clef: ClefType): Question[] => {
+  const questions: Question[] = []
+  const stageNoteDefinitions = getIntervalExerciseNoteDefinitions(stage, clef)
+  const availablePitches = stageNoteDefinitions.map(note => note.pitch)
+  
+  const semitoneValueCache = new Map<string, number>()
+  const getSemitoneValue = (pitch: string): number => {
+    if (!semitoneValueCache.has(pitch)) {
+      semitoneValueCache.set(pitch, calculateAbsoluteSemitone(pitch))
+    }
+    return semitoneValueCache.get(pitch)!
+  }
+  
+  const pitchesSortedBySemitone = [...availablePitches].sort((a, b) => getSemitoneValue(a) - getSemitoneValue(b))
+  
+  const pitchesGroupedByPrefix = new Map<string, string[]>()
+  for (const pitch of availablePitches) {
+    const prefix = extractNotePrefix(pitch)
+    const pitchesWithPrefix = pitchesGroupedByPrefix.get(prefix) || []
+    pitchesWithPrefix.push(pitch)
+    pitchesGroupedByPrefix.set(prefix, pitchesWithPrefix)
+  }
+  
+  for (const pitchesWithPrefix of pitchesGroupedByPrefix.values()) {
+    pitchesWithPrefix.sort((a, b) => getSemitoneValue(a) - getSemitoneValue(b))
+  }
+
+  for (let i = 0; i < pitchesSortedBySemitone.length; i++) {
+    const tonicPitch = pitchesSortedBySemitone[i]
+    const tonicSemitoneValue = getSemitoneValue(tonicPitch)
+    
+    for (let j = i + 1; j < pitchesSortedBySemitone.length; j++) {
+      const proposedTargetPitch = pitchesSortedBySemitone[j]
+      
+      if (stage <= 2) {
+        const targetPrefix = extractNotePrefix(proposedTargetPitch)
+        const pitchesWithMatchingPrefix = pitchesGroupedByPrefix.get(targetPrefix) || []
+        
+        let selectedTargetPitch: string | null = null
+        let smallestSemitoneDistance = Infinity
+        
+        for (const candidatePitch of pitchesWithMatchingPrefix) {
+          if (candidatePitch === tonicPitch) continue
+          
+          const candidateSemitoneValue = getSemitoneValue(candidatePitch)
+          if (candidateSemitoneValue <= tonicSemitoneValue) continue
+          
+          const interval = calculateInterval(tonicPitch, candidatePitch)
+          if (interval.number < 2 || interval.number > 8) continue
+          
+          const semitoneDistance = candidateSemitoneValue - tonicSemitoneValue
+          if (semitoneDistance < smallestSemitoneDistance) {
+            selectedTargetPitch = candidatePitch
+            smallestSemitoneDistance = semitoneDistance
+          }
+        }
+        
+        if (selectedTargetPitch) {
+          const question = createIntervalQuestion(stage, clef, tonicPitch, selectedTargetPitch)
+          questions.push(question)
+        }
+      } else {
+        const interval = calculateInterval(tonicPitch, proposedTargetPitch)
+        if (interval.number >= 2) {
+          const question = createIntervalQuestion(stage, clef, tonicPitch, proposedTargetPitch)
+          questions.push(question)
+        }
+      }
+    }
+  }
+
+  return questions
+}
+
+export const createIntervalQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+  const questionPool: Question[] = []
+
+  for (const clef of CLEFS) {
+    const clefQuestions = generateQuestionsForClef(stage, clef)
+    questionPool.push(...clefQuestions)
+  }
+
+  if (questionPool.length === 0) {
+    throw new Error(`No interval questions available for stage ${stage}`)
+  }
+
+  return generateQuestionsFromPool(questionPool, questionsCount, getQuestionKey)
 }
