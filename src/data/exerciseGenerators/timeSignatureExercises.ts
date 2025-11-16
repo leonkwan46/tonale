@@ -42,7 +42,7 @@ export const createTimeSignatureQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const timeSignatureValue = question.visualComponent?.timeSignatureValue
   return timeSignatureValue ?? null
 }
@@ -59,5 +59,5 @@ export const createTimeSignatureQuestions = (questionsCount: number, stage: Stag
   const uniquePool = availableTimeSignatures.map(timeSignature => 
     createTimeSignatureQuestion(stage, timeSignature)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

@@ -1,10 +1,10 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
 import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
-import { getNoteIdentificationNoteDefinitions } from '../helpers/noteIdentificationHelpers'
 import {
   generateQuestionId,
   generateWrongChoices
 } from '../helpers/questionHelpers'
+import { getNewNotesForStage } from '../stageSyllabus/noteRange'
 import { Question, StageNumber } from '../theoryData/types'
 
 interface Note {
@@ -21,7 +21,7 @@ export const createNoteIdentificationQuestion = (
   clef: ClefType,
   noteData?: Note
 ): Question => {
-  const stagePitches = getNoteIdentificationNoteDefinitions(stage, clef)
+  const stagePitches = getNewNotesForStage(stage, clef)
   const correctNoteData = noteData || stagePitches[0]
   
   if (!correctNoteData.letterName) {
@@ -52,7 +52,7 @@ export const createNoteIdentificationQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const pitch = question.visualComponent?.elements?.[0]?.pitch
   if (pitch) return pitch
   return question.correctAnswer ?? null
@@ -63,9 +63,9 @@ export const createNoteIdentificationQuestions = (
   stage: StageNumber,
   clef: ClefType
 ): Question[] => {
-  const stagePitches = getNoteIdentificationNoteDefinitions(stage, clef)
+  const stagePitches = getNewNotesForStage(stage, clef)
   const uniquePool = stagePitches.map(note => 
     createNoteIdentificationQuestion(stage, clef, note)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

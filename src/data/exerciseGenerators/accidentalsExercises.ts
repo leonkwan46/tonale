@@ -49,7 +49,7 @@ export const createAccidentalQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const symbolType = question.visualComponent?.symbolType
   if (symbolType) return symbolType
   return question.correctAnswer ?? null
@@ -63,5 +63,5 @@ export const createAccidentalQuestions = (
   const uniquePool = stageAccidentals.map(accidental => 
     createAccidentalQuestion(stage, accidental)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

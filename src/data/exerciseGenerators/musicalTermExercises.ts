@@ -75,12 +75,10 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
-  // Use symbolType from visualComponent (primary identifier)
+const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.visualComponent?.symbolType) {
     return question.visualComponent.symbolType
   }
-  // Fallback to correctAnswer
   return question.correctAnswer ?? null
 }
 
@@ -111,5 +109,5 @@ export const createMusicalTermQuestions = (
   const uniquePool = termKeys.map(termKey => 
     createMusicalTermQuestion(stage, termKey)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

@@ -1,14 +1,7 @@
 import { type ClefType, type Note } from '@leonkwan46/music-notation'
-import {
-  GRADE_ONE_BASS_PITCH_RANGE,
-  GRADE_ONE_TREBLE_PITCH_RANGE,
-  GRADE_TWO_BASS_PITCH_RANGE,
-  GRADE_TWO_TREBLE_PITCH_RANGE,
-  LESS_COMMON_ACCIDENTALS,
-  PRE_GRADE_BASS_PITCH_RANGE,
-  PRE_GRADE_TREBLE_PITCH_RANGE
-} from '../../config/gradeSyllabus/pitchRange'
+import { LESS_COMMON_ACCIDENTALS } from '../../config/gradeSyllabus/pitchRange'
 import { STAGE_ONE_INTERVALS, STAGE_THREE_INTERVALS, STAGE_TWO_INTERVALS } from '../stageSyllabus/intervals'
+import { getCumulativeNoteDefinitions } from '../stageSyllabus/noteRange'
 import { StageNumber } from '../theoryData/types'
 import { getPitchDefinitionsForClef } from './exerciseHelpers'
 
@@ -287,62 +280,6 @@ export const resolveTargetPitchByDirection = (
 }
 
 // ======================
-// PITCH DEFINITIONS HELPERS
-// ======================
-
-// moved to exerciseHelpers.ts as a shared helper
-
-/**
- * Get cumulative pitch range for interval and semitones/tones exercises
- * Returns all pitches from PRE_GRADE up to and including the current stage (cumulative)
- */
-const getCumulativePitchRangeForStage = (stage: StageNumber, clef: ClefType): string[] => {
-  switch (clef) {
-    case 'bass':
-      switch (stage) {
-        case 0:
-          return PRE_GRADE_BASS_PITCH_RANGE.map(pitch => pitch as string)
-        case 1:
-        case 2:
-          return [...PRE_GRADE_BASS_PITCH_RANGE, ...GRADE_ONE_BASS_PITCH_RANGE].map(pitch => pitch as string)
-        case 3:
-        case 4:
-          return [...PRE_GRADE_BASS_PITCH_RANGE, ...GRADE_ONE_BASS_PITCH_RANGE, ...GRADE_TWO_BASS_PITCH_RANGE].map(pitch => pitch as string)
-        default:
-          throw new Error(`Stage ${stage} cumulative bass pitch range not yet implemented`)
-      }
-    case 'treble':
-      switch (stage) {
-        case 0:
-          return PRE_GRADE_TREBLE_PITCH_RANGE.map(pitch => pitch as string)
-        case 1:
-        case 2:
-          return [...PRE_GRADE_TREBLE_PITCH_RANGE, ...GRADE_ONE_TREBLE_PITCH_RANGE].map(pitch => pitch as string)
-        case 3:
-        case 4:
-          return [...PRE_GRADE_TREBLE_PITCH_RANGE, ...GRADE_ONE_TREBLE_PITCH_RANGE, ...GRADE_TWO_TREBLE_PITCH_RANGE].map(pitch => pitch as string)
-        default:
-          throw new Error(`Stage ${stage} cumulative treble pitch range not yet implemented`)
-      }
-    default:
-      throw new Error(`Unsupported clef for cumulative pitch range: ${clef}`)
-  }
-}
-
-/**
- * Get Note objects for interval and semitones/tones exercises
- * Uses cumulative ranges (all pitches learned up to the current stage)
- */
-export const getIntervalExerciseNoteDefinitions = (stage: StageNumber, clef: ClefType): Note[] => {
-  const pitchDefinitions = getPitchDefinitionsForClef(clef)
-  const pitchRange = getCumulativePitchRangeForStage(stage, clef)
-  
-  return pitchDefinitions.filter((note: Note) => {
-    return pitchRange.includes(note.pitch)
-  })
-}
-
-// ======================
 // SEMITONES/TONES HELPERS
 // ======================
 
@@ -403,7 +340,7 @@ export const getIntervalPairs = (
   stage: StageNumber,
   clef: ClefType
 ): { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' }[] => {
-  const stageNotes = getIntervalExerciseNoteDefinitions(stage, clef)
+  const stageNotes = getCumulativeNoteDefinitions(stage, clef)
   const allowedPitches = stageNotes.map(note => note.pitch)
   const resultPairs: { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' }[] = []
   

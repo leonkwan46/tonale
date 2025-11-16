@@ -9,7 +9,7 @@ import { createValueBeatQuestion } from '../helpers/timeValueQuestionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 import { createNoteValueQuestion } from './noteValueExercises'
 
-const getNoteValueNameKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const typeKey = getTimeValueKeyFromComponent(question)
   if (!typeKey) return null
   
@@ -40,6 +40,6 @@ export const createNoteValueNameQuestions = (questionsCount: number, stage: Stag
     ...noteValueQuestions
   ]
 
-  return generateQuestionsFromPool(uniquePool, questionsCount, getNoteValueNameKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }
 

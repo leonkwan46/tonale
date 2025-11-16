@@ -23,7 +23,7 @@ export const createArticulationQuestion = (stage: StageNumber, termKey?: string)
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const symbolType = question.visualComponent?.symbolType
   if (symbolType && typeof symbolType === 'string') {
     return symbolType
@@ -37,5 +37,5 @@ export const createArticulationQuestions = (questionsCount: number, stage: Stage
   const uniquePool = termKeys.map(termKey => 
     createArticulationQuestion(stage, termKey)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

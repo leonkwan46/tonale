@@ -28,7 +28,7 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): 
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.correctAnswer) {
     return question.correctAnswer
   }
@@ -60,5 +60,5 @@ export const createKeySignatureQuestions = (questionsCount: number, stage: Stage
   const uniquePool = keys.map(key => 
     createKeySignatureQuestion(stage, key)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

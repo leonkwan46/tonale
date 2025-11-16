@@ -5,13 +5,13 @@ import { getNoteAtScaleDegree, getScaleDegreeName } from '../helpers/scaleDegree
 import { Question, StageNumber } from '../theoryData/types'
 
 type MusicNotationKey = (typeof KEY_NAMES)[keyof typeof KEY_NAMES]
-const SCALE_DEGREES = [1, 2, 3, 4, 5, 6, 7, 8] as const
+const SCALE_DEGREES = [1, 2, 3, 4, 5, 6, 7] as const
 
 export const createScaleDegreeQuestion = (
   stage: StageNumber,
   clef: ClefType,
   key?: MusicNotationKey,
-  degree?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+  degree?: 1 | 2 | 3 | 4 | 5 | 6 | 7
 ): Question => {
   const availableKeys = getKeys(stage)
   const selectedKey = key || availableKeys[0]
@@ -47,6 +47,7 @@ export const createScaleDegreeQuestion = (
     type: 'multipleChoice',
     visualComponent: {
       clef,
+      keyName: selectedKey,
       elements: [
         {
           pitch: targetNote.pitch,
@@ -60,11 +61,8 @@ export const createScaleDegreeQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
-  const pitch = question.visualComponent?.elements?.[0]?.pitch
-  const clef = (question.visualComponent as { clef?: string } | undefined)?.clef
-  if (pitch && clef) return `${clef}|${pitch}`
-  return question.correctAnswer ?? null
+const getDuplicateIdentifier = (question: Question): string | null => {
+  return question.visualComponent?.keyName ?? null
 }
 
 export const createScaleDegreeQuestions = (
@@ -80,18 +78,17 @@ export const createScaleDegreeQuestions = (
       bassPool.push(createScaleDegreeQuestion(stage, 'bass', key, degree))
     }
   }
+
   const half = Math.floor(questionsCount / 2)
   const remainder = questionsCount - half * 2
   const trebleCount = half + (remainder > 0 ? 1 : 0)
   const bassCount = half
-  const treble = generateQuestionsFromPool(treblePool, trebleCount, getQuestionKey)
-  const bass = generateQuestionsFromPool(bassPool, bassCount, getQuestionKey)
+  const treble = generateQuestionsFromPool(treblePool, trebleCount, getDuplicateIdentifier)
+  const bass = generateQuestionsFromPool(bassPool, bassCount, getDuplicateIdentifier)
   const combined = [...treble, ...bass]
-  // simple shuffle
   for (let i = combined.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[combined[i], combined[j]] = [combined[j], combined[i]]
   }
   return combined
 }
-

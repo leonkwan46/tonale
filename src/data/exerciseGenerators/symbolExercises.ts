@@ -37,7 +37,7 @@ export const createSlurQuestion = (_stage: StageNumber): Question => {
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.visualComponent?.symbolType) {
     return String(question.visualComponent.symbolType)
   }
@@ -46,7 +46,7 @@ const getQuestionKey = (question: Question): string | null => {
 
 export const createSymbolQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   const uniquePool = [createTieQuestion(stage), createSlurQuestion(stage)]
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }
 
 

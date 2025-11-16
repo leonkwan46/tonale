@@ -35,7 +35,7 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.correctAnswer) return question.correctAnswer
   return question.visualComponent?.elements?.map(element => element.pitch).join('|') ?? null
 }
@@ -49,8 +49,8 @@ export const createTriadQuestions = (questionsCount: number, stage: StageNumber)
   const trebleCount = Math.ceil(questionsCount / 2)
   const bassCount = questionsCount - trebleCount
 
-  const trebleQuestions = generateQuestionsFromPool(treblePool, trebleCount, getQuestionKey)
-  const bassQuestions = generateQuestionsFromPool(bassPool, bassCount, getQuestionKey)
+  const trebleQuestions = generateQuestionsFromPool(treblePool, trebleCount, getDuplicateIdentifier)
+  const bassQuestions = generateQuestionsFromPool(bassPool, bassCount, getDuplicateIdentifier)
 
   const combined = shuffleArray([...trebleQuestions, ...bassQuestions])
   return balanceCorrectAnswerPositions(combined)

@@ -9,7 +9,7 @@ import { createValueBeatQuestion } from '../helpers/timeValueQuestionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 import { createRestValueQuestion } from './restValueExercises'
 
-const getRestValueNameKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const typeKey = getTimeValueKeyFromComponent(question)
   if (!typeKey) return null
   
@@ -40,6 +40,6 @@ export const createRestValueNameQuestions = (questionsCount: number, stage: Stag
     ...restValueQuestions
   ]
 
-  return generateQuestionsFromPool(uniquePool, questionsCount, getRestValueNameKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }
 

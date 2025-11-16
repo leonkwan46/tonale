@@ -1,6 +1,6 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { getIntervalPairs, getNotesForPitches } from '../helpers/intervalHelpers'
 import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { getIntervalPairs, getNotesForPitches } from '../helpers/intervalHelpers'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -51,7 +51,7 @@ export const createSemitoneToneQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const pitches = question.visualComponent?.elements?.map(element => element.pitch).filter(Boolean)
   if (pitches && pitches.length > 0) {
     return pitches.join('|')
@@ -72,7 +72,7 @@ export const createSemitoneToneQuestions = (
     const uniquePool = intervalPairs.map(pair => 
       createSemitoneToneQuestion(stage, clef, pair)
     )
-    return generateQuestionsFromPool(uniquePool, count, getQuestionKey)
+    return generateQuestionsFromPool(uniquePool, count, getDuplicateIdentifier)
   }
 
   const trebleQuestions = buildQuestionsForClef(trebleCount, 'treble')

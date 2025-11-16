@@ -11,7 +11,7 @@ import { Question, StageNumber } from '../theoryData/types'
 import { createNoteValueQuestion } from './noteValueExercises'
 import { createRestValueQuestion } from './restValueExercises'
 
-const getDottedValueKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const typeKey = getTimeValueKeyFromComponent(question)
   if (!typeKey) return null
   
@@ -58,6 +58,6 @@ export const createDottedValueQuestions = (questionsCount: number, stage: StageN
     ...restValueQuestions
   ]
 
-  return generateQuestionsFromPool(uniquePool, questionsCount, getDottedValueKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }
 

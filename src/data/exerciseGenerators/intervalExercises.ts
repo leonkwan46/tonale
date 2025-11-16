@@ -1,6 +1,7 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
 import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
-import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalExerciseNoteDefinitions, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../helpers/intervalHelpers'
+import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../helpers/intervalHelpers'
+import { getCumulativeNoteDefinitions } from '../stageSyllabus/noteRange'
 import { generateQuestionId, generateWrongChoices } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
@@ -50,13 +51,13 @@ export const createIntervalQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   return question.correctAnswer ?? null
 }
 
 const generateQuestionsForClef = (stage: StageNumber, clef: ClefType): Question[] => {
   const questions: Question[] = []
-  const stageNoteDefinitions = getIntervalExerciseNoteDefinitions(stage, clef)
+  const stageNoteDefinitions = getCumulativeNoteDefinitions(stage, clef)
   const availablePitches = stageNoteDefinitions.map(note => note.pitch)
   
   const semitoneValueCache = new Map<string, number>()
@@ -140,5 +141,5 @@ export const createIntervalQuestions = (questionsCount: number, stage: StageNumb
     throw new Error(`No interval questions available for stage ${stage}`)
   }
 
-  return generateQuestionsFromPool(questionPool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(questionPool, questionsCount, getDuplicateIdentifier)
 }

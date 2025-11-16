@@ -156,17 +156,17 @@ export const getValueKindFromId = (questionId: string): 'note' | 'rest' => {
 export const isSameQuestion = (
   q1: Question,
   q2: Question,
-  getQuestionKey: (question: Question) => string | null
+  getDuplicateIdentifier: (question: Question) => string | null
 ): boolean => {
-  const key1 = getQuestionKey(q1)
-  const key2 = getQuestionKey(q2)
+  const key1 = getDuplicateIdentifier(q1)
+  const key2 = getDuplicateIdentifier(q2)
   return key1 !== null && key2 !== null && key1 === key2
 }
 
 export const generateQuestionsFromPool = (
   uniquePool: Question[],
   questionsCount: number,
-  getQuestionKey: (question: Question) => string | null,
+  getDuplicateIdentifier: (question: Question) => string | null,
   options: { deduplicationWindow?: number } = {}
 ): Question[] => {
   const windowSize = options.deduplicationWindow ?? 3
@@ -175,7 +175,7 @@ export const generateQuestionsFromPool = (
   
   const questionsByKey = new Map<string, Question[]>()
   uniquePool.forEach(q => {
-    const key = getQuestionKey(q)
+    const key = getDuplicateIdentifier(q)
     if (key) {
       if (!questionsByKey.has(key)) {
         questionsByKey.set(key, [])

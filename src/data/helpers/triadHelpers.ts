@@ -1,6 +1,5 @@
-// Triad-specific helper functions for chord generation
 import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type ClefType, type Note } from '@leonkwan46/music-notation'
-import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from './noteIdentificationHelpers'
+import { getCumulativeNoteDefinitions } from '../stageSyllabus/noteRange'
 import { STAGE_ONE_TRIADS, STAGE_THREE_TRIADS, STAGE_TWO_TRIADS } from '../stageSyllabus/triads'
 import { StageNumber } from '../theoryData/types'
 
@@ -23,18 +22,6 @@ export const getChordsByStage = (stage: StageNumber) => {
   }
 }
 
-const getStageNoteRange = (stage: StageNumber, clef: ClefType): Note[] => {
-  switch (stage) {
-    case 1:
-      return STAGE_ONE_NOTE_RANGE(clef)
-    case 2:
-      return STAGE_TWO_NOTE_RANGE(clef)
-    case 3:
-      return STAGE_THREE_NOTE_RANGE(clef)
-    default:
-      throw new Error(`Invalid stage: ${stage}`)
-  }
-}
 
 const getPitchDefinitionsForClef = (clef: ClefType): Note[] => {
   switch (clef) {
@@ -216,7 +203,7 @@ const findChordNote = (
 // ======================
 
 export const addRegisterToChord = (notes: readonly string[], clef: ClefType, stage: StageNumber): Note[] => {
-  const stageNoteRange = getStageNoteRange(stage, clef)
+  const stageNoteRange = getCumulativeNoteDefinitions(stage, clef)
   const pitchDefinitions = getPitchDefinitionsForClef(clef)
   const filteredPitches = stageNoteRange
   

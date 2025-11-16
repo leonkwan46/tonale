@@ -50,7 +50,7 @@ export const createNoteGroupingQuestion = (stage: StageNumber): Question => {
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.visualComponent?.elements && question.visualComponent.elements.length > 0) {
     const pitches = question.visualComponent.elements
       .map(element => element.pitch)
@@ -60,11 +60,10 @@ const getQuestionKey = (question: Question): string | null => {
       return `beaming|${pitches}`
     }
   }
-  // Last resort: use correctAnswer (more stable than question string)
   return question.correctAnswer ?? null
 }
 
 export const createNoteGroupingQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   const uniquePool = [createBeamingQuestion(stage)]
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

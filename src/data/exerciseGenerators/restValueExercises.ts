@@ -31,7 +31,7 @@ export const createRestValueQuestion = (
   }
 }
 
-const getQuestionKey = (question: Question): string | null => {
+const getDuplicateIdentifier = (question: Question): string | null => {
   const noteType = question.visualComponent?.noteType
   if (noteType !== undefined) {
     return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
@@ -44,5 +44,5 @@ export const createRestValueQuestions = (questionsCount: number, stage: StageNum
   const uniquePool = stageRestTypes.map(restType => 
     createRestValueQuestion(stage, restType)
   )
-  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
+  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }
