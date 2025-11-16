@@ -1,6 +1,6 @@
 import { KEY_NAMES } from '@leonkwan46/music-notation'
-import { ALL_MAJOR_KEYS, ALL_MINOR_KEYS, GRADE_ONE_MINOR_KEYS } from './Keys'
-import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, AllHarmonicMinorScale, AllMajorScale } from './Scales'
+import { ALL_MAJOR_KEYS, ALL_MINOR_KEYS, GRADE_ONE_MINOR_KEYS } from './keys'
+import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, AllHarmonicMinorScale, AllMajorScale } from './scales'
 
 // ======================
 // HELPER FUNCTIONS

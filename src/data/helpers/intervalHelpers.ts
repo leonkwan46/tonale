@@ -7,7 +7,7 @@ import {
   LESS_COMMON_ACCIDENTALS,
   PRE_GRADE_BASS_PITCH_RANGE,
   PRE_GRADE_TREBLE_PITCH_RANGE
-} from '../../config/gradeSyllabus/PitchRange'
+} from '../../config/gradeSyllabus/pitchRange'
 import { STAGE_ONE_INTERVALS, STAGE_THREE_INTERVALS, STAGE_TWO_INTERVALS } from '../stageSyllabus/intervals'
 import { StageNumber } from '../theoryData/types'
 import { getPitchDefinitionsForClef } from './exerciseHelpers'

@@ -1,4 +1,4 @@
-import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, ALL_MELODIC_MINOR_SCALES, AllHarmonicMinorScale, AllMajorScale, AllMelodicMinorScale } from '../../config/gradeSyllabus/Scales'
+import { ALL_HARMONIC_MINOR_SCALES, ALL_MAJOR_SCALES, ALL_MELODIC_MINOR_SCALES, AllHarmonicMinorScale, AllMajorScale, AllMelodicMinorScale } from '../../config/gradeSyllabus/scales'
 
 export function getScale(key: string, direction: 'ascending' | 'descending' = 'ascending'): readonly string[] {
   return (

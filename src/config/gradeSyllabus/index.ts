@@ -24,7 +24,7 @@ export {
     GRADE_FIVE_QUINTUPLET_NOTE_VALUES,
     GRADE_FIVE_SEXTUPLET_NOTE_VALUES,
     GRADE_FIVE_ALL_NOTE_VALUES
-} from './NoteValues'
+} from './noteValues'
 
 // ======================
 // KEYS
@@ -59,7 +59,7 @@ export {
     GRADE_FIVE_MINOR_KEYS,
     GRADE_FIVE_RELATIVE_KEYS,
     GRADE_FIVE_KEYS
-} from './Keys'
+} from './keys'
 
 // ======================
 // PITCH RANGES
@@ -90,7 +90,7 @@ export {
     GRADE_FIVE_TENOR_DOUBLE_ACCIDENTAL_PITCH_RANGE,
     GRADE_FIVE_ALTO_PITCH_RANGE,
     GRADE_FIVE_PITCH_RANGE
-} from './PitchRange'
+} from './pitchRange'
 
 // ======================
 // SCALES
@@ -119,7 +119,7 @@ export {
     GRADE_FIVE_MAJOR_SCALES,
     GRADE_FIVE_MINOR_SCALES,
     GRADE_FIVE_SCALES
-} from './Scales'
+} from './scales'
 
 // ======================
 // INTERVALS
@@ -138,7 +138,7 @@ export {
     GRADE_FIVE_CHROMATIC_INTERVALS,
     GRADE_FIVE_COMPOUND_INTERVALS,
     GRADE_FIVE_COMPOUND_ALTERNATIVE_INTERVALS
-} from './Intervals'
+} from './intervals'
 
 // ======================
 // CHORDS
@@ -162,7 +162,7 @@ export {
     GRADE_FIVE_CHORDS,
     GRADE_FIVE_MAJOR_CHORDS,
     GRADE_FIVE_MINOR_CHORDS
-} from './Chords'
+} from './chords'
 
 // ======================
 // TIME SIGNATURES
@@ -178,7 +178,7 @@ export {
     GRADE_FOUR_TIME_SIGNATURES,
     // Grade 5
     GRADE_FIVE_TIME_SIGNATURES
-} from './TimeSignatures'
+} from './timeSignatures'
 
 // ======================
 // MUSICAL TERMS
