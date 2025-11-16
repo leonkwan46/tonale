@@ -7,20 +7,10 @@ import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import {
-  Crotchet,
-  CrotchetRest,
-  Minim,
-  MinimRest,
   MusicStaff,
   NOTES,
   NoteType,
   parseTimeSignature as parseTimeSignatureFromLibrary,
-  Quaver,
-  QuaverRest,
-  Semibreve,
-  SemibreveRest,
-  Semiquaver,
-  SemiquaverRest,
   Tuplets,
   type MusicElementData
 } from '@leonkwan46/music-notation'
@@ -28,98 +18,10 @@ import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
 import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
+import { generateTripletElements, renderArticulationSign, renderNoteComponent } from './visualRenderHelper'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
-}
-
-// Helper function to generate triplet elements for display
-const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3): MusicElementData[][] => {
-  const elements: MusicElementData[][] = []
-  
-  for (let i = 0; i < numberOfNotes; i++) {
-    elements.push([{ type: noteType, pitch: 'F4' }])
-  }
-  
-  return elements
-}
-
-// Helper function to render articulation signs with individual note components
-const renderArticulationSign = (symbolType: string) => {
-  return (
-    <Crotchet 
-      stem='up' 
-      centered={true}
-      isStaccato={symbolType === 'staccato'}
-      isAccent={symbolType === 'accent'}
-    />
-  )
-}
-
-// Helper function to render individual note/rest components
-const renderNoteComponent = (noteType: VisualComponent['noteType']) => {
-  // Handle dotted note/rest objects
-  if (typeof noteType === 'object' && noteType.type) {
-    const { type, dots = 0 } = noteType
-    switch (type) {
-      // Notes
-      case 'semibreve':
-        return <Semibreve centered={true} dots={dots} />
-      case 'minim':
-        return <Minim stem='up' centered={true} dots={dots} />
-      case 'crotchet':
-        return <Crotchet stem='up' centered={true} dots={dots} />
-      case 'quaver':
-        return <Quaver stem='up' centered={true} dots={dots} />
-      case 'semiquaver':
-        return <Semiquaver stem='up' centered={true} dots={dots} />
-      // Rests
-      case 'semibreve-rest':
-        return <SemibreveRest centered={true} dots={dots} />
-      case 'minim-rest':
-        return <MinimRest centered={true} dots={dots} />
-      case 'crotchet-rest':
-        return <CrotchetRest centered={true} dots={dots} isOlderForm={false} />
-      case 'quaver-rest':
-        return <QuaverRest centered={true} dots={dots} />
-      case 'semiquaver-rest':
-        return <SemiquaverRest centered={true} dots={dots} />
-      default:
-        throw new Error(`Unknown note type in object: ${type}`)
-    }
-  }
-  
-  // Handle string note/rest types (legacy support)
-  if (typeof noteType === 'string') {
-    switch (noteType) {
-    // Notes
-    case 'semibreve':
-      return <Semibreve centered={true} />
-    case 'minim':
-      return <Minim stem='up' centered={true} />
-    case 'crotchet':
-      return <Crotchet stem='up' centered={true} />
-    case 'quaver':
-      return <Quaver stem='up' centered={true} />
-    case 'semiquaver':
-      return <Semiquaver stem='up' centered={true} />
-    // Rests
-    case 'semibreve-rest':
-      return <SemibreveRest centered={true} />
-    case 'minim-rest':
-      return <MinimRest centered={true} />
-    case 'crotchet-rest':
-      return <CrotchetRest centered={true} isOlderForm={false} />
-    case 'quaver-rest':
-      return <QuaverRest centered={true} />
-    case 'semiquaver-rest':
-      return <SemiquaverRest centered={true} />
-    default:
-      throw new Error(`Unknown note type: ${noteType}`)
-    }
-  }
-  
-  throw new Error(`Invalid noteType: ${JSON.stringify(noteType)}`)
 }
 
 export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
@@ -147,26 +49,30 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     !(visualComponent.elements?.length === 1 && !visualComponent.clef)
 
   // SMuFL symbol helpers
-  const symbolText = visualComponent.symbolType ? 
+  const renderAsSymbol = visualComponent.renderAsSymbol !== false
+
+  const symbolText = renderAsSymbol && visualComponent.symbolType ? 
     GRADE_ONE_DYNAMIC_SYMBOLS[visualComponent.symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS] ||
     GRADE_ONE_ARTICULATION_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS] ||
     GRADE_ONE_ACCIDENTAL_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ACCIDENTAL_SIGNS] || 
     '' : ''
   const isTextTerm = visualComponent.symbolType ? 
-    !(visualComponent.symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) && 
+    !renderAsSymbol ||
+    (!(visualComponent.symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) && 
     !(visualComponent.symbolType in GRADE_ONE_ARTICULATION_SIGNS) &&
-    !(visualComponent.symbolType in GRADE_ONE_ACCIDENTAL_SIGNS) : false
+    !(visualComponent.symbolType in GRADE_ONE_ACCIDENTAL_SIGNS)) : false
   const displayText = visualComponent.symbolType ? TERM_DISPLAY_NAMES[visualComponent.symbolType as keyof typeof TERM_DISPLAY_NAMES] || visualComponent.symbolType : ''
   
   // Special handling for slur and tie
   const isSlurOrTie = visualComponent.symbolType === 'slur' || visualComponent.symbolType === 'tie'
   
   // Special handling for articulation signs (display with notation library)
-  const isArticulationSign = visualComponent.symbolType === 'staccato' || 
+  const isArticulationSign = renderAsSymbol && (visualComponent.symbolType === 'staccato' || 
                              visualComponent.symbolType === 'accent' || 
-                             visualComponent.symbolType === 'fermata'
-  const needsStaffForArticulation = visualComponent.symbolType === 'fermata' // Fermata needs staff positioning
-  const useIndividualNoteForArticulation = isArticulationSign && !needsStaffForArticulation
+                             visualComponent.symbolType === 'fermata')
+  // Staccato, accent, and fermata all need staff positioning
+  const needsStaffForArticulation = isArticulationSign
+  const useIndividualNoteForArticulation = false // Always use staff for articulation signs
   
   // Widen crescendo/decrescendo/diminuendo using CSS transform
   const isWideDynamic = visualComponent.symbolType === 'crescendo' || 
@@ -177,10 +83,13 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
                         visualComponent.symbolType === 'dim.'
 
   // TTS helpers
-  const shouldShowTTSButton = visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)
+  const shouldShowTTSButton =
+    visualComponent.symbolType &&
+    visualComponent.enableTTS !== false &&
+    canPronounceTerm(visualComponent.symbolType)
 
   const handleTTS = () => {
-    if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {
+    if (visualComponent.symbolType && visualComponent.enableTTS !== false && canPronounceTerm(visualComponent.symbolType)) {
       pronounceTerm(visualComponent.symbolType)
     }
   }
@@ -243,21 +152,35 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       )}
       
       {visualComponent.type === 'termAndSign' && visualComponent.symbolType && useIndividualNoteForArticulation && (
-        <DisplayCard extraHeight={false}>
-          {renderArticulationSign(visualComponent.symbolType)}
-        </DisplayCard>
+        <SMuFLCard isTablet={isTablet}>
+          <SMuFLSymbolContainer isTablet={isTablet}>
+            {renderArticulationSign(visualComponent.symbolType)}
+          </SMuFLSymbolContainer>
+          {shouldShowTTSButton && (
+            <TTSButton onPress={handleTTS}>
+              <Ionicons
+                name="volume-high"
+                size={scale(20)}
+                color={theme.colors.text}
+              />
+            </TTSButton>
+          )}
+        </SMuFLCard>
       )}
       
       {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isArticulationSign && needsStaffForArticulation && (
         <DisplayCard extraHeight={false}>
           <MusicStaff
             size={'xs'}
+            clef={'treble'}
             elements={[[
               {
                 pitch: 'F4',
                 type: NOTES.CROTCHET,
                 stem: 'up',
-                hasFermata: true
+                ...(visualComponent.symbolType === 'staccato' && { isStaccato: true }),
+                ...(visualComponent.symbolType === 'accent' && { isAccent: true }),
+                ...(visualComponent.symbolType === 'fermata' && { hasFermata: true })
               }
             ]]}
           />
