@@ -2,10 +2,10 @@ import {
   TERM_DISPLAY_NAMES,
   TermDisplayNamesKeys
 } from '../../config/gradeSyllabus'
+import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
 import {
   generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+  generateWrongChoices
 } from '../helpers/questionHelpers'
 import {
   STAGE_ONE_MUSICAL_TERMS,
@@ -13,15 +13,21 @@ import {
   STAGE_THREE_MUSICAL_TERMS,
   STAGE_THREE_MUSICAL_TERMS_DEFINITIONS,
   STAGE_TWO_MUSICAL_TERMS,
-  STAGE_TWO_MUSICAL_TERMS_DEFINITIONS
+  STAGE_TWO_MUSICAL_TERMS_DEFINITIONS,
+  STAGE_ZERO_MUSICAL_TERMS,
+  STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
 } from '../stageSyllabus/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
 
-export const createMusicalTermQuestion = (stage: StageNumber): Question => {
+export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string): Question => {
   let stageMusicalTerms: Record<string, string>
   let stageDefinitions: Record<string, string>
   
   switch (stage) {
+    case 0:
+      stageMusicalTerms = STAGE_ZERO_MUSICAL_TERMS
+      stageDefinitions = STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
+      break
     case 1:
       stageMusicalTerms = STAGE_ONE_MUSICAL_TERMS
       stageDefinitions = STAGE_ONE_MUSICAL_TERMS_DEFINITIONS
@@ -35,10 +41,11 @@ export const createMusicalTermQuestion = (stage: StageNumber): Question => {
       stageDefinitions = STAGE_THREE_MUSICAL_TERMS_DEFINITIONS
       break
     default:
-      throw new Error(`Invalid stage: ${stage}. Only stages 1, 2, and 3 are currently supported.`)
+      throw new Error(`Invalid stage: ${stage}. Only stages 0, 1, 2, and 3 are currently supported.`)
   }
   
-  const correctTerm = getRandomItem(Object.keys(stageMusicalTerms))
+  const termKeys = Object.keys(stageMusicalTerms)
+  const correctTerm = termKey || termKeys[0]
   const correctDefinition = stageDefinitions[correctTerm]
   
   if (!correctDefinition) {
@@ -51,6 +58,8 @@ export const createMusicalTermQuestion = (stage: StageNumber): Question => {
     )
   )
   
+  const shouldRenderAsSymbol = !(stage === 0 && (correctTerm === 'staccato' || correctTerm === 'legato'))
+
   return {
     id: generateQuestionId('musical-term-smufl'),
     question: 'What is this musical term/sign?',
@@ -60,21 +69,47 @@ export const createMusicalTermQuestion = (stage: StageNumber): Question => {
     type: 'multipleChoice',
     visualComponent: {
       type: 'termAndSign',
-      symbolType: correctTerm
-    },
-    metadata: {
-      hasSymbol: true,
-      symbol: correctTerm,
-      category: 'musical-term'
+      symbolType: correctTerm,
+      renderAsSymbol: shouldRenderAsSymbol
     }
   }
+}
+
+const getQuestionKey = (question: Question): string | null => {
+  // Use symbolType from visualComponent (primary identifier)
+  if (question.visualComponent?.symbolType) {
+    return question.visualComponent.symbolType
+  }
+  // Fallback to correctAnswer
+  return question.correctAnswer ?? null
 }
 
 export const createMusicalTermQuestions = (
   questionsCount: number, 
   stage: StageNumber
 ): Question[] => {
-  return Array.from({ length: questionsCount }, () => 
-    createMusicalTermQuestion(stage)
+  let stageMusicalTerms: Record<string, string>
+  
+  switch (stage) {
+    case 0:
+      stageMusicalTerms = STAGE_ZERO_MUSICAL_TERMS
+      break
+    case 1:
+      stageMusicalTerms = STAGE_ONE_MUSICAL_TERMS
+      break
+    case 2:
+      stageMusicalTerms = STAGE_TWO_MUSICAL_TERMS
+      break
+    case 3:
+      stageMusicalTerms = STAGE_THREE_MUSICAL_TERMS
+      break
+    default:
+      throw new Error(`Invalid stage: ${stage}. Only stages 0, 1, 2, and 3 are currently supported.`)
+  }
+  
+  const termKeys = Object.keys(stageMusicalTerms)
+  const uniquePool = termKeys.map(termKey => 
+    createMusicalTermQuestion(stage, termKey)
   )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }

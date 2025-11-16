@@ -1,33 +1,40 @@
-import { NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { getKeys } from '../helpers/exerciseHelpers'
-import { findNoteFromPitch, getPitchDefinitionsForClef } from '../helpers/intervalHelpers'
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { KEY_NAMES, NOTES, type ClefType } from '@leonkwan46/music-notation'
+import { generateQuestionsFromPool, getKeys, getPitchDefinitionsForClef } from '../helpers/exerciseHelpers'
+import { generateQuestionId, generateWrongChoices } from '../helpers/questionHelpers'
 import { getNoteAtScaleDegree, getScaleDegreeName } from '../helpers/scaleDegreeHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
+type MusicNotationKey = (typeof KEY_NAMES)[keyof typeof KEY_NAMES]
 const SCALE_DEGREES = [1, 2, 3, 4, 5, 6, 7, 8] as const
 
 export const createScaleDegreeQuestion = (
   stage: StageNumber,
-  clef: ClefType
+  clef: ClefType,
+  key?: MusicNotationKey,
+  degree?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 ): Question => {
   const availableKeys = getKeys(stage)
-  const selectedKey = getRandomItem(availableKeys)
-  const degree = getRandomItem(SCALE_DEGREES)
+  const selectedKey = key || availableKeys[0]
+  const selectedDegree = degree || SCALE_DEGREES[0]
   
-  const scaleNoteName = getNoteAtScaleDegree(selectedKey, degree)
+  const scaleNoteName = getNoteAtScaleDegree(selectedKey, selectedDegree)
   const noteLetter = scaleNoteName.charAt(0)
   const accidental = scaleNoteName.slice(1)
-  const targetPitch = `${noteLetter}${accidental}4`
-  
   const pitchDefinitions = getPitchDefinitionsForClef(clef)
-  const targetNote = findNoteFromPitch(targetPitch, pitchDefinitions)
-  
+  const desiredOctave = clef === 'treble' ? 4 : 3
+  const candidates = pitchDefinitions.filter(n => n.pitch.startsWith(`${noteLetter}${accidental}`))
+  const parseOct = (p: string) => {
+    const m = p.match(/(\d+)$/)
+    return m ? parseInt(m[1], 10) : desiredOctave
+  }
+  const targetNote = candidates
+    .slice()
+    .sort((a, b) => Math.abs(parseOct(a.pitch) - desiredOctave) - Math.abs(parseOct(b.pitch) - desiredOctave))[0]
   if (!targetNote) {
-    throw new Error(`Could not find pitch definition for ${targetPitch} in ${clef} clef`)
+    throw new Error(`Could not find pitch definition for ${noteLetter}${accidental} in ${clef} clef`)
   }
   
-  const correctAnswer = getScaleDegreeName(degree)
+  const correctAnswer = getScaleDegreeName(selectedDegree)
   const allDegrees = SCALE_DEGREES.map(getScaleDegreeName)
   const keyDisplayName = selectedKey.toString()
   
@@ -53,10 +60,38 @@ export const createScaleDegreeQuestion = (
   }
 }
 
+const getQuestionKey = (question: Question): string | null => {
+  const pitch = question.visualComponent?.elements?.[0]?.pitch
+  const clef = (question.visualComponent as { clef?: string } | undefined)?.clef
+  if (pitch && clef) return `${clef}|${pitch}`
+  return question.correctAnswer ?? null
+}
+
 export const createScaleDegreeQuestions = (
   questionsCount: number,
-  stage: StageNumber,
-  clef: ClefType
+  stage: StageNumber
 ): Question[] => {
-  return Array.from({ length: questionsCount }, () => createScaleDegreeQuestion(stage, clef))
+  const availableKeys = getKeys(stage)
+  const treblePool: Question[] = []
+  const bassPool: Question[] = []
+  for (const key of availableKeys) {
+    for (const degree of SCALE_DEGREES) {
+      treblePool.push(createScaleDegreeQuestion(stage, 'treble', key, degree))
+      bassPool.push(createScaleDegreeQuestion(stage, 'bass', key, degree))
+    }
+  }
+  const half = Math.floor(questionsCount / 2)
+  const remainder = questionsCount - half * 2
+  const trebleCount = half + (remainder > 0 ? 1 : 0)
+  const bassCount = half
+  const treble = generateQuestionsFromPool(treblePool, trebleCount, getQuestionKey)
+  const bass = generateQuestionsFromPool(bassPool, bassCount, getQuestionKey)
+  const combined = [...treble, ...bass]
+  // simple shuffle
+  for (let i = combined.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[combined[i], combined[j]] = [combined[j], combined[i]]
+  }
+  return combined
 }
+

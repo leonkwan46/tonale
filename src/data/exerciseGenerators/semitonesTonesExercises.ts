@@ -1,14 +1,16 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
 import { getNotesForPitches } from '../helpers/intervalHelpers'
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
-import { getIntervalPairs } from '../helpers/semitonesTonesHelpers'
+import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { generateQuestionId, generateWrongChoices, shuffleArray } from '../helpers/questionHelpers'
+import { getIntervalPairs } from '../helpers/intervalHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
 const INTERVAL_ORDER = ['Semitone', 'Tone'] as const
 
 export const createSemitoneToneQuestion = (
   stage: StageNumber,
-  clef: ClefType
+  clef: ClefType,
+  intervalPair?: { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' }
 ): Question => {
   const intervalPairs = getIntervalPairs(stage, clef)
   
@@ -16,7 +18,7 @@ export const createSemitoneToneQuestion = (
     throw new Error(`No valid interval pairs found for stage ${stage} in ${clef} clef`)
   }
   
-  const selectedPair = getRandomItem(intervalPairs)
+  const selectedPair = intervalPair || intervalPairs[0]
   const { pitch1, pitch2, intervalType } = selectedPair
   const { tonicNote, targetNote } = getNotesForPitches(pitch1, pitch2, clef)
   const correctAnswer = intervalType === 'semitone' ? 'Semitone' : 'Tone'
@@ -50,20 +52,32 @@ export const createSemitoneToneQuestion = (
   }
 }
 
+const getQuestionKey = (question: Question): string | null => {
+  const pitches = question.visualComponent?.elements?.map(element => element.pitch).filter(Boolean)
+  if (pitches && pitches.length > 0) {
+    return pitches.join('|')
+  }
+  return question.correctAnswer ?? null
+}
+
 export const createSemitoneToneQuestions = (
   questionsCount: number,
   stage: StageNumber
 ): Question[] => {
   const bassCount = Math.max(5, Math.floor(questionsCount / 2))
   const trebleCount = questionsCount - bassCount
-  
-  const trebleQuestions = Array.from({ length: trebleCount }, () => 
-    createSemitoneToneQuestion(stage, 'treble')
-  )
-  const bassQuestions = Array.from({ length: bassCount }, () => 
-    createSemitoneToneQuestion(stage, 'bass')
-  )
-  
-  return [...trebleQuestions, ...bassQuestions].sort(() => Math.random() - 0.5)
+
+  const buildQuestionsForClef = (count: number, clef: ClefType): Question[] => {
+    if (count <= 0) return []
+    const intervalPairs = getIntervalPairs(stage, clef)
+    const uniquePool = intervalPairs.map(pair => 
+      createSemitoneToneQuestion(stage, clef, pair)
+    )
+    return generateQuestionsFromPool(uniquePool, count, getQuestionKey)
+  }
+
+  const trebleQuestions = buildQuestionsForClef(trebleCount, 'treble')
+  const bassQuestions = buildQuestionsForClef(bassCount, 'bass')
+  return shuffleArray([...trebleQuestions, ...bassQuestions])
 }
 

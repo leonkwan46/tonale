@@ -1,13 +1,12 @@
-// Articulation and expression exercise generators
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { generateQuestionId, generateWrongChoices } from '../helpers/questionHelpers'
 import { getStageOneArticulationTerms } from '../stageSyllabus/musicalTerms'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Create an articulation term question
-export const createArticulationQuestion = (stage: StageNumber): Question => {
+export const createArticulationQuestion = (stage: StageNumber, termKey?: string): Question => {
   const articulationTerms = getStageOneArticulationTerms()
   const termKeys = Object.keys(articulationTerms)
-  const correctTerm = getRandomItem(termKeys)
+  const correctTerm = termKey || termKeys[0]
   const correctDefinition = articulationTerms[correctTerm as keyof typeof articulationTerms]
   
   return {
@@ -24,7 +23,19 @@ export const createArticulationQuestion = (stage: StageNumber): Question => {
   }
 }
 
-// Create multiple articulation questions
+const getQuestionKey = (question: Question): string | null => {
+  const symbolType = question.visualComponent?.symbolType
+  if (symbolType && typeof symbolType === 'string') {
+    return symbolType
+  }
+  return question.correctAnswer ?? null
+}
+
 export const createArticulationQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createArticulationQuestion(stage))
+  const articulationTerms = getStageOneArticulationTerms()
+  const termKeys = Object.keys(articulationTerms)
+  const uniquePool = termKeys.map(termKey => 
+    createArticulationQuestion(stage, termKey)
+  )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }

@@ -1,17 +1,17 @@
-// Rest value exercise generators
-import { getAllRestTypes } from '../helpers/exerciseHelpers'
+import { generateQuestionsFromPool, getAllRestTypes } from '../helpers/exerciseHelpers'
 import {
   generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+  generateWrongChoices
 } from '../helpers/questionHelpers'
 import { ensureFourChoicesForStage2, restTypeToString } from '../helpers/timeValueHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Create a rest value identification question (rests only)
-export const createRestValueQuestion = (stage: StageNumber): Question => {
+export const createRestValueQuestion = (
+  stage: StageNumber,
+  restType?: string | { type: string; dots?: number }
+): Question => {
   const stageRestTypes = getAllRestTypes(stage)
-  const correctRestType = getRandomItem(stageRestTypes as (string | { type: string; dots?: number })[])
+  const correctRestType = restType || stageRestTypes[0]
   
   const correctAnswerString = restTypeToString(correctRestType)
   let choiceStrings = stageRestTypes.map(restTypeToString)
@@ -31,7 +31,18 @@ export const createRestValueQuestion = (stage: StageNumber): Question => {
   }
 }
 
-// Create multiple rest value questions
+const getQuestionKey = (question: Question): string | null => {
+  const noteType = question.visualComponent?.noteType
+  if (noteType !== undefined) {
+    return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+  }
+  return question.correctAnswer ?? null
+}
+
 export const createRestValueQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createRestValueQuestion(stage))
+  const stageRestTypes = getAllRestTypes(stage)
+  const uniquePool = stageRestTypes.map(restType => 
+    createRestValueQuestion(stage, restType)
+  )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }

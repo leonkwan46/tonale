@@ -1,14 +1,12 @@
-// Note identification exercise generators
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
-import { getNoteRange } from '../helpers/exerciseHelpers'
+import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { getNoteIdentificationNoteDefinitions } from '../helpers/noteIdentificationHelpers'
 import {
-    generateQuestionId,
-    generateWrongChoices,
-    getRandomItem
+  generateQuestionId,
+  generateWrongChoices
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Define the Note interface locally since it's not exported from the main package
 interface Note {
   pitch: string
   name: string
@@ -18,23 +16,18 @@ interface Note {
   accidental?: AccidentalType
 }
 
-// Create a note identification question
 export const createNoteIdentificationQuestion = (
   stage: StageNumber, 
-  clef: ClefType
+  clef: ClefType,
+  noteData?: Note
 ): Question => {
-  // Get pitches for the specified stage and clef (with accidentals if available)
-  const stagePitches = getNoteRange(stage, clef) as Note[]
+  const stagePitches = getNoteIdentificationNoteDefinitions(stage, clef)
+  const correctNoteData = noteData || stagePitches[0]
   
-  // Get a random note from the stage range
-  const correctNoteData = getRandomItem(stagePitches) as Note
-  
-  // Ensure we have a valid letter name
   if (!correctNoteData.letterName) {
     throw new Error('Note data missing letterName')
   }
   
-  // Create choices from stage note letter names (unique note letters)
   const allLetterNames = stagePitches.map((note: Note) => note.letterName)
   const validLetterNames = allLetterNames.filter((name: string | undefined): name is string => Boolean(name))
   const noteLetterNames = [...new Set(validLetterNames)]
@@ -59,11 +52,20 @@ export const createNoteIdentificationQuestion = (
   }
 }
 
-// Create multiple note identification questions
+const getQuestionKey = (question: Question): string | null => {
+  const pitch = question.visualComponent?.elements?.[0]?.pitch
+  if (pitch) return pitch
+  return question.correctAnswer ?? null
+}
+
 export const createNoteIdentificationQuestions = (
   questionsCount: number, 
   stage: StageNumber,
   clef: ClefType
 ): Question[] => {
-  return Array.from({ length: questionsCount }, () => createNoteIdentificationQuestion(stage, clef))
+  const stagePitches = getNoteIdentificationNoteDefinitions(stage, clef)
+  const uniquePool = stagePitches.map(note => 
+    createNoteIdentificationQuestion(stage, clef, note)
+  )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }

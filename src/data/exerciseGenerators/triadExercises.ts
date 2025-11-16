@@ -1,16 +1,13 @@
 import { NOTES, type ClefType, type Note } from '@leonkwan46/music-notation'
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { generateQuestionId, generateWrongChoices, shuffleArray } from '../helpers/questionHelpers'
 import { addRegisterToChord, getChordsByStage } from '../helpers/triadHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// ======================
-// MAIN EXPORT FUNCTIONS
-// ======================
-
-export const createTriadQuestion = (stage: StageNumber, clef: ClefType): Question => {
+export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey?: string): Question => {
   const availableChords = getChordsByStage(stage)
   const chordKeys = Object.keys(availableChords)
-  const selectedChordKey = getRandomItem(chordKeys)
+  const selectedChordKey = chordKey || chordKeys[0]
   const selectedChordNotes = availableChords[selectedChordKey as keyof typeof availableChords]
   
   const flatNotes = selectedChordNotes.flat()
@@ -38,6 +35,23 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType): Questio
   }
 }
 
-export const createTriadQuestions = (questionsCount: number, stage: StageNumber, clef: ClefType): Question[] => {
-  return Array.from({ length: questionsCount }, () => createTriadQuestion(stage, clef))
+const getQuestionKey = (question: Question): string | null => {
+  if (question.correctAnswer) return question.correctAnswer
+  return question.visualComponent?.elements?.map(element => element.pitch).join('|') ?? null
+}
+
+export const createTriadQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+  const chordKeys = Object.keys(getChordsByStage(stage))
+
+  const treblePool = chordKeys.map(chordKey => createTriadQuestion(stage, 'treble', chordKey))
+  const bassPool = chordKeys.map(chordKey => createTriadQuestion(stage, 'bass', chordKey))
+
+  const trebleCount = Math.ceil(questionsCount / 2)
+  const bassCount = questionsCount - trebleCount
+
+  const trebleQuestions = generateQuestionsFromPool(treblePool, trebleCount, getQuestionKey)
+  const bassQuestions = generateQuestionsFromPool(bassPool, bassCount, getQuestionKey)
+
+  const combined = shuffleArray([...trebleQuestions, ...bassQuestions])
+  return balanceCorrectAnswerPositions(combined)
 }

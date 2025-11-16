@@ -1,20 +1,17 @@
-// Key signature exercise generators
 import { CLEFS } from '@leonkwan46/music-notation'
-import { getKeys } from '../helpers/exerciseHelpers'
+import { generateQuestionsFromPool, getKeys } from '../helpers/exerciseHelpers'
 import {
   generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+  generateWrongChoices
 } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Create a key signature identification question
-export const createKeySignatureQuestion = (stage: StageNumber): Question => {
+type StageKey = ReturnType<typeof getKeys>[number]
+
+export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): Question => {
   const keys = getKeys(stage)
-  const correctKey = getRandomItem(keys)
-  
-  // Use full key names for choices (e.g., "C Major", "D Minor")
-  const keyNames = keys.map(key => key.toString())
+  const correctKey = key || keys[0]
+  const keyNames = keys.map(k => k.toString())
   
   return {
     id: generateQuestionId('key-sig'),
@@ -31,7 +28,37 @@ export const createKeySignatureQuestion = (stage: StageNumber): Question => {
   }
 }
 
-// Create multiple key signature questions
+const getQuestionKey = (question: Question): string | null => {
+  if (question.correctAnswer) {
+    return question.correctAnswer
+  }
+
+  const visualComponent = question.visualComponent
+  const keyName =
+    visualComponent && 'keyName' in visualComponent
+      ? (visualComponent as { keyName?: unknown }).keyName
+      : undefined
+
+  if (typeof keyName === 'string') {
+    return keyName
+  }
+
+  if (
+    keyName &&
+    typeof keyName === 'object' &&
+    'toString' in keyName &&
+    typeof keyName.toString === 'function'
+  ) {
+    return keyName.toString()
+  }
+
+  return null
+}
+
 export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createKeySignatureQuestion(stage))
+  const keys = getKeys(stage)
+  const uniquePool = keys.map(key => 
+    createKeySignatureQuestion(stage, key)
+  )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }

@@ -1,6 +1,6 @@
 import { ACCIDENTALS, type AccidentalType } from '@leonkwan46/music-notation'
-import { getAccidentals } from '../helpers/exerciseHelpers'
-import { generateQuestionId, generateWrongChoices, getRandomItem } from '../helpers/questionHelpers'
+import { generateQuestionsFromPool, getAccidentals } from '../helpers/exerciseHelpers'
+import { generateQuestionId, generateWrongChoices } from '../helpers/questionHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
 const ACCIDENTAL_TO_SYMBOL: Partial<Record<AccidentalType, string>> = {
@@ -18,15 +18,16 @@ const ACCIDENTAL_NAMES: Partial<Record<AccidentalType, string>> = {
 const ACCIDENTAL_ORDER = ['Sharp', 'Flat', 'Natural'] as const
 
 export const createAccidentalQuestion = (
-  stage: StageNumber
+  stage: StageNumber,
+  correctAccidental?: AccidentalType
 ): Question => {
   const stageAccidentals = getAccidentals(stage)
-  const correctAccidental = getRandomItem(stageAccidentals)
-  const symbolType = ACCIDENTAL_TO_SYMBOL[correctAccidental]
-  const correctAnswer = ACCIDENTAL_NAMES[correctAccidental]
+  const selectedAccidental = correctAccidental || stageAccidentals[0]
+  const symbolType = ACCIDENTAL_TO_SYMBOL[selectedAccidental]
+  const correctAnswer = ACCIDENTAL_NAMES[selectedAccidental]
   
   if (!symbolType || !correctAnswer) {
-    throw new Error(`Unsupported accidental type: ${correctAccidental}`)
+    throw new Error(`Unsupported accidental type: ${selectedAccidental}`)
   }
   
   const availableChoices = ACCIDENTAL_ORDER.filter(choice => 
@@ -42,14 +43,25 @@ export const createAccidentalQuestion = (
     type: 'multipleChoice',
     visualComponent: {
       type: 'termAndSign',
-      symbolType
+      symbolType,
+      enableTTS: false
     }
   }
+}
+
+const getQuestionKey = (question: Question): string | null => {
+  const symbolType = question.visualComponent?.symbolType
+  if (symbolType) return symbolType
+  return question.correctAnswer ?? null
 }
 
 export const createAccidentalQuestions = (
   questionsCount: number,
   stage: StageNumber
 ): Question[] => {
-  return Array.from({ length: questionsCount }, () => createAccidentalQuestion(stage))
+  const stageAccidentals = getAccidentals(stage)
+  const uniquePool = stageAccidentals.map(accidental => 
+    createAccidentalQuestion(stage, accidental)
+  )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }

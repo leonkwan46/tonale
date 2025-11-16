@@ -1,17 +1,17 @@
-// Note value exercise generators
-import { getAllNoteTypes } from '../helpers/exerciseHelpers'
+import { generateQuestionsFromPool, getAllNoteTypes } from '../helpers/exerciseHelpers'
 import {
   generateQuestionId,
-  generateWrongChoices,
-  getRandomItem
+  generateWrongChoices
 } from '../helpers/questionHelpers'
 import { ensureFourChoicesForStage2, noteTypeToString } from '../helpers/timeValueHelpers'
 import { Question, StageNumber } from '../theoryData/types'
 
-// Create a note value identification question
-export const createNoteValueQuestion = (stage: StageNumber): Question => {
+export const createNoteValueQuestion = (
+  stage: StageNumber,
+  noteType?: string | { type: string; dots?: number }
+): Question => {
   const stageNoteTypes = getAllNoteTypes(stage)
-  const correctNoteType = getRandomItem(stageNoteTypes as (string | { type: string; dots?: number })[])
+  const correctNoteType = noteType || stageNoteTypes[0]
   
   const correctAnswerString = noteTypeToString(correctNoteType)
   let choiceStrings = stageNoteTypes.map(noteTypeToString)
@@ -31,7 +31,18 @@ export const createNoteValueQuestion = (stage: StageNumber): Question => {
   }
 }
 
-// Create multiple note value questions
+const getQuestionKey = (question: Question): string | null => {
+  const noteType = question.visualComponent?.noteType
+  if (noteType !== undefined) {
+    return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+  }
+  return question.correctAnswer ?? null
+}
+
 export const createNoteValueQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  return Array.from({ length: questionsCount }, () => createNoteValueQuestion(stage))
+  const stageNoteTypes = getAllNoteTypes(stage)
+  const uniquePool = stageNoteTypes.map(noteType => 
+    createNoteValueQuestion(stage, noteType)
+  )
+  return generateQuestionsFromPool(uniquePool, questionsCount, getQuestionKey)
 }
