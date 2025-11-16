@@ -1,4 +1,3 @@
-// Time value helpers for note and rest value exercises
 import { NOTES } from '@leonkwan46/music-notation'
 import { StageNumber } from '../theoryData/types'
 import { getBasicNoteTypes, getBasicRestTypes } from './exerciseHelpers'
@@ -6,9 +5,26 @@ import { getRandomItem } from './questionHelpers'
 
 export type TimeValueType = string | { type: string; dots?: number }
 
-// ======================
-// BASE NAME CONVERTERS
-// ======================
+export const formatFractions = (text: string): string => {
+  if (!text) return text
+  const fractionToGlyph: Record<string, string> = {
+    '1/8': '⅛',
+    '1/4': '¼',
+    '3/8': '⅜',
+    '1/2': '½',
+    '5/8': '⅝',
+    '3/4': '¾',
+    '7/8': '⅞'
+  }
+  const keys = Object.keys(fractionToGlyph).sort((a, b) => b.length - a.length)
+  let output = text
+  for (const key of keys) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const regex = new RegExp(escaped, 'g')
+    output = output.replace(regex, fractionToGlyph[key])
+  }
+  return output
+}
 
 export const getBaseNoteName = (noteType: string): string => {
   switch (noteType) {
@@ -32,32 +48,107 @@ export const getBaseRestName = (restType: string): string => {
   }
 }
 
-// ======================
-// TYPE TO STRING CONVERTERS
-// ======================
-
 export const noteTypeToString = (noteType: TimeValueType): string => {
-  // Handle dotted note objects
   if (typeof noteType === 'object' && noteType.type) {
     const { type, dots = 0 } = noteType
     const baseName = getBaseNoteName(type)
     return dots > 0 ? `Dotted ${baseName}` : baseName
   }
   
-  // Handle string note types
   return getBaseNoteName(noteType as string)
 }
 
 export const restTypeToString = (restType: TimeValueType): string => {
-  // Handle dotted rest objects
   if (typeof restType === 'object' && restType.type) {
     const { type, dots = 0 } = restType
     const baseName = getBaseRestName(type)
     return dots > 0 ? `Dotted ${baseName}` : baseName
   }
   
-  // Handle string rest types
   return getBaseRestName(restType as string)
+}
+
+const NOTE_BASE_BEATS: Record<string, number> = {
+  [NOTES.SEMIBREVE]: 4,
+  [NOTES.MINIM]: 2,
+  [NOTES.CROTCHET]: 1,
+  [NOTES.QUAVER]: 0.5,
+  [NOTES.SEMIQUAVER]: 0.25
+}
+
+const REST_BASE_BEATS: Record<string, number> = {
+  'semibreve-rest': 4,
+  'minim-rest': 2,
+  'crotchet-rest': 1,
+  'quaver-rest': 0.5,
+  'semiquaver-rest': 0.25
+}
+
+const calculateDottedBeats = (base: number, dots: number): number => {
+  let total = base
+  let current = base / 2
+  for (let i = 0; i < dots; i++) {
+    total += current
+    current /= 2
+  }
+  return total
+}
+
+export const noteTypeToBeats = (noteType: TimeValueType): number => {
+  if (typeof noteType === 'object' && noteType.type) {
+    const base = NOTE_BASE_BEATS[noteType.type]
+    if (!base) return 0
+    return calculateDottedBeats(base, noteType.dots ?? 0)
+  }
+
+  const base = NOTE_BASE_BEATS[noteType as string]
+  return base ?? 0
+}
+
+export const restTypeToBeats = (restType: TimeValueType): number => {
+  if (typeof restType === 'object' && restType.type) {
+    const base = REST_BASE_BEATS[restType.type]
+    if (!base) return 0
+    return calculateDottedBeats(base, restType.dots ?? 0)
+  }
+
+  const base = REST_BASE_BEATS[restType as string]
+  return base ?? 0
+}
+
+export const formatDottedBeatsDecomposed = (
+  timeValue: TimeValueType,
+  isRest: boolean
+): string | null => {
+  const beats = isRest ? restTypeToBeats(timeValue) : noteTypeToBeats(timeValue)
+  return formatBeats(beats)
+}
+
+export const formatBeats = (beats: number): string => {
+  const denominator = 8
+  const numerator = Math.round(beats * denominator)
+  const wholeBeats = Math.floor(numerator / denominator)
+  let remainder = numerator % denominator
+
+  const parts: string[] = []
+  if (wholeBeats > 0) {
+    parts.push(`${wholeBeats} beat${wholeBeats === 1 ? '' : 's'}`)
+  }
+  // Decompose remainder into 1/2, 1/4, 1/8
+  if (remainder >= 4) {
+    parts.push('1/2 beat')
+    remainder -= 4
+  }
+  if (remainder >= 2) {
+    parts.push('1/4 beat')
+    remainder -= 2
+  }
+  if (remainder >= 1) {
+    parts.push('1/8 beat')
+    remainder -= 1
+  }
+
+  return formatFractions(parts.join(' + '))
 }
 
 // ======================

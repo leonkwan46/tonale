@@ -12,9 +12,10 @@ export const generateWrongChoices = (
 ): string[] => {
   if (preserveOrder) return allOptions
   
-  const wrongChoices = allOptions
+  const wrongChoices = shuffleArray(allOptions
     .filter(option => option !== correctAnswer)
-    .sort(() => Math.random() - 0.5)
+    .sort((a, b) => a.localeCompare(b))
+  )
     .slice(0, wrongChoicesCount)
   
   return [...wrongChoices, correctAnswer]

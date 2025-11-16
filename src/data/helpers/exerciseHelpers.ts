@@ -1,47 +1,32 @@
-// Exercise-specific helper functions for music theory stages
-import { ACCIDENTALS, ClefType, type AccidentalType } from '@leonkwan46/music-notation'
+import { ACCIDENTALS, ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type AccidentalType, type ClefType, type Note } from '@leonkwan46/music-notation'
 import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../stageSyllabus/keySignatures'
-import { STAGE_ONE_NOTE_RANGE, STAGE_THREE_NOTE_RANGE, STAGE_TWO_NOTE_RANGE } from '../stageSyllabus/noteRange'
 import {
-    STAGE_ONE_ALL_NOTE_TYPES,
-    STAGE_ONE_ALL_REST_TYPES,
-    STAGE_ONE_NOTE_TYPES,
-    STAGE_ONE_REST_TYPES,
-    STAGE_TWO_ALL_NOTE_TYPES,
-    STAGE_TWO_ALL_REST_TYPES,
-    STAGE_TWO_DOTTED_NOTE_TYPES,
-    STAGE_TWO_DOTTED_REST_TYPES
+  STAGE_ONE_ALL_NOTE_TYPES,
+  STAGE_ONE_ALL_REST_TYPES,
+  STAGE_ONE_NOTE_TYPES,
+  STAGE_ONE_REST_TYPES,
+  STAGE_TWO_ALL_NOTE_TYPES,
+  STAGE_TWO_ALL_REST_TYPES,
+  STAGE_ZERO_ALL_NOTE_TYPES,
+  STAGE_ZERO_ALL_REST_TYPES,
+  STAGE_ZERO_NOTE_TYPES,
+  STAGE_ZERO_REST_TYPES
 } from '../stageSyllabus/noteValues'
-import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES } from '../stageSyllabus/timeSignatures'
-import { StageNumber } from '../theoryData/types'
+import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES, STAGE_ZERO_TIME_SIGNATURES } from '../stageSyllabus/timeSignatures'
+import { Question, StageNumber } from '../theoryData/types'
+import { getRandomItem, shuffleArray } from './questionHelpers'
 
-// ===============================
-// Stage-Agnostic Exercise Helpers
-// ===============================
 
 export const getBasicNoteTypes = (stage: StageNumber) => {
   switch (stage) {
+    case 0:
+      return STAGE_ZERO_NOTE_TYPES
     case 1:
       return STAGE_ONE_NOTE_TYPES
     case 2:
       return []
     case 3:
-      // TODO: Import and return STAGE_THREE_NOTE_TYPES when available
       throw new Error('Stage 3 note types not yet implemented')
-    default:
-      throw new Error(`Invalid stage: ${stage}`)
-  }
-}
-
-export const getDottedNoteTypes = (stage: StageNumber) => {
-  switch (stage) {
-    case 1:
-      return []
-    case 2:
-      return STAGE_TWO_DOTTED_NOTE_TYPES
-    case 3:
-      // TODO: Import and return STAGE_THREE_DOTTED_NOTE_TYPES when available
-      throw new Error('Stage 3 dotted note types not yet implemented')
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
@@ -49,12 +34,13 @@ export const getDottedNoteTypes = (stage: StageNumber) => {
 
 export const getAllNoteTypes = (stage: StageNumber) => {
   switch (stage) {
+    case 0:
+      return STAGE_ZERO_ALL_NOTE_TYPES
     case 1:
       return STAGE_ONE_ALL_NOTE_TYPES
     case 2:
       return STAGE_TWO_ALL_NOTE_TYPES
     case 3:
-      // TODO: Import and return STAGE_THREE_ALL_NOTE_TYPES when available
       throw new Error('Stage 3 all note types not yet implemented')
     default:
       throw new Error(`Invalid stage: ${stage}`)
@@ -63,27 +49,14 @@ export const getAllNoteTypes = (stage: StageNumber) => {
 
 export const getBasicRestTypes = (stage: StageNumber) => {
   switch (stage) {
+    case 0:
+      return STAGE_ZERO_REST_TYPES
     case 1:
       return STAGE_ONE_REST_TYPES
     case 2:
       return []
     case 3:
-      // TODO: Import and return STAGE_THREE_REST_TYPES when available
       throw new Error('Stage 3 rest types not yet implemented')
-    default:
-      throw new Error(`Invalid stage: ${stage}`)
-  }
-}
-
-export const getDottedRestTypes = (stage: StageNumber) => {
-  switch (stage) {
-    case 1:
-      return []
-    case 2:
-      return STAGE_TWO_DOTTED_REST_TYPES
-    case 3:
-      // TODO: Import and return STAGE_THREE_DOTTED_REST_TYPES when available
-      throw new Error('Stage 3 dotted rest types not yet implemented')
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
@@ -91,12 +64,13 @@ export const getDottedRestTypes = (stage: StageNumber) => {
 
 export const getAllRestTypes = (stage: StageNumber) => {
   switch (stage) {
+    case 0:
+      return STAGE_ZERO_ALL_REST_TYPES
     case 1:
       return STAGE_ONE_ALL_REST_TYPES
     case 2:
       return STAGE_TWO_ALL_REST_TYPES
     case 3:
-      // TODO: Import and return STAGE_THREE_ALL_REST_TYPES when available
       throw new Error('Stage 3 all rest types not yet implemented')
     default:
       throw new Error(`Invalid stage: ${stage}`)
@@ -105,14 +79,13 @@ export const getAllRestTypes = (stage: StageNumber) => {
 
 export const getAccidentals = (stage: StageNumber): AccidentalType[] => {
   switch (stage) {
+    case 0:
     case 1:
       return [ACCIDENTALS.SHARP, ACCIDENTALS.FLAT, ACCIDENTALS.NATURAL]
     case 2:
-      // TODO: Define Stage 2 accidentals when available
-      throw new Error('Stage 2 accidentals not yet implemented')
+      return [ACCIDENTALS.SHARP, ACCIDENTALS.FLAT, ACCIDENTALS.NATURAL]
     case 3:
-      // TODO: Define Stage 3 accidentals when available
-      throw new Error('Stage 3 accidentals not yet implemented')
+      return [ACCIDENTALS.SHARP, ACCIDENTALS.FLAT, ACCIDENTALS.NATURAL]
     default:
       throw new Error(`Invalid stage: ${stage}`)
   }
@@ -120,6 +93,8 @@ export const getAccidentals = (stage: StageNumber): AccidentalType[] => {
 
 export const getTimeSignatures = (stage: StageNumber) => {
   switch (stage) {
+    case 0:
+      return STAGE_ZERO_TIME_SIGNATURES
     case 1:
       return STAGE_ONE_TIME_SIGNATURES
     case 2:
@@ -144,50 +119,171 @@ export const getKeys = (stage: StageNumber) => {
   }
 }
 
-export const getNoteRange = (stage: StageNumber, clef: string) => {
-  if (!clef) {
-    throw new Error('Clef must be specified for note range')
+/**
+ * Shared: get pitch definitions for a clef (used across helpers)
+ */
+export const getPitchDefinitionsForClef = (clef: ClefType): Note[] => {
+  switch (clef) {
+    case 'treble':
+      return TREBLE_PITCH_DEFINITIONS
+    case 'bass':
+      return BASS_PITCH_DEFINITIONS
+    case 'alto':
+      return ALTO_PITCH_DEFINITIONS
+    case 'tenor':
+      return TENOR_PITCH_DEFINITIONS
+    default:
+      return TREBLE_PITCH_DEFINITIONS
+  }
+}
+
+export const getTimeValueKeyFromComponent = (question: Question): string | null => {
+  const noteType = question.visualComponent?.noteType
+  if (noteType === undefined) return null
+  return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+}
+
+export const getQuestionTypeFromId = (questionId: string): 'name' | 'beats' => {
+  return questionId.includes('-beats') ? 'beats' : 'name'
+}
+
+export const getValueKindFromId = (questionId: string): 'note' | 'rest' => {
+  if (questionId.includes('rest-')) return 'rest'
+  if (questionId.includes('note-')) return 'note'
+  return 'note'
+}
+
+export const isSameQuestion = (
+  q1: Question,
+  q2: Question,
+  getQuestionKey: (question: Question) => string | null
+): boolean => {
+  const key1 = getQuestionKey(q1)
+  const key2 = getQuestionKey(q2)
+  return key1 !== null && key2 !== null && key1 === key2
+}
+
+export const generateQuestionsFromPool = (
+  uniquePool: Question[],
+  questionsCount: number,
+  getQuestionKey: (question: Question) => string | null,
+  options: { deduplicationWindow?: number } = {}
+): Question[] => {
+  const windowSize = options.deduplicationWindow ?? 3
+  const recentKeys: string[] = []
+  const questions: Question[] = []
+  
+  const questionsByKey = new Map<string, Question[]>()
+  uniquePool.forEach(q => {
+    const key = getQuestionKey(q)
+    if (key) {
+      if (!questionsByKey.has(key)) {
+        questionsByKey.set(key, [])
+      }
+      questionsByKey.get(key)!.push(q)
+    }
+  })
+  
+  const availableKeys = Array.from(questionsByKey.keys())
+  if (availableKeys.length === 0) {
+    console.warn('No valid question keys found in pool')
+    return []
   }
   
-  switch (stage) {
-    case 1:
-      return STAGE_ONE_NOTE_RANGE(clef as ClefType)
-    case 2:
-      return STAGE_TWO_NOTE_RANGE(clef as ClefType)
-    case 3:
-      return STAGE_THREE_NOTE_RANGE(clef as ClefType)
-    default:
-      throw new Error(`Invalid stage: ${stage}`)
+  let shuffledKeys = shuffleArray([...availableKeys])
+  let keyIndex = 0
+  let attempts = 0
+  const maxAttempts = availableKeys.length * 2
+  
+  while (questions.length < questionsCount && attempts < maxAttempts) {
+    attempts++
+    
+    if (keyIndex >= shuffledKeys.length) {
+      recentKeys.length = 0
+      shuffledKeys = shuffleArray([...availableKeys])
+      keyIndex = 0
+    }
+    
+    const candidateKey = shuffledKeys[keyIndex]
+    
+    if (recentKeys.includes(candidateKey)) {
+      keyIndex++
+      continue
+    }
+    
+    const questionsWithKey = questionsByKey.get(candidateKey)!
+    const candidate = getRandomItem(questionsWithKey)
+    
+    const clonedCandidate: Question = {
+      ...candidate,
+      id: `${candidate.id}-${questions.length}`
+    }
+    
+    questions.push(clonedCandidate)
+    recentKeys.push(candidateKey)
+    
+    if (recentKeys.length > windowSize) {
+      recentKeys.shift()
+    }
+    
+    keyIndex++
   }
-}
-
-// ===============================
-// Utility Functions
-// ===============================
-
-// Check if a note/rest type is dotted
-export const isDotted = (noteType: string | { type: string; dots?: number }): boolean => {
-  if (typeof noteType === 'object' && noteType.type) {
-    return (noteType.dots || 0) > 0
+  
+  if (questions.length < questionsCount) {
+    console.warn(
+      `Only generated ${questions.length} questions out of ${questionsCount} requested. ` +
+      'Pool may be too small or deduplication window too large.'
+    )
   }
-  return false
+  
+  return balanceCorrectAnswerPositions(questions)
 }
 
-// Get the base type (without dots) from a note/rest type
-export const getBaseType = (noteType: string | { type: string; dots?: number }): string => {
-  if (typeof noteType === 'object' && noteType.type) {
-    return noteType.type
-  }
-  return noteType as string
-}
+export const balanceCorrectAnswerPositions = (questions: Question[]): Question[] => {
+  const positionCounts = new Map<number, number[]>()
 
-// Check if a type is a rest
-export const isRest = (noteType: string | { type: string; dots?: number }): boolean => {
-  const baseType = getBaseType(noteType)
-  return baseType.includes('-rest')
-}
+  return questions.map(question => {
+    const choices = question.choices
+    if (!choices || choices.length <= 1) {
+      return question
+    }
 
-// Check if a type is a note
-export const isNote = (noteType: string | { type: string; dots?: number }): boolean => {
-  return !isRest(noteType)
+    const correctIndex = choices.findIndex(choice => choice === question.correctAnswer)
+    if (correctIndex === -1) {
+      return question
+    }
+
+    let counts = positionCounts.get(choices.length)
+    if (!counts) {
+      counts = new Array(choices.length).fill(0)
+      positionCounts.set(choices.length, counts)
+    }
+
+    const minCount = Math.min(...counts)
+    const candidateIndexes = counts
+      .map((count, index) => (count === minCount ? index : -1))
+      .filter(index => index !== -1)
+
+    let targetIndex = correctIndex
+    if (!candidateIndexes.includes(correctIndex)) {
+      targetIndex = candidateIndexes[Math.floor(Math.random() * candidateIndexes.length)]
+    }
+
+    counts[targetIndex] += 1
+
+    if (targetIndex === correctIndex) {
+      return question
+    }
+
+    const newChoices = [...choices]
+    ;[newChoices[correctIndex], newChoices[targetIndex]] = [
+      newChoices[targetIndex],
+      newChoices[correctIndex]
+    ]
+
+    return {
+      ...question,
+      choices: newChoices
+    }
+  })
 }
