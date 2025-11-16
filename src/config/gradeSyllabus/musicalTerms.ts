@@ -23,7 +23,8 @@ export type GradeOneTempoTerms = (typeof GRADE_ONE_TEMPO_TERMS)[GradeOneTempoTer
 export const GRADE_ONE_ARTICULATION_TERMS = {
   'legato': 'Smooth and connected',
   'staccato': 'Short and detached',
-  'stacc.': 'Short and detached'
+  'stacc.': 'Short and detached',
+  'tenuto': 'Held for full value'
 } as const
 export type GradeOneArticulationTermsKeys = keyof typeof GRADE_ONE_ARTICULATION_TERMS
 export type GradeOneArticulationTerms = (typeof GRADE_ONE_ARTICULATION_TERMS)[GradeOneArticulationTermsKeys]
@@ -247,6 +248,7 @@ export const MUSICAL_TERM_TTS_OVERRIDES = {
   'marc.': { text: 'marcato', language: 'it-IT' },
   'sostenuto': { text: 'sostenuto', language: 'it-IT' },
   'sost': { text: 'sostenuto', language: 'it-IT' },
+  'tenuto': { text: 'tenuto', language: 'it-IT' },
   'subito': { text: 'subito', language: 'it-IT' },
   'sub.': { text: 'subito', language: 'it-IT' },
   'simile': { text: 'simile', language: 'it-IT' },

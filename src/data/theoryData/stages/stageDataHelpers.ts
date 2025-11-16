@@ -1,4 +1,5 @@
 import { Stage } from '../types'
+import { stage0 } from './stageZero'
 import { stage1 } from './stageOne'
 import { stage3 } from './stageThree'
 import { stage2 } from './stageTwo'
@@ -12,16 +13,18 @@ export const calculateStageUnlockStatus = (stageId: string, allStagesData: Stage
   const stage = allStagesData.find(s => s.id === stageId)
   if (!stage) return false
   
-  // First stage is always unlocked
-  if (stage.order === 1) return true
-  
+  const minOrder = Math.min(...allStagesData.map(s => s.order))
+
   // Check if all prerequisite stages are cleared
-  if (stage.prerequisiteStages) {
+  if (stage.prerequisiteStages && stage.prerequisiteStages.length > 0) {
     return stage.prerequisiteStages.every(prereqId => {
       const prereqStage = allStagesData.find(s => s.id === prereqId)
       return prereqStage?.isCleared || false
     })
   }
+
+  // First stage (lowest order) is always unlocked
+  if (stage.order === minOrder) return true
   
   // If no specific prerequisites, check if previous stage is cleared
   const previousStage = allStagesData.find(s => s.order === stage.order - 1)
@@ -30,7 +33,7 @@ export const calculateStageUnlockStatus = (stageId: string, allStagesData: Stage
 
 // Create stages array with proper unlock status
 const createStageData = (): Stage[] => {
-  const stageData: Stage[] = [stage1, stage2, stage3]
+  const stageData: Stage[] = [stage0, stage1, stage2, stage3]
   
   // Calculate unlock status for each stage
   stageData.forEach(stage => {

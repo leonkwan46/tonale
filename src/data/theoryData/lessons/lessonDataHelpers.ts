@@ -1,9 +1,11 @@
 import { stagesArray } from '../stages/stageDataHelpers'
+import { stage0 } from '../stages/stageZero'
 import { stage1 } from '../stages/stageOne'
 import { stage3 } from '../stages/stageThree'
 import { stage2 } from '../stages/stageTwo'
 import { getLessonProgress } from '../theoryDataHelpers'
 import { Lesson, StageLesson } from '../types'
+import { stageZeroLessons } from './stageZeroLessons'
 import { stageOneLessons } from './stageOneLessons'
 import { stageThreeLessons } from './stageThreeLessons'
 import { stageTwoLessons } from './stageTwoLessons'
@@ -13,10 +15,16 @@ import { stageTwoLessons } from './stageTwoLessons'
 // ============================================================================
 
 // Export all lessons for easy access (without stageId for API compatibility)
-export const allLessons = [...stageOneLessons, ...stageTwoLessons, ...stageThreeLessons]
+export const allLessons = [
+  ...stageZeroLessons,
+  ...stageOneLessons,
+  ...stageTwoLessons,
+  ...stageThreeLessons
+]
 
 // Export all lessons with stage context for internal use
 export const allStageLessons: StageLesson[] = [
+  ...stage0.lessons,
   ...stage1.lessons,
   ...stage2.lessons,
   ...stage3.lessons

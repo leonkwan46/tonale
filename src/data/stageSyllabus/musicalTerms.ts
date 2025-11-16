@@ -19,14 +19,44 @@ import {
   GRADE_TWO_TEMPO_TERMS
 } from '../../config/gradeSyllabus'
 
+export const STAGE_ZERO_MUSICAL_TERMS = {
+  p: GRADE_ONE_DYNAMIC_SYMBOLS.p,
+  f: GRADE_ONE_DYNAMIC_SYMBOLS.f,
+  mf: GRADE_ONE_DYNAMIC_SYMBOLS.mf,
+  mp: GRADE_ONE_DYNAMIC_SYMBOLS.mp,
+  staccato: GRADE_ONE_ARTICULATION_SIGNS.staccato,
+  legato: 'legato'
+} as const
+
 export const STAGE_ONE_MUSICAL_TERMS = {
-  ...GRADE_ONE_DYNAMIC_SYMBOLS,
-  ...GRADE_ONE_ARTICULATION_SIGNS
+  pp: GRADE_ONE_DYNAMIC_SYMBOLS.pp,
+  mp: GRADE_ONE_DYNAMIC_SYMBOLS.mp,
+  mf: GRADE_ONE_DYNAMIC_SYMBOLS.mf,
+  f: GRADE_ONE_DYNAMIC_SYMBOLS.f,
+  ff: GRADE_ONE_DYNAMIC_SYMBOLS.ff,
+  crescendo: GRADE_ONE_DYNAMIC_SYMBOLS.crescendo,
+  diminuendo: GRADE_ONE_DYNAMIC_SYMBOLS.diminuendo,
+  accent: GRADE_ONE_ARTICULATION_SIGNS.accent,
+  legato: 'legato',
+  staccato: GRADE_ONE_ARTICULATION_SIGNS.staccato,
+  tenuto: 'tenuto',
+  fermata: GRADE_ONE_ARTICULATION_SIGNS.fermata
 } as const
 
 export const STAGE_TWO_MUSICAL_TERMS = {
-  ...GRADE_ONE_TEMPO_TERMS,
-  ...GRADE_ONE_EXPRESSION_TERMS
+  'a tempo': GRADE_ONE_TEMPO_TERMS['a tempo'],
+  'accelerando': GRADE_ONE_TEMPO_TERMS['accelerando'],
+  'adagio': GRADE_ONE_TEMPO_TERMS['adagio'],
+  'allegro': GRADE_ONE_TEMPO_TERMS['allegro'],
+  'andante': GRADE_ONE_TEMPO_TERMS['andante'],
+  'moderato': GRADE_ONE_TEMPO_TERMS['moderato'],
+  'cantabile': GRADE_ONE_EXPRESSION_TERMS.cantabile,
+  'dolce': GRADE_ONE_EXPRESSION_TERMS.dolce,
+  'diminuendo': GRADE_ONE_DYNAMIC_SYMBOLS.diminuendo,
+  'd.c.': GRADE_ONE_PERFORMANCE_TERMS['d.c.'],
+  'fine': GRADE_ONE_PERFORMANCE_TERMS.fine,
+  'rallentando': GRADE_ONE_TEMPO_TERMS['rallentando'],
+  'ritardando': GRADE_ONE_TEMPO_TERMS['ritardando']
 } as const
 
 export const STAGE_THREE_MUSICAL_TERMS = {
@@ -34,14 +64,44 @@ export const STAGE_THREE_MUSICAL_TERMS = {
 } as const
 
 // Stage-specific definitions for generating wrong answers
+export const STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS = {
+  p: DYNAMIC_SYMBOLS_DEFINITIONS.p,
+  f: DYNAMIC_SYMBOLS_DEFINITIONS.f,
+  mf: DYNAMIC_SYMBOLS_DEFINITIONS.mf,
+  mp: DYNAMIC_SYMBOLS_DEFINITIONS.mp,
+  staccato: ARTICULATION_SIGNS_DEFINITIONS.staccato,
+  legato: GRADE_ONE_ARTICULATION_TERMS.legato
+} as const
+
 export const STAGE_ONE_MUSICAL_TERMS_DEFINITIONS = {
-  ...DYNAMIC_SYMBOLS_DEFINITIONS,
-  ...ARTICULATION_SIGNS_DEFINITIONS
+  pp: DYNAMIC_SYMBOLS_DEFINITIONS.pp,
+  mp: DYNAMIC_SYMBOLS_DEFINITIONS.mp,
+  mf: DYNAMIC_SYMBOLS_DEFINITIONS.mf,
+  f: DYNAMIC_SYMBOLS_DEFINITIONS.f,
+  ff: DYNAMIC_SYMBOLS_DEFINITIONS.ff,
+  crescendo: DYNAMIC_SYMBOLS_DEFINITIONS.crescendo,
+  diminuendo: DYNAMIC_SYMBOLS_DEFINITIONS.diminuendo,
+  accent: ARTICULATION_SIGNS_DEFINITIONS.accent,
+  legato: GRADE_ONE_ARTICULATION_TERMS.legato,
+  staccato: ARTICULATION_SIGNS_DEFINITIONS.staccato,
+  tenuto: GRADE_ONE_ARTICULATION_TERMS.tenuto,
+  fermata: ARTICULATION_SIGNS_DEFINITIONS.fermata
 } as const
 
 export const STAGE_TWO_MUSICAL_TERMS_DEFINITIONS = {
-  ...GRADE_ONE_TEMPO_TERMS,
-  ...GRADE_ONE_EXPRESSION_TERMS
+  'a tempo': GRADE_ONE_TEMPO_TERMS['a tempo'],
+  'accelerando': GRADE_ONE_TEMPO_TERMS['accelerando'],
+  'adagio': GRADE_ONE_TEMPO_TERMS['adagio'],
+  'allegro': GRADE_ONE_TEMPO_TERMS['allegro'],
+  'andante': GRADE_ONE_TEMPO_TERMS['andante'],
+  'moderato': GRADE_ONE_TEMPO_TERMS['moderato'],
+  'cantabile': GRADE_ONE_EXPRESSION_TERMS.cantabile,
+  'dolce': GRADE_ONE_EXPRESSION_TERMS.dolce,
+  'diminuendo': DYNAMIC_SYMBOLS_DEFINITIONS.diminuendo,
+  'd.c.': GRADE_ONE_PERFORMANCE_TERMS['d.c.'],
+  'fine': GRADE_ONE_PERFORMANCE_TERMS.fine,
+  'rallentando': GRADE_ONE_TEMPO_TERMS['rallentando'],
+  'ritardando': GRADE_ONE_TEMPO_TERMS['ritardando']
 } as const
 
 export const STAGE_THREE_MUSICAL_TERMS_DEFINITIONS = {

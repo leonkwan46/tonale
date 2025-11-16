@@ -7,7 +7,7 @@
 import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-notation'
 
 // Stage number type for exercise generation
-export type StageNumber = 1 | 2 | 3
+export type StageNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
 export interface VisualComponent {
   type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'termAndSign' | 'triplet'
@@ -23,6 +23,8 @@ export interface VisualComponent {
     noteType: string  // Base note type for the tuplet
     numberOfNotes: number  // Number of notes in the tuplet (3 for triplets, 2 for duplets, etc.)
   }
+  enableTTS?: boolean
+  renderAsSymbol?: boolean
 }
 
 export interface Question {
@@ -33,11 +35,6 @@ export interface Question {
   explanation?: string
   type: 'multipleChoice' | 'trueFalse' | 'keyPress'
   visualComponent?: VisualComponent
-  metadata?: {
-    hasSymbol?: boolean
-    symbol?: string
-    category?: string
-  }
 }
 
 export interface ExerciseConfig {

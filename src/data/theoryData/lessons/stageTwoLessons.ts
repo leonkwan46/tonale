@@ -14,8 +14,8 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-lesson-2',
-    title: 'Note Grouping, Ties & Slurs',
-    description: 'Learn how notes connect and group within bars',
+    title: 'Note Grouping',
+    description: 'Learn correct beaming and phrasing in simple time',
     stars: 0,
     exerciseConfig: {
       generatorType: 'noteGrouping',
@@ -25,30 +25,8 @@ export const stageTwoLessons: Lesson[] = [
   },
   {
     id: 'stage-2-lesson-3',
-    title: 'Tempo & Expression Terms',
-    description: 'Learn tempo markings and expression terms',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'musicalTerm',
-      questionsCount: 10,
-      stage: 2
-    }
-  },
-  {
-    id: 'stage-2-lesson-4',
-    title: 'Major Scales & Key Signatures',
-    description: 'Learn A, E♭, and B♭ major scales and relative minors',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'keySignature',
-      questionsCount: 10,
-      stage: 2
-    }
-  },
-  {
-    id: 'stage-2-lesson-5',
     title: 'Scale Degrees',
-    description: 'Learn scale degrees (1st-8th) within one octave and above the tonic',
+    description: 'Identify scale degrees (1st–8th) in C, G, D, and F major',
     stars: 0,
     exerciseConfig: {
       generatorType: 'scaleDegrees',
@@ -57,9 +35,9 @@ export const stageTwoLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-2-lesson-6',
+    id: 'stage-2-lesson-4',
     title: 'Intervals',
-    description: 'Learn intervals above the tonic',
+    description: 'Recognise intervals from 2nd to octave above the tonic',
     stars: 0,
     exerciseConfig: {
       generatorType: 'interval',
@@ -68,12 +46,34 @@ export const stageTwoLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-2-lesson-7',
+    id: 'stage-2-lesson-5',
+    title: 'Major Scales & Key Signatures',
+    description: 'Work with C, G, D, and F major scales and their key signatures',
+    stars: 0,
+    exerciseConfig: {
+      generatorType: 'keySignature',
+      questionsCount: 10,
+      stage: 2
+    }
+  },
+  {
+    id: 'stage-2-lesson-6',
     title: 'Tonic Triads',
-    description: 'Learn tonic triads in root position',
+    description: 'Identify root-position tonic triads in C, G, D, and F major',
     stars: 0,
     exerciseConfig: {
       generatorType: 'triad',
+      questionsCount: 10,
+      stage: 2
+    }
+  },
+  {
+    id: 'stage-2-lesson-7',
+    title: 'Tempo & Expression Terms (Italian)',
+    description: 'Learn essential Grade 1 tempo, expression, and performance terms',
+    stars: 0,
+    exerciseConfig: {
+      generatorType: 'musicalTerm',
       questionsCount: 10,
       stage: 2
     }

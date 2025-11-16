@@ -1,15 +1,28 @@
 // ======================
+// PRE-GRADE PITCH RANGES
+// ======================
+export const PRE_GRADE_BASS_PITCH_RANGE = [
+  'F3', 'G3', 'A3', 'B3', 'C4'
+] as const
+export type PreGradeBassPitchRange = (typeof PRE_GRADE_BASS_PITCH_RANGE)[number]
+
+export const PRE_GRADE_TREBLE_PITCH_RANGE = [
+  'C4', 'D4', 'E4', 'F4', 'G4'
+] as const
+export type PreGradeTreblePitchRange = (typeof PRE_GRADE_TREBLE_PITCH_RANGE)[number]
+
+// ======================
 // GRADE ONE PITCH RANGES
 // ======================
 export const GRADE_ONE_BASS_PITCH_RANGE = [
-  'F2', 'G2', 'A2', 'B2', 'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4',
+  'F2', 'G2', 'A2', 'B2', 'C3', 'D3', 'E3', 'D4',
   'F♯2', 'G♯2', 'A♯2', 'B♯2', 'C♯3', 'D♯3', 'E♯3', 'F♯3', 'G♯3', 'A♯3', 'B♯3', 'C♯4', 'D♯4',
   'F♭2', 'G♭2', 'A♭2', 'B♭2', 'C♭3', 'D♭3', 'E♭3', 'F♭3', 'G♭3', 'A♭3', 'B♭3', 'C♭4', 'D♭4'
 ] as const
 export type GradeOneBassPitchRange = (typeof GRADE_ONE_BASS_PITCH_RANGE)[number]
 
 export const GRADE_ONE_TREBLE_PITCH_RANGE = [
-  'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5',
+  'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5',
   'C♯4', 'D♯4', 'E♯4', 'F♯4', 'G♯4', 'A♯4', 'B♯4', 'C♯5', 'D♯5', 'E♯5', 'F♯5', 'G♯5',
   'C♭4', 'D♭4', 'E♭4', 'F♭4', 'G♭4', 'A♭4', 'B♭4', 'C♭5', 'D♭5', 'E♭5', 'F♭5', 'G♭5'
 ] as const

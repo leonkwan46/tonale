@@ -8,10 +8,7 @@ import {
 
 export const STAGE_ONE_TRIADS = GRADE_ONE_CHORDS
 
-export const STAGE_TWO_TRIADS = {
-  ...GRADE_ONE_CHORDS,
-  ...GRADE_TWO_CHORDS
-} as const
+export const STAGE_TWO_TRIADS = GRADE_ONE_CHORDS
 
 export const STAGE_THREE_TRIADS = {
   ...GRADE_ONE_CHORDS,

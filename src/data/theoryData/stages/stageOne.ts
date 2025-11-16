@@ -21,7 +21,8 @@ export const stage1: Stage = {
   description: 'Build rhythmic literacy, note reading, and expressive awareness',
   lessons: stageOneLessons.map(lesson => ({ ...lesson, stageId: 'stage-1' } as StageLesson)),
   order: 1,
-  isUnlocked: true, // First stage is always unlocked
+  prerequisiteStages: ['stage-0'],
+  isUnlocked: false, // Will be calculated
   themeColor: '#4A90E2',
   ...calculateStageStats(stageOneLessons)
 }
