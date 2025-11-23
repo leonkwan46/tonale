@@ -20,8 +20,8 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
     elements: [
       createNote({ type: NOTES.CROTCHET }),
       createNote({ type: NOTES.QUAVER }),
-      createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.QUAVER })
+      createNote({ type: NOTES.QUAVER }),
+      createNote({ type: NOTES.CROTCHET })
     ],
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
@@ -43,8 +43,8 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
   {
     elements: [
       createNote({ type: NOTES.CROTCHET }),
-      ...createBeamedGroup(NOTES.QUAVER, 2),
-      ...createBeamedGroup(NOTES.QUAVER, 2)
+      createNote({ type: NOTES.CROTCHET, dots: 1, spacing: 100 }),
+      createNote({ type: NOTES.QUAVER })
     ],
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
@@ -54,8 +54,8 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
   // #5
   { 
     elements: [
-      createNote({ type: NOTES.MINIM, spacing: undefined }),
-      createNote({ type: NOTES.CROTCHET })
+      createNote({ type: NOTES.CROTCHET }),
+      createNote({ type: NOTES.MINIM })
     ],
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
@@ -72,7 +72,7 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
     ],
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
-    correctAnswer: 'True',
+    correctAnswer: 'False',
     explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
   },
   // #7

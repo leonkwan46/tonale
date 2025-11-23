@@ -17,22 +17,14 @@ const DEFAULT_SPACING = 60
 /**
  * Creates a note element with common defaults that can be overridden.
  * Defaults: pitch: 'F4', stem: 'up', spacing: 60
- * Set spacing to undefined in overrides to omit it from the result.
  */
 export const createNote = (overrides: Partial<MusicElementData> & { type: MusicElementData['type'] }): MusicElementData => {
-  const result: MusicElementData = {
+  return {
     pitch: DEFAULT_PITCH,
     stem: DEFAULT_STEM,
     spacing: DEFAULT_SPACING,
     ...overrides
   }
-  
-  // Remove spacing if explicitly set to undefined
-  if ('spacing' in overrides && overrides.spacing === undefined) {
-    delete result.spacing
-  }
-  
-  return result
 }
 
 export const createBeamedGroup = (noteType: RestrictedNoteTypes, numberOfNotes: number, spacing = 40): MusicElementData[] => {

@@ -5,9 +5,3 @@ export const STAGE_TWO_GROUPING_QUESTIONS = [
   ...THREE_FOUR_QUESTIONS,
   ...FOUR_FOUR_QUESTIONS
 ] as const
-
-// Future stages can be added here as needed
-// export const STAGE_THREE_GROUPING_QUESTIONS = [
-//   // Add stage three questions here
-// ] as const
-

@@ -32,7 +32,7 @@ export const stageZeroLessons: Lesson[] = [
     stars: 0,
     exerciseConfig: {
       generatorType: 'accidentals',
-      questionsCount: 10,
+      questionsCount: 6,
       stage: stageZero
     }
   },

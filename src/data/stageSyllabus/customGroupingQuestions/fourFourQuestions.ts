@@ -12,19 +12,20 @@ export const FOUR_FOUR_QUESTIONS: GroupingQuestion[] = [
       ...createBeamedGroup(NOTES.QUAVER, 2)
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'lg',
+    size: 'med',
     correctAnswer: 'False',
     explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
   },
   // #2
   {
     elements: [
-      createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.MINIM, spacing: undefined }),
-      createNote({ type: NOTES.CROTCHET })
+      createNote({ type: NOTES.CROTCHET, dots: 1, spacing: 100 }),
+      createNote({ type: NOTES.QUAVER, showFlag: false }),
+      createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true }),
+      createNote({ type: NOTES.CROTCHET, dots: 1 })
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'sml',
+    size: 'med',
     correctAnswer: 'False',
     explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
   },
@@ -33,23 +34,25 @@ export const FOUR_FOUR_QUESTIONS: GroupingQuestion[] = [
     elements: [
       createNote({ type: NOTES.QUAVER }),
       createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.QUAVER }),
-      createNote({ type: NOTES.MINIM })
+      createNote({ type: NOTES.QUAVER, dots: 1, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true }),
+      createNote({ type: NOTES.CROTCHET })
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'sml',
+    size: 'med',
     correctAnswer: 'False',
     explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
   },
   // #4
   {
     elements: [
-      createNote({ type: NOTES.CROTCHET }),
-      ...createBeamedGroup(NOTES.QUAVER, 4, 50),
+      createNote({ type: NOTES.CROTCHET, dots: 1, spacing: 100 }),
+      ...createBeamedGroup(NOTES.QUAVER, 3, 50),
       createNote({ type: NOTES.CROTCHET })
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'lg',
+    size: 'med',
     correctAnswer: 'False',
     explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
   },
@@ -62,7 +65,7 @@ export const FOUR_FOUR_QUESTIONS: GroupingQuestion[] = [
       ...createBeamedGroup(NOTES.QUAVER, 2, 50)
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'lg',
+    size: 'med',
     correctAnswer: 'True',
     explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
   },
@@ -71,11 +74,11 @@ export const FOUR_FOUR_QUESTIONS: GroupingQuestion[] = [
     elements: [
       ...createBeamedGroup(NOTES.QUAVER, 2, 50),
       createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.CROTCHET }),
-      ...createBeamedGroup(NOTES.QUAVER, 2, 50)
+      createNote({ type: NOTES.CROTCHET, dots: 1, spacing: 100 }),
+      createNote({ type: NOTES.QUAVER })
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'lg',
+    size: 'med',
     correctAnswer: 'True',
     explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
   },
@@ -86,7 +89,7 @@ export const FOUR_FOUR_QUESTIONS: GroupingQuestion[] = [
       ...createBeamedGroup(NOTES.QUAVER, 4)
     ],
     timeSignature: FOUR_FOUR_TIME_SIGNATURE,
-    size: 'lg',
+    size: 'med',
     correctAnswer: 'True',
     explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
   }
