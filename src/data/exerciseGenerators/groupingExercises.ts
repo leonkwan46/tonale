@@ -1,68 +1,119 @@
-import { NOTES } from '@leonkwan46/music-notation'
-import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
-import { generateQuestionId, getRandomItem } from '../helpers/questionHelpers'
+import { type MusicElementData, type TimeSignatureType } from '@leonkwan46/music-notation'
+import { generateQuestionId } from '../helpers/questionHelpers'
+import { formatAsNotation } from '../helpers/timeSignatureHelpers'
+import type { GroupingQuestion } from '../stageSyllabus/customGroupingQuestions/groupingHelpers'
+import { STAGE_TWO_GROUPING_QUESTIONS } from '../stageSyllabus/grouping'
 import { Question, StageNumber } from '../theoryData/types'
 
-type GroupingConcept = 'beaming' | 'grouping'
+// ============================================================================
+// QUESTION CREATION
+// ============================================================================
 
-export const createBeamingQuestion = (stage: StageNumber): Question => {
+/**
+ * Format time signature as string
+ */
+const formatTimeSignature = (timeSignature: TimeSignatureType | string): string => {
+  return typeof timeSignature === 'string' 
+    ? timeSignature 
+    : formatAsNotation(timeSignature)
+}
+
+/**
+ * Get grouping questions for a specific stage
+ */
+const getGroupingQuestionsForStage = (stage: StageNumber): readonly GroupingQuestion[] => {
+  switch (stage) {
+    case 2:
+      return STAGE_TWO_GROUPING_QUESTIONS
+    // Add more stages as needed
+    // case 3:
+    //   return STAGE_THREE_GROUPING_QUESTIONS
+    default:
+      throw new Error(`No grouping questions defined for stage ${stage}. Please add questions to the appropriate stage array.`)
+  }
+}
+
+/**
+ * Create a question from custom elements
+ */
+const createQuestionFromElements = (
+  elements: MusicElementData[],
+  timeSignature: TimeSignatureType | string,
+  correctAnswer: 'True' | 'False',
+  explanation?: string,
+  size: 'xs' | 'sml' | 'med' | 'lg' | 'xl' | 'xxl' = 'lg'
+): Question => {
+  const timeSignatureStr = formatTimeSignature(timeSignature)
+  
   return {
-    id: generateQuestionId('beaming'),
+    id: generateQuestionId('grouping'),
     question: 'Is this note grouping correct for the time signature?',
-    correctAnswer: 'False',
+    correctAnswer,
     choices: ['True', 'False'],
-    explanation: 'Notes should be grouped to show the beat structure of the time signature.',
+    explanation: explanation || `Notes should be grouped to show the beat structure of the ${timeSignatureStr} time signature.`,
     type: 'trueFalse',
     visualComponent: {
-      clef: 'treble',
-      size: 'lg',
-      timeSignature: '4/4',
-      elements: [
-        // { barlineType: 'none', type: 'barline', spacing: -10 }, // TODO: We need to introduce empty space as element in library
-        { pitch: 'C4', type: NOTES.QUAVER, spacing: 40 },
-        { pitch: 'D4', type: NOTES.QUAVER, spacing: 40 },
-        { pitch: 'E4', type: NOTES.QUAVER, spacing: 40 },
-        { pitch: 'F4', type: NOTES.QUAVER, spacing: 40 },
-        { barlineType: 'single', type: 'barline', spacing: 60 },
-        { pitch: 'F4', type: NOTES.QUAVER, spacing: 40 },
-        { pitch: 'G4', type: NOTES.QUAVER, spacing: 40 },
-        { pitch: 'A4', type: NOTES.QUAVER, spacing: 40 },
-        { pitch: 'B4', type: NOTES.QUAVER, spacing: 40 },
-        { barlineType: 'final', type: 'barline', spacing: 60 }
-      ]
+      size,
+      timeSignature: timeSignatureStr,
+      elements,
+      showStaff: false
     }
   }
+}
+
+/**
+ * Create a beaming/grouping question from stage-specific questions
+ */
+export const createBeamingQuestion = (stage: StageNumber): Question => {
+  const stageQuestions = getGroupingQuestionsForStage(stage)
+  
+  if (stageQuestions.length === 0) {
+    throw new Error(`No grouping questions defined for stage ${stage}. Please add questions to the appropriate stage array.`)
+  }
+  
+  const randomIndex = Math.floor(Math.random() * stageQuestions.length)
+  const customQuestion = stageQuestions[randomIndex]
+  
+  return createQuestionFromElements(
+    customQuestion.elements,
+    customQuestion.timeSignature,
+    customQuestion.correctAnswer,
+    customQuestion.explanation,
+    customQuestion.size
+  )
 }
 
 export const createNoteGroupingQuestion = (stage: StageNumber): Question => {
-  const conceptsForStage = ((): GroupingConcept[] => {
-    return ['beaming']
-  })()
-  const concepts: GroupingConcept[] = conceptsForStage.length > 0 ? conceptsForStage : ['beaming']
-  const selectedConcept = getRandomItem(concepts)
-  
-  switch (selectedConcept) {
-    case 'beaming':
-      return createBeamingQuestion(stage)
-    default:
-      return createBeamingQuestion(stage)
-  }
+  return createBeamingQuestion(stage)
 }
 
-const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.visualComponent?.elements && question.visualComponent.elements.length > 0) {
-    const pitches = question.visualComponent.elements
-      .map(element => element.pitch)
-      .filter(Boolean)
-      .join('|')
-    if (pitches) {
-      return `beaming|${pitches}`
-    }
-  }
-  return question.correctAnswer ?? null
-}
-
+/**
+ * Generate questions from stage-specific pool
+ */
 export const createNoteGroupingQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
-  const uniquePool = [createBeamingQuestion(stage)]
-  return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
+  const stageQuestions = getGroupingQuestionsForStage(stage)
+  
+  if (stageQuestions.length === 0) {
+    throw new Error(`No grouping questions defined for stage ${stage}. Please add questions to the appropriate stage array.`)
+  }
+  
+  const questions: Question[] = []
+  
+  // Repeat stage-specific questions as needed to reach questionsCount
+  for (let i = 0; i < questionsCount; i++) {
+    const questionIndex = i % stageQuestions.length
+    const customQuestion = stageQuestions[questionIndex]
+    
+    questions.push(
+      createQuestionFromElements(
+        customQuestion.elements,
+        customQuestion.timeSignature,
+        customQuestion.correctAnswer,
+        customQuestion.explanation,
+        customQuestion.size
+      )
+    )
+  }
+  
+  return questions
 }
