@@ -203,6 +203,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
             elements={visualComponent.isChord 
               ? [visualComponent.elements || []] 
               : (visualComponent.elements || []).map((element: MusicElementData) => [element])}
+            showStaff={visualComponent.showStaff}
           />
         </DisplayCard>
       )}
