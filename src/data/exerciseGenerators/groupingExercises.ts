@@ -1,5 +1,6 @@
 import { type MusicElementData, type TimeSignatureType } from '@leonkwan46/music-notation'
-import { generateQuestionId } from '../helpers/questionHelpers'
+import { generateQuestionsFromPool } from '../helpers/exerciseHelpers'
+import { generateQuestionId, shuffleArray } from '../helpers/questionHelpers'
 import { formatAsNotation } from '../helpers/timeSignatureHelpers'
 import type { GroupingQuestion } from '../stageSyllabus/customGroupingQuestions/groupingHelpers'
 import { STAGE_TWO_GROUPING_QUESTIONS } from '../stageSyllabus/grouping'
@@ -34,6 +35,98 @@ const getGroupingQuestionsForStage = (stage: StageNumber): readonly GroupingQues
 }
 
 /**
+ * Group questions by time signature
+ */
+const groupQuestionsByTimeSignature = (questions: readonly GroupingQuestion[]): Map<string, GroupingQuestion[]> => {
+  const grouped = new Map<string, GroupingQuestion[]>()
+  
+  for (const question of questions) {
+    const timeSigStr = formatTimeSignature(question.timeSignature)
+    if (!grouped.has(timeSigStr)) {
+      grouped.set(timeSigStr, [])
+    }
+    grouped.get(timeSigStr)!.push(question)
+  }
+  
+  // Shuffle questions within each time signature group for variety
+  for (const [timeSig, questions] of grouped.entries()) {
+    grouped.set(timeSig, shuffleArray([...questions]))
+  }
+  
+  return grouped
+}
+
+/**
+ * Create a balanced pool of questions with even time signature distribution
+ */
+const createBalancedQuestionPool = (
+  questionsByTimeSig: Map<string, GroupingQuestion[]>,
+  targetCount: number
+): Question[] => {
+  const timeSigs = Array.from(questionsByTimeSig.keys())
+  if (timeSigs.length === 0) {
+    return []
+  }
+  
+  // Calculate how many questions per time signature to ensure balance
+  const questionsPerTimeSig = Math.ceil(targetCount / timeSigs.length)
+  
+  const pool: Question[] = []
+  
+  // For each time signature, create enough questions to fill the pool
+  for (const timeSig of timeSigs) {
+    const questions = questionsByTimeSig.get(timeSig)!
+    
+    // Create multiple rounds of questions from this time signature
+    for (let i = 0; i < questionsPerTimeSig; i++) {
+      const questionIndex = i % questions.length
+      const customQuestion = questions[questionIndex]
+      
+      pool.push(
+        createQuestionFromElements(
+          customQuestion.elements,
+          customQuestion.timeSignature,
+          customQuestion.correctAnswer,
+          customQuestion.explanation,
+          customQuestion.size
+        )
+      )
+    }
+  }
+  
+  return pool
+}
+
+/**
+ * Generate a unique identifier for a grouping question based on time signature and elements
+ */
+const getDuplicateIdentifier = (question: Question): string | null => {
+  const timeSignature = question.visualComponent?.timeSignature
+  const elements = question.visualComponent?.elements
+  
+  if (!timeSignature || !elements || elements.length === 0) {
+    return null
+  }
+  
+  // Create a signature from the elements: type, pitch, and key properties
+  const elementSignature = elements.map(element => {
+    const parts: string[] = []
+    
+    if (element.type) parts.push(`type:${element.type}`)
+    if (element.pitch) parts.push(`pitch:${element.pitch}`)
+    if (element.dots !== undefined) parts.push(`dots:${element.dots}`)
+    if (element.endGroup) parts.push('endGroup')
+    if (element.tieStart) parts.push('tieStart')
+    if (element.tieEnd) parts.push('tieEnd')
+    if (element.showFlag === false) parts.push('noFlag')
+    
+    return parts.join('|')
+  }).join(';')
+  
+  return `grouping|${timeSignature}|${elementSignature}`
+}
+
+/**
  * Create a question from custom elements
  */
 const createQuestionFromElements = (
@@ -63,6 +156,7 @@ const createQuestionFromElements = (
 
 /**
  * Create a beaming/grouping question from stage-specific questions
+ * Ensures a balanced mix of time signatures
  */
 export const createBeamingQuestion = (stage: StageNumber): Question => {
   const stageQuestions = getGroupingQuestionsForStage(stage)
@@ -71,8 +165,13 @@ export const createBeamingQuestion = (stage: StageNumber): Question => {
     throw new Error(`No grouping questions defined for stage ${stage}. Please add questions to the appropriate stage array.`)
   }
   
-  const randomIndex = Math.floor(Math.random() * stageQuestions.length)
-  const customQuestion = stageQuestions[randomIndex]
+  // Group by time signature and select randomly from a random time signature
+  const questionsByTimeSig = groupQuestionsByTimeSignature(stageQuestions)
+  const timeSigs = Array.from(questionsByTimeSig.keys())
+  const randomTimeSig = timeSigs[Math.floor(Math.random() * timeSigs.length)]
+  const questionsForTimeSig = questionsByTimeSig.get(randomTimeSig)!
+  const randomIndex = Math.floor(Math.random() * questionsForTimeSig.length)
+  const customQuestion = questionsForTimeSig[randomIndex]
   
   return createQuestionFromElements(
     customQuestion.elements,
@@ -88,7 +187,8 @@ export const createNoteGroupingQuestion = (stage: StageNumber): Question => {
 }
 
 /**
- * Generate questions from stage-specific pool
+ * Generate questions from stage-specific pool with balanced time signature distribution
+ * and deduplication to avoid repeating similar questions
  */
 export const createNoteGroupingQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
   const stageQuestions = getGroupingQuestionsForStage(stage)
@@ -97,23 +197,14 @@ export const createNoteGroupingQuestions = (questionsCount: number, stage: Stage
     throw new Error(`No grouping questions defined for stage ${stage}. Please add questions to the appropriate stage array.`)
   }
   
-  const questions: Question[] = []
+  // Group questions by time signature
+  const questionsByTimeSig = groupQuestionsByTimeSignature(stageQuestions)
   
-  // Repeat stage-specific questions as needed to reach questionsCount
-  for (let i = 0; i < questionsCount; i++) {
-    const questionIndex = i % stageQuestions.length
-    const customQuestion = stageQuestions[questionIndex]
-    
-    questions.push(
-      createQuestionFromElements(
-        customQuestion.elements,
-        customQuestion.timeSignature,
-        customQuestion.correctAnswer,
-        customQuestion.explanation,
-        customQuestion.size
-      )
-    )
-  }
+  // Create a balanced pool (ensures time signature distribution)
+  // Use a larger pool size to ensure we have enough variety after deduplication
+  const poolSize = Math.max(questionsCount * 2, stageQuestions.length * 2)
+  const balancedPool = createBalancedQuestionPool(questionsByTimeSig, poolSize)
   
-  return questions
+  // Use generateQuestionsFromPool to handle deduplication
+  return generateQuestionsFromPool(balancedPool, questionsCount, getDuplicateIdentifier)
 }

@@ -241,8 +241,13 @@ export const generateQuestionsFromPool = (
 
 export const balanceCorrectAnswerPositions = (questions: Question[]): Question[] => {
   const positionCounts = new Map<number, number[]>()
-
+  
   return questions.map(question => {
+    // Skip balancing for True/False questions - they should always have fixed order (True, False)
+    if (question.type === 'trueFalse') {
+      return question
+    }
+    
     const choices = question.choices
     if (!choices || choices.length <= 1) {
       return question
