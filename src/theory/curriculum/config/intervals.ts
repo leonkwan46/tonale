@@ -1,0 +1,12 @@
+import {
+    GRADE_ONE_INTERVALS,
+    GRADE_THREE_INTERVALS,
+    GRADE_TWO_INTERVALS
+} from '../../../config/gradeSyllabus/intervals'
+
+export const STAGE_ONE_INTERVALS = GRADE_ONE_INTERVALS
+
+export const STAGE_TWO_INTERVALS = GRADE_TWO_INTERVALS
+
+export const STAGE_THREE_INTERVALS = GRADE_THREE_INTERVALS
+
