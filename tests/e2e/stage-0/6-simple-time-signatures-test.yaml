@@ -1,0 +1,59 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- runFlow:
+    file: ../helpers/loginAccount.yaml
+
+- tapOn:
+    id: "tab-theory"
+
+- assertVisible:
+    id: "lesson-title-stage-0-lesson-6"
+- tapOn:
+    id: "lesson-title-stage-0-lesson-6"
+
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/8"
+- assertVisible:
+    id: "correct-answer-.*"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "2/8"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "3/8"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "4/8"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "5/8"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "6/8"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "7/8"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "8/8"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "Continue"
+- assertVisible: "Retry"
+- tapOn: "Continue"
+
+- assertVisible:
+    id: "lesson-title-stage-0-lesson-6"
+- tapOn:
+    id: "lesson-title-stage-0-lesson-6"
+- tapOn:
+    id: "back-button"
+

@@ -3,75 +3,65 @@ appId: com.leonkwan46.tonale
 ---
 - clearState
 - launchApp
-- assertVisible: "Tonale"
-- assertVisible: "Email"
-- assertVisible: "Password"
-- tapOn: "Email"
-- inputText: "test@test.com"
-- tapOn: "Password"
-- inputText: "test123"
-- hideKeyboard
-- tapOn: 
-    id: "auth-submit-button"
-- assertVisible: "Welcome to Tonale"
-
-- tapOn: 
+- runFlow:
+    file: ../helpers/loginAccount.yaml
+- tapOn:
     id: "tab-theory"
 
-- scrollUntilVisible:   
+- scrollUntilVisible:
     element:
-      id: "lesson-title-stage-2-lesson-1"
+      id: "lesson-title-stage-1-lesson-5"
     direction: UP
-    speed: 100
-- tapOn: 
-    id: "lesson-title-stage-2-lesson-1"
+- tapOn:
+    id: "lesson-title-stage-1-lesson-5"
 
-- assertVisible: 
+- assertVisible:
     id: "choice-.*"
 - assertVisible: "1/10"
-- assertVisible: 
+- assertVisible:
     id: "correct-answer-.*"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 
 - assertVisible: "2/10"
-- assertVisible: 
+- assertVisible:
     id: "correct-choice-.*"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "3/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "4/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "5/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "6/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "7/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "8/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "9/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 - assertVisible: "10/10"
-- tapOn: 
+- tapOn:
     id: "correct-choice-.*"
 
 - assertVisible: "Continue"
 - assertVisible: "Retry"
 - tapOn: "Continue"
 
-- assertVisible: 
-    id: "lesson-title-stage-2-lesson-1"
-- tapOn: 
-    id: "lesson-title-stage-2-lesson-1"
-- tapOn: 
+- scrollUntilVisible:
+    element:
+      id: "lesson-title-stage-1-lesson-5"
+    direction: UP
+- tapOn:
+    id: "lesson-title-stage-1-lesson-5"
+- tapOn:
     id: "back-button"
-

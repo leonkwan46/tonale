@@ -1,0 +1,99 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- runFlow:
+    file: ../helpers/loginAccount.yaml
+
+- tapOn:
+    id: "tab-theory"
+
+- scrollUntilVisible:
+    element:
+      id: "lesson-title-stage-0-final"
+    direction: UP
+- tapOn:
+    id: "lesson-title-stage-0-final"
+
+- assertVisible: "1/20"
+- assertVisible:
+    id: "correct-answer-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "2/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "3/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "4/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "5/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "6/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "7/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "8/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "9/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "10/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "11/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "12/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "13/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "14/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "15/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "16/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "17/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "18/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "19/20"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "20/20"
+- tapOn:
+    id: "correct-choice-.*"
+
