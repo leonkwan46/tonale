@@ -1,5 +1,5 @@
 import { getUserData } from '@/config/firebase/functions'
-import { initializeUserProgress } from '@/data/theoryData/theoryDataHelpers'
+import { initializeUserProgress } from '@/theory/curriculum/helpers'
 import { isFirebaseError, type UserProfile } from '@types'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import React, { createContext, useEffect, useState } from 'react'

@@ -2,8 +2,8 @@ import {
   getStageById,
   getStageRequirements,
   stagesArray
-} from '@/data/theoryData'
-import { Stage, StageLesson } from '@/data/theoryData/types'
+} from '@/theory/curriculum'
+import { Stage, StageLesson } from '@/theory/curriculum/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from 'expo-router'
 import * as React from 'react'

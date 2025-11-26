@@ -1,14 +1,13 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
-import { VisualComponent } from '@/data/theoryData/types'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
+import { VisualComponent } from '@/theory/curriculum/types'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import {
   MusicStaff,
-  NOTES,
   NoteType,
   parseTimeSignature as parseTimeSignatureFromLibrary,
   Tuplets,
@@ -18,7 +17,7 @@ import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
 import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
-import { generateTripletElements, renderArticulationSign, renderNoteComponent } from './visualRenderHelper'
+import { generateTripletElements, renderNoteComponent } from './visualRenderHelper'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
@@ -63,18 +62,6 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     !(visualComponent.symbolType in GRADE_ONE_ACCIDENTAL_SIGNS)) : false
   const displayText = visualComponent.symbolType ? TERM_DISPLAY_NAMES[visualComponent.symbolType as keyof typeof TERM_DISPLAY_NAMES] || visualComponent.symbolType : ''
   
-  // Special handling for slur and tie
-  const isSlurOrTie = visualComponent.symbolType === 'slur' || visualComponent.symbolType === 'tie'
-  
-  // Special handling for articulation signs (display with notation library)
-  const isArticulationSign = renderAsSymbol && (visualComponent.symbolType === 'staccato' || 
-                             visualComponent.symbolType === 'accent' || 
-                             visualComponent.symbolType === 'fermata')
-  // Staccato, accent, and fermata all need staff positioning
-  const needsStaffForArticulation = isArticulationSign
-  const useIndividualNoteForArticulation = false // Always use staff for articulation signs
-  
-  // Widen crescendo/decrescendo/diminuendo using CSS transform
   const isWideDynamic = visualComponent.symbolType === 'crescendo' || 
                         visualComponent.symbolType === 'decrescendo' || 
                         visualComponent.symbolType === 'diminuendo' ||
@@ -102,7 +89,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
         </DisplayCard>
       )}
       
-      {visualComponent.type === 'noteValue' && (
+      {visualComponent.type === 'noteValue' && visualComponent.noteType && (
         <DisplayCard extraHeight={false}>
           {renderNoteComponent(visualComponent.noteType)}
         </DisplayCard>
@@ -118,7 +105,7 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
         </DisplayCard>
       )}
       
-      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && !isSlurOrTie && !isArticulationSign && (
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && (
         <SMuFLCard isTablet={isTablet} isTextTerm={isTextTerm}>
           <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTerm}>
             <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm} isWideDynamic={isWideDynamic}>
@@ -137,59 +124,9 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
         </SMuFLCard>
       )}
       
-      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isSlurOrTie && (
+      {shouldRenderIndividualNotes && visualComponent.elements?.[0]?.type && (
         <DisplayCard extraHeight={false}>
-          <MusicStaff
-            size={visualComponent.size}
-            clef={'treble'}
-            elements={
-              visualComponent.symbolType === 'tie' 
-                ? [[{ pitch: 'F4', type: NOTES.MINIM, stem: 'up', tieStart: true }], [{ pitch: 'F4', type: NOTES.MINIM, stem: 'up', tieEnd: true }]]
-                : [[{ pitch: 'C4', type: NOTES.CROTCHET, ledgerLines: 1, stem: 'up', slurStart: true }], [{ pitch: 'E4', type: NOTES.CROTCHET, stem: 'up' }], [{ pitch: 'G4', type: NOTES.CROTCHET, stem: 'up', slurEnd: true }]]
-            }
-          />
-        </DisplayCard>
-      )}
-      
-      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && useIndividualNoteForArticulation && (
-        <SMuFLCard isTablet={isTablet}>
-          <SMuFLSymbolContainer isTablet={isTablet}>
-            {renderArticulationSign(visualComponent.symbolType)}
-          </SMuFLSymbolContainer>
-          {shouldShowTTSButton && (
-            <TTSButton onPress={handleTTS}>
-              <Ionicons
-                name="volume-high"
-                size={scale(20)}
-                color={theme.colors.text}
-              />
-            </TTSButton>
-          )}
-        </SMuFLCard>
-      )}
-      
-      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && isArticulationSign && needsStaffForArticulation && (
-        <DisplayCard extraHeight={false}>
-          <MusicStaff
-            size={visualComponent.size}
-            clef={'treble'}
-            elements={[[
-              {
-                pitch: 'F4',
-                type: NOTES.CROTCHET,
-                stem: 'up',
-                ...(visualComponent.symbolType === 'staccato' && { isStaccato: true }),
-                ...(visualComponent.symbolType === 'accent' && { isAccent: true }),
-                ...(visualComponent.symbolType === 'fermata' && { hasFermata: true })
-              }
-            ]]}
-          />
-        </DisplayCard>
-      )}
-      
-      {shouldRenderIndividualNotes && (
-        <DisplayCard extraHeight={false}>
-          {renderNoteComponent(visualComponent.elements?.[0]?.type)}
+          {renderNoteComponent(visualComponent.elements[0].type)}
         </DisplayCard>
       )}
       

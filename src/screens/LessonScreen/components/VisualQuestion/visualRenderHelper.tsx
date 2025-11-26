@@ -12,7 +12,7 @@ import {
   SemiquaverRest,
   type MusicElementData
 } from '@leonkwan46/music-notation'
-import { VisualComponent } from '@/data/theoryData/types'
+import { VisualComponent } from '@/theory/curriculum/types'
 
 // Helper function to generate triplet elements for display
 export const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3): MusicElementData[][] => {
@@ -25,19 +25,6 @@ export const generateTripletElements = (noteType: NoteType, numberOfNotes: numbe
   return elements
 }
 
-// Helper function to render articulation signs with individual note components
-export const renderArticulationSign = (symbolType: string) => {
-  return (
-    <Crotchet 
-      stem='up' 
-      centered={true}
-      isStaccato={symbolType === 'staccato'}
-      isAccent={symbolType === 'accent'}
-    />
-  )
-}
-
-// Helper function to render individual note/rest components
 export const renderNoteComponent = (noteType: VisualComponent['noteType']) => {
   // Handle dotted note/rest objects
   if (typeof noteType === 'object' && noteType.type) {

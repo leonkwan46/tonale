@@ -1,4 +1,4 @@
-import { Question } from '@/data/theoryData/types'
+import { Question } from '@/theory/curriculum/types'
 import { useDevice } from '@/hooks'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import * as React from 'react'

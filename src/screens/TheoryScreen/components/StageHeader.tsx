@@ -1,4 +1,4 @@
-import { Stage } from '@/data/theoryData'
+import { Stage } from '@/theory/curriculum'
 import styled from '@emotion/native'
 import * as React from 'react'
 import { Animated, Pressable } from 'react-native'

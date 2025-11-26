@@ -1,4 +1,4 @@
-import { Lesson } from '@/data/theoryData/types'
+import { Lesson } from '@/theory/curriculum/types'
 import * as React from 'react'
 import { useDevice } from '../../../../hooks'
 import { BackArrowIcon } from './BackArrowIcon'
