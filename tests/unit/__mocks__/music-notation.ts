@@ -42,24 +42,64 @@ interface MockNote {
 
 export const TREBLE_PITCH_DEFINITIONS: MockNote[] = [
   { pitch: 'C4', name: 'C', letterName: 'C', stem: 'up', ledgerLines: 0 },
+  { pitch: 'C#4', name: 'C#', letterName: 'C', stem: 'up', ledgerLines: 0 },
+  { pitch: 'C♯4', name: 'C♯', letterName: 'C', stem: 'up', ledgerLines: 0 },
   { pitch: 'D4', name: 'D', letterName: 'D', stem: 'up', ledgerLines: 0 },
+  { pitch: 'D#4', name: 'D#', letterName: 'D', stem: 'up', ledgerLines: 0 },
+  { pitch: 'D♯4', name: 'D♯', letterName: 'D', stem: 'up', ledgerLines: 0 },
   { pitch: 'E4', name: 'E', letterName: 'E', stem: 'up', ledgerLines: 0 },
   { pitch: 'F4', name: 'F', letterName: 'F', stem: 'up', ledgerLines: 0 },
+  { pitch: 'F#4', name: 'F#', letterName: 'F', stem: 'up', ledgerLines: 0 },
+  { pitch: 'F♯4', name: 'F♯', letterName: 'F', stem: 'up', ledgerLines: 0 },
   { pitch: 'G4', name: 'G', letterName: 'G', stem: 'up', ledgerLines: 0 },
+  { pitch: 'G#4', name: 'G#', letterName: 'G', stem: 'up', ledgerLines: 0 },
+  { pitch: 'G♯4', name: 'G♯', letterName: 'G', stem: 'up', ledgerLines: 0 },
   { pitch: 'A4', name: 'A', letterName: 'A', stem: 'up', ledgerLines: 0 },
+  { pitch: 'A#4', name: 'A#', letterName: 'A', stem: 'up', ledgerLines: 0 },
+  { pitch: 'A♯4', name: 'A♯', letterName: 'A', stem: 'up', ledgerLines: 0 },
   { pitch: 'B4', name: 'B', letterName: 'B', stem: 'up', ledgerLines: 0 },
-  { pitch: 'C5', name: 'C', letterName: 'C', stem: 'up', ledgerLines: 0 }
+  { pitch: 'C5', name: 'C', letterName: 'C', stem: 'up', ledgerLines: 0 },
+  { pitch: 'Db4', name: 'Db', letterName: 'D', stem: 'up', ledgerLines: 0 },
+  { pitch: 'D♭4', name: 'D♭', letterName: 'D', stem: 'up', ledgerLines: 0 },
+  { pitch: 'Eb4', name: 'Eb', letterName: 'E', stem: 'up', ledgerLines: 0 },
+  { pitch: 'E♭4', name: 'E♭', letterName: 'E', stem: 'up', ledgerLines: 0 },
+  { pitch: 'Gb4', name: 'Gb', letterName: 'G', stem: 'up', ledgerLines: 0 },
+  { pitch: 'G♭4', name: 'G♭', letterName: 'G', stem: 'up', ledgerLines: 0 },
+  { pitch: 'Ab4', name: 'Ab', letterName: 'A', stem: 'up', ledgerLines: 0 },
+  { pitch: 'A♭4', name: 'A♭', letterName: 'A', stem: 'up', ledgerLines: 0 },
+  { pitch: 'Bb4', name: 'Bb', letterName: 'B', stem: 'up', ledgerLines: 0 },
+  { pitch: 'B♭4', name: 'B♭', letterName: 'B', stem: 'up', ledgerLines: 0 }
 ]
 
 export const BASS_PITCH_DEFINITIONS: MockNote[] = [
   { pitch: 'C3', name: 'C', letterName: 'C', stem: 'down', ledgerLines: 0 },
+  { pitch: 'C#3', name: 'C#', letterName: 'C', stem: 'down', ledgerLines: 0 },
+  { pitch: 'C♯3', name: 'C♯', letterName: 'C', stem: 'down', ledgerLines: 0 },
   { pitch: 'D3', name: 'D', letterName: 'D', stem: 'down', ledgerLines: 0 },
+  { pitch: 'D#3', name: 'D#', letterName: 'D', stem: 'down', ledgerLines: 0 },
+  { pitch: 'D♯3', name: 'D♯', letterName: 'D', stem: 'down', ledgerLines: 0 },
   { pitch: 'E3', name: 'E', letterName: 'E', stem: 'down', ledgerLines: 0 },
   { pitch: 'F3', name: 'F', letterName: 'F', stem: 'down', ledgerLines: 0 },
+  { pitch: 'F#3', name: 'F#', letterName: 'F', stem: 'down', ledgerLines: 0 },
+  { pitch: 'F♯3', name: 'F♯', letterName: 'F', stem: 'down', ledgerLines: 0 },
   { pitch: 'G3', name: 'G', letterName: 'G', stem: 'down', ledgerLines: 0 },
+  { pitch: 'G#3', name: 'G#', letterName: 'G', stem: 'down', ledgerLines: 0 },
+  { pitch: 'G♯3', name: 'G♯', letterName: 'G', stem: 'down', ledgerLines: 0 },
   { pitch: 'A3', name: 'A', letterName: 'A', stem: 'down', ledgerLines: 0 },
+  { pitch: 'A#3', name: 'A#', letterName: 'A', stem: 'down', ledgerLines: 0 },
+  { pitch: 'A♯3', name: 'A♯', letterName: 'A', stem: 'down', ledgerLines: 0 },
   { pitch: 'B3', name: 'B', letterName: 'B', stem: 'down', ledgerLines: 0 },
-  { pitch: 'C4', name: 'C', letterName: 'C', stem: 'down', ledgerLines: 0 }
+  { pitch: 'C4', name: 'C', letterName: 'C', stem: 'down', ledgerLines: 0 },
+  { pitch: 'Db3', name: 'Db', letterName: 'D', stem: 'down', ledgerLines: 0 },
+  { pitch: 'D♭3', name: 'D♭', letterName: 'D', stem: 'down', ledgerLines: 0 },
+  { pitch: 'Eb3', name: 'Eb', letterName: 'E', stem: 'down', ledgerLines: 0 },
+  { pitch: 'E♭3', name: 'E♭', letterName: 'E', stem: 'down', ledgerLines: 0 },
+  { pitch: 'Gb3', name: 'Gb', letterName: 'G', stem: 'down', ledgerLines: 0 },
+  { pitch: 'G♭3', name: 'G♭', letterName: 'G', stem: 'down', ledgerLines: 0 },
+  { pitch: 'Ab3', name: 'Ab', letterName: 'A', stem: 'down', ledgerLines: 0 },
+  { pitch: 'A♭3', name: 'A♭', letterName: 'A', stem: 'down', ledgerLines: 0 },
+  { pitch: 'Bb3', name: 'Bb', letterName: 'B', stem: 'down', ledgerLines: 0 },
+  { pitch: 'B♭3', name: 'B♭', letterName: 'B', stem: 'down', ledgerLines: 0 }
 ]
 
 export const ALTO_PITCH_DEFINITIONS: MockNote[] = []

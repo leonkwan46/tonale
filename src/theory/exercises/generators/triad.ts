@@ -12,7 +12,6 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
   
   const flatNotes = selectedChordNotes.flat()
   const chordNotes = addRegisterToChord(flatNotes, clef, stage)
-  console.log('chordNotes', chordNotes)
   const rootStem = chordNotes[0]?.stem || 'up'
   
   return {
