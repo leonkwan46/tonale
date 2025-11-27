@@ -25,7 +25,7 @@ Tonale is a music theory learning platform that provides structured lessons alig
 Additional project documentation is available in the [`docs/`](./docs/) folder:
 
 - **[Grade-Syllabus.md](./docs/Grade-Syllabus.md)** - ABRSM-style summary of Grades 1–3 curriculum requirements, covering terms, signs, clefs, time signatures, pitches, scales, intervals, triads, and more
-- **[App-Stage-Syllabus.md](./docs/App-Stage-Syllabus.md)** - Detailed application stage syllabus with lesson breakdowns organized by stages (Pre-Grade, Grade 1, Grade 2, Grade 3)
+- **[App-Stage-Syllabus.md](./docs/App-Stage-Syllabus.md)** - Detailed application stage syllabus with lesson breakdowns organised by stages (Pre-Grade, Grade 1, Grade 2, Grade 3)
 - **[Stage-Syllabus-Gap-Analysis.md](./docs/Stage-Syllabus-Gap-Analysis.md)** - Comprehensive analysis identifying missing topics compared to ABRSM requirements, with priority recommendations
 - **[Music_Theory_Qual_Spec_April_2023_2023_rebrand.pdf](./docs/Music_Theory_Qual_Spec_April_2023_2023_rebrand.pdf)** - Official ABRSM Music Theory Qualification Specification reference document
 
@@ -50,7 +50,7 @@ graph TB
         K --> M[Theme Provider]
         
         L --> N[getUserData]
-        L --> O[initializeUserProgress]
+        L --> O[initialiseUserProgress]
     end
     
     subgraph "Firebase Services"
@@ -123,14 +123,14 @@ import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
   - `(tabs)/` - Main application tabs (Home, Theory, Aural, Settings)
   - `lesson.tsx` - Dynamic lesson screen route
 
-- **`src/screens/`** - Screen components organized by feature
+- **`src/screens/`** - Screen components organised by feature
   - Each screen has its own directory with `index.tsx` and `.styles.ts` files
   - Follows separation of concerns with components in subdirectories
 
 - **`src/theory/`** - Core music theory logic
   - `curriculum/` - Lesson definitions and stage configurations
   - `exercises/generators/` - Question generation algorithms
-  - `exercises/custom/` - Specialized question types
+  - `exercises/custom/` - Specialised question types
   - `utils/` - Music theory utilities (scales, intervals, triads)
 
 - **`src/sharedComponents/`** - Reusable UI components
@@ -196,7 +196,7 @@ import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
 graph TD
     A[User Selects Lesson] --> B[LessonScreen Loads]
     B --> C[Load Lesson Config]
-    C --> D[Initialize Question Generator]
+    C --> D[Initialise Question Generator]
     D --> E[Generate Question Set]
     E --> F[Display First Question]
     
