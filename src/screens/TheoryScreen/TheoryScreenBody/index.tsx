@@ -2,8 +2,9 @@ import {
   getStageById,
   getStageRequirements,
   stagesArray
-} from '@/data/theoryData'
-import { Stage, StageLesson } from '@/data/theoryData/types'
+} from '@/theory/curriculum'
+import { Stage, StageLesson } from '@/theory/curriculum/types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from 'expo-router'
 import * as React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -65,6 +66,8 @@ export const TheoryScreenBody = () => {
   const [refreshKey, setRefreshKey] = useState(0) // Force re-render when progress updates
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
+  const openedStageIdsRef = useRef<Set<string>>(new Set())
+  const OPENED_KEY = '@tonale/theory/openedStages'
 
   // Helper function to scroll to a stage
   const scrollToStage = (stageId: string, offset: number = 100) => {
@@ -99,32 +102,52 @@ export const TheoryScreenBody = () => {
     }, [])
   )
   useEffect(() => {
-    const initialCollapsedState: Record<string, boolean> = {}
-    const initialVisibleState: Record<string, boolean> = {}
-    
-    stagesArray.forEach(stage => {
-      // Initialize animated value for each stage
-      if (!animatedHeights.current[stage.id]) {
-        animatedHeights.current[stage.id] = new Animated.Value(1)
+    const initState = async () => {
+      const initialCollapsedState: Record<string, boolean> = {}
+      const initialVisibleState: Record<string, boolean> = {}
+
+      // Load persisted opened stage ids
+      try {
+        const stored = await AsyncStorage.getItem(OPENED_KEY)
+        const parsed: string[] = stored ? JSON.parse(stored) : []
+        openedStageIdsRef.current = new Set(Array.isArray(parsed) ? parsed : [])
+      } catch {
+        openedStageIdsRef.current = new Set()
       }
-      
-      // Automatically collapse cleared stages (except the current one being worked on)
-      if (stage.isCleared) {
-        // Find if there's a next unlocked stage
-        const nextStage = stagesArray.find(s => s.order === stage.order + 1 && s.isUnlocked)
-        const shouldCollapse = !!nextStage // Collapse if next stage is unlocked
-        initialCollapsedState[stage.id] = shouldCollapse
-        initialVisibleState[stage.id] = !shouldCollapse // Show content if not collapsed
-        
-        // Set initial animated value
-        animatedHeights.current[stage.id].setValue(shouldCollapse ? 0 : 1)
-      } else {
-        // Non-cleared stages are always visible
-        initialVisibleState[stage.id] = true
-      }
-    })
-    setCollapsedStages(initialCollapsedState)
-    setVisibleStages(initialVisibleState)
+
+      // Determine highest unlocked stage (furthest)
+      const unlockedStages = stagesArray.filter(s => s.isUnlocked)
+      const furthest = unlockedStages.length > 0
+        ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
+        : undefined
+      const furthestId = furthest?.id
+
+      stagesArray.forEach(stage => {
+        // Initialize animated value for each stage
+        if (!animatedHeights.current[stage.id]) {
+          animatedHeights.current[stage.id] = new Animated.Value(1)
+        }
+
+        const userWantsOpen = openedStageIdsRef.current.has(stage.id)
+        const shouldBeOpen = userWantsOpen || (furthestId === stage.id)
+
+        if (stage.isCleared) {
+          // Cleared stages are collapsible; open if shouldBeOpen, otherwise collapse
+          initialCollapsedState[stage.id] = !shouldBeOpen
+          initialVisibleState[stage.id] = shouldBeOpen
+          animatedHeights.current[stage.id].setValue(shouldBeOpen ? 1 : 0)
+        } else {
+          // Non-cleared stages should remain visible (not collapsible)
+          initialVisibleState[stage.id] = true
+          animatedHeights.current[stage.id].setValue(1)
+        }
+      })
+
+      setCollapsedStages(initialCollapsedState)
+      setVisibleStages(initialVisibleState)
+    }
+
+    void initState()
   }, [refreshKey])
 
   const toggleStageCollapse = (stageId: string) => {
@@ -152,6 +175,15 @@ export const TheoryScreenBody = () => {
         [stageId]: false
       }))
       
+      // Persist user intent to keep this stage open
+      try {
+        openedStageIdsRef.current.add(stageId)
+        const toStore = JSON.stringify(Array.from(openedStageIdsRef.current))
+        void AsyncStorage.setItem(OPENED_KEY, toStore)
+      } catch {
+        // ignore storage errors
+      }
+
       // Small delay to ensure DOM update, then start fade in animation and scroll
       setTimeout(() => {
         animatedHeights.current[stageId].setValue(0)
@@ -166,6 +198,16 @@ export const TheoryScreenBody = () => {
           scrollToStage(stageId, 0)
         }, 150) // Wait for content to be rendered
       }, 10)
+    }
+    if (newCollapsedState) {
+      // Persist user intent to keep this stage closed
+      try {
+        openedStageIdsRef.current.delete(stageId)
+        const toStore = JSON.stringify(Array.from(openedStageIdsRef.current))
+        void AsyncStorage.setItem(OPENED_KEY, toStore)
+      } catch {
+        // ignore storage errors
+      }
     }
   }
 

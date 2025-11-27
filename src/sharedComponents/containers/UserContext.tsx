@@ -1,5 +1,5 @@
 import { getUserData } from '@/config/firebase/functions'
-import { initializeUserProgress } from '@/data/theoryData/theoryDataHelpers'
+import { initializeUserProgress } from '@/theory/curriculum/helpers'
 import { isFirebaseError, type UserProfile } from '@types'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import React, { createContext, useEffect, useState } from 'react'
@@ -50,6 +50,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           const metadata = user.metadata
           const isNewUser = metadata.creationTime === metadata.lastSignInTime
 
+          // Wait for auth token to be available before calling cloud functions
+          await user.getIdToken(true)
+          console.log('✅ User authenticated successfully:', user.uid)
+
           if (!isNewUser) {
             // Existing user logging in - fetch their profile
             await fetchProfile()
@@ -72,7 +76,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setLoading(false)
       },
       (error) => {
-        console.error(`Authentication error on ${Platform.OS}:`, error)
+        console.error(`❌ Authentication error on ${Platform.OS}:`, error)
         clearTimeout(authTimeout)
         setUser(null)
         setProfile(null)

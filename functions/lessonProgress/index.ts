@@ -1,13 +1,12 @@
 import type {
-    AllLessonProgressResponse,
-    LessonProgressResponse,
-    UpdateLessonProgressPayload,
-    UserDataSuccessResponse
+  AllLessonProgressResponse,
+  LessonProgressResponse,
+  UpdateLessonProgressPayload,
+  UserDataSuccessResponse
 } from '@types'
 import * as admin from 'firebase-admin'
 import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore'
-import * as functions from 'firebase-functions'
-import type { CallableContext } from 'firebase-functions/v1/https'
+import * as functions from 'firebase-functions/v1'
 
 // ============================================================================
 // LESSON PROGRESS CRUD OPERATIONS
@@ -19,7 +18,7 @@ interface GetLessonProgressData {
 
 // Update lesson progress (CREATE/UPDATE)
 export const updateLessonProgress = functions.https.onCall(
-  async (data: UpdateLessonProgressPayload, context: CallableContext) => {
+  async (data: UpdateLessonProgressPayload, context) => {
     if (!context?.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
     }
@@ -82,7 +81,6 @@ export const updateLessonProgress = functions.https.onCall(
         updatedAt: FieldValue.serverTimestamp()
       })
 
-      console.log(`✅ Updated ${lessonType} lesson progress for user ${userId}, lesson ${lessonId}`)
 
       return { 
         success: true, 
@@ -97,7 +95,7 @@ export const updateLessonProgress = functions.https.onCall(
 
 // Get single lesson progress (READ)
 export const getLessonProgress = functions.https.onCall(
-  async (data: GetLessonProgressData, context: CallableContext) => {
+  async (data: GetLessonProgressData, context) => {
     if (!context?.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
     }
@@ -136,7 +134,7 @@ export const getLessonProgress = functions.https.onCall(
 
 // Get all lesson progress (READ ALL)
 export const getAllLessonProgress = functions.https.onCall(
-  async (data: any, context: CallableContext) => {
+  async (data: any, context) => {
     if (!context?.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
     }
@@ -152,8 +150,6 @@ export const getAllLessonProgress = functions.https.onCall(
       const userData = doc.data()
       const allLessonProgress = userData?.progress?.lessons || {}
 
-      console.log(`✅ Retrieved ${Object.keys(allLessonProgress).length} lesson progress records for user ${userId}`)
-
       return { 
         success: true, 
         data: allLessonProgress 
@@ -167,7 +163,7 @@ export const getAllLessonProgress = functions.https.onCall(
 
 // Delete lesson progress (DELETE - optional, for admin or reset)
 export const deleteLessonProgress = functions.https.onCall(
-  async (data: GetLessonProgressData, context: CallableContext) => {
+  async (data: GetLessonProgressData, context) => {
     if (!context?.auth) {
       throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
     }
@@ -188,7 +184,6 @@ export const deleteLessonProgress = functions.https.onCall(
           updatedAt: FieldValue.serverTimestamp()
         })
 
-      console.log(`✅ Deleted lesson progress for user ${userId}, lesson ${lessonId}`)
 
       return { 
         success: true, 

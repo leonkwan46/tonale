@@ -1,0 +1,18 @@
+appId: com.leonkwan46.tonale
+jsEngine: graaljs
+
+---
+- evalScript: ${output.testEmail = "TEST@test.com"}
+- evalScript: ${output.testPassword = "test123"}
+- assertVisible: "Tonale"
+- assertVisible: "Email"
+- assertVisible: "Password"
+- tapOn: "Email"
+- inputText: "${output.testEmail}"
+- tapOn: "Password"
+- inputText: "${output.testPassword}"
+- hideKeyboard
+- tapOn:
+    id: "auth-submit-button"
+- assertVisible: "Welcome to Tonale"
+

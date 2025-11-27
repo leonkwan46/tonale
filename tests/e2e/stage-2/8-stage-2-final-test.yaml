@@ -1,0 +1,142 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- runFlow:
+    file: ../helpers/loginAccount.yaml
+- tapOn:
+    id: "tab-theory"
+
+- scrollUntilVisible:
+    element:
+        id: "lesson-title-stage-2-lesson-5"
+    direction: UP
+- scrollUntilVisible:
+    element:
+        id: "lesson-title-stage-2-final"
+    direction: UP
+- tapOn:
+    id: "lesson-title-stage-2-final"
+
+- assertVisible: "1/30"
+- assertVisible:
+    id: "correct-answer-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "2/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "3/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "4/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "5/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "6/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "7/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "8/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "9/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "10/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "11/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "12/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "13/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "14/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "15/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "16/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "17/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "18/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "19/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "20/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "21/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "22/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "23/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "24/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "25/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "26/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "27/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "28/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "29/30"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "30/30"
+- tapOn:
+    id: "correct-choice-.*"
+

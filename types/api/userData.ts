@@ -3,6 +3,8 @@
 // User profile and progress data structures
 // ============================================================================
 
+import type { Timestamp } from 'firebase/firestore'
+
 // Note: LessonProgress is exported from lessons.ts, no need to re-export here
 
 // Stage progress data model
@@ -22,8 +24,8 @@ export interface ProgressData {
 export interface UserProfile {
   email: string
   progress?: ProgressData
-  createdAt?: any // Firestore Timestamp
-  updatedAt?: any // Firestore Timestamp
+  createdAt?: Timestamp // Firestore Timestamp
+  updatedAt?: Timestamp // Firestore Timestamp
 }
 
 // Response types for user data operations

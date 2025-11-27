@@ -1,6 +1,6 @@
-import { Question } from '@/data/theoryData/types'
+import { Question } from '@/theory/curriculum/types'
 import { useDevice } from '@/hooks'
-import { playSuccessSound } from '@/utils/soundUtils'
+import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
@@ -78,6 +78,8 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
     // Play success sound immediately when answer is correct
     if (correct) {
       playSuccessSound()
+    } else {
+      playErrorSound()
     }
     
     // Call parent callback
@@ -103,7 +105,17 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
           />
         )
       case QUESTION_TYPE.TRUE_FALSE:
-        return <TrueFalse />
+        return (
+          <TrueFalse
+            choices={questionData.choices}
+            correctAnswer={questionData.correctAnswer}
+            selectedAnswer={selectedAnswer}
+            showResult={showResult}
+            showCorrectAnswer={showCorrectAnswer}
+            onChoiceSelect={handleChoiceSelect}
+            testID={`correct-answer-${questionData.correctAnswer}`}
+          />
+        )
       case QUESTION_TYPE.KEY_PRESS:
         return <KeyPress />
       default:

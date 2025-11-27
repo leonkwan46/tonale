@@ -10,9 +10,15 @@ NC='\033[0m' # No Color
 # Variable to track current test
 current_test_file=""
 
+# Check for stage parameter
+STAGE="${1:-}"
+TEST_DIR="tests/e2e"
+
 # Handle interrupt signal (Ctrl+C)
 handle_interrupt() {
     echo -e "\n${YELLOW}⚠️  Test execution interrupted by user${NC}"
+    # Clean up any temporary test files
+    find tests/e2e -name "*.tmp" -type f -delete 2>/dev/null
     if [ -n "$current_test_file" ]; then
         echo ""
         echo -e "${YELLOW}Run this specific test to continue:${NC}"
@@ -22,6 +28,7 @@ handle_interrupt() {
     exit 130
 }
 trap handle_interrupt INT
+
 
 # Check if Firebase emulators are running
 echo -e "${BLUE}🔍 Checking Firebase emulators...${NC}"
@@ -35,8 +42,31 @@ fi
 echo -e "${GREEN}✅ Firebase emulators detected${NC}"
 echo ""
 
+# If stage is specified, only run tests for that stage
+if [ -n "$STAGE" ]; then
+    if [ "$STAGE" = "stage-0" ] || [ "$STAGE" = "stage-1" ] || [ "$STAGE" = "stage-2" ]; then
+        TEST_DIR="tests/e2e/$STAGE"
+        echo -e "${BLUE}📁 Running tests for: $STAGE${NC}"
+        echo ""
+        if [ ! -d "$TEST_DIR" ]; then
+            echo -e "${RED}❌ Test directory not found: $TEST_DIR${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${RED}❌ Invalid stage: $STAGE${NC}"
+        echo -e "${YELLOW}Valid stages: stage-0, stage-1, stage-2${NC}"
+        exit 1
+    fi
+else
+    echo -e "${BLUE}📁 Running all e2e tests${NC}"
+    echo ""
+fi
+
 # Automatically discover all e2e test files
-test_files=($(find tests/e2e -name "*.yaml" -type f | sort))
+# Exclude helpers directory and separate regular tests from final tests, ensuring final tests run last
+regular_tests=($(find "$TEST_DIR" -name "*.yaml" -type f ! -name "*-final*.yaml" ! -path "*/helpers/*" | sort))
+final_tests=($(find "$TEST_DIR" -name "*-final*.yaml" -type f ! -path "*/helpers/*" | sort))
+test_files=("${regular_tests[@]}" "${final_tests[@]}")
 
 echo -e "${BLUE}🧪 Running E2E Tests...${NC}"
 echo ""
@@ -59,7 +89,7 @@ for test_file in "${test_files[@]}"; do
     test_start_time=$(date +%s)
     test_start_time=$((test_start_time * 1000))
     
-    # Run the test and capture exit code
+    # Run the test - faker will generate unique emails/passwords automatically via createAccount.yaml
     if maestro test "$test_file" > /dev/null 2>&1; then
         test_end_time=$(date +%s)
         test_end_time=$((test_end_time * 1000))

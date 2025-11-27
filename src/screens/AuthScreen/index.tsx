@@ -96,7 +96,8 @@ export function AuthScreen() {
       if (authState.mode === 'login') {
         await signInWithEmailAndPassword(auth, formData.email, formData.password)
       } else {
-        await createUserWithEmailAndPassword(auth, formData.email, formData.password)
+        const { user } = await createUserWithEmailAndPassword(auth, formData.email, formData.password)
+        await user.getIdToken(true)
         await createUserData({ email: formData.email })
         await fetchProfile()
       }
