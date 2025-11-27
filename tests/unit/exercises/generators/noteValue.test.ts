@@ -1,121 +1,201 @@
 import { createNoteValueQuestion, createNoteValueQuestions } from '@/theory/exercises/generators/noteValue'
-import { StageNumber } from '@/theory/curriculum/types'
 import {
-  validateQuestionStructure,
   validateCorrectAnswerInChoices,
-  validateUniqueChoices,
-  validateUniqueQuestions,
+  validateNoteTypeForStage,
   validateQuestionCount,
-  TEST_STAGES,
+  validateQuestionStructure,
+  validateUniqueChoices,
+  validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('noteValue generator', () => {
   describe('createNoteValueQuestion', () => {
-    it('should create a valid question with required fields', () => {
-      const question = createNoteValueQuestion(0)
-      validateQuestionStructure(question)
-    })
-
-    it('should include correct answer in choices', () => {
-      const question = createNoteValueQuestion(0)
-      validateCorrectAnswerInChoices(question)
-    })
-
-    it('should have unique choices', () => {
-      const question = createNoteValueQuestion(0)
-      validateUniqueChoices(question)
-    })
-
-    it('should have type multipleChoice', () => {
-      const question = createNoteValueQuestion(0)
-      expect(question.type).toBe('multipleChoice')
-    })
-
-    it('should have valid visual component', () => {
-      const question = createNoteValueQuestion(0)
-      expect(question.visualComponent).toBeDefined()
-      expect(question.visualComponent?.type).toBe('noteValue')
-      expect(question.visualComponent?.noteType).toBeDefined()
-    })
-
-    it('should have explanation', () => {
-      const question = createNoteValueQuestion(0)
-      expect(question.explanation).toBeDefined()
-      expect(typeof question.explanation).toBe('string')
-    })
-
-    it('should accept custom noteType parameter', () => {
-      const customNoteType = { type: 'minim', dots: 0 }
-      const question = createNoteValueQuestion(1, customNoteType)
-      expect(question.visualComponent?.noteType).toEqual(customNoteType)
-    })
-
-    it('should work for all stages', () => {
-      TEST_STAGES.forEach(stage => {
-        const question = createNoteValueQuestion(stage)
+    describe('Stage 0', () => {
+      it('should create a valid question with required fields', () => {
+        const question = createNoteValueQuestion(0)
         validateQuestionStructure(question)
+      })
+
+      it('should include correct answer in choices', () => {
+        const question = createNoteValueQuestion(0)
         validateCorrectAnswerInChoices(question)
+      })
+
+      it('should have unique choices', () => {
+        const question = createNoteValueQuestion(0)
+        validateUniqueChoices(question)
+      })
+
+      it('should have type multipleChoice', () => {
+        const question = createNoteValueQuestion(0)
+        expect(question.type).toBe('multipleChoice')
+      })
+
+      it('should have valid visual component', () => {
+        const question = createNoteValueQuestion(0)
+        expect(question.visualComponent).toBeDefined()
+        expect(question.visualComponent?.type).toBe('noteValue')
+        expect(question.visualComponent?.noteType).toBeDefined()
+      })
+
+      it('should have explanation', () => {
+        const question = createNoteValueQuestion(0)
+        expect(question.explanation).toBeDefined()
+        expect(typeof question.explanation).toBe('string')
+      })
+
+      it('should use stage 0 note types', () => {
+        const question = createNoteValueQuestion(0)
+        const noteType = question.visualComponent?.noteType
+        expect(noteType).toBeDefined()
+        validateNoteTypeForStage(noteType, 0)
+      })
+    })
+
+    describe('Stage 1', () => {
+      it('should create a valid question with required fields', () => {
+        const question = createNoteValueQuestion(1)
+        validateQuestionStructure(question)
+      })
+
+      it('should include correct answer in choices', () => {
+        const question = createNoteValueQuestion(1)
+        validateCorrectAnswerInChoices(question)
+      })
+
+      it('should have unique choices', () => {
+        const question = createNoteValueQuestion(1)
+        validateUniqueChoices(question)
+      })
+
+      it('should accept custom noteType parameter', () => {
+        const customNoteType = { type: 'minim', dots: 0 }
+        const question = createNoteValueQuestion(1, customNoteType)
+        expect(question.visualComponent?.noteType).toEqual(customNoteType)
+      })
+
+      it('should use stage 1 note types', () => {
+        const question = createNoteValueQuestion(1)
+        const noteType = question.visualComponent?.noteType
+        expect(noteType).toBeDefined()
+        validateNoteTypeForStage(noteType, 1)
+      })
+    })
+
+    describe('Stage 2', () => {
+      it('should create a valid question with required fields', () => {
+        const question = createNoteValueQuestion(2)
+        validateQuestionStructure(question)
+      })
+
+      it('should include correct answer in choices', () => {
+        const question = createNoteValueQuestion(2)
+        validateCorrectAnswerInChoices(question)
+      })
+
+      it('should use stage 2 note types', () => {
+        const question = createNoteValueQuestion(2)
+        const noteType = question.visualComponent?.noteType
+        expect(noteType).toBeDefined()
+        validateNoteTypeForStage(noteType, 2)
       })
     })
   })
 
   describe('createNoteValueQuestions', () => {
-    it('should generate requested number of questions', () => {
-      const questions = createNoteValueQuestions(5, 0)
-      validateQuestionCount(questions, 5)
-    })
-
-    it('should generate unique questions', () => {
-      const questions = createNoteValueQuestions(10, 0)
-      validateUniqueQuestions(questions)
-    })
-
-    it('should generate questions with valid structure', () => {
-      const questions = createNoteValueQuestions(3, 0)
-      questions.forEach(question => {
-        validateQuestionStructure(question)
-        validateCorrectAnswerInChoices(question)
-      })
-    })
-
-    it('should work for all stages', () => {
-      TEST_STAGES.forEach(stage => {
-        const questions = createNoteValueQuestions(5, stage)
+    describe('Stage 0', () => {
+      it('should generate requested number of questions', () => {
+        const questions = createNoteValueQuestions(5, 0)
         validateQuestionCount(questions, 5)
+      })
+
+      it('should generate unique questions', () => {
+        const questions = createNoteValueQuestions(10, 0)
+        validateUniqueQuestions(questions)
+      })
+
+      it('should generate questions with valid structure', () => {
+        const questions = createNoteValueQuestions(3, 0)
         questions.forEach(question => {
           validateQuestionStructure(question)
+          validateCorrectAnswerInChoices(question)
         })
+      })
+
+      it('should handle single question generation', () => {
+        const questions = createNoteValueQuestions(1, 0)
+        validateQuestionCount(questions, 1)
+        validateQuestionStructure(questions[0])
+      })
+
+      it('should only use stage 0 note types', () => {
+        const questions = createNoteValueQuestions(10, 0)
+        questions.forEach(question => {
+          const noteType = question.visualComponent?.noteType
+          validateNoteTypeForStage(noteType, 0)
+        })
+        const noteTypes = new Set(
+          questions.map(q => {
+            const noteType = q.visualComponent?.noteType
+            return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+          })
+        )
+        expect(noteTypes.size).toBeGreaterThan(0)
       })
     })
 
-    it('should handle single question generation', () => {
-      const questions = createNoteValueQuestions(1, 0)
-      validateQuestionCount(questions, 1)
-      validateQuestionStructure(questions[0])
+    describe('Stage 1', () => {
+      it('should generate requested number of questions', () => {
+        const questions = createNoteValueQuestions(5, 1)
+        validateQuestionCount(questions, 5)
+      })
+
+      it('should generate unique questions', () => {
+        const questions = createNoteValueQuestions(10, 1)
+        validateUniqueQuestions(questions)
+      })
+
+      it('should only use stage 1 note types', () => {
+        const questions = createNoteValueQuestions(10, 1)
+        questions.forEach(question => {
+          const noteType = question.visualComponent?.noteType
+          validateNoteTypeForStage(noteType, 1)
+        })
+        const noteTypes = new Set(
+          questions.map(q => {
+            const noteType = q.visualComponent?.noteType
+            return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+          })
+        )
+        expect(noteTypes.size).toBeGreaterThan(0)
+      })
     })
 
-    it('should respect stage-specific note types', () => {
-      const stage0Questions = createNoteValueQuestions(10, 0)
-      const stage1Questions = createNoteValueQuestions(10, 1)
-      
-      // Questions should have different note types based on stage
-      const stage0NoteTypes = new Set(
-        stage0Questions.map(q => {
-          const noteType = q.visualComponent?.noteType
-          return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+    describe('Stage 2', () => {
+      it('should generate requested number of questions', () => {
+        const questions = createNoteValueQuestions(5, 2)
+        validateQuestionCount(questions, 5)
+      })
+
+      it('should generate unique questions', () => {
+        const questions = createNoteValueQuestions(10, 2)
+        validateUniqueQuestions(questions)
+      })
+
+      it('should only use stage 2 note types', () => {
+        const questions = createNoteValueQuestions(10, 2)
+        questions.forEach(question => {
+          const noteType = question.visualComponent?.noteType
+          validateNoteTypeForStage(noteType, 2)
         })
-      )
-      const stage1NoteTypes = new Set(
-        stage1Questions.map(q => {
-          const noteType = q.visualComponent?.noteType
-          return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
-        })
-      )
-      
-      // Stages may have different note types available
-      expect(stage0NoteTypes.size).toBeGreaterThan(0)
-      expect(stage1NoteTypes.size).toBeGreaterThan(0)
+        const noteTypes = new Set(
+          questions.map(q => {
+            const noteType = q.visualComponent?.noteType
+            return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+          })
+        )
+        expect(noteTypes.size).toBeGreaterThan(0)
+      })
     })
   })
 })
-
