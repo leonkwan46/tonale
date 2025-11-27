@@ -23,8 +23,6 @@
     "jest.config.js",
     "android",
     "ios",
-    "functions",
-    "tests/**/*.ts"
-  ],
-  "types": ["jest"]
+    "functions"
+  ]
 }
