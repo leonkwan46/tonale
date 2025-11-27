@@ -65,7 +65,7 @@ export const lightTheme = {
       selected: '#0a5a7a',
       correct: '#2a8a3a',
       incorrect: '#b52a2a',
-      neutral: '#0a3a4a'
+      neutral: '#666666'
     }
     
   },
@@ -104,7 +104,7 @@ export const darkTheme = {
       selected: '#0a5a7a',
       correct: '#2a8a3a',
       incorrect: '#b52a2a',
-      neutral: '#0a3a4a'
+      neutral: '#333333'
     }
     
   },

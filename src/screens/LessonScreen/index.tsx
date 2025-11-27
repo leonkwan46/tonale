@@ -1,13 +1,14 @@
-import { generateLessonQuestions } from '@/data/questionGeneration/generateLessonQuestions'
-import { getLessonById } from '@/data/theoryData'
-import { getNextLockedStage } from '@/data/theoryData/stages/stageDataHelpers'
-import { updateFinalTestProgress, updateLessonProgress } from '@/data/theoryData/theoryDataHelpers'
-import { Question } from '@/data/theoryData/types'
+import { generateLessonQuestions } from '@/theory/generate'
+import { getLessonById } from '@/theory/curriculum'
+import { getNextLockedStage } from '@/theory/curriculum/stages/helpers'
+import { updateFinalTestProgress, updateLessonProgress } from '@/theory/curriculum/helpers'
+import { Question } from '@/theory/curriculum/types'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
+import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { LessonHeader } from './components'
 import { LessonScreenBody } from './LessonScreenBody'
 
@@ -15,6 +16,7 @@ export function LessonScreen() {
   const router = useRouter()
   const { lessonId } = useLocalSearchParams<{ lessonId: string }>()
   const lesson = lessonId ? getLessonById(lessonId) : null
+  
   const [questions, setQuestions] = useState<Question[]>([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [wrongAnswersCount, setWrongAnswersCount] = useState(0)
@@ -22,125 +24,107 @@ export function LessonScreen() {
   const [showFailureModal, setShowFailureModal] = useState(false)
   const [earnedStars, setEarnedStars] = useState(0)
   
-  // Generate questions when lesson loads
   useEffect(() => {
-    if (lessonId) {
-      const currentLesson = getLessonById(lessonId)
-      if (currentLesson) {
-        // Use auto-generated questions if available, otherwise use hardcoded questions
-        if (currentLesson.exerciseConfig) {
-          const generatedQuestions = generateLessonQuestions(currentLesson.exerciseConfig)
-          setQuestions(generatedQuestions)
-        } else if (currentLesson.questions) {
-          setQuestions(currentLesson.questions)
-        }
-      }
-    }
+    if (!lessonId) return
+    
+    const currentLesson = getLessonById(lessonId)
+    if (!currentLesson) return
+    
+    const newQuestions = currentLesson.exerciseConfig 
+      ? generateLessonQuestions(currentLesson.exerciseConfig)
+      : currentLesson.questions || []
+    
+    setQuestions(newQuestions)
+    setCurrentQuestionIndex(0)
+    setWrongAnswersCount(0)
   }, [lessonId])
-
-  // Check if test failed (3 wrong answers in final test)
-  useEffect(() => {
-    if (lesson?.isFinalTest && wrongAnswersCount >= 3) {
-      setShowFailureModal(true)
-    }
-  }, [wrongAnswersCount, lesson?.isFinalTest])
   
-  if (!lesson || questions.length === 0) return null
-
-  const handleBackPress = () => {
-    router.back()
-  }
-
-  const handleAnswerSubmit = (isCorrect: boolean) => {
-    if (!isCorrect) {
-      setWrongAnswersCount(prev => prev + 1)
-    }
-  }
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1)
-    }
-  }
-
-  const handleLessonComplete = () => {
-    if (lesson?.isFinalTest) {
-      // For final tests, check if passed (less than 3 wrong answers)
-      const isPassed = wrongAnswersCount < 3
-      
-      // Update final test progress
-      if (lessonId) {
-        updateFinalTestProgress(lessonId, isPassed)
-      }
-      
-      if (isPassed) {
-        // Check if there's a next stage to unlock
-        const nextStage = getNextLockedStage()
-        if (nextStage) {
-          // Navigate to the theory screen to show the newly unlocked stage
-          router.push('/(tabs)/theory')
-        } else {
-          // Navigate back to theory screen
-          router.back()
-        }
-      } else {
-        // Navigate back (user was already sent back when they hit 3 wrong answers)
-        router.back()
-      }
-    } else {
-      // Regular lesson completion with stars
-      const stars = calculateStars(questions.length, wrongAnswersCount)
-      setEarnedStars(stars)
-      setShowStarModal(true)
-      
-      // Update progress in background
-      if (lessonId) {
-        updateLessonProgress(lessonId, stars)
-      }
-    }
-  }
-
-  const handleModalContinue = () => {
-    setShowStarModal(false)
-    router.back()
-  }
-
-  const handleModalRetry = () => {
-    setShowStarModal(false)
-    // Reset lesson state
+  const restartLesson = useCallback(() => {
+    if (!lesson) return
+    const newQuestions = lesson.exerciseConfig 
+      ? generateLessonQuestions(lesson.exerciseConfig)
+      : lesson.questions || []
     setCurrentQuestionIndex(0)
     setWrongAnswersCount(0)
     setEarnedStars(0)
-    
-    // Regenerate questions for fresh lesson
-    if (lesson) {
-      if (lesson.exerciseConfig) {
-        const generatedQuestions = generateLessonQuestions(lesson.exerciseConfig)
-        setQuestions(generatedQuestions)
-      } else if (lesson.questions) {
-        setQuestions(lesson.questions)
+    setQuestions(newQuestions)
+  }, [lesson])
+
+  const onAnswerSubmit = useCallback((isCorrect: boolean) => {
+    if (!isCorrect) {
+      const newWrongCount = wrongAnswersCount + 1
+      setWrongAnswersCount(newWrongCount)
+      
+      if (lesson?.isFinalTest && newWrongCount >= 3) {
+        setShowFailureModal(true)
       }
     }
+  }, [wrongAnswersCount, lesson?.isFinalTest])
+
+  const goToNextQuestion = useCallback(() => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1)
+    }
+  }, [currentQuestionIndex, questions.length])
+
+  const completeFinalTest = useCallback(() => {
+    const isPassed = wrongAnswersCount < 3
+    if (lessonId) updateFinalTestProgress(lessonId, isPassed)
+    if (!isPassed) {
+      router.back()
+      return
+    }
+    
+    playLessonFinishedSound()
+    const hasUnlockedNewStage = getNextLockedStage()
+    if (hasUnlockedNewStage) {
+      router.push('/(tabs)/theory')
+    } else {
+      router.back()
+    }
+  }, [wrongAnswersCount, lessonId, router])
+  
+  const completeRegularLesson = useCallback(() => {
+    const stars = calculateStars(questions.length, wrongAnswersCount)
+    setEarnedStars(stars)
+    setShowStarModal(true)
+    
+    const soundToPlay = stars === 0 ? playLessonFailedSound : playLessonFinishedSound
+    soundToPlay()
+    
+    if (lessonId) updateLessonProgress(lessonId, stars)
+  }, [questions.length, wrongAnswersCount, lessonId])
+
+  const completeLesson = useCallback(() => {
+    if (lesson?.isFinalTest) {
+      completeFinalTest()
+    } else {
+      completeRegularLesson()
+    }
+  }, [lesson?.isFinalTest, completeFinalTest, completeRegularLesson])
+  
+  if (!lesson || questions.length === 0) return null
+
+  const navigateBack = () => {
+    router.back()
   }
 
-  const handleFailureModalRetry = () => {
+  const closeModalAndExit = () => {
+    setShowStarModal(false)
+    router.back()
+  }
+
+  const closeModalAndRetry = () => {
+    setShowStarModal(false)
+    restartLesson()
+  }
+
+  const closeFailureModalAndRetry = () => {
     setShowFailureModal(false)
-    // Reset lesson state
-    setCurrentQuestionIndex(0)
-    setWrongAnswersCount(0)
-    
-    // Regenerate questions for fresh lesson
-    if (lesson) {
-      if (lesson.exerciseConfig) {
-        const generatedQuestions = generateLessonQuestions(lesson.exerciseConfig)
-        setQuestions(generatedQuestions)
-      } else if (lesson.questions) {
-        setQuestions(lesson.questions)
-      }
-    }
+    restartLesson()
   }
 
-  const handleFailureModalExit = () => {
+  const closeFailureModalAndExit = () => {
     setShowFailureModal(false)
     router.back()
   }
@@ -152,35 +136,33 @@ export function LessonScreen() {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
         wrongAnswersCount={wrongAnswersCount}
-        onBackPress={handleBackPress}
+        onBackPress={navigateBack}
       />
       
       <LessonScreenBody
         questions={questions}
         currentQuestionIndex={currentQuestionIndex}
-        onAnswerSubmit={handleAnswerSubmit}
-        onNextQuestion={handleNextQuestion}
-        onLessonComplete={handleLessonComplete}
+        onAnswerSubmit={onAnswerSubmit}
+        onNextQuestion={goToNextQuestion}
+        onLessonComplete={completeLesson}
         wrongAnswersCount={wrongAnswersCount}
         isFinalTest={lesson?.isFinalTest || false}
       />
       
-      {/* Star Rating Modal */}
       {showStarModal && (
         <StarRatingModal
           stars={earnedStars}
           totalQuestions={questions.length}
           wrongAnswers={wrongAnswersCount}
-          onContinue={handleModalContinue}
-          onRetry={handleModalRetry}
+          onContinue={closeModalAndExit}
+          onRetry={closeModalAndRetry}
         />
       )}
       
-      {/* Final Test Failure Modal */}
       {showFailureModal && (
         <FinalTestFailureModal
-          onRetry={handleFailureModalRetry}
-          onExit={handleFailureModalExit}
+          onRetry={closeFailureModalAndRetry}
+          onExit={closeFailureModalAndExit}
         />
       )}
     </ScreenContainer>

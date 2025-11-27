@@ -31,5 +31,16 @@ jobs:
     - name: Run linting
       run: npm run lint
       
-    - name: Type check
+    - name: Type check main project
+      run: npx tsc --noEmit
+      
+    - name: Run unit tests
+      run: npm test
+      
+    - name: Install functions dependencies
+      working-directory: ./functions
+      run: npm ci
+      
+    - name: Type check functions
+      working-directory: ./functions
       run: npx tsc --noEmit

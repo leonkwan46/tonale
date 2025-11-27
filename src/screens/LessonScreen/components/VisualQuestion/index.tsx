@@ -1,94 +1,26 @@
-import { getDisplayName, getSMuFLSymbol, isTextTerm as isTextTermHelper, STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/data/stageSyllabusConfigs/musicalTerms'
-import { VisualComponent } from '@/data/theoryData/types'
+import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
+import { VisualComponent } from '@/theory/curriculum/types'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import {
-  Crotchet,
-  CrotchetRest,
-  Minim,
-  MinimRest,
   MusicStaff,
+  NoteType,
   parseTimeSignature as parseTimeSignatureFromLibrary,
-  Quaver,
-  QuaverRest,
-  Semibreve,
-  SemibreveRest,
-  Semiquaver,
-  SemiquaverRest,
+  Tuplets,
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
 import { scale } from 'react-native-size-matters'
-import { SMuFLCard, SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
+import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
+import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
+import { generateTripletElements, renderNoteComponent } from './visualRenderHelper'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
-}
-
-// Helper function to render individual note/rest components
-const renderNoteComponent = (noteType: string | { type: string; dots?: number }) => {
-  // Handle dotted note/rest objects
-  if (typeof noteType === 'object' && noteType.type) {
-    const { type, dots = 0 } = noteType
-    switch (type) {
-      // Notes
-      case 'semibreve':
-        return <Semibreve centered={true} dots={dots} />
-      case 'minim':
-        return <Minim stem='up' centered={true} dots={dots} />
-      case 'crotchet':
-        return <Crotchet stem='up' centered={true} dots={dots} />
-      case 'quaver':
-        return <Quaver stem='up' centered={true} dots={dots} />
-      case 'semiquaver':
-        return <Semiquaver stem='up' centered={true} dots={dots} />
-      // Rests
-      case 'semibreve-rest':
-        return <SemibreveRest centered={true} dots={dots} />
-      case 'minim-rest':
-        return <MinimRest centered={true} dots={dots} />
-      case 'crotchet-rest':
-        return <CrotchetRest centered={true} dots={dots} isOlderForm={false} />
-      case 'quaver-rest':
-        return <QuaverRest centered={true} dots={dots} />
-      case 'semiquaver-rest':
-        return <SemiquaverRest centered={true} dots={dots} />
-      default:
-        return <Crotchet stem='up' centered={true} dots={dots} />
-    }
-  }
-  
-  // Handle string note/rest types (legacy support)
-  switch (noteType) {
-    // Notes
-    case 'semibreve':
-      return <Semibreve centered={true} />
-    case 'minim':
-      return <Minim stem='up' centered={true} />
-    case 'crotchet':
-      return <Crotchet stem='up' centered={true} />
-    case 'quaver':
-      return <Quaver stem='up' centered={true} />
-    case 'semiquaver':
-      return <Semiquaver stem='up' centered={true} />
-    // Rests
-    case 'semibreve-rest':
-      return <SemibreveRest centered={true} />
-    case 'minim-rest':
-      return <MinimRest centered={true} />
-    case 'crotchet-rest':
-      return <CrotchetRest centered={true} isOlderForm={false} />
-    case 'quaver-rest':
-      return <QuaverRest centered={true} />
-    case 'semiquaver-rest':
-      return <SemiquaverRest centered={true} />
-    default:
-      return <Crotchet stem='up' centered={true} />
-  }
 }
 
 export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
@@ -100,60 +32,87 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
     visualComponent.elements.some(element => element.pitch) &&
-    visualComponent.type !== 'smuflSymbol'
+    visualComponent.type !== 'termAndSign'
 
   // Check if this should render individual notes (single element, no clef)
   const shouldRenderIndividualNotes = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
-    visualComponent.type !== 'smuflSymbol' && 
+    visualComponent.type !== 'termAndSign' && 
     visualComponent.elements?.length === 1 && 
     !visualComponent.clef
 
   // Check if this should render music staff (default case)
   const shouldRenderMusicStaff = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
-    visualComponent.type !== 'smuflSymbol' && 
+    visualComponent.type !== 'termAndSign' && 
     !(visualComponent.elements?.length === 1 && !visualComponent.clef)
 
   // SMuFL symbol helpers
-  const symbolText = visualComponent.symbolType ? getSMuFLSymbol(visualComponent.symbolType) : ''
-  const isTextTerm = visualComponent.symbolType ? isTextTermHelper(visualComponent.symbolType) : false
-  const displayText = visualComponent.symbolType ? getDisplayName(visualComponent.symbolType) : ''
+  const renderAsSymbol = visualComponent.renderAsSymbol !== false
+
+  const symbolText = renderAsSymbol && visualComponent.symbolType ? 
+    GRADE_ONE_DYNAMIC_SYMBOLS[visualComponent.symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS] ||
+    GRADE_ONE_ARTICULATION_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS] ||
+    GRADE_ONE_ACCIDENTAL_SIGNS[visualComponent.symbolType as keyof typeof GRADE_ONE_ACCIDENTAL_SIGNS] || 
+    '' : ''
+  const isTextTerm = visualComponent.symbolType ? 
+    !renderAsSymbol ||
+    (!(visualComponent.symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) && 
+    !(visualComponent.symbolType in GRADE_ONE_ARTICULATION_SIGNS) &&
+    !(visualComponent.symbolType in GRADE_ONE_ACCIDENTAL_SIGNS)) : false
+  const displayText = visualComponent.symbolType ? TERM_DISPLAY_NAMES[visualComponent.symbolType as keyof typeof TERM_DISPLAY_NAMES] || visualComponent.symbolType : ''
+  
+  const isWideDynamic = visualComponent.symbolType === 'crescendo' || 
+                        visualComponent.symbolType === 'decrescendo' || 
+                        visualComponent.symbolType === 'diminuendo' ||
+                        visualComponent.symbolType === 'cresc.' || 
+                        visualComponent.symbolType === 'decresc.' || 
+                        visualComponent.symbolType === 'dim.'
 
   // TTS helpers
-  const isItalianMusicalTerm = visualComponent.symbolType && 
-    (STAGE_ONE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
-     STAGE_TWO_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
-     STAGE_THREE_ITALIAN_MUSICAL_TERMS[visualComponent.symbolType as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS])
-  
+  const shouldShowTTSButton =
+    visualComponent.symbolType &&
+    visualComponent.enableTTS !== false &&
+    canPronounceTerm(visualComponent.symbolType)
+
   const handleTTS = () => {
-    if (visualComponent.symbolType && canPronounceTerm(visualComponent.symbolType)) {
+    if (visualComponent.symbolType && visualComponent.enableTTS !== false && canPronounceTerm(visualComponent.symbolType)) {
       pronounceTerm(visualComponent.symbolType)
     }
   }
 
   return (
-    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'smuflSymbol'} needsExtraSpacing={needsExtraHeight || false}>
+    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'termAndSign'} needsExtraSpacing={needsExtraHeight || false}>
       {visualComponent.type === 'timeSignature' && (
         <DisplayCard extraHeight={false}>
           <TimeSignature timeSignature={visualComponent.timeSignatureValue || ''} />
         </DisplayCard>
       )}
       
-      {visualComponent.type === 'noteValue' && (
+      {visualComponent.type === 'noteValue' && visualComponent.noteType && (
         <DisplayCard extraHeight={false}>
-          {renderNoteComponent(visualComponent.noteType || '')}
+          {renderNoteComponent(visualComponent.noteType)}
         </DisplayCard>
       )}
       
-      {visualComponent.type === 'smuflSymbol' && visualComponent.symbolType && (
+      {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
+        <DisplayCard extraHeight={false}>
+          <Tuplets
+            noteType={visualComponent.tupletConfig.noteType as NoteType}
+            numberOfNotes={visualComponent.tupletConfig.numberOfNotes}
+            elements={generateTripletElements(visualComponent.tupletConfig.noteType as NoteType, visualComponent.tupletConfig.numberOfNotes)}
+          />
+        </DisplayCard>
+      )}
+      
+      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && (
         <SMuFLCard isTablet={isTablet} isTextTerm={isTextTerm}>
           <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTerm}>
-            <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm}>
+            <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTerm} isWideDynamic={isWideDynamic}>
               {isTextTerm ? displayText : symbolText}
             </SMuFLSymbolText>
           </SMuFLSymbolContainer>
-          {isItalianMusicalTerm && (
+          {shouldShowTTSButton && (
             <TTSButton onPress={handleTTS}>
               <Ionicons 
                 name="volume-high" 
@@ -165,23 +124,27 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
         </SMuFLCard>
       )}
       
-      {shouldRenderIndividualNotes && (
+      {shouldRenderIndividualNotes && visualComponent.elements?.[0]?.type && (
         <DisplayCard extraHeight={false}>
-          {renderNoteComponent(visualComponent.elements?.[0]?.type || '')}
+          {renderNoteComponent(visualComponent.elements[0].type)}
         </DisplayCard>
       )}
       
       {shouldRenderMusicStaff && (
         <DisplayCard extraHeight={needsExtraHeight}>
           <MusicStaff
-            size={'xs'}
+            size={visualComponent.size}
             clef={visualComponent.clef}
             timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
             keyName={visualComponent.keyName}
-            elements={(visualComponent.elements || []).map((element: MusicElementData) => [element])}
+            elements={visualComponent.isChord 
+              ? [visualComponent.elements || []] 
+              : (visualComponent.elements || []).map((element: MusicElementData) => [element])}
+            showStaff={visualComponent.showStaff}
           />
         </DisplayCard>
       )}
     </VisualQuestionContainer>
   )
 }
+

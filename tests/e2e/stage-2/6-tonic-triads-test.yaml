@@ -1,0 +1,66 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- runFlow:
+    file: ../helpers/loginAccount.yaml
+- tapOn:
+    id: "tab-theory"
+
+- scrollUntilVisible:
+    element:
+      id: "lesson-title-stage-2-lesson-5" # Using lesson 5 as it's not able to scroll with lesson 6
+    direction: UP
+- tapOn:
+    id: "lesson-title-stage-2-lesson-6"
+
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/10"
+- assertVisible:
+    id: "correct-answer-.*"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "2/10"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "3/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "4/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "5/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "6/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "7/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "8/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "9/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "10/10"
+- tapOn:
+    id: "correct-choice-.*"
+
+- assertVisible: "Continue"
+- assertVisible: "Retry"
+- tapOn: "Continue"
+
+- assertVisible:
+    id: "lesson-title-stage-2-lesson-6"
+- tapOn:
+    id: "lesson-title-stage-2-lesson-6"
+- tapOn:
+    id: "back-button"
+

@@ -4,7 +4,7 @@ import React from 'react'
 import { useColorScheme } from 'react-native'
 
 import { Colors } from '@/constants/Colors'
-import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/hooks'
 import { CustomTabBar } from '@/sharedComponents'
 
 const ErrorContainer = styled.View`
@@ -31,7 +31,7 @@ const ErrorSubtext = styled.Text`
 
 export default function TabLayout() {
   const colorScheme = useColorScheme()
-  const { user, loading } = useAuth()
+  const { user, loading } = useUser()
   
   // Show loading state
   if (loading) {
