@@ -1,7 +1,7 @@
 # Tonale
-<img src="https://github.com/user-attachments/assets/adf7b1bd-b176-4f02-8b03-eca0bec0aba1" style="width: 33%; height: auto;" />
-<img src="https://github.com/user-attachments/assets/e3136e28-3e0d-4ed4-9acb-c3edf6181be7" style="width: 33%; height: auto;" />
-<img src="https://github.com/user-attachments/assets/fb2805de-08c0-42ad-9443-c48d219e7489" style="width: 33%; height: auto;" />
+<img src="https://github.com/user-attachments/assets/adf7b1bd-b176-4f02-8b03-eca0bec0aba1" style="width: 30%; height: auto;" />
+<img src="https://github.com/user-attachments/assets/e3136e28-3e0d-4ed4-9acb-c3edf6181be7" style="width: 30%; height: auto;" />
+<img src="https://github.com/user-attachments/assets/fb2805de-08c0-42ad-9443-c48d219e7489" style="width: 30%; height: auto;" />
 
 A React Native music theory learning application built with Expo.
 
