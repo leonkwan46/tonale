@@ -48,3 +48,7 @@ GoogleService-Info.plist
 # Shared types should only contain .ts files
 shared/**/*.js
 shared/**/*.js.map
+
+# Test coverage
+coverage/
+*.lcov
