@@ -23,7 +23,7 @@ interface AnswerTypeDistribution {
 }
 
 const DEFAULT_DISTRIBUTION: AnswerTypeDistribution = {
-  keyPress: 100,
+  keyPress: 0,
   multipleChoice: 100
 }
 

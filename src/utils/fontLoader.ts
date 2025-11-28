@@ -11,7 +11,7 @@ export const loadSMuFLFonts = async (): Promise<boolean> => {
     await Font.loadAsync(fontMap)
     
     return true
-  } catch (error) {
+  } catch {
     console.warn('⚠️ SMuFL fonts not found, using fallback Unicode display')
     return false
   }

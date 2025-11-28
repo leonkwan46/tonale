@@ -49,10 +49,10 @@ export function usePianoAudio() {
     stopNote: (noteName: string) => {
       try {
         manager.stopNote(noteName)
-      } catch (error) {
+      } catch {
         // Gracefully handle if audio is not available
       }
     },
-    isReady,
+    isReady
   }
 }
