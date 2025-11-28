@@ -137,6 +137,12 @@ export const updateLessonProgress = async (
   wrongAnswersCount: number = 0
 ): Promise<void> => {
   const validStars = Math.max(0, Math.min(3, stars))
+  const previousStars = userProgressData[lessonId]?.stars ?? -1
+  const shouldUpdate = previousStars === -1 || validStars > previousStars
+  
+  if (!shouldUpdate) {
+    return
+  }
   
   userProgressData[lessonId] = { 
     isLocked: false, 
@@ -155,12 +161,12 @@ export const updateLessonProgress = async (
       stars: validStars,
       wrongAnswersCount
     })
-    
-    if (currentUserId) {
-      await saveProgressCache(currentUserId, userProgressData)
-    }
   } catch (error) {
     console.error('Failed to sync progress to backend:', error)
+  }
+  
+  if (currentUserId) {
+    await saveProgressCache(currentUserId, userProgressData)
   }
 }
 export const updateFinalTestProgress = async (
@@ -168,6 +174,13 @@ export const updateFinalTestProgress = async (
   isPassed: boolean,
   wrongAnswersCount: number = 0
 ): Promise<void> => {
+  const previousIsPassed = userProgressData[lessonId]?.isPassed
+  const shouldUpdate = previousIsPassed === undefined || previousIsPassed !== isPassed
+  
+  if (!shouldUpdate) {
+    return
+  }
+  
   userProgressData[lessonId] = { 
     isLocked: false, 
     isPassed: isPassed 
@@ -185,12 +198,12 @@ export const updateFinalTestProgress = async (
       isPassed,
       wrongAnswersCount
     })
-    
-    if (currentUserId) {
-      await saveProgressCache(currentUserId, userProgressData)
-    }
   } catch (error) {
     console.error('Failed to sync final test progress to backend:', error)
+  }
+  
+  if (currentUserId) {
+    await saveProgressCache(currentUserId, userProgressData)
   }
 }
 const updateLessonDataInStages = async (lessonId: string, progressData: { stars?: number; isPassed?: boolean }): Promise<void> => {

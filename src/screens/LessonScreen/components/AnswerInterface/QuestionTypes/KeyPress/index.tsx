@@ -1,110 +1,65 @@
-import * as React from 'react'
+import { PianoKeyboard } from '@/sharedComponents/PianoKeyboard'
+import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { styles } from './KeyPress.styles'
 
 interface KeyPressProps {
-  targetNote?: string // The note the user should press
-  onKeyPress?: (key: string) => void // Callback when a key is pressed
-  correctKey?: string // The correct key for validation
+  onKeyPress?: (key: string) => void
+  correctKey?: string
 }
 
+const ALL_PIANO_KEYS: string[] = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C#', 'D#', 'F#', 'G#', 'A#']
+
 export const KeyPress: React.FC<KeyPressProps> = ({ 
-  targetNote = 'C', 
   onKeyPress,
   correctKey 
 }) => {
+  const [pressedKey, setPressedKey] = useState<string | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
 
-  // Piano keys layout (white keys)
-  const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-  
-  // Piano keys layout (black keys)
-  const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#']
-
-  // Handle key press
-  const handleKeyPress = (key: string) => {
-    setSelectedKey(key)
-    onKeyPress?.(key)
-    
-    if (correctKey) {
-      setIsCorrect(key === correctKey)
-    }
+  const handleKeyPress = (noteName: string) => {
+    if (selectedKey !== null) return
+    setPressedKey(noteName)
   }
 
-  // Get key style
-  const getKeyStyle = (key: string) => {
-    const isSelected = selectedKey === key
-    const isCorrectKey = correctKey === key
-    
-    if (isSelected && isCorrect !== null) {
-      return isCorrect ? styles.correctKey : styles.incorrectKey
-    }
-    
-    if (isSelected) {
-      return styles.selectedKey
-    }
-    
-    if (isCorrectKey && isCorrect !== null) {
-      return styles.correctKey
-    }
-    
-    return key.includes('#') ? styles.blackKey : styles.whiteKey
+  const handleKeyRelease = (noteName: string) => {
+    if (selectedKey !== null) return
+    setSelectedKey(noteName)
+    setPressedKey(null)
+    onKeyPress?.(noteName)
   }
+
+  const handleKeyCancel = () => {
+    if (selectedKey !== null) return
+    setPressedKey(null)
+  }
+
+  const hasFeedback = selectedKey !== null && correctKey !== undefined
+  const isCorrect = hasFeedback && isEnharmonicEquivalent(selectedKey!, correctKey!)
+  const disabledKeys = selectedKey !== null ? ALL_PIANO_KEYS : []
 
   return (
     <View style={styles.container}>
-      {/* Question display */}
-      <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>
-          Press the key for: <Text style={styles.noteText}>{targetNote}</Text>
-        </Text>
-      </View>
+      <PianoKeyboard
+        onKeyPress={handleKeyPress}
+        onKeyRelease={handleKeyRelease}
+        onKeyCancel={handleKeyCancel}
+        selectedKey={hasFeedback ? selectedKey : pressedKey}
+        correctKey={correctKey}
+        showFeedback={hasFeedback}
+        playSounds={false}
+        disabledKeys={disabledKeys}
+      />
 
-      {/* Piano keyboard */}
-      <View style={styles.keyboardContainer}>
-        <View style={styles.keysRow}>
-          {/* White keys */}
-          {whiteKeys.map((key) => (
-            <TouchableOpacity
-              key={key}
-              style={[styles.key, getKeyStyle(key)]}
-              onPress={() => handleKeyPress(key)}
-            >
-              <Text style={[
-                styles.keyText, 
-                key.includes('#') ? styles.blackKeyText : styles.whiteKeyText
-              ]}>
-                {key}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        
-        {/* Black keys row */}
-        <View style={styles.blackKeysRow}>
-          {blackKeys.map((key) => (
-            <TouchableOpacity
-              key={key}
-              style={[styles.key, getKeyStyle(key)]}
-              onPress={() => handleKeyPress(key)}
-            >
-              <Text style={[styles.keyText, styles.blackKeyText]}>
-                {key}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-
-      {/* Feedback */}
-      {isCorrect !== null && (
+      {hasFeedback && (
         <View style={styles.feedbackContainer}>
-          <Text style={[
+          <Text
+            style={[
             styles.feedbackText,
             isCorrect ? styles.correctFeedback : styles.incorrectFeedback
-          ]}>
+            ]}
+          >
             {isCorrect ? '✅ Correct!' : '❌ Try again'}
           </Text>
         </View>
@@ -112,4 +67,3 @@ export const KeyPress: React.FC<KeyPressProps> = ({
     </View>
   )
 }
-

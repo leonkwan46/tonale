@@ -32,5 +32,6 @@ export const Description = styled.Text(({ theme }) => ({
   textAlign: 'center' as const,
   opacity: 0.7,
   lineHeight: theme.typography.lg * 1.5,
-  maxWidth: 320
+  maxWidth: 320,
+  marginBottom: theme.spacing.xl
 }))

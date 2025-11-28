@@ -26,6 +26,4 @@ if (__DEV__) {
   connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true })
   connectFunctionsEmulator(functions, host, 5001)
   connectFirestoreEmulator(db, host, 8080)
-  
-  console.log(`🔧 Connected to Firebase emulators at ${host}`)
 }
