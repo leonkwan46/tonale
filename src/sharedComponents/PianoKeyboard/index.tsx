@@ -1,4 +1,3 @@
-import { usePianoAudio } from '@/hooks/usePianoAudio'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { useRef, useState } from 'react'
 import {
@@ -21,7 +20,6 @@ interface PianoKeyboardProps {
   correctKey?: string
   disabledKeys?: string[]
   showFeedback?: boolean
-  playSounds?: boolean
 }
 
 const WHITE_KEYS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const
@@ -35,10 +33,8 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   selectedKey = null,
   correctKey,
   disabledKeys = [],
-  showFeedback = false,
-  playSounds = true
+  showFeedback = false
 }) => {
-  const { playNote, stopNote } = usePianoAudio()
   const pressedKeyRef = useRef<string | null>(null)
   const cancelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [internalPressedKey, setInternalPressedKey] = useState<string | null>(null)
@@ -56,9 +52,6 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
     clearCancelTimeout()
 
     if (pressedKeyRef.current && pressedKeyRef.current !== noteName) {
-      if (playSounds) {
-        stopNote(pressedKeyRef.current)
-      }
       setInternalPressedKey(null)
       onKeyCancel?.()
     }
@@ -66,19 +59,11 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
     pressedKeyRef.current = noteName
     setInternalPressedKey(noteName)
 
-    if (playSounds) {
-      playNote(noteName)
-    }
-
     onKeyPress?.(noteName)
   }
 
   const handleKeyPressOut = (noteName: string) => {
     if (disabledKeys.includes(noteName)) return
-
-    if (playSounds) {
-      stopNote(noteName)
-    }
 
     if (pressedKeyRef.current === noteName) {
       cancelTimeoutRef.current = setTimeout(() => {

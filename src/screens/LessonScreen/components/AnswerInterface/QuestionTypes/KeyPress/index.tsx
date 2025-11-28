@@ -48,7 +48,6 @@ export const KeyPress: React.FC<KeyPressProps> = ({
         selectedKey={hasFeedback ? selectedKey : pressedKey}
         correctKey={correctKey}
         showFeedback={hasFeedback}
-        playSounds={false}
         disabledKeys={disabledKeys}
       />
 
