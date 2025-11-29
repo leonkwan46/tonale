@@ -1,5 +1,6 @@
-import { Question } from '@/theory/curriculum/types'
 import { useDevice } from '@/hooks'
+import { Question } from '@/theory/curriculum/types'
+import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
@@ -86,6 +87,24 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
     onAnswerSubmit(correct)
   }
 
+  const handleKeyPress = (key: string) => {
+    if (selectedAnswer !== null) return // Already answered
+    
+    setSelectedAnswer(key)
+    const correct = isEnharmonicEquivalent(key, questionData.correctAnswer)
+    setIsCorrect(correct)
+    setShowResult(true)
+    
+    // Play success sound immediately when answer is correct
+    if (correct) {
+      playSuccessSound()
+    } else {
+      playErrorSound()
+    }
+    
+    // Call parent callback
+    onAnswerSubmit(correct)
+  }
 
   const renderAnswerComponent = () => {
     switch (questionType) {
@@ -117,7 +136,13 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
           />
         )
       case QUESTION_TYPE.KEY_PRESS:
-        return <KeyPress />
+        return (
+          <KeyPress
+            key={questionData.id}
+            correctKey={questionData.correctAnswer}
+            onKeyPress={handleKeyPress}
+          />
+        )
       default:
         return <Text>Unknown question type</Text>
     }

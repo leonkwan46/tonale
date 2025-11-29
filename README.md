@@ -97,7 +97,7 @@ graph TB
 ```typescript
 import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
 
-// Render a treble clef staff with a C major scale
+// Render a treble clef staff with few crotchet notes
 <MusicStaff
   clef="treble"
   timeSignature={{ numerator: 4, denominator: 4 }}

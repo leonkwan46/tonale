@@ -1,5 +1,4 @@
 import { ScreenContainer } from '@/sharedComponents'
-import * as React from 'react'
 import { useEffect } from 'react'
 import { loadSMuFLFonts } from '../../utils/fontLoader'
 import { Content, Description, Subtitle, Title } from './HomeScreen.styles'

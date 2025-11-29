@@ -48,7 +48,6 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
       const minTimeReached = elapsedTime >= MIN_SPLASH_TIME
       
       if (!authLoading && minTimeReached) {
-        console.log(`🚀 Splash completion: ${elapsedTime}ms (Auth ready)`)
         startExitAnimation()
       } else {
         // Check again in 100ms
