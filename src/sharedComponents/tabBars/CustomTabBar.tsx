@@ -8,6 +8,7 @@ import { scale, verticalScale } from 'react-native-size-matters'
 
 import { Colors } from '@/constants/Colors'
 import { useDevice } from '@/hooks'
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 type IoniconsName = keyof typeof Ionicons.glyphMap
 
@@ -71,11 +72,11 @@ const TabLabel = styled.Text<{
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ focused, colorScheme, isTablet, config }) => ({
   fontSize: isTablet ? config.fontSize : scale(config.fontSize),
-  fontWeight: '500',
   color: focused 
     ? Colors[colorScheme as keyof typeof Colors].tint 
     : Colors[colorScheme as keyof typeof Colors].tabIconDefault,
-  marginTop: 4
+  marginTop: 4,
+  fontFamily: getSourGummyFontFamily('500')
 }))
 
 // Fallback functions for when options don't provide values

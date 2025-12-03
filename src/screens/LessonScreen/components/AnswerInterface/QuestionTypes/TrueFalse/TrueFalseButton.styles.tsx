@@ -1,6 +1,8 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 type ButtonState = 'default' | 'selected' | 'correct' | 'incorrect' | 'neutral'
 type TrueFalseChoice = 'True' | 'False'
 
@@ -101,9 +103,9 @@ export const NodeContentContainer = styled.View<{ buttonState: ButtonState, isTa
 export const ChoiceText = styled.Text<{ buttonState: ButtonState, isTablet: boolean }>(({ theme, buttonState, isTablet }) => {
   return {
     fontSize: ROW_TEXT_SIZE(isTablet),
-    fontWeight: '600',
     color: theme.colors.text,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: getSourGummyFontFamily('600')
   }
 })
 

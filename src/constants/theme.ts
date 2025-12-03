@@ -1,3 +1,4 @@
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import { Colors } from './Colors'
 
 // Shared constants that are theme-independent
@@ -18,7 +19,8 @@ export const sharedConstants = {
     '2xl': 28,
     '3xl': 32,
     '4xl': 40,
-    '5xl': 52
+    '5xl': 52,
+    fontFamily: 'SourGummy-Regular'
   },
   fontWeight: {
     normal: '400' as const,
@@ -130,19 +132,19 @@ export const navigationLightTheme = {
   },
   fonts: {
     regular: {
-      fontFamily: 'System',
+      fontFamily: getSourGummyFontFamily('400'),
       fontWeight: '400' as const
     },
     medium: {
-      fontFamily: 'System',
+      fontFamily: getSourGummyFontFamily('500'),
       fontWeight: '500' as const
     },
     bold: {
-      fontFamily: 'System',
+      fontFamily: getSourGummyFontFamily('700'),
       fontWeight: 'bold' as const
     },
     heavy: {
-      fontFamily: 'System',
+      fontFamily: getSourGummyFontFamily('700'),
       fontWeight: '700' as const
     }
   }

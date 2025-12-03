@@ -3,6 +3,8 @@ import { Platform, ScrollView, TouchableOpacity } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 // Common font weight utilities
 export const fontWeights = {
   bold: Platform.select({ ios: '700', android: 'bold' }),
@@ -66,10 +68,10 @@ export const LogoInner = styled.View<{ backgroundColor: string }>`
 
 export const AppTitle = styled.Text<{ color: string }>`
   font-size: 28px;
-  font-weight: ${fontWeights.bold};
   margin-bottom: 8px;
   text-align: center;
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('bold')}";
 `
 
 export const Subtitle = styled.Text<{ color: string }>`
@@ -77,6 +79,7 @@ export const Subtitle = styled.Text<{ color: string }>`
   opacity: 0.7;
   text-align: center;
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 // Toggle section
@@ -101,8 +104,8 @@ export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean }>`
 
 export const ToggleText = styled.Text<{ color: string }>`
   font-size: 16px;
-  font-weight: ${fontWeights.semiBold};
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('600')}";
 `
 
 // Form section
@@ -125,6 +128,7 @@ export const ErrorText = styled.Text`
   color: #ff4757;
   margin-left: 8px;
   flex: 1;
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 // Input section
@@ -152,6 +156,7 @@ export const TextInputStyled = styled.TextInput<{ color: string }>`
   font-size: 16px;
   height: 100%;
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 export const EyeIcon = styled(TouchableOpacity)`
@@ -168,6 +173,7 @@ export const RequirementsText = styled.Text<{ color: string }>`
   opacity: 0.6;
   text-align: center;
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 // Buttons
@@ -190,8 +196,8 @@ export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number }>`
 export const PrimaryButtonText = styled.Text`
   color: #000;
   font-size: 16px;
-  font-weight: ${fontWeights.semiBold};
   margin-right: 8px;
+  font-family: "${getSourGummyFontFamily('600')}";
 `
 
 export const ButtonIcon = styled.View`
@@ -216,6 +222,7 @@ export const DividerText = styled.Text<{ color: string }>`
   font-size: 14px;
   opacity: 0.6;
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 // Secondary button
@@ -232,8 +239,8 @@ export const SecondaryButton = styled(TouchableOpacity)<{ borderColor: string; o
 
 export const SecondaryButtonText = styled.Text<{ color: string }>`
   font-size: 16px;
-  font-weight: ${fontWeights.medium};
   color: ${props => props.color};
+  font-family: "${getSourGummyFontFamily('500')}";
 `
 
 

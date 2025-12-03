@@ -10,6 +10,8 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 interface AppTextProps {
   appName: string
   tagline: string
@@ -95,21 +97,21 @@ const AppNameContainer = styled(Animated.View)``
 
 const AppNameText = styled.Text<{ colorScheme: ColorScheme }>`
   font-size: 36px;
-  font-weight: 700;
   text-align: center;
   margin-bottom: 12px;
   letter-spacing: -0.5px;
   color: ${props => Colors[props.colorScheme].text};
+  font-family: "${getSourGummyFontFamily('700')}";
 `
 
 const TaglineContainer = styled(Animated.View)``
 
 const TaglineText = styled.Text<{ colorScheme: ColorScheme }>`
   font-size: 16px;
-  font-weight: 400;
   text-align: center;
   margin-bottom: 40px;
   line-height: 22px;
   opacity: 0.8;
   color: ${props => Colors[props.colorScheme].icon};
+  font-family: "${getSourGummyFontFamily('400')}";
 `

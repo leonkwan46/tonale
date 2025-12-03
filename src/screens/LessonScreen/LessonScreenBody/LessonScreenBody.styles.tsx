@@ -1,6 +1,8 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 export const BodyContainer = styled.View(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.surface,
@@ -9,7 +11,7 @@ export const BodyContainer = styled.View(({ theme }) => ({
 
 export const QuestionText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
   fontSize: isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontWeight: theme.fontWeight.semibold,
   textAlign: 'center',
-  color: theme.colors.text
+  color: theme.colors.text,
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))

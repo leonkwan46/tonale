@@ -2,6 +2,8 @@ import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { scale } from 'react-native-size-matters'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 // Full width container for final test with dramatic styling
 export const FinalTestContainer = styled.View<{ isPressed: boolean, isLocked: boolean }>(({ theme, isPressed, isLocked }) => ({
   width: '100%',
@@ -72,25 +74,25 @@ export const FinalTestIconContainer = styled.View(({ theme }) => ({
 // Title styling for final test - more dramatic
 export const FinalTestTitle = styled.Text(({ theme }) => ({
   fontSize: scale(20),
-  fontWeight: '900',
   color: theme.colors.text,
   textAlign: 'center',
   letterSpacing: 1,
   textShadowColor: 'rgba(0,0,0,0.3)',
   textShadowOffset: { width: 1, height: 1 },
-  textShadowRadius: 2
+  textShadowRadius: 2,
+  fontFamily: getSourGummyFontFamily('900')
 }))
 
 // Description styling for final test - more prominent
 export const FinalTestDescription = styled.Text(({ theme }) => ({
   fontSize: scale(13),
-  fontWeight: '600',
   color: theme.colors.text,
   textAlign: 'center',
   marginTop: scale(3),
   textShadowColor: 'rgba(0,0,0,0.3)',
   textShadowOffset: { width: 1, height: 1 },
-  textShadowRadius: 1
+  textShadowRadius: 1,
+  fontFamily: getSourGummyFontFamily('600')
 }))
 
 // Content wrapper for text with better positioning

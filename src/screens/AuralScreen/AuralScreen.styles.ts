@@ -1,5 +1,7 @@
 import styled from '@emotion/native'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 export const Content = styled.View(({ theme }) => ({
   flex: 1,
   justifyContent: 'center',
@@ -9,28 +11,28 @@ export const Content = styled.View(({ theme }) => ({
 
 export const Title = styled.Text(({ theme }) => ({
   fontSize: theme.typography['4xl'],
-  fontWeight: theme.fontWeight.bold,
   color: theme.colors.text,
   marginBottom: theme.spacing.md,
   textAlign: 'center' as const,
-  letterSpacing: -0.5
+  letterSpacing: -0.5,
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 export const Subtitle = styled.Text(({ theme }) => ({
   fontSize: theme.typography.xl,
-  fontWeight: theme.fontWeight.medium,
   color: theme.colors.accent,
   marginBottom: theme.spacing.xl,
-  textAlign: 'center' as const
+  textAlign: 'center' as const,
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.medium)
 }))
 
 export const Description = styled.Text(({ theme }) => ({
   fontSize: theme.typography.lg,
-  fontWeight: theme.fontWeight.normal,
   color: theme.colors.text,
   textAlign: 'center' as const,
   opacity: 0.7,
   lineHeight: theme.typography.lg * 1.5,
-  maxWidth: 320
+  maxWidth: 320,
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
 }))
 
