@@ -7,16 +7,17 @@ interface CardButtonProps {
   isLocked?: boolean
   isPressed?: boolean
   stars?: number
+  isCompleted?: boolean
 }
 
-export const CardButton: React.FC<CardButtonProps> = ({ isLocked = false, isPressed = false, stars = 0 }) => {
+export const CardButton: React.FC<CardButtonProps> = ({ isLocked = false, isPressed = false, stars = 0, isCompleted = false }) => {
 
   const { isTablet } = useDevice()
 
   return (
     <NodeContainer isPressed={isPressed}>
-      <NodeDepth isLocked={isLocked} isTablet={isTablet} />
-      <NodeContentContainer isLocked={isLocked} isTablet={isTablet}>
+      <NodeDepth isLocked={isLocked} isTablet={isTablet} isCompleted={isCompleted} />
+      <NodeContentContainer isLocked={isLocked} isTablet={isTablet} isCompleted={isCompleted}>
         {isLocked ? <LockLogo /> : <BeamedQuaverLogo />}
         {isLocked ? null : (
           <StarContainer isTablet={isTablet}>

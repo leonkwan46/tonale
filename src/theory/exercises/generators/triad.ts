@@ -1,8 +1,8 @@
 import { NOTES, type ClefType, type Note } from '@leonkwan46/music-notation'
 import { Question, StageNumber } from '../../curriculum/types'
-import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../../utils/exercise'
-import { generateQuestionId, generateWrongChoices, shuffleArray } from '../../utils/question'
-import { addRegisterToChord, getChordsByStage } from '../../utils/triad'
+import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../utils/exercise'
+import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
+import { addRegisterToChord, getChordsByStage } from '../utils/triad'
 
 export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey?: string): Question => {
   const availableChords = getChordsByStage(stage)

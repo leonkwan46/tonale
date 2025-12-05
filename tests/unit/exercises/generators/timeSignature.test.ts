@@ -1,5 +1,5 @@
 import { createTimeSignatureQuestion, createTimeSignatureQuestions } from '@/theory/exercises/generators/timeSignature'
-import { getTimeSignatures } from '@/theory/utils/exercise'
+import { getTimeSignatures } from '@/theory/exercises/utils/exercise'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,

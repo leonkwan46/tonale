@@ -1,12 +1,12 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
-import { extractNotePrefix } from '../../../theory/utils/interval'
+import { extractNotePrefix } from '../utils/interval'
 import { getNewNotesForStage } from '../../curriculum/config/noteRange'
 import { Question, StageNumber } from '../../curriculum/types'
-import { generateQuestionsFromPool } from '../../utils/exercise'
+import { generateQuestionsFromPool } from '../utils/exercise'
 import {
   generateQuestionId,
   generateWrongChoices
-} from '../../utils/question'
+} from '../utils/question'
 
 interface Note {
   pitch: string

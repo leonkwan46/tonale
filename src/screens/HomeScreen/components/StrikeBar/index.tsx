@@ -1,0 +1,34 @@
+import type { User } from 'firebase/auth'
+import React from 'react'
+import { StrikeBarContainer } from './StrikeBar.styles'
+import { StrikeCard } from './StrikeCard'
+import { useStreak } from './useStreak'
+
+const DAYS_TO_DISPLAY = 5
+const CENTER_OFFSET = 2
+
+interface StrikeBarProps {
+  user: User | null
+}
+
+export const StrikeBar: React.FC<StrikeBarProps> = ({ user }) => {
+  const currentDay = useStreak(user)
+
+  const getDisplayDays = (): number[] => {
+    return Array.from({ length: DAYS_TO_DISPLAY }, (_, i) => currentDay - CENTER_OFFSET + i)
+  }
+
+  return (
+    <StrikeBarContainer>
+      {getDisplayDays().map((day, index) => (
+        <StrikeCard
+          key={`${day}-${index}`}
+          day={day}
+          currentDay={currentDay}
+          index={index}
+        />
+      ))}
+    </StrikeBarContainer>
+  )
+}
+

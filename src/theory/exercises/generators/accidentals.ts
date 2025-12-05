@@ -1,6 +1,6 @@
 import { ACCIDENTALS, type AccidentalType } from '@leonkwan46/music-notation'
-import { generateQuestionsFromPool, getAccidentals } from '../../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../../utils/question'
+import { generateQuestionsFromPool, getAccidentals } from '../utils/exercise'
+import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { Question, StageNumber } from '../../curriculum/types'
 
 const ACCIDENTAL_TO_SYMBOL: Partial<Record<AccidentalType, string>> = {

@@ -1,9 +1,9 @@
-import { generateQuestionsFromPool, getAllRestTypes } from '../../utils/exercise'
+import { generateQuestionsFromPool, getAllRestTypes } from '../utils/exercise'
 import {
   generateQuestionId,
   generateWrongChoices
-} from '../../utils/question'
-import { ensureFourChoicesForStage2, restTypeToString } from '../../utils/timeValue'
+} from '../utils/question'
+import { ensureFourChoicesForStage2, restTypeToString } from '../utils/timeValue'
 import { Question, StageNumber } from '../../curriculum/types'
 
 export const createRestValueQuestion = (

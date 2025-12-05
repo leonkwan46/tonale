@@ -8,23 +8,23 @@ export const NodeContainer = styled.View<{ isPressed: boolean }>(({ theme, isPre
 }))
 
 // The 3D depth/shadow element
-export const NodeDepth = styled.View<{ isLocked: boolean, isTablet: boolean }>(({ theme, isLocked, isTablet }) => ({
+export const NodeDepth = styled.View<{ isLocked: boolean, isTablet: boolean, isCompleted?: boolean }>(({ theme, isLocked, isTablet, isCompleted }) => ({
   position: 'absolute',
   top: scale(3),
   left: scale(3),
   height: isTablet ? scale(theme.components.cardButton.size * 0.8) : scale(theme.components.cardButton.size),
   width: isTablet ? scale(theme.components.cardButton.size * 0.8) : scale(theme.components.cardButton.size),
-  backgroundColor: isLocked ? '#0a3a4a' : '#156382',
+  backgroundColor: isCompleted ? '#2a8a3a' : (isLocked ? '#0a3a4a' : '#156382'),
   borderRadius: scale(15)
 }))
 
 // The main button element (with proper border radius)
-export const NodeContentContainer = styled.View<{ isLocked: boolean, isTablet: boolean }>(({ theme, isLocked, isTablet }) => ({
+export const NodeContentContainer = styled.View<{ isLocked: boolean, isTablet: boolean, isCompleted?: boolean }>(({ theme, isLocked, isTablet, isCompleted }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   gap: scale(10),
   padding: scale(10),
-  backgroundColor: isLocked ? theme.colors.lockedNode : theme.colors.primary,
+  backgroundColor: isCompleted ? theme.colors.success : (isLocked ? theme.colors.lockedNode : theme.colors.primary),
   borderRadius: scale(15), // Full border radius restored
   height: isTablet ? scale(theme.components.cardButton.size * 0.8) : scale(theme.components.cardButton.size),
   width: isTablet ? scale(theme.components.cardButton.size * 0.8) : scale(theme.components.cardButton.size),

@@ -19,22 +19,13 @@ function getPianoKeyForFrequency(frequency: number): PianoKey | null {
   return null
 }
 
-export function getPianoKeyForNote(noteName: string): PianoKey | null {
+function getPianoKeyForNote(noteName: string): PianoKey | null {
   if (!noteName) return null
   
   const frequency = getNoteFrequency(noteName)
   if (frequency === null) return null
   
   return getPianoKeyForFrequency(frequency)
-}
-
-export function getEnharmonicEquivalents(pianoKey: PianoKey): string[] {
-  const frequency = NOTE_NAME_TO_FREQ[pianoKey]
-  if (!frequency) return []
-  
-  return Object.entries(NOTE_NAME_TO_FREQ)
-    .filter(([_, freq]) => freq === frequency)
-    .map(([name]) => name)
 }
 
 export function isEnharmonicEquivalent(noteName1: string, noteName2: string): boolean {

@@ -1,8 +1,8 @@
 import { NOTES, type MusicElementData } from '@leonkwan46/music-notation'
 import { getStageOneArticulationTerms } from '../../curriculum/config/musicalTerms'
 import { Question, StageNumber } from '../../curriculum/types'
-import { generateQuestionsFromPool } from '../../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../../utils/question'
+import { generateQuestionsFromPool } from '../utils/exercise'
+import { generateQuestionId, generateWrongChoices } from '../utils/question'
 
 export const createArticulationQuestion = (stage: StageNumber, termKey?: string): Question => {
   const articulationTerms = getStageOneArticulationTerms()

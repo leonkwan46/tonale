@@ -1,4 +1,4 @@
-import { Question, StageNumber } from '../curriculum/types'
+import { Question, StageNumber } from '../../curriculum/types'
 import { getAllNoteTypes, getAllRestTypes } from './exercise'
 import { generateQuestionId, generateWrongChoices } from './question'
 import { formatBeats, formatDottedBeatsDecomposed, noteTypeToBeats, noteTypeToString, restTypeToBeats, restTypeToString, TimeValueType } from './timeValue'

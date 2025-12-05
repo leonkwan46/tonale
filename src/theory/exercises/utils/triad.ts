@@ -1,7 +1,7 @@
 import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type ClefType, type Note } from '@leonkwan46/music-notation'
-import { getCumulativeNoteDefinitions } from '../curriculum/config/noteRange'
-import { STAGE_ONE_TRIADS, STAGE_THREE_TRIADS, STAGE_TWO_TRIADS } from '../curriculum/config/triads'
-import { StageNumber } from '../curriculum/types'
+import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
+import { STAGE_ONE_TRIADS, STAGE_THREE_TRIADS, STAGE_TWO_TRIADS } from '../../curriculum/config/triads'
+import { StageNumber } from '../../curriculum/types'
 
 const NOTE_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const
 

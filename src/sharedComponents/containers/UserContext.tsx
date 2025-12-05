@@ -1,5 +1,5 @@
 import { getUserData } from '@/config/firebase/functions'
-import { initializeUserProgress } from '@/theory/curriculum/helpers'
+import { initializeUserProgress } from '@/utils/userProgress'
 import { isFirebaseError, type UserProfile } from '@types'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import React, { createContext, useEffect, useState } from 'react'
@@ -50,22 +50,16 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           const metadata = user.metadata
           const isNewUser = metadata.creationTime === metadata.lastSignInTime
 
-          // Wait for auth token to be available before calling cloud functions
           await user.getIdToken(true)
-          console.log('✅ User authenticated successfully:', user.uid)
 
           if (!isNewUser) {
-            // Existing user logging in - fetch their profile
             await fetchProfile()
           }
           
-          // Initialize lesson progress for ALL users (new and existing)
-          // New users will have empty progress, existing users will load their data
           try {
             await initializeUserProgress(user.uid)
-            console.log('✅ Lesson progress initialized for user:', user.uid)
           } catch (error) {
-            console.error('❌ Failed to initialize lesson progress:', error)
+            console.error('Failed to initialize lesson progress:', error)
           }
         } else {
           setUser(null)

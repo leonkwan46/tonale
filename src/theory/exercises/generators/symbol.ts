@@ -1,4 +1,4 @@
-import { generateQuestionsFromPool } from '../../utils/exercise'
+import { generateQuestionsFromPool } from '../utils/exercise'
 import { Question, StageNumber } from '../../curriculum/types'
 import { createSlurDefinitionQuestion, createTieDefinitionQuestion } from './tieSlur'
 

@@ -1,8 +1,8 @@
 import { KEY_NAMES, NOTES, type ClefType } from '@leonkwan46/music-notation'
 import { Question, StageNumber } from '../../curriculum/types'
-import { generateQuestionsFromPool, getKeys, getPitchDefinitionsForClef } from '../../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../../utils/question'
-import { getNoteAtScaleDegree, getScaleDegreeName } from '../../utils/scaleDegree'
+import { generateQuestionsFromPool, getKeys, getPitchDefinitionsForClef } from '../utils/exercise'
+import { generateQuestionId, generateWrongChoices } from '../utils/question'
+import { getNoteAtScaleDegree, getScaleDegreeName } from '../utils/scaleDegree'
 
 type MusicNotationKey = (typeof KEY_NAMES)[keyof typeof KEY_NAMES]
 const SCALE_DEGREES = [1, 2, 3, 4, 5, 6, 7] as const

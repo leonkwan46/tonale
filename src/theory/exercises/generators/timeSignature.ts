@@ -1,7 +1,7 @@
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
-import { generateQuestionsFromPool, getTimeSignatures } from '../../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../../utils/question'
-import { formatAsNotation, formatAsText, generateWrongAnswers } from '../../utils/timeSignature'
+import { generateQuestionsFromPool, getTimeSignatures } from '../utils/exercise'
+import { generateQuestionId, generateWrongChoices } from '../utils/question'
+import { formatAsNotation, formatAsText, generateWrongAnswers } from '../utils/timeSignature'
 import { Question, StageNumber } from '../../curriculum/types'
 
 

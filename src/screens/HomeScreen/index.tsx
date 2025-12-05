@@ -1,26 +1,36 @@
+import { forceRefreshProgress } from '@/utils/userProgress'
+import { useLastLesson, useUser } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents'
-import { useEffect } from 'react'
-import { loadSMuFLFonts } from '../../utils/fontLoader'
-import { Content, Description, Subtitle, Title } from './HomeScreen.styles'
+import { useCallback, useState } from 'react'
+import { GreetingBanner } from './components/GreetingBanner'
+import { HomeScreenBackground } from './components/HomeScreenBackground'
+import { LessonCard } from './components/LessonCard'
+import { StrikeBar } from './components/StrikeBar'
 
 export function HomeScreen() {
-  useEffect(() => {
-    const loadFonts = async () => {
-      await loadSMuFLFonts()
+  const { user, profile, loading } = useUser()
+  const { refresh: refreshLesson } = useLastLesson()
+  const [refreshing, setRefreshing] = useState(false)
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await forceRefreshProgress()
+      await refreshLesson()
+    } catch (error) {
+      console.error('Failed to refresh progress:', error)
+    } finally {
+      setRefreshing(false)
     }
-    loadFonts()
-  }, [])
+  }, [refreshLesson])
 
   return (
     <ScreenContainer>
-      <Content>
-        <Title>Welcome to Tonale</Title>
-        <Subtitle>Your musical journey starts here</Subtitle>
-        <Description>
-          Practice music theory, develop your ear, and master the fundamentals.
-          Start with any section and track your progress along the way.
-        </Description>
-      </Content>
+      <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh}>
+        <GreetingBanner user={user} profile={profile} loading={loading} />
+        <StrikeBar user={user} />
+        <LessonCard />
+      </HomeScreenBackground>
     </ScreenContainer>
   )
 }
