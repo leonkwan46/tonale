@@ -3,7 +3,7 @@ import { CardButton, Description } from '@/screens/TheoryScreen/components/Lesso
 import { useRouter } from 'expo-router'
 import * as React from 'react'
 import { useState } from 'react'
-import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer } from './LessonCard.styles'
+import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, SkeletonButton, SkeletonCardButton, SkeletonDescription, SkeletonDescriptionContainer, SkeletonTitle } from './LessonCard.styles'
 
 export const LessonCard: React.FC = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
@@ -11,7 +11,18 @@ export const LessonCard: React.FC = () => {
   const [isPressed, setIsPressed] = useState(false)
 
   if (loading) {
-    return null
+    return (
+      <LessonCardContainer>
+        <CardContentContainer>
+          <SkeletonCardButton />
+          <SkeletonDescriptionContainer>
+            <SkeletonTitle />
+            <SkeletonDescription />
+          </SkeletonDescriptionContainer>
+        </CardContentContainer>
+        <SkeletonButton />
+      </LessonCardContainer>
+    )
   }
 
   if (allCompleted) {
