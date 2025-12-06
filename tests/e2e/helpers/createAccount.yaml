@@ -19,5 +19,5 @@ jsEngine: graaljs
 - hideKeyboard
 - tapOn:
     id: "auth-submit-button"
-- assertVisible: "Welcome to Tonale"
-
+- assertVisible:
+    id: "tab-index"

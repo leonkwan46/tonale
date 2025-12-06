@@ -1,7 +1,7 @@
 import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebase/functions/lessonProgress'
 import { calculateStageUnlockStatus, stagesArray } from '@/theory/curriculum/stages/helpers'
 import { Stage, StageLesson } from '@/theory/curriculum/types'
-import { clearUserProgressData, getUserProgressData, loadProgressCache, saveProgressCache, setUserProgressData } from '@/utils/progress'
+import { clearUserProgressData, getUserProgressData, loadProgressCache, markProgressInitialized, saveProgressCache, setUserProgressData } from '@/utils/progress'
 import { clearUserDataOnSwitch, clearUserDataStorage } from '@/utils/userData'
 
 let currentUserId: string = ''
@@ -94,6 +94,7 @@ const startFresh = async (): Promise<void> => {
   clearUserProgressData()
   await resetStageProgressData()
   await applyProgressData()
+  markProgressInitialized()
 }
 
 export const initializeUserProgress = async (userId: string): Promise<void> => {
@@ -119,12 +120,31 @@ export const initializeUserProgress = async (userId: string): Promise<void> => {
         setUserProgressData(progressData)
         await applyProgressData()
         await saveProgressCache(userId, progressData)
+        markProgressInitialized()
       }
     } else {
+      // Try to load from cache as fallback
       const cachedData = await loadProgressCache(userId)
       if (cachedData) {
+        // Cache is valid and fresh, use it
         setUserProgressData(cachedData.data)
         await applyProgressData()
+        markProgressInitialized()
+        // Note: We still try to refresh from server in background
+        // but don't wait for it
+        getAllLessonProgressFn().then(result => {
+          if (result.data.success && currentUserId === userId) {
+            const lessonsData = result.data.data
+            if (Object.keys(lessonsData).length > 0) {
+              const progressData = buildProgressData(lessonsData)
+              setUserProgressData(progressData)
+              applyProgressData()
+              saveProgressCache(userId, progressData)
+            }
+          }
+        }).catch(err => {
+          console.error('Background progress refresh failed:', err)
+        })
       } else {
         await startFresh()
       }
@@ -158,6 +178,12 @@ const updateProgressAndSync = async (
   progressData: { stars?: number; isPassed?: boolean },
   cloudUpdate: () => Promise<unknown>
 ): Promise<void> => {
+  // Validate that we have a current user
+  if (!currentUserId) {
+    console.error('Cannot sync progress: no current user')
+    return
+  }
+  
   await updateLessonDataInStages(lessonId, progressData)
   await applyProgressData()
   
@@ -167,9 +193,7 @@ const updateProgressAndSync = async (
     console.error('Failed to sync progress to backend:', error)
   }
   
-  if (currentUserId) {
-    await saveProgressCache(currentUserId, getUserProgressData())
-  }
+  await saveProgressCache(currentUserId, getUserProgressData())
 }
 
 export const updateLessonProgress = async (
@@ -177,6 +201,12 @@ export const updateLessonProgress = async (
   stars: number, 
   wrongAnswersCount: number = 0
 ): Promise<void> => {
+  // Validate that we have a current user
+  if (!currentUserId) {
+    console.error('Cannot update lesson progress: no current user')
+    return
+  }
+  
   const validStars = Math.max(0, Math.min(3, stars))
   const currentData = getUserProgressData()
   const previousStars = currentData[lessonId]?.stars ?? -1
@@ -200,9 +230,7 @@ export const updateLessonProgress = async (
     })
   )
   
-  if (currentUserId) {
-    await saveProgressCache(currentUserId, updatedData)
-  }
+  await saveProgressCache(currentUserId, updatedData)
 }
 
 export const updateFinalTestProgress = async (
@@ -210,6 +238,12 @@ export const updateFinalTestProgress = async (
   isPassed: boolean,
   wrongAnswersCount: number = 0
 ): Promise<void> => {
+  // Validate that we have a current user
+  if (!currentUserId) {
+    console.error('Cannot update final test progress: no current user')
+    return
+  }
+  
   const currentData = getUserProgressData()
   const previousIsPassed = currentData[lessonId]?.isPassed
   const shouldUpdate = previousIsPassed === undefined || previousIsPassed !== isPassed
@@ -232,14 +266,13 @@ export const updateFinalTestProgress = async (
     })
   )
   
-  if (currentUserId) {
-    await saveProgressCache(currentUserId, updatedData)
-  }
+  await saveProgressCache(currentUserId, updatedData)
 }
 
 const clearUserProgress = async (): Promise<void> => {
   clearUserProgressData()
   currentUserId = ''
+  // isProgressInitialized is already cleared by clearUserProgressData()
 }
 
 export const clearAllUserData = async (): Promise<void> => {

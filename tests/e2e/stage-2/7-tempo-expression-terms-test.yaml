@@ -11,6 +11,7 @@ appId: com.leonkwan46.tonale
     element:
         id: "lesson-title-stage-2-lesson-7"
     direction: UP
+    centerElement: true
 - tapOn:
     id: "lesson-title-stage-2-lesson-7"
 

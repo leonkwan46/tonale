@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LessonProgressCache } from '@types'
 
 let userProgressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> = {}
+let progressInitialized = false
 
 export const getUserProgressData = (): Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> => {
   return userProgressData
@@ -14,6 +15,15 @@ export const setUserProgressData = (data: Record<string, { isLocked: boolean; st
 
 export const clearUserProgressData = (): void => {
   userProgressData = {}
+  progressInitialized = false
+}
+
+export const markProgressInitialized = (): void => {
+  progressInitialized = true
+}
+
+export const isProgressInitialized = (): boolean => {
+  return progressInitialized
 }
 
 export const saveProgressCache = async (
@@ -32,6 +42,9 @@ export const saveProgressCache = async (
   }
 }
 
+// Cache is considered stale after 24 hours (in milliseconds)
+const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000
+
 export const loadProgressCache = async (userId: string): Promise<LessonProgressCache | null> => {
   try {
     const cached = await AsyncStorage.getItem(LESSON_PROGRESS_CACHE_KEY)
@@ -39,7 +52,24 @@ export const loadProgressCache = async (userId: string): Promise<LessonProgressC
     
     const cache: LessonProgressCache = JSON.parse(cached)
     
+    // Validate user ID matches
     if (cache.userId !== userId) {
+      await clearProgressCache()
+      return null
+    }
+    
+    // Validate cache freshness
+    if (cache.timestamp) {
+      const cacheAge = Date.now() - cache.timestamp
+      if (cacheAge > CACHE_MAX_AGE_MS) {
+        // Cache is stale, clear it and return null
+        console.log('Cache is stale, clearing it')
+        await clearProgressCache()
+        return null
+      }
+    } else {
+      // Cache has no timestamp, consider it invalid
+      console.log('Cache has no timestamp, clearing it')
       await clearProgressCache()
       return null
     }

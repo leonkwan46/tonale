@@ -32,17 +32,26 @@ export function SettingsScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
-              // Clear all user-specific data from AsyncStorage
-              await clearAllUserData()
+              // Sign out from Firebase first (before clearing data)
+              // This ensures we can recover if signOut fails
+              await signOut(auth)
               
-              // Clear theory screen opened stages state
-              await AsyncStorage.removeItem(THEORY_OPENED_STAGES_KEY)
+              // Only clear data after successful sign out
+              try {
+                // Clear all user-specific data from AsyncStorage
+                await clearAllUserData()
+                
+                // Clear theory screen opened stages state
+                await AsyncStorage.removeItem(THEORY_OPENED_STAGES_KEY)
+              } catch (clearError) {
+                // Log but don't block logout if data clearing fails
+                // User is already signed out, so they can't access the data anyway
+                console.error('Failed to clear some user data:', clearError)
+              }
               
               // Note: Streak data is stored in user profile, not AsyncStorage
               // It persists with the user account
               
-              // Sign out from Firebase
-              await signOut(auth)
               router.replace('/(auth)')
             } catch (error) {
               console.error('Failed to logout:', error)

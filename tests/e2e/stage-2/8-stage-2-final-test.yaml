@@ -8,14 +8,25 @@ appId: com.leonkwan46.tonale
 - tapOn:
     id: "tab-theory"
 
+- waitForAnimationToEnd
+
 - scrollUntilVisible:
     element:
         id: "lesson-title-stage-2-lesson-5"
     direction: UP
+    centerElement: true
+    timeout: 30000
+    speed: 60
+    waitToSettleTimeoutMs: 1000
+    visibilityPercentage: 50
 - scrollUntilVisible:
     element:
         id: "lesson-title-stage-2-final"
     direction: UP
+    timeout: 30000
+    speed: 60
+    waitToSettleTimeoutMs: 1000
+    visibilityPercentage: 50
 - tapOn:
     id: "lesson-title-stage-2-final"
 

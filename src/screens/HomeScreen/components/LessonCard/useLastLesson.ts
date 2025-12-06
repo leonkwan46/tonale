@@ -1,8 +1,9 @@
+import { useUser } from '@/hooks/useUser'
+import { Lesson } from '@/theory/curriculum/types'
 import { allStageLessons, getLastAccessedLessonLocal, getLessonById } from '@/utils/lesson'
 import { getUserProgressData } from '@/utils/progress'
-import { Lesson } from '@/theory/curriculum/types'
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface LessonResult {
   lesson: Lesson | null
@@ -12,39 +13,86 @@ interface LessonResult {
 }
 
 export const useLastLesson = (): LessonResult => {
+  const { loading: userLoading, user, progressInitialized } = useUser()
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [loading, setLoading] = useState(true)
   const [allCompleted, setAllCompleted] = useState(false)
+  const isMountedRef = useRef(true)
 
   const fetchLesson = useCallback(async () => {
+    // Wait for user context to finish loading and progress to be initialized
+    if (userLoading || !user || !progressInitialized) {
+      if (isMountedRef.current) {
+        setLoading(true)
+      }
+      return
+    }
+
+    if (!isMountedRef.current) return
+
     try {
-      setLoading(true)
+      if (isMountedRef.current) {
+        setLoading(true)
+      }
       
       const lastAccess = await getLastAccessedLessonLocal()
       const progressData = getUserProgressData()
       
+      if (!isMountedRef.current) return
+      
       let currentLesson = findLessonToDisplay(lastAccess, progressData)
       
       if (!currentLesson || isAllLessonsCompleted()) {
-        setAllCompleted(true)
-        setLesson(null)
+        if (isMountedRef.current) {
+          setAllCompleted(true)
+          setLesson(null)
+          setLoading(false)
+        }
       } else {
         const lessonWithProgress = mergeProgressData(currentLesson, progressData)
-        setLesson(lessonWithProgress)
-        setAllCompleted(false)
+        if (isMountedRef.current) {
+          setLesson(lessonWithProgress)
+          setAllCompleted(false)
+          setLoading(false)
+        }
       }
     } catch (error) {
       console.error('Failed to get lesson:', error)
-      setLesson(null)
-      setAllCompleted(false)
-    } finally {
-      setLoading(false)
+      if (isMountedRef.current) {
+        setLesson(null)
+        setAllCompleted(false)
+        setLoading(false)
+      }
     }
-  }, [])
+  }, [userLoading, user, progressInitialized])
 
+  // Single effect: cleanup on unmount and trigger fetch when ready
+  useEffect(() => {
+    isMountedRef.current = true
+    
+    // Fetch lesson when conditions are met
+    if (!userLoading && user && progressInitialized) {
+      fetchLesson()
+    } else if (!userLoading && !user) {
+      // User logged out
+      if (isMountedRef.current) {
+        setLesson(null)
+        setAllCompleted(false)
+        setLoading(false)
+      }
+    }
+    
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [userLoading, user, progressInitialized, fetchLesson])
+
+  // Only use useFocusEffect to refresh when screen comes into focus
   useFocusEffect(useCallback(() => {
-    fetchLesson()
-  }, [fetchLesson]))
+    if (!userLoading && user && progressInitialized) {
+      fetchLesson()
+    }
+  }, [userLoading, user, progressInitialized, fetchLesson]))
 
   return { lesson, loading, allCompleted, refresh: fetchLesson }
 }

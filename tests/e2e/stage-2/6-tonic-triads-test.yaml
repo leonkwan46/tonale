@@ -12,6 +12,7 @@ appId: com.leonkwan46.tonale
     element:
       id: "lesson-title-stage-2-lesson-5" # Using lesson 5 as it's not able to scroll with lesson 6
     direction: UP
+    centerElement: true
 - tapOn:
     id: "lesson-title-stage-2-lesson-6"
 
