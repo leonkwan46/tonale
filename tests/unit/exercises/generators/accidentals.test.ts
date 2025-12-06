@@ -1,5 +1,5 @@
 import { createAccidentalQuestion, createAccidentalQuestions } from '@/theory/exercises/generators/accidentals'
-import { getAccidentals } from '@/theory/utils/exercise'
+import { getAccidentals } from '@/theory/exercises/utils/exercise'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,

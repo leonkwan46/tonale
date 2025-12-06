@@ -3,6 +3,8 @@ import styled from '@emotion/native'
 import { Link, Stack } from 'expo-router'
 import { useColorScheme } from 'react-native'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 export default function NotFoundScreen() {
   const colorScheme = useColorScheme() ?? 'light'
 
@@ -29,10 +31,10 @@ const Container = styled.View<{ colorScheme: 'light' | 'dark' }>`
 
 const Title = styled.Text<{ colorScheme: 'light' | 'dark' }>`
   font-size: 24px
-  font-weight: bold
   color: ${props => Colors[props.colorScheme].text}
   text-align: center
   margin-bottom: 16px
+  font-family: "${getSourGummyFontFamily('bold')}"
 `
 
 const StyledLink = styled(Link)<{ colorScheme: 'light' | 'dark' }>`
@@ -44,4 +46,5 @@ const LinkText = styled.Text<{ colorScheme: 'light' | 'dark' }>`
   color: ${props => Colors[props.colorScheme].primary}
   font-size: 16px
   text-decoration: underline
+  font-family: "${getSourGummyFontFamily('400')}"
 `

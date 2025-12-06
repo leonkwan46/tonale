@@ -4,8 +4,8 @@ import {
   getQuestionTypeFromId,
   getTimeValueKeyFromComponent,
   getValueKindFromId
-} from '../../utils/exercise'
-import { createValueBeatQuestion } from '../../utils/timeValueQuestion'
+} from '../utils/exercise'
+import { createValueBeatQuestion } from '../utils/timeValueQuestion'
 import { Question, StageNumber } from '../../curriculum/types'
 import { createRestValueQuestion } from './restValue'
 

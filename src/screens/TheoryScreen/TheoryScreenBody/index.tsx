@@ -1,8 +1,6 @@
-import {
-  getStageById,
-  getStageRequirements,
-  stagesArray
-} from '@/theory/curriculum'
+import { THEORY_OPENED_STAGES_KEY } from '@/constants/cache'
+import { getStageById, getStageRequirements } from '@/utils/lesson'
+import { stagesArray } from '@/theory/curriculum/stages/helpers'
 import { Stage, StageLesson } from '@/theory/curriculum/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from 'expo-router'
@@ -67,7 +65,6 @@ export const TheoryScreenBody = () => {
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
   const openedStageIdsRef = useRef<Set<string>>(new Set())
-  const OPENED_KEY = '@tonale/theory/openedStages'
 
   // Helper function to scroll to a stage
   const scrollToStage = (stageId: string, offset: number = 100) => {
@@ -108,7 +105,7 @@ export const TheoryScreenBody = () => {
 
       // Load persisted opened stage ids
       try {
-        const stored = await AsyncStorage.getItem(OPENED_KEY)
+        const stored = await AsyncStorage.getItem(THEORY_OPENED_STAGES_KEY)
         const parsed: string[] = stored ? JSON.parse(stored) : []
         openedStageIdsRef.current = new Set(Array.isArray(parsed) ? parsed : [])
       } catch {
@@ -179,7 +176,7 @@ export const TheoryScreenBody = () => {
       try {
         openedStageIdsRef.current.add(stageId)
         const toStore = JSON.stringify(Array.from(openedStageIdsRef.current))
-        void AsyncStorage.setItem(OPENED_KEY, toStore)
+        void AsyncStorage.setItem(THEORY_OPENED_STAGES_KEY, toStore)
       } catch {
         // ignore storage errors
       }
@@ -204,7 +201,7 @@ export const TheoryScreenBody = () => {
       try {
         openedStageIdsRef.current.delete(stageId)
         const toStore = JSON.stringify(Array.from(openedStageIdsRef.current))
-        void AsyncStorage.setItem(OPENED_KEY, toStore)
+        void AsyncStorage.setItem(THEORY_OPENED_STAGES_KEY, toStore)
       } catch {
         // ignore storage errors
       }

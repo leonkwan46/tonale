@@ -1,9 +1,8 @@
-import { generateLessonQuestions } from '@/theory/generate'
-import { getLessonById } from '@/theory/curriculum'
-import { getNextLockedStage } from '@/theory/curriculum/stages/helpers'
-import { updateFinalTestProgress, updateLessonProgress } from '@/theory/curriculum/helpers'
-import { Question } from '@/theory/curriculum/types'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
+import { getLessonById, getNextLockedStage, trackLessonAccessLocal } from '@/utils/lesson'
+import { updateFinalTestProgress, updateLessonProgress } from '@/utils/userProgress'
+import { Question } from '@/theory/curriculum/types'
+import { generateLessonQuestions } from '@/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import { useLocalSearchParams, useRouter } from 'expo-router'
@@ -14,7 +13,7 @@ import { LessonScreenBody } from './LessonScreenBody'
 
 export function LessonScreen() {
   const router = useRouter()
-  const { lessonId } = useLocalSearchParams<{ lessonId: string }>()
+  const { lessonId, from } = useLocalSearchParams<{ lessonId: string, from: string }>()
   const lesson = lessonId ? getLessonById(lessonId) : null
   
   const [questions, setQuestions] = useState<Question[]>([])
@@ -37,6 +36,9 @@ export function LessonScreen() {
     setQuestions(newQuestions)
     setCurrentQuestionIndex(0)
     setWrongAnswersCount(0)
+    
+    // Track lesson access locally
+    trackLessonAccessLocal(lessonId)
   }, [lessonId])
   
   const restartLesson = useCallback(() => {
@@ -111,7 +113,11 @@ export function LessonScreen() {
 
   const closeModalAndExit = () => {
     setShowStarModal(false)
-    router.back()
+    if (from === 'home') {
+      router.push('/(tabs)/theory')
+    } else {
+      router.back()
+    }
   }
 
   const closeModalAndRetry = () => {
@@ -126,7 +132,11 @@ export function LessonScreen() {
 
   const closeFailureModalAndExit = () => {
     setShowFailureModal(false)
-    router.back()
+    if (from === 'home') {
+      router.push('/(tabs)/theory')
+    } else {
+      router.back()
+    }
   }
 
   return (

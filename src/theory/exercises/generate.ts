@@ -1,5 +1,5 @@
 import { CLEFS } from '@leonkwan46/music-notation'
-import { ExerciseConfig, Question, StageNumber } from './curriculum/types'
+import { ExerciseConfig, Question, StageNumber } from '../curriculum/types'
 import {
   createAccidentalQuestions,
   createDottedValueQuestions,
@@ -19,7 +19,7 @@ import {
   createTieSlurQuestions,
   createTimeSignatureQuestions,
   createTriadQuestions
-} from './exercises/generators'
+} from './generators'
 
 type QuestionGenerator = (count: number, stage: StageNumber) => Question[]
 

@@ -1,8 +1,8 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { generateQuestionsFromPool } from '../../utils/exercise'
-import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../../utils/interval'
+import { generateQuestionsFromPool } from '../utils/exercise'
+import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../utils/interval'
 import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
-import { generateQuestionId, generateWrongChoices } from '../../utils/question'
+import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { Question, StageNumber } from '../../curriculum/types'
 
 const CLEFS: ClefType[] = ['treble', 'bass']

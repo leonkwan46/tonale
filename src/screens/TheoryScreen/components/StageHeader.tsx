@@ -3,6 +3,8 @@ import styled from '@emotion/native'
 import * as React from 'react'
 import { Animated, Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
+
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import { StarLogo } from './LessonSection/components/Logo'
 
 interface StageHeaderProps {
@@ -25,9 +27,9 @@ const HeaderContainer = styled(Pressable)<{ isPerfect?: boolean }>(({ theme, isP
 
 const StageTitle = styled.Text(({ theme }) => ({
   fontSize: scale(18),
-  fontWeight: '600',
   color: `${theme.colors.text}`,
-  marginBottom: scale(4)
+  marginBottom: scale(4),
+  fontFamily: getSourGummyFontFamily('600')
 }))
 
 const LeftContentContainer = styled.View({
@@ -49,7 +51,8 @@ const StageStats = styled.View({
 const StatsText = styled.Text(({ theme }) => ({
   fontSize: scale(12),
   color: `${theme.colors.text}`,
-  opacity: 0.8
+  opacity: 0.8,
+  fontFamily: getSourGummyFontFamily('400')
 }))
 
 const ProgressBar = styled.View(({ theme }) => ({

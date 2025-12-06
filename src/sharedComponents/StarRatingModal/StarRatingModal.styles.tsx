@@ -2,6 +2,8 @@ import styled from '@emotion/native'
 import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 export const ModalOverlay = styled.View(({ theme }) => ({
   position: 'absolute',
   top: 0,
@@ -43,9 +45,9 @@ export const StarIcon = styled.Text<{ filled: boolean; isTablet: boolean }>(({ t
 
 export const TitleText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
   fontSize: isTablet ? scale(20) : scale(24),
-  fontWeight: 'bold',
   color: theme.colors.text,
-  textAlign: 'center'
+  textAlign: 'center',
+  fontFamily: getSourGummyFontFamily('bold')
 }))
 
 export const DescriptionText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
@@ -53,7 +55,8 @@ export const DescriptionText = styled.Text<{ isTablet: boolean }>(({ theme, isTa
   color: theme.colors.text,
   textAlign: 'center',
   marginBottom: isTablet ? scale(16) : scale(24),
-  opacity: 0.8
+  opacity: 0.8,
+  fontFamily: getSourGummyFontFamily('400')
 }))
 
 export const ButtonContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
@@ -76,8 +79,8 @@ export const ModalButton = styled.TouchableOpacity<{ variant: 'filled' | 'outlin
 
 export const ModalButtonText = styled.Text<{ variant: 'filled' | 'outlined'; isTablet: boolean }>(({ theme, variant, isTablet }) => ({
   fontSize: isTablet ? scale(13) : scale(16),
-  fontWeight: '600',
-  color: variant === 'filled' ? theme.colors.background : theme.colors.primary
+  color: variant === 'filled' ? theme.colors.background : theme.colors.primary,
+  fontFamily: getSourGummyFontFamily('600')
 }))
 
 export const AnimatedStarContainer = styled(Animated.View)(() => ({

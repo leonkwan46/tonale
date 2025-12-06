@@ -1,6 +1,8 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 export const Header = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
@@ -33,7 +35,7 @@ export const ProgressTracker = styled.View(({ theme }) => ({
 export const ProgressText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   fontSize: theme.typography.xl,
-  fontWeight: theme.fontWeight.semibold
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const XMarksContainer = styled.View(({ theme }) => ({
@@ -45,7 +47,7 @@ export const XMarksContainer = styled.View(({ theme }) => ({
 
 export const XMark = styled.Text<{ isActive: boolean; isTablet: boolean }>(({ theme, isActive, isTablet }) => ({
   fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
-  fontWeight: theme.fontWeight.bold,
   color: isActive ? theme.colors.error : theme.colors.secondary,
-  opacity: isActive ? 1 : 0.3
+  opacity: isActive ? 1 : 0.3,
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))

@@ -1,5 +1,5 @@
 import { createScaleDegreeQuestion, createScaleDegreeQuestions } from '@/theory/exercises/generators/scaleDegrees'
-import { getKeys } from '@/theory/utils/exercise'
+import { getKeys } from '@/theory/exercises/utils/exercise'
 import {
   validateCorrectAnswerInChoices,
   validateKeyForStage,

@@ -4,7 +4,7 @@ appId: com.leonkwan46.tonale
 - clearState
 - launchApp
 - runFlow:
-    file: ../helpers/createAccount.yaml
+    file: ../helpers/loginAccount.yaml
 - tapOn:
     id: "tab-theory"
 

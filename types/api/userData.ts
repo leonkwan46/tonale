@@ -24,6 +24,8 @@ export interface ProgressData {
 export interface UserProfile {
   email: string
   progress?: ProgressData
+  streakDay?: number
+  lastLoginDate?: string // Format: "YYYY-M-DD"
   createdAt?: Timestamp // Firestore Timestamp
   updatedAt?: Timestamp // Firestore Timestamp
 }

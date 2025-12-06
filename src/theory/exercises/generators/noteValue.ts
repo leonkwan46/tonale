@@ -1,9 +1,9 @@
-import { generateQuestionsFromPool, getAllNoteTypes } from '../../utils/exercise'
+import { generateQuestionsFromPool, getAllNoteTypes } from '../utils/exercise'
 import {
   generateQuestionId,
   generateWrongChoices
-} from '../../utils/question'
-import { ensureFourChoicesForStage2, noteTypeToString } from '../../utils/timeValue'
+} from '../utils/question'
+import { ensureFourChoicesForStage2, noteTypeToString } from '../utils/timeValue'
 import { Question, StageNumber } from '../../curriculum/types'
 
 export const createNoteValueQuestion = (

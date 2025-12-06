@@ -1,10 +1,10 @@
 import { CLEFS } from '@leonkwan46/music-notation'
 import { Question, StageNumber } from '../../curriculum/types'
-import { generateQuestionsFromPool, getKeys } from '../../utils/exercise'
+import { generateQuestionsFromPool, getKeys } from '../utils/exercise'
 import {
   generateQuestionId,
   generateWrongChoices
-} from '../../utils/question'
+} from '../utils/question'
 
 type StageKey = ReturnType<typeof getKeys>[number]
 

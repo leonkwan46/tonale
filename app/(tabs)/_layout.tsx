@@ -6,6 +6,7 @@ import { useColorScheme } from 'react-native'
 import { Colors } from '@/constants/Colors'
 import { useUser } from '@/hooks'
 import { CustomTabBar } from '@/sharedComponents'
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 const ErrorContainer = styled.View`
   flex: 1;
@@ -20,6 +21,7 @@ const ErrorText = styled.Text`
   font-size: 18px;
   text-align: center;
   margin-bottom: 10px;
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 const ErrorSubtext = styled.Text`
@@ -27,6 +29,7 @@ const ErrorSubtext = styled.Text`
   font-size: 14px;
   text-align: center;
   opacity: 0.7;
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 export default function TabLayout() {

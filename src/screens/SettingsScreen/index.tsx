@@ -1,4 +1,7 @@
 import { auth } from '@/config/firebase/firebase'
+import { THEORY_OPENED_STAGES_KEY } from '@/constants/cache'
+import { clearAllUserData } from '@/utils/userProgress'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth'
 import { Alert, useColorScheme } from 'react-native'
@@ -29,7 +32,26 @@ export function SettingsScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
+              // Sign out from Firebase first (before clearing data)
+              // This ensures we can recover if signOut fails
               await signOut(auth)
+              
+              // Only clear data after successful sign out
+              try {
+                // Clear all user-specific data from AsyncStorage
+                await clearAllUserData()
+                
+                // Clear theory screen opened stages state
+                await AsyncStorage.removeItem(THEORY_OPENED_STAGES_KEY)
+              } catch (clearError) {
+                // Log but don't block logout if data clearing fails
+                // User is already signed out, so they can't access the data anyway
+                console.error('Failed to clear some user data:', clearError)
+              }
+              
+              // Note: Streak data is stored in user profile, not AsyncStorage
+              // It persists with the user account
+              
               router.replace('/(auth)')
             } catch (error) {
               console.error('Failed to logout:', error)

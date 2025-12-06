@@ -2,6 +2,8 @@ import { AppTheme } from '@/constants/Colors'
 import styled from '@emotion/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+
 export const Container = styled(SafeAreaView)<{ colorScheme: 'light' | 'dark' }>`
   flex: 1;
   background-color: ${(props) => AppTheme.backgroundColor(props.colorScheme)};
@@ -14,9 +16,9 @@ export const TitleContainer = styled.View`
 
 export const Title = styled.Text<{ colorScheme: 'light' | 'dark' }>`
   font-size: 32px;
-  font-weight: bold;
   color: ${(props) => AppTheme.textColor(props.colorScheme)};
   text-align: center;
+  font-family: "${getSourGummyFontFamily('bold')}";
 `
 
 export const Card = styled.View<{ colorScheme: 'light' | 'dark' }>`
@@ -33,9 +35,9 @@ export const Card = styled.View<{ colorScheme: 'light' | 'dark' }>`
 
 export const SectionTitle = styled.Text<{ colorScheme: 'light' | 'dark' }>`
   font-size: 18px;
-  font-weight: 600;
   color: ${(props) => AppTheme.textColor(props.colorScheme)};
   margin-bottom: 15px;
+  font-family: "${getSourGummyFontFamily('600')}";
 `
 
 export const AccountInfoContainer = styled.View`
@@ -50,15 +52,16 @@ export const AccountDetails = styled.View`
 
 export const AccountName = styled.Text<{ colorScheme: 'light' | 'dark' }>`
   font-size: 16px;
-  font-weight: 600;
   color: ${(props) => AppTheme.textColor(props.colorScheme)};
   margin-bottom: 4px;
+  font-family: "${getSourGummyFontFamily('600')}";
 `
 
 export const AccountEmail = styled.Text<{ colorScheme: 'light' | 'dark' }>`
   font-size: 14px;
   color: ${(props) => AppTheme.textColor(props.colorScheme)};
   opacity: 0.7;
+  font-family: "${getSourGummyFontFamily('400')}";
 `
 
 export const SettingItemContainer = styled.TouchableOpacity<{ 
@@ -86,6 +89,6 @@ export const SettingItemLabel = styled.Text<{
 }>`
   font-size: 16px;
   color: ${(props) => props.destructive ? AppTheme.error : AppTheme.textColor(props.colorScheme)};
-  font-weight: 500;
+  font-family: "${getSourGummyFontFamily('500')}";
 `
 

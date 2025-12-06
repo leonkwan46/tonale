@@ -14,11 +14,11 @@ import {
     STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
 } from '../../curriculum/config/musicalTerms'
 import { Question, StageNumber } from '../../curriculum/types'
-import { generateQuestionsFromPool } from '../../utils/exercise'
+import { generateQuestionsFromPool } from '../utils/exercise'
 import {
     generateQuestionId,
     generateWrongChoices
-} from '../../utils/question'
+} from '../utils/question'
 
 export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string): Question => {
   let stageMusicalTerms: Record<string, string>
