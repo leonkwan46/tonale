@@ -4,7 +4,7 @@ import { useUser } from '@/hooks/useUser'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { UserProfile } from '@types'
 import type { User } from 'firebase/auth'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
 const DEFAULT_STREAK = 1
@@ -17,21 +17,18 @@ interface LocalStreakData {
 
 let currentStreakUserId: string | null = null
 
+const getMidnightDate = (date: Date): Date => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}
+
 const getDateString = (date: Date): string => {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+  const midnight = getMidnightDate(date)
+  return `${midnight.getFullYear()}-${midnight.getMonth()}-${midnight.getDate()}`
 }
 
 const parseDateString = (dateStr: string): Date => {
-  // Parse format: "YYYY-M-D" where M is 0-11 (month index)
-  const parts = dateStr.split('-')
-  const year = parseInt(parts[0], 10)
-  const month = parseInt(parts[1], 10)
-  const day = parseInt(parts[2], 10)
+  const [year, month, day] = dateStr.split('-').map(Number)
   return new Date(year, month, day)
-}
-
-const getMidnightDate = (date: Date): Date => {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
 
 const getDaysDifference = (date1: Date, date2: Date): number => {
@@ -98,16 +95,18 @@ const syncToCloud = async (
   userId: string,
   newStreakDay: number,
   newLastUpdateDate: string,
-  profile: UserProfile | null,
-  fetchProfile: () => Promise<void>
+  profile: UserProfile | null
 ): Promise<void> => {
   try {
+    if (!profile) {
+      return
+    }
+
     if (!needsCloudSync(profile, newStreakDay, newLastUpdateDate)) {
       return
     }
 
     await updateUserData({ streakDay: newStreakDay, lastLoginDate: newLastUpdateDate })
-    await fetchProfile()
   } catch (error) {
     console.error('Error syncing streak to cloud:', error)
   }
@@ -117,7 +116,7 @@ const calculateNewStreak = (
   lastStoredDate: string | null,
   currentStreak: number,
   todayDateStr: string,
-  todayDay: Date
+  today: Date
 ): { streak: number; shouldUpdate: boolean } => {
   if (!lastStoredDate) {
     return { streak: DEFAULT_STREAK, shouldUpdate: true }
@@ -127,31 +126,27 @@ const calculateNewStreak = (
     return { streak: currentStreak, shouldUpdate: false }
   }
 
-  const lastStoredDay = getMidnightDate(parseDateString(lastStoredDate))
-  const daysSinceLastStored = getDaysDifference(todayDay, lastStoredDay)
+  const lastStoredDateObj = getMidnightDate(parseDateString(lastStoredDate))
+  const daysSinceLastStored = getDaysDifference(today, lastStoredDateObj)
 
   if (daysSinceLastStored === 1) {
-    // Exactly 1 day has passed (yesterday), continue streak
     return { streak: currentStreak + 1, shouldUpdate: true }
   }
 
   if (daysSinceLastStored > 1) {
-    // More than 1 day has passed, reset streak
     return { streak: DEFAULT_STREAK, shouldUpdate: true }
   }
 
-  // Future date or same day (shouldn't happen, but handle gracefully)
   return { streak: currentStreak, shouldUpdate: false }
 }
 
 const calculateStreak = async (
   user: User,
-  profile: UserProfile | null,
-  fetchProfile: () => Promise<void>
+  profile: UserProfile | null
 ): Promise<number> => {
   const userId = user.uid
-  const todayDay = getMidnightDate(new Date())
-  const todayDateStr = getDateString(todayDay)
+  const today = getMidnightDate(new Date())
+  const todayDateStr = getDateString(today)
 
   const localStreak = await getLocalStreak(userId)
   const currentStreak = localStreak?.streakDay ?? profile?.streakDay ?? DEFAULT_STREAK
@@ -161,12 +156,15 @@ const calculateStreak = async (
     lastStoredDate,
     currentStreak,
     todayDateStr,
-    todayDay
+    today
   )
 
   if (shouldUpdate) {
     await setLocalStreak(userId, newStreak, todayDateStr)
-    syncToCloud(userId, newStreak, todayDateStr, profile, fetchProfile).catch(
+  }
+
+  if (profile) {
+    syncToCloud(userId, newStreak, todayDateStr, profile).catch(
       error => console.error('Background streak sync failed:', error)
     )
   }
@@ -175,24 +173,59 @@ const calculateStreak = async (
 }
 
 export const useStreak = (user: User | null): number => {
-  const { profile, fetchProfile } = useUser()
+  const { profile } = useUser()
   const [currentDay, setCurrentDay] = useState<number>(DEFAULT_STREAK)
+  const previousUserIdRef = useRef<string | null>(null)
+  const hasProfileLoadedRef = useRef<boolean>(false)
+  const userId = user?.uid ?? null
 
   useEffect(() => {
-    const updateStreak = async () => {
-      await handleUserSwitch(user?.uid ?? null)
-      
-      if (!user?.uid) {
+    const hasUser = user !== null
+    const hasUserId = userId !== null
+    const hasProfile = profile !== null
+
+    if (!hasUser && !hasUserId) {
+      if (previousUserIdRef.current !== null) {
         setCurrentDay(DEFAULT_STREAK)
+        previousUserIdRef.current = null
+        hasProfileLoadedRef.current = false
+      }
+      return
+    }
+
+    if (!hasUser) {
+      return
+    }
+
+    const userIdChanged = previousUserIdRef.current !== userId
+    const profileJustLoaded = hasProfile && !hasProfileLoadedRef.current
+    const shouldRecalculate = userIdChanged || profileJustLoaded
+
+    if (!shouldRecalculate) {
+      return
+    }
+
+    const updateStreak = async () => {
+      await handleUserSwitch(userId)
+
+      if (!userId) {
+        setCurrentDay(DEFAULT_STREAK)
+        previousUserIdRef.current = null
+        hasProfileLoadedRef.current = false
         return
       }
 
-      const streak = await calculateStreak(user, profile, fetchProfile)
+      const streak = await calculateStreak(user, profile)
       setCurrentDay(streak)
+
+      previousUserIdRef.current = userId
+      if (hasProfile) {
+        hasProfileLoadedRef.current = true
+      }
     }
 
     void updateStreak()
-  }, [user, profile, fetchProfile])
+  }, [userId, profile, user])
 
   return currentDay
 }

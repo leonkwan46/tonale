@@ -29,10 +29,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       const result = await getUserData()
       setProfile(result.data.data)
     } catch (error) {
+      console.error('[fetchProfile] Error fetching user profile:', error)
       if (isFirebaseError(error) && error.code === 'not-found') {
+        console.error('[fetchProfile] User data not found (not-found error)')
         setProfile(null)
       } else {
-        console.error('Error fetching user profile:', error)
+        console.error('[fetchProfile] Other error:', error)
       }
     }
   }
