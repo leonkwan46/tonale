@@ -145,14 +145,67 @@ export const getValueKindFromId = (questionId: string): 'note' | 'rest' => {
   return 'note'
 }
 
-export const isSameQuestion = (
-  q1: Question,
-  q2: Question,
+/**
+ * Group questions by their duplicate identifier
+ */
+const groupQuestionsByKey = (
+  pool: Question[],
   getDuplicateIdentifier: (question: Question) => string | null
-): boolean => {
-  const key1 = getDuplicateIdentifier(q1)
-  const key2 = getDuplicateIdentifier(q2)
-  return key1 !== null && key2 !== null && key1 === key2
+): Map<string, Question[]> => {
+  const questionsByKey = new Map<string, Question[]>()
+  
+  for (const question of pool) {
+    const key = getDuplicateIdentifier(question)
+    if (key) {
+      if (!questionsByKey.has(key)) {
+        questionsByKey.set(key, [])
+      }
+      questionsByKey.get(key)!.push(question)
+    }
+  }
+  
+  return questionsByKey
+}
+
+/**
+ * Create a unique clone of a question with a modified ID
+ */
+const cloneQuestionWithUniqueId = (question: Question, index: number): Question => {
+  return {
+    ...question,
+    id: `${question.id}-${index}`
+  }
+}
+
+/**
+ * Check if a key is in the recent window (to avoid duplicates)
+ */
+const isKeyInRecentWindow = (key: string, recentKeys: string[]): boolean => {
+  return recentKeys.includes(key)
+}
+
+/**
+ * Update the recent keys window, removing oldest if needed
+ */
+const updateRecentKeys = (key: string, recentKeys: string[], windowSize: number): void => {
+  recentKeys.push(key)
+  if (recentKeys.length > windowSize) {
+    recentKeys.shift()
+  }
+}
+
+/**
+ * Select a random question from the pool for a given key
+ */
+const selectQuestionFromKey = (
+  key: string,
+  questionsByKey: Map<string, Question[]>
+): Question | null => {
+  const questionsWithKey = questionsByKey.get(key)
+  if (!questionsWithKey || questionsWithKey.length === 0) {
+    return null
+  }
+  return getRandomItem(questionsWithKey)
 }
 
 export const generateQuestionsFromPool = (
@@ -162,37 +215,29 @@ export const generateQuestionsFromPool = (
   options: { deduplicationWindow?: number } = {}
 ): Question[] => {
   const windowSize = options.deduplicationWindow ?? 3
-  const recentKeys: string[] = []
   const questions: Question[] = []
   
-  const questionsByKey = new Map<string, Question[]>()
-  uniquePool.forEach(q => {
-    const key = getDuplicateIdentifier(q)
-    if (key) {
-      if (!questionsByKey.has(key)) {
-        questionsByKey.set(key, [])
-      }
-      questionsByKey.get(key)!.push(q)
-    }
-  })
-  
+  // Group questions by duplicate identifier
+  const questionsByKey = groupQuestionsByKey(uniquePool, getDuplicateIdentifier)
   const availableKeys = Array.from(questionsByKey.keys())
+  
   if (availableKeys.length === 0) {
     console.warn('No valid question keys found in pool')
     return []
   }
   
+  // Initialize selection state
   let shuffledKeys = shuffleArray([...availableKeys])
   let keyIndex = 0
   let attempts = 0
-  const maxAttempts = Math.max(
-    availableKeys.length * 2,
-    questionsCount * 2
-  )
+  const recentKeys: string[] = []
+  const maxAttempts = Math.max(availableKeys.length * 2, questionsCount * 2)
   
+  // Generate questions until we have enough or hit max attempts
   while (questions.length < questionsCount && attempts < maxAttempts) {
     attempts++
     
+    // Reset and reshuffle if we've exhausted all keys
     if (keyIndex >= shuffledKeys.length) {
       recentKeys.length = 0
       shuffledKeys = shuffleArray([...availableKeys])
@@ -200,30 +245,28 @@ export const generateQuestionsFromPool = (
     }
     
     const candidateKey = shuffledKeys[keyIndex]
+    keyIndex++
     
-    if (recentKeys.includes(candidateKey)) {
-      keyIndex++
+    // Skip if this key was recently used (deduplication)
+    if (isKeyInRecentWindow(candidateKey, recentKeys)) {
       continue
     }
     
-    const questionsWithKey = questionsByKey.get(candidateKey)!
-    const candidate = getRandomItem(questionsWithKey)
-    
-    const clonedCandidate: Question = {
-      ...candidate,
-      id: `${candidate.id}-${questions.length}`
+    // Select a random question for this key
+    const candidate = selectQuestionFromKey(candidateKey, questionsByKey)
+    if (!candidate) {
+      continue
     }
     
-    questions.push(clonedCandidate)
-    recentKeys.push(candidateKey)
+    // Clone with unique ID and add to results
+    const clonedQuestion = cloneQuestionWithUniqueId(candidate, questions.length)
+    questions.push(clonedQuestion)
     
-    if (recentKeys.length > windowSize) {
-      recentKeys.shift()
-    }
-    
-    keyIndex++
+    // Track this key in recent window
+    updateRecentKeys(candidateKey, recentKeys, windowSize)
   }
   
+  // Warn if we couldn't generate enough questions
   if (questions.length < questionsCount) {
     console.warn(
       `Only generated ${questions.length} questions out of ${questionsCount} requested. ` +
@@ -234,57 +277,115 @@ export const generateQuestionsFromPool = (
   return balanceCorrectAnswerPositions(questions)
 }
 
+/**
+ * Check if a question should be skipped from balancing
+ */
+const shouldSkipBalancing = (question: Question): boolean => {
+  // True/False questions should always have fixed order (True, False)
+  if (question.type === 'trueFalse') {
+    return true
+  }
+  
+  const choices = question.choices
+  // Skip questions with 2 or fewer choices - preserve order
+  if (!choices || choices.length <= 2) {
+    return true
+  }
+  
+  return false
+}
+
+/**
+ * Find the index of the correct answer in choices
+ */
+const findCorrectAnswerIndex = (question: Question): number => {
+  return question.choices.findIndex(choice => choice === question.correctAnswer)
+}
+
+/**
+ * Get or initialize position counts for a given choice count
+ */
+const getPositionCounts = (
+  choiceCount: number,
+  positionCounts: Map<number, number[]>
+): number[] => {
+  let counts = positionCounts.get(choiceCount)
+  if (!counts) {
+    counts = new Array(choiceCount).fill(0)
+    positionCounts.set(choiceCount, counts)
+  }
+  return counts
+}
+
+/**
+ * Find candidate positions with the minimum count
+ */
+const findCandidatePositions = (counts: number[]): number[] => {
+  const minCount = Math.min(...counts)
+  return counts
+    .map((count, index) => (count === minCount ? index : -1))
+    .filter(index => index !== -1)
+}
+
+/**
+ * Select target position for balancing (prefer current if balanced, otherwise random from candidates)
+ */
+const selectTargetPosition = (currentIndex: number, candidateIndexes: number[]): number => {
+  if (candidateIndexes.includes(currentIndex)) {
+    return currentIndex
+  }
+  return candidateIndexes[Math.floor(Math.random() * candidateIndexes.length)]
+}
+
+/**
+ * Swap choices to move correct answer to target position
+ */
+const swapChoicesToPosition = (
+  choices: string[],
+  fromIndex: number,
+  toIndex: number
+): string[] => {
+  const newChoices = [...choices]
+  ;[newChoices[fromIndex], newChoices[toIndex]] = [
+    newChoices[toIndex],
+    newChoices[fromIndex]
+  ]
+  return newChoices
+}
+
+/**
+ * Balance correct answer positions across questions to avoid patterns
+ * Ensures correct answers are distributed evenly across all positions
+ */
 export const balanceCorrectAnswerPositions = (questions: Question[]): Question[] => {
   const positionCounts = new Map<number, number[]>()
   
   return questions.map(question => {
-    // Skip balancing for True/False questions - they should always have fixed order (True, False)
-    if (question.type === 'trueFalse') {
+    // Skip balancing for certain question types
+    if (shouldSkipBalancing(question)) {
       return question
     }
     
-    const choices = question.choices
-    if (!choices || choices.length <= 1) {
-      return question
-    }
-    
-    // Skip balancing for questions with only 2 choices - preserve order
-    if (choices.length === 2) {
-      return question
-    }
-
-    const correctIndex = choices.findIndex(choice => choice === question.correctAnswer)
+    const correctIndex = findCorrectAnswerIndex(question)
     if (correctIndex === -1) {
       return question
     }
 
-    let counts = positionCounts.get(choices.length)
-    if (!counts) {
-      counts = new Array(choices.length).fill(0)
-      positionCounts.set(choices.length, counts)
-    }
-
-    const minCount = Math.min(...counts)
-    const candidateIndexes = counts
-      .map((count, index) => (count === minCount ? index : -1))
-      .filter(index => index !== -1)
-
-    let targetIndex = correctIndex
-    if (!candidateIndexes.includes(correctIndex)) {
-      targetIndex = candidateIndexes[Math.floor(Math.random() * candidateIndexes.length)]
-    }
-
+    const choiceCount = question.choices.length
+    const counts = getPositionCounts(choiceCount, positionCounts)
+    const candidateIndexes = findCandidatePositions(counts)
+    const targetIndex = selectTargetPosition(correctIndex, candidateIndexes)
+    
+    // Update count for the target position
     counts[targetIndex] += 1
 
+    // If already in correct position, no swap needed
     if (targetIndex === correctIndex) {
       return question
     }
 
-    const newChoices = [...choices]
-    ;[newChoices[correctIndex], newChoices[targetIndex]] = [
-      newChoices[targetIndex],
-      newChoices[correctIndex]
-    ]
+    // Swap choices to balance position
+    const newChoices = swapChoicesToPosition(question.choices, correctIndex, targetIndex)
 
     return {
       ...question,
