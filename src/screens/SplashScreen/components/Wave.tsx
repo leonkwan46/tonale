@@ -1,6 +1,5 @@
 import { Colors, ColorScheme } from '@/constants/Colors'
 import styled from '@emotion/native'
-import * as React from 'react'
 import { useEffect } from 'react'
 import Animated, {
   Easing,
@@ -9,40 +8,34 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 
-interface MusicBarProps {
+interface WaveProps {
   delay: number
   colorScheme: ColorScheme
   isTransitioning: boolean
 }
 
-export function MusicBar({ delay, colorScheme, isTransitioning }: MusicBarProps) {
-  
-  // Animation values
+export function Wave({ delay, colorScheme, isTransitioning }: WaveProps) {
   const height = useSharedValue(4)
   const opacity = useSharedValue(0)
 
   useEffect(() => {
-    // Initial fade in with delay
     const initialTimeout = setTimeout(() => {
       opacity.value = withTiming(1, {
         duration: 400,
         easing: Easing.out(Easing.ease)
       })
       
-      // Start height animation
       animateHeight()
     }, delay * 1000)
 
-    // Function to animate height changes
     const animateHeight = () => {
-      const newHeight = Math.random() * 24 + 8 // Random height between 8-32
+      const newHeight = Math.random() * 24 + 8
       height.value = withTiming(newHeight, {
         duration: 600,
         easing: Easing.inOut(Easing.ease)
       })
     }
 
-    // Continue animating height every 800ms
     const interval = setInterval(() => {
       if (!isTransitioning) {
         animateHeight()
@@ -68,7 +61,6 @@ export function MusicBar({ delay, colorScheme, isTransitioning }: MusicBarProps)
   )
 }
 
-// Styled Components
 const Bar = styled(Animated.View)<{ colorScheme: ColorScheme }>`
   width: 4px;
   border-radius: 2px;
@@ -79,3 +71,6 @@ const Bar = styled(Animated.View)<{ colorScheme: ColorScheme }>`
   shadow-radius: 4px;
   elevation: 3;
 `
+
+
+
