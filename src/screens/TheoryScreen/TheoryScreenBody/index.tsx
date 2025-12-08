@@ -1,5 +1,5 @@
 import { THEORY_OPENED_STAGES_KEY } from '@/constants/cache'
-import { getStageById, getStageRequirements } from '@/utils/lesson'
+import { useProgress } from '@/hooks'
 import { stagesArray } from '@/theory/curriculum/stages/helpers'
 import { Stage, StageLesson } from '@/theory/curriculum/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -11,8 +11,11 @@ import { scale } from 'react-native-size-matters'
 import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'
 import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
 
+export const TheoryScreenBody = () => {
+  const { getStageById, getStageRequirements } = useProgress()
+
 // UI Utility Functions for TheoryScreenBody
-const getVisibleLessonsForStage = (stageId: string): StageLesson[] => {
+  const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
   const stage = getStageById(stageId)
   if (!stage) return []
   
@@ -23,9 +26,9 @@ const getVisibleLessonsForStage = (stageId: string): StageLesson[] => {
   
   // If stage is locked, show lessons as locked
   return stage.lessons.map(lesson => ({ ...lesson, isLocked: true }))
-}
+  }, [getStageById])
 
-const getStageDisplayData = (stageId: string): {
+  const getStageDisplayData = useCallback((stageId: string): {
   stage: Stage | undefined
   isAccessible: boolean
   blockingMessage: string
@@ -55,9 +58,7 @@ const getStageDisplayData = (stageId: string): {
     blockingMessage,
     lessons
   }
-}
-
-export const TheoryScreenBody = () => {
+  }, [getStageById, getStageRequirements, getVisibleLessonsForStage])
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
