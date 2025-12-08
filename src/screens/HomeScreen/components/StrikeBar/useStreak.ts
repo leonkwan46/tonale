@@ -1,6 +1,6 @@
 import { updateUserData } from '@/config/firebase/functions'
 import { STREAK_LOCAL_KEY } from '@/constants/cache'
-import { useUser } from '@/hooks/useUser'
+import { useUser } from '@/hooks'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { UserProfile } from '@types'
 import type { User } from 'firebase/auth'
@@ -207,7 +207,7 @@ export const useStreak = (user: User | null): number => {
 
     const updateStreak = async () => {
       await handleUserSwitch(userId)
-
+      
       if (!userId) {
         setCurrentDay(DEFAULT_STREAK)
         previousUserIdRef.current = null

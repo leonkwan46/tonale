@@ -1,9 +1,10 @@
 import { useLastLesson } from '@/hooks'
 import { CardButton, Description } from '@/screens/TheoryScreen/components/LessonSection/components'
+import { Loading } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
 import { useState } from 'react'
-import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, SkeletonButton, SkeletonCardButton, SkeletonDescription, SkeletonDescriptionContainer, SkeletonTitle } from './LessonCard.styles'
+import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
 
 export const LessonCard: React.FC = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
@@ -14,13 +15,8 @@ export const LessonCard: React.FC = () => {
     return (
       <LessonCardContainer>
         <CardContentContainer>
-          <SkeletonCardButton />
-          <SkeletonDescriptionContainer>
-            <SkeletonTitle />
-            <SkeletonDescription />
-          </SkeletonDescriptionContainer>
+          <Loading size="large" />
         </CardContentContainer>
-        <SkeletonButton />
       </LessonCardContainer>
     )
   }
@@ -37,7 +33,13 @@ export const LessonCard: React.FC = () => {
   }
 
   if (!lesson) {
-    return null
+    return (
+      <LessonCardContainer>
+        <CardContentContainer>
+          <NoLessonText>Sorry, no lesson found here</NoLessonText>
+        </CardContentContainer>
+      </LessonCardContainer>
+    )
   }
 
   const handleContinuePress = () => {
