@@ -4,5 +4,22 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
+  "java.project.resourceFilters": [
+    "node_modules"
+  ],
+  "files.exclude": {
+    "**/node_modules/**/android": true,
+    "**/node_modules/**/build.gradle": true,
+    "**/node_modules/**/.gradle": true,
+    "**/node_modules/**/.settings": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**/android/**": true,
+    "**/node_modules/**/.gradle/**": true
+  },
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m",
   "java.compile.nullAnalysis.mode": "automatic"
 }
