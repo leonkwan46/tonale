@@ -88,3 +88,11 @@ export const SkeletonButton = styled.View(({ theme }) => ({
   opacity: 0.3
 }))
 
+export const NoLessonText = styled.Text(({ theme }) => ({
+  fontSize: scale(theme.typography.base),
+  color: theme.colors.secondary,
+  fontFamily: getSourGummyFontFamily('400'),
+  textAlign: 'center',
+  paddingVertical: scale(20)
+}))
+
