@@ -1,22 +1,36 @@
 import * as admin from 'firebase-admin'
 
-// Import function modules
-import * as lessonProgressFunctions from './lessonProgress'
-import * as userDataFunctions from './userData'
+// Import handlers directly
+import {
+    createUserData,
+    deleteUserData,
+    getUserData,
+    updateUserData
+} from './api/userData/handlers'
+
+import {
+    deleteLessonProgress,
+    getAllLessonProgress,
+    getLessonProgress,
+    updateLessonProgress
+} from './api/lessonProgress/handlers'
+
+import {
+    deleteFailedQuestion,
+    deleteFailedQuestionsByLesson,
+    getFailedQuestions,
+    storeFailedQuestion,
+    storeFailedQuestions
+} from './api/wrongQuestions/handlers'
 
 admin.initializeApp()
 
 // Export userData CRUD functions
-export const createUserData = userDataFunctions.createUserData
-export const getUserData = userDataFunctions.getUserData
-export const updateUserData = userDataFunctions.updateUserData
-export const deleteUserData = userDataFunctions.deleteUserData
+export { createUserData, deleteUserData, getUserData, updateUserData }
 
 // Export lessonProgress CRUD functions
-export const updateLessonProgress = lessonProgressFunctions.updateLessonProgress
-export const getLessonProgress = lessonProgressFunctions.getLessonProgress
-export const getAllLessonProgress = lessonProgressFunctions.getAllLessonProgress
-export const deleteLessonProgress = lessonProgressFunctions.deleteLessonProgress
+export { deleteLessonProgress, getAllLessonProgress, getLessonProgress, updateLessonProgress }
 
-// Add more Cloud Functions here as needed
+// Export wrongQuestions CRUD functions
+export { deleteFailedQuestion, deleteFailedQuestionsByLesson, getFailedQuestions, storeFailedQuestion, storeFailedQuestions }
 
