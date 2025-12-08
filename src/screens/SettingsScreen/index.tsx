@@ -1,6 +1,6 @@
 import { auth } from '@/config/firebase/firebase'
 import { THEORY_OPENED_STAGES_KEY } from '@/constants/cache'
-import { clearAllUserData } from '@/utils/userProgress'
+import { useProgress } from '@/hooks'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth'
@@ -19,6 +19,7 @@ import {
 export function SettingsScreen() {
   const colorScheme = useColorScheme() ?? 'light'
   const router = useRouter()
+  const { clearAllUserData } = useProgress()
   const currentUser = auth.currentUser
 
   const handleLogout = () => {

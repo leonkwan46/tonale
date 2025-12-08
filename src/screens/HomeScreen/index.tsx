@@ -1,5 +1,4 @@
-import { forceRefreshProgress } from '@/utils/userProgress'
-import { useLastLesson, useUser } from '@/hooks'
+import { useLastLesson, useProgress, useUser } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents'
 import { useCallback, useState } from 'react'
 import { GreetingBanner } from './components/GreetingBanner'
@@ -10,19 +9,20 @@ import { StrikeBar } from './components/StrikeBar'
 export function HomeScreen() {
   const { user, profile, loading } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
+  const { refreshProgress } = useProgress()
   const [refreshing, setRefreshing] = useState(false)
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
     try {
-      await forceRefreshProgress()
+      await refreshProgress()
       await refreshLesson()
     } catch (error) {
       console.error('Failed to refresh progress:', error)
     } finally {
       setRefreshing(false)
     }
-  }, [refreshLesson])
+  }, [refreshLesson, refreshProgress])
 
   return (
     <ScreenContainer>
