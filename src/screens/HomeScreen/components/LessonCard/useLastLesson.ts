@@ -1,4 +1,4 @@
-import { useProgress } from '@/hooks/useProgressContext'
+import { useProgress, type ProgressData } from '@/hooks/useProgressContext'
 import { useUser } from '@/hooks/useUserContext'
 import { Lesson } from '@/theory/curriculum/types'
 import { useFocusEffect } from 'expo-router'
@@ -11,8 +11,6 @@ interface LessonResult {
   refresh: () => Promise<void>
 }
 
-type LessonProgress = { isLocked: boolean; stars?: number; isPassed?: boolean }
-type ProgressData = Record<string, LessonProgress>
 type LastAccess = { lessonId: string; timestamp: number } | null
 
 export const useLastLesson = (): LessonResult => {
@@ -29,45 +27,6 @@ export const useLastLesson = (): LessonResult => {
   const [loading, setLoading] = useState(true)
   const [allCompleted, setAllCompleted] = useState(false)
 
-  const findIncompleteLessonFromIndex = useCallback((
-    startIndex: number,
-    progressData: ProgressData
-  ): Lesson | null => {
-    for (let i = startIndex; i < allStageLessons.length; i++) {
-      const stageLesson = allStageLessons[i]
-      const lesson = getLessonById(stageLesson.id, progressData)
-      if (!lesson) continue
-      
-      const progress = progressData[stageLesson.id]
-      if (progress?.isLocked ?? lesson.isLocked ?? false) continue
-      if (isLessonComplete(lesson, progress)) continue
-      
-      return lesson
-    }
-    return null
-  }, [allStageLessons, getLessonById])
-
-  const findLessonToDisplay = useCallback((
-    lastAccess: LastAccess,
-    progressData: ProgressData
-  ): Lesson | null => {
-    if (lastAccess) {
-      const lesson = getLessonById(lastAccess.lessonId, progressData) ?? null
-      if (!lesson) return null
-
-      const progress = progressData[lastAccess.lessonId]
-      if (isLessonComplete(lesson, progress)) {
-        const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
-        if (currentIndex === -1) return null
-        return findIncompleteLessonFromIndex(currentIndex + 1, progressData)
-      }
-      
-      return lesson
-    }
-    
-    return findIncompleteLessonFromIndex(0, progressData)
-  }, [allStageLessons, getLessonById, findIncompleteLessonFromIndex])
-
   const fetchLesson = useCallback(async () => {
     if (userLoading || !user || !initialized) {
       setLoading(true)
@@ -77,10 +36,20 @@ export const useLastLesson = (): LessonResult => {
     try {
       setLoading(true)
       const lastAccess = await getLastAccessedLessonLocal()
-      const currentLesson = findLessonToDisplay(lastAccess, progressData)
+      const currentLesson = findLessonToDisplay(
+        lastAccess,
+        progressData,
+        allStageLessons,
+        getLessonById
+      )
 
       if (!currentLesson) {
-        const allCompleted = findIncompleteLessonFromIndex(0, progressData) === null
+        const allCompleted = findIncompleteLessonFromIndex(
+          0,
+          progressData,
+          allStageLessons,
+          getLessonById
+        ) === null
         setAllCompleted(allCompleted)
         setLesson(null)
         setLoading(false)
@@ -102,10 +71,12 @@ export const useLastLesson = (): LessonResult => {
     initialized,
     progressData,
     getLastAccessedLessonLocal,
-    findLessonToDisplay,
-    findIncompleteLessonFromIndex
+    allStageLessons,
+    getLessonById
   ])
 
+  // Reactive update: refreshes when progressData or user state changes
+  // Handles updates when lessons are completed and context data changes
   useEffect(() => {
     if (!userLoading && user && initialized) {
       fetchLesson()
@@ -116,7 +87,9 @@ export const useLastLesson = (): LessonResult => {
     }
   }, [userLoading, user, initialized, progressData, fetchLesson])
 
-  // Refresh lesson when screen comes into focus
+  // Navigation-based refresh: refreshes when screen comes into focus
+  // Catches AsyncStorage updates from other screens (e.g., theory screen lesson selection)
+  // that may not have triggered context updates yet
   useFocusEffect(useCallback(() => {
     if (!userLoading && user && initialized) {
       fetchLesson()
@@ -127,9 +100,52 @@ export const useLastLesson = (): LessonResult => {
 }
 
 // Helper Functions
+function findIncompleteLessonFromIndex(
+  startIndex: number,
+  progressData: Record<string, ProgressData>,
+  allStageLessons: { id: string }[],
+  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
+): Lesson | null {
+  for (let i = startIndex; i < allStageLessons.length; i++) {
+    const stageLesson = allStageLessons[i]
+    const lesson = getLessonById(stageLesson.id, progressData) ?? null
+    if (!lesson) continue
+    
+    const progress = progressData[stageLesson.id]
+    if (progress?.isLocked ?? lesson.isLocked ?? false) continue
+    if (isLessonComplete(lesson, progress)) continue
+    
+    return lesson
+  }
+  return null
+}
+
+function findLessonToDisplay(
+  lastAccess: LastAccess,
+  progressData: Record<string, ProgressData>,
+  allStageLessons: { id: string }[],
+  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
+): Lesson | null {
+  if (lastAccess) {
+    const lesson = getLessonById(lastAccess.lessonId, progressData) ?? null
+    if (!lesson) return null
+
+    const progress = progressData[lastAccess.lessonId]
+    if (isLessonComplete(lesson, progress)) {
+      const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
+      if (currentIndex === -1) return null
+      return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons, getLessonById)
+    }
+    
+    return lesson
+  }
+  
+  return findIncompleteLessonFromIndex(0, progressData, allStageLessons, getLessonById)
+}
+
 function isLessonComplete(
   lesson: Lesson,
-  progress: LessonProgress | undefined
+  progress: ProgressData | undefined
 ): boolean {
   if (lesson.isFinalTest) {
     return progress?.isPassed === true
@@ -139,9 +155,9 @@ function isLessonComplete(
 
 function mergeProgressData(
   lesson: Lesson,
-  progressData: ProgressData
+  progressData: Record<string, ProgressData>
 ): Lesson {
-  const progress = progressData[lesson.id]
+  const progress: ProgressData | undefined = progressData[lesson.id]
   return {
     ...lesson,
     isLocked: progress?.isLocked ?? lesson.isLocked,
