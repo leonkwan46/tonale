@@ -7,7 +7,7 @@ import { LessonCard } from './components/LessonCard'
 import { StrikeBar } from './components/StrikeBar'
 
 export function HomeScreen() {
-  const { user, profile, loading } = useUser()
+  const { user, profile, loading, fetchProfile } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
   const { refreshProgress } = useProgress()
   const [refreshing, setRefreshing] = useState(false)
@@ -15,20 +15,23 @@ export function HomeScreen() {
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
     try {
-      await refreshProgress()
-      await refreshLesson()
+      await Promise.all([
+        fetchProfile(),
+        refreshProgress(),
+        refreshLesson()
+      ])
     } catch (error) {
-      console.error('Failed to refresh progress:', error)
+      console.error('Failed to refresh:', error)
     } finally {
       setRefreshing(false)
     }
-  }, [refreshLesson, refreshProgress])
+  }, [fetchProfile, refreshLesson, refreshProgress])
 
   return (
     <ScreenContainer>
       <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh}>
         <GreetingBanner user={user} profile={profile} loading={loading} />
-        <StrikeBar user={user} />
+        <StrikeBar />
         <LessonCard />
       </HomeScreenBackground>
     </ScreenContainer>

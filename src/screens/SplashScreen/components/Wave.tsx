@@ -74,3 +74,5 @@ const Bar = styled(Animated.View)<{ colorScheme: ColorScheme }>`
 
 
 
+
+

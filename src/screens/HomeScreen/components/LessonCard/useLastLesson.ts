@@ -24,17 +24,14 @@ export const useLastLesson = (): LessonResult => {
   } = useProgress()
   
   const [lesson, setLesson] = useState<Lesson | null>(null)
-  const [loading, setLoading] = useState(true)
   const [allCompleted, setAllCompleted] = useState(false)
 
+  const loading = userLoading || !initialized || !user
+
   const fetchLesson = useCallback(async () => {
-    if (userLoading || !user || !initialized) {
-      setLoading(true)
-      return
-    }
+    if (loading) return
 
     try {
-      setLoading(true)
       const lastAccess = await getLastAccessedLessonLocal()
       const currentLesson = findLessonToDisplay(
         lastAccess,
@@ -42,7 +39,7 @@ export const useLastLesson = (): LessonResult => {
         allStageLessons,
         getLessonById
       )
-
+      
       if (!currentLesson) {
         const allCompleted = findIncompleteLessonFromIndex(
           0,
@@ -52,23 +49,18 @@ export const useLastLesson = (): LessonResult => {
         ) === null
         setAllCompleted(allCompleted)
         setLesson(null)
-        setLoading(false)
       } else {
         const lessonWithProgress = mergeProgressData(currentLesson, progressData)
         setLesson(lessonWithProgress)
         setAllCompleted(false)
-        setLoading(false)
       }
     } catch (error) {
       console.error('Failed to get lesson:', error)
       setLesson(null)
       setAllCompleted(false)
-      setLoading(false)
     }
   }, [
-    userLoading,
-    user,
-    initialized,
+    loading,
     progressData,
     getLastAccessedLessonLocal,
     allStageLessons,
@@ -78,23 +70,22 @@ export const useLastLesson = (): LessonResult => {
   // Reactive update: refreshes when progressData or user state changes
   // Handles updates when lessons are completed and context data changes
   useEffect(() => {
-    if (!userLoading && user && initialized) {
+    if (!loading) {
       fetchLesson()
-    } else if (!userLoading && !user) {
+    } else {
       setLesson(null)
       setAllCompleted(false)
-      setLoading(false)
     }
-  }, [userLoading, user, initialized, progressData, fetchLesson])
+  }, [loading, progressData, fetchLesson])
 
   // Navigation-based refresh: refreshes when screen comes into focus
   // Catches AsyncStorage updates from other screens (e.g., theory screen lesson selection)
   // that may not have triggered context updates yet
   useFocusEffect(useCallback(() => {
-    if (!userLoading && user && initialized) {
+    if (!loading) {
       fetchLesson()
     }
-  }, [userLoading, user, initialized, fetchLesson]))
+  }, [loading, fetchLesson]))
 
   return { lesson, loading, allCompleted, refresh: fetchLesson }
 }

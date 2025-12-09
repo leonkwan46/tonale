@@ -1,6 +1,6 @@
 import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebase/functions/lessonProgress'
 import { getFailedQuestionsFn } from '@/config/firebase/functions/wrongQuestions'
-import { LAST_LESSON_ACCESS_KEY, STREAK_LOCAL_KEY } from '@/constants/cache'
+import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
 import { calculateStageUnlockStatus, getLessonWithProgress, stagesArray } from '@/theory/curriculum/stages/helpers'
 import { Lesson, Stage, StageLesson } from '@/theory/curriculum/types'
@@ -58,14 +58,12 @@ export const ProgressContext = createContext<ProgressContextType | undefined>(un
 const clearUserDataOnSwitch = async (): Promise<void> => {
   await clearProgressCache()
   await AsyncStorage.removeItem(LAST_LESSON_ACCESS_KEY)
-  await AsyncStorage.removeItem(STREAK_LOCAL_KEY)
 }
 
 const clearUserDataStorage = async (): Promise<void> => {
   try {
     await clearProgressCache()
     await AsyncStorage.removeItem(LAST_LESSON_ACCESS_KEY)
-    await AsyncStorage.removeItem(STREAK_LOCAL_KEY)
   } catch (error) {
     console.error('Failed to clear user data storage:', error)
   }
@@ -292,9 +290,11 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       resetStageProgressData()
       
       const result = await getAllLessonProgressFn()
+      console.log('[getAllLessonProgress] Response:', JSON.stringify(result.data, null, 2))
       
       if (result.data.success) {
         const lessonsData = result.data.data
+        console.log('[getAllLessonProgress] Lessons data:', Object.keys(lessonsData).length, 'lessons')
         
         if (Object.keys(lessonsData).length === 0) {
           initializeEmptyProgress()
