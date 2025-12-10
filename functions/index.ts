@@ -16,12 +16,12 @@ import {
 } from './api/lessonProgress/handlers'
 
 import {
-    deleteFailedQuestion,
-    deleteFailedQuestionsByLesson,
-    getFailedQuestions,
-    storeFailedQuestion,
-    storeFailedQuestions
-} from './api/wrongQuestions/handlers'
+    deleteRevisionQuestion,
+    deleteRevisionQuestionsByLesson,
+    getRevisionQuestions,
+    storeRevisionQuestion,
+    storeRevisionQuestions
+} from './api/revisionQuestions/handlers'
 
 admin.initializeApp()
 
@@ -31,6 +31,6 @@ export { createUserData, deleteUserData, getUserData, updateUserData }
 // Export lessonProgress CRUD functions
 export { deleteLessonProgress, getAllLessonProgress, getLessonProgress, updateLessonProgress }
 
-// Export wrongQuestions CRUD functions
-export { deleteFailedQuestion, deleteFailedQuestionsByLesson, getFailedQuestions, storeFailedQuestion, storeFailedQuestions }
+// Export revisionQuestions CRUD functions
+export { deleteRevisionQuestion, deleteRevisionQuestionsByLesson, getRevisionQuestions, storeRevisionQuestion, storeRevisionQuestions }
 

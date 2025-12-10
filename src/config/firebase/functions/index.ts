@@ -4,5 +4,5 @@ export { createUserData, deleteUserData, getUserData, updateUserData, type UserP
 // Export lesson progress functions
 export * from './lessonProgress'
 
-// Export wrong questions functions
-export * from './wrongQuestions'
+// Export revision questions functions
+export * from './revisionQuestions'

@@ -1,8 +1,8 @@
-import type { FailedQuestion, VisualComponentData } from '@types'
+import type { RevisionQuestion, VisualComponent } from '@types'
 import * as admin from 'firebase-admin'
 import { FieldValue } from 'firebase-admin/firestore'
 
-export interface FailedQuestionInput {
+export interface RevisionQuestionInput {
   id: string
   lessonId: string
   question: string
@@ -10,31 +10,32 @@ export interface FailedQuestionInput {
   choices: string[]
   explanation?: string
   type: 'multipleChoice' | 'trueFalse' | 'keyPress'
-  visualComponent?: VisualComponentData
+  visualComponent?: VisualComponent
+  correctCount?: number
 }
 
-export async function storeFailedQuestionInFirestore(
+export async function storeRevisionQuestionInFirestore(
   userId: string,
-  failedQuestion: FailedQuestionInput
+  revisionQuestion: RevisionQuestionInput
 ): Promise<void> {
   const userRef = admin.firestore().collection('users').doc(userId)
   
   const questionWithTimestamp = {
-    ...failedQuestion,
+    ...revisionQuestion,
     failedAt: FieldValue.serverTimestamp()
   }
   
   await userRef.update({
-    [`failedQuestions.${failedQuestion.id}`]: questionWithTimestamp,
+    [`revisionQuestions.${revisionQuestion.id}`]: questionWithTimestamp,
     updatedAt: FieldValue.serverTimestamp()
   })
 }
 
-export async function storeFailedQuestionsInFirestore(
+export async function storeRevisionQuestionsInFirestore(
   userId: string,
-  failedQuestions: FailedQuestionInput[]
+  revisionQuestions: RevisionQuestionInput[]
 ): Promise<void> {
-  if (failedQuestions.length === 0) return
+  if (revisionQuestions.length === 0) return
   
   const userRef = admin.firestore().collection('users').doc(userId)
   const doc = await userRef.get()
@@ -43,12 +44,12 @@ export async function storeFailedQuestionsInFirestore(
     updatedAt: FieldValue.serverTimestamp()
   }
   
-  failedQuestions.forEach(failedQuestion => {
+  revisionQuestions.forEach(revisionQuestion => {
     const questionWithTimestamp = {
-      ...failedQuestion,
+      ...revisionQuestion,
       failedAt: FieldValue.serverTimestamp()
     }
-    updates[`failedQuestions.${failedQuestion.id}`] = questionWithTimestamp
+    updates[`revisionQuestions.${revisionQuestion.id}`] = questionWithTimestamp
   })
   
   if (doc.exists) {
@@ -58,32 +59,32 @@ export async function storeFailedQuestionsInFirestore(
   }
 }
 
-export async function getFailedQuestionsFromFirestore(
+export async function getRevisionQuestionsFromFirestore(
   userId: string
-): Promise<FailedQuestion[]> {
+): Promise<RevisionQuestion[]> {
   const userRef = admin.firestore().collection('users').doc(userId)
   const doc = await userRef.get()
   const userData = doc.data()
   
-  const failedQuestionsMap = userData?.failedQuestions || {}
+  const revisionQuestionsMap = userData?.revisionQuestions || {}
   
   // Convert object to array
-  return Object.values(failedQuestionsMap) as FailedQuestion[]
+  return Object.values(revisionQuestionsMap) as RevisionQuestion[]
 }
 
-export async function deleteFailedQuestionFromFirestore(
+export async function deleteRevisionQuestionFromFirestore(
   userId: string,
   id: string
 ): Promise<void> {
   const userRef = admin.firestore().collection('users').doc(userId)
   
   await userRef.update({
-    [`failedQuestions.${id}`]: FieldValue.delete(),
+    [`revisionQuestions.${id}`]: FieldValue.delete(),
     updatedAt: FieldValue.serverTimestamp()
   })
 }
 
-export async function deleteFailedQuestionsByLessonFromFirestore(
+export async function deleteRevisionQuestionsByLessonFromFirestore(
   userId: string,
   lessonId: string
 ): Promise<void> {
@@ -91,13 +92,13 @@ export async function deleteFailedQuestionsByLessonFromFirestore(
   const doc = await userRef.get()
   const userData = doc.data()
   
-  const failedQuestionsMap = userData?.failedQuestions || {}
+  const revisionQuestionsMap = userData?.revisionQuestions || {}
   
   // Find all questionIds for this lesson
   const questionIdsToDelete: string[] = []
-  for (const [questionId, question] of Object.entries(failedQuestionsMap)) {
-    const failedQuestion = question as FailedQuestion
-    if (failedQuestion.lessonId === lessonId) {
+  for (const [questionId, question] of Object.entries(revisionQuestionsMap)) {
+    const revisionQuestion = question as RevisionQuestion
+    if (revisionQuestion.lessonId === lessonId) {
       questionIdsToDelete.push(questionId)
     }
   }
@@ -109,7 +110,7 @@ export async function deleteFailedQuestionsByLessonFromFirestore(
     }
     
     questionIdsToDelete.forEach(questionId => {
-      updates[`failedQuestions.${questionId}`] = FieldValue.delete()
+      updates[`revisionQuestions.${questionId}`] = FieldValue.delete()
     })
     
     await userRef.update(updates)

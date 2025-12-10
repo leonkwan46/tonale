@@ -1,24 +1,24 @@
 import type {
-  FailedQuestionsResponse,
-  StoreFailedQuestionPayload,
-  StoreFailedQuestionResponse,
-  StoreFailedQuestionsPayload,
-  VisualComponentData
+  RevisionQuestionsResponse,
+  StoreRevisionQuestionPayload,
+  StoreRevisionQuestionResponse,
+  StoreRevisionQuestionsPayload,
+  VisualComponent
 } from '@types'
 import {
-  deleteFailedQuestionFromFirestore,
-  deleteFailedQuestionsByLessonFromFirestore,
-  getFailedQuestionsFromFirestore,
-  storeFailedQuestionInFirestore,
-  storeFailedQuestionsInFirestore,
-  type FailedQuestionInput
+  deleteRevisionQuestionFromFirestore,
+  deleteRevisionQuestionsByLessonFromFirestore,
+  getRevisionQuestionsFromFirestore,
+  storeRevisionQuestionInFirestore,
+  storeRevisionQuestionsInFirestore,
+  type RevisionQuestionInput
 } from './firestore'
 
 /**
  * Compress visualComponent by removing undefined/null/empty fields
  * This reduces storage size while preserving all essential data
  */
-function compressVisualComponent(visualComponent?: VisualComponentData): VisualComponentData | undefined {
+function compressVisualComponent(visualComponent?: VisualComponent): VisualComponent | undefined {
   if (!visualComponent) return undefined
   
   const compressed: Record<string, unknown> = {}
@@ -37,11 +37,11 @@ function compressVisualComponent(visualComponent?: VisualComponentData): VisualC
     }
   }
   
-  return Object.keys(compressed).length > 0 ? compressed : undefined
+  return Object.keys(compressed).length > 0 ? (compressed as unknown as VisualComponent) : undefined
 }
 
-export function validateStoreFailedQuestionPayload(
-  data: StoreFailedQuestionPayload
+export function validateStoreRevisionQuestionPayload(
+  data: StoreRevisionQuestionPayload
 ): void {
   const { id, lessonId, question, correctAnswer, choices, type } = data
 
@@ -70,14 +70,14 @@ export function validateStoreFailedQuestionPayload(
   }
 }
 
-export async function storeFailedQuestionService(
+export async function storeRevisionQuestionService(
   userId: string,
-  payload: StoreFailedQuestionPayload
-): Promise<StoreFailedQuestionResponse> {
-  validateStoreFailedQuestionPayload(payload)
+  payload: StoreRevisionQuestionPayload
+): Promise<StoreRevisionQuestionResponse> {
+  validateStoreRevisionQuestionPayload(payload)
   
   // Compress visualComponent before storing
-  const compressedPayload: FailedQuestionInput = {
+  const compressedPayload: RevisionQuestionInput = {
     id: payload.id,
     lessonId: payload.lessonId,
     question: payload.question,
@@ -85,33 +85,34 @@ export async function storeFailedQuestionService(
     choices: payload.choices,
     explanation: payload.explanation,
     type: payload.type,
-    visualComponent: compressVisualComponent(payload.visualComponent)
+    visualComponent: compressVisualComponent(payload.visualComponent),
+    correctCount: payload.correctCount
   }
   
-  await storeFailedQuestionInFirestore(userId, compressedPayload)
+  await storeRevisionQuestionInFirestore(userId, compressedPayload)
   
   return {
     success: true,
-    message: 'Failed question stored successfully'
+    message: 'Revision question stored successfully'
   }
 }
 
-export async function getFailedQuestionsService(
+export async function getRevisionQuestionsService(
   userId: string
-): Promise<FailedQuestionsResponse> {
-  // Always return all failed questions
-  const failedQuestions = await getFailedQuestionsFromFirestore(userId)
+): Promise<RevisionQuestionsResponse> {
+  // Always return all revision questions
+  const revisionQuestions = await getRevisionQuestionsFromFirestore(userId)
   
   return {
     success: true,
-    data: failedQuestions
+    data: revisionQuestions
   }
 }
 
-export async function storeFailedQuestionsService(
+export async function storeRevisionQuestionsService(
   userId: string,
-  payload: StoreFailedQuestionsPayload
-): Promise<StoreFailedQuestionResponse> {
+  payload: StoreRevisionQuestionsPayload
+): Promise<StoreRevisionQuestionResponse> {
   if (!payload.questions || !Array.isArray(payload.questions)) {
     throw new Error('questions is required and must be an array')
   }
@@ -119,17 +120,17 @@ export async function storeFailedQuestionsService(
   if (payload.questions.length === 0) {
     return {
       success: true,
-      message: 'No failed questions to store'
+      message: 'No revision questions to store'
     }
   }
   
   // Validate each question
   payload.questions.forEach(question => {
-    validateStoreFailedQuestionPayload(question)
+    validateStoreRevisionQuestionPayload(question)
   })
   
   // Compress visualComponent for each question
-  const compressedQuestions: FailedQuestionInput[] = payload.questions.map(question => ({
+  const compressedQuestions: RevisionQuestionInput[] = payload.questions.map(question => ({
     id: question.id,
     lessonId: question.lessonId,
     question: question.question,
@@ -137,46 +138,47 @@ export async function storeFailedQuestionsService(
     choices: question.choices,
     explanation: question.explanation,
     type: question.type,
-    visualComponent: compressVisualComponent(question.visualComponent)
+    visualComponent: compressVisualComponent(question.visualComponent),
+    correctCount: question.correctCount
   }))
   
-  await storeFailedQuestionsInFirestore(userId, compressedQuestions)
+  await storeRevisionQuestionsInFirestore(userId, compressedQuestions)
   
   return {
     success: true,
-    message: `Successfully stored ${compressedQuestions.length} failed question(s)`
+    message: `Successfully stored ${compressedQuestions.length} revision question(s)`
   }
 }
 
-export async function deleteFailedQuestionService(
+export async function deleteRevisionQuestionService(
   userId: string,
   id: string
-): Promise<StoreFailedQuestionResponse> {
+): Promise<StoreRevisionQuestionResponse> {
   if (!id || typeof id !== 'string') {
     throw new Error('id is required and must be a string')
   }
   
-  await deleteFailedQuestionFromFirestore(userId, id)
+  await deleteRevisionQuestionFromFirestore(userId, id)
   
   return {
     success: true,
-    message: 'Failed question deleted successfully'
+    message: 'Revision question deleted successfully'
   }
 }
 
-export async function deleteFailedQuestionsByLessonService(
+export async function deleteRevisionQuestionsByLessonService(
   userId: string,
   lessonId: string
-): Promise<StoreFailedQuestionResponse> {
+): Promise<StoreRevisionQuestionResponse> {
   if (!lessonId || typeof lessonId !== 'string') {
     throw new Error('lessonId is required and must be a string')
   }
   
-  await deleteFailedQuestionsByLessonFromFirestore(userId, lessonId)
+  await deleteRevisionQuestionsByLessonFromFirestore(userId, lessonId)
   
   return {
     success: true,
-    message: 'Failed questions deleted successfully'
+    message: 'Revision questions deleted successfully'
   }
 }
 
