@@ -136,7 +136,7 @@ export const useStreak = (): number => {
       previousProfileStreakRef.current.lastLoginDate !== profile.lastLoginDate
     )
     const shouldRecalculate = userIdChanged || isProfileFirstLoad || hasProfileStreakChanged || (isProfilePresent && usedFallbackStreakRef.current)
-    
+      
     if (!shouldRecalculate) return
 
     if (!isNewUser && !isProfilePresent) {
@@ -144,7 +144,7 @@ export const useStreak = (): number => {
     }
     const calculatedStreak = calculateUserStreak(profile)
     setCurrentStreak(calculatedStreak)
-    previousUserIdRef.current = userId
+      previousUserIdRef.current = userId
     if (isProfilePresent) {
       hasInitialProfileLoadRef.current = true
       usedFallbackStreakRef.current = false
