@@ -1,12 +1,12 @@
 import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebase/functions/lessonProgress'
-import { getFailedQuestionsFn } from '@/config/firebase/functions/wrongQuestions'
+import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
 import { calculateStageUnlockStatus, getLessonWithProgress, stagesArray } from '@/theory/curriculum/stages/helpers'
 import { Lesson, Stage, StageLesson } from '@/theory/curriculum/types'
 import { clearProgressCache, loadProgressCache, saveProgressCache } from '@/utils/progressCache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { FailedQuestion } from '@types'
+import { RevisionQuestion } from '@types'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 // ============================================================================
@@ -27,13 +27,13 @@ export interface ProgressData {
 export interface ProgressContextType {
   // State
   progressData: Record<string, ProgressData>
-  wrongQuestions: FailedQuestion[]
+  revisionQuestions: RevisionQuestion[]
   loading: boolean
   initialized: boolean
   
   // Progress actions
   refreshProgress: () => Promise<void>
-  refreshWrongQuestions: () => Promise<void>
+  refreshRevisionQuestions: () => Promise<void>
   updateProgress: (lessonId: string, data: Partial<ProgressData>) => void
   updateLessonProgress: (lessonId: string, stars: number) => Promise<void>
   updateFinalTestProgress: (lessonId: string, isPassed: boolean) => Promise<void>
@@ -258,7 +258,7 @@ const getNextLockedStage = (): Stage | undefined => {
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const { user } = useUser()
   const [progressData, setProgressDataState] = useState<Record<string, ProgressData>>({})
-  const [wrongQuestions, setWrongQuestions] = useState<FailedQuestion[]>([])
+  const [revisionQuestions, setRevisionQuestions] = useState<RevisionQuestion[]>([])
   const [loading, setLoading] = useState(true)
   const [initialized, setInitialized] = useState(false)
   const currentUserIdRef = useRef<string>('')
@@ -340,7 +340,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!user) {
       setProgressDataState({})
-      setWrongQuestions([])
+      setRevisionQuestions([])
       setInitialized(false)
       setLoading(false)
       currentUserIdRef.current = ''
@@ -364,30 +364,30 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [user, initializeUserProgress])
 
   // ============================================================================
-  // WRONG QUESTIONS MANAGEMENT
+  // REVISION QUESTIONS MANAGEMENT
   // ============================================================================
 
-  const loadWrongQuestions = useCallback(async () => {
+  const loadRevisionQuestions = useCallback(async () => {
     if (!user) {
-      setWrongQuestions([])
+      setRevisionQuestions([])
       return
     }
 
     try {
-      const result = await getFailedQuestionsFn({})
+      const result = await getRevisionQuestionsFn({})
       if (result.data.success) {
-        setWrongQuestions(result.data.data)
+        setRevisionQuestions(result.data.data)
       }
     } catch (error) {
-      console.error('Failed to load wrong questions:', error)
+      console.error('Failed to load revision questions:', error)
     }
   }, [user])
 
   useEffect(() => {
     if (user && initialized) {
-      loadWrongQuestions()
+      loadRevisionQuestions()
     }
-  }, [user, initialized, loadWrongQuestions])
+  }, [user, initialized, loadRevisionQuestions])
 
   // ============================================================================
   // PROGRESS ACTIONS
@@ -407,9 +407,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user, initializeUserProgress])
 
-  const refreshWrongQuestions = useCallback(async () => {
-    await loadWrongQuestions()
-  }, [loadWrongQuestions])
+  const refreshRevisionQuestions = useCallback(async () => {
+    await loadRevisionQuestions()
+  }, [loadRevisionQuestions])
 
   const updateProgress = useCallback((lessonId: string, data: Partial<ProgressData>) => {
     const updatedData = {
@@ -515,13 +515,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       value={{
         // State
         progressData,
-        wrongQuestions,
+        revisionQuestions,
         loading,
         initialized,
         
         // Progress actions
         refreshProgress,
-        refreshWrongQuestions,
+        refreshRevisionQuestions,
         updateProgress,
         updateLessonProgress,
         updateFinalTestProgress,
