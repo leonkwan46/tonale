@@ -1,4 +1,4 @@
-import { storeFailedQuestionsFn } from '@/config/firebase/functions/wrongQuestions'
+import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { useProgress } from '@/hooks'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
@@ -28,7 +28,7 @@ export function LessonScreen() {
     return generateQuestions(lesson)
   })
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [wrongQuestions, setWrongQuestions] = useState<Question[]>([])
+  const [wrongAnswers, setWrongAnswers] = useState<Question[]>([])
   const [showStarModal, setShowStarModal] = useState(false)
   const [showFailureModal, setShowFailureModal] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
@@ -36,7 +36,7 @@ export function LessonScreen() {
   const restartLesson = useCallback(() => {
     if (!lesson) return
     setCurrentQuestionIndex(0)
-    setWrongQuestions([])
+    setWrongAnswers([])
     setQuestions(generateQuestions(lesson))
     setIsCompleting(false)
   }, [lesson, generateQuestions])
@@ -45,7 +45,7 @@ export function LessonScreen() {
     if (!isCorrect) {
       const currentQuestion = questions[currentQuestionIndex]
       if (currentQuestion) {
-        setWrongQuestions(prev => {
+        setWrongAnswers(prev => {
           const updated = [...prev, currentQuestion]
           
           if (lesson?.isFinalTest && updated.length >= 3) {
@@ -64,10 +64,10 @@ export function LessonScreen() {
     }
   }, [currentQuestionIndex, questions.length])
 
-  const storeWrongQuestions = useCallback(async () => {
-    if (!lessonId || wrongQuestions.length === 0) return
+  const storeRevisionQuestions = useCallback(async () => {
+    if (!lessonId || wrongAnswers.length === 0) return
     
-    const questions = wrongQuestions.map(question => ({
+    const questions = wrongAnswers.map(question => ({
       id: question.id,
       lessonId,
       question: question.question,
@@ -75,15 +75,16 @@ export function LessonScreen() {
       choices: question.choices,
       explanation: question.explanation,
       type: question.type,
-      visualComponent: question.visualComponent as Record<string, unknown> | undefined
+      visualComponent: question.visualComponent as Record<string, unknown> | undefined,
+      correctCount: 0
     }))
     
     try {
-      await storeFailedQuestionsFn({ questions })
+      await storeRevisionQuestionsFn({ questions })
     } catch (error) {
-      console.error('Failed to store wrong questions:', error)
+      console.error('Failed to store revision questions:', error)
     }
-  }, [lessonId, wrongQuestions])
+  }, [lessonId, wrongAnswers])
 
   const completeLesson = useCallback(async () => {
     if (isCompleting) return // Prevent duplicate calls
@@ -91,12 +92,12 @@ export function LessonScreen() {
     
     if (lesson?.isFinalTest) {
       // Final test: pass/fail, no stars, immediate navigation
-      const isPassed = wrongQuestions.length < 3
+      const isPassed = wrongAnswers.length < 3
       
       if (lessonId) {
         await updateFinalTestProgress(lessonId, isPassed)
       }
-      await storeWrongQuestions()
+      await storeRevisionQuestions()
       
       if (!isPassed) {
         router.back()
@@ -112,7 +113,7 @@ export function LessonScreen() {
       }
     } else {
       // Regular lesson: stars, modal, user can retry/continue
-      const stars = calculateStars(questions.length, wrongQuestions.length)
+      const stars = calculateStars(questions.length, wrongAnswers.length)
       setShowStarModal(true)
       
       const soundToPlay = stars === 0 ? playLessonFailedSound : playLessonFinishedSound
@@ -121,17 +122,17 @@ export function LessonScreen() {
       if (lessonId) {
         await updateLessonProgress(lessonId, stars)
       }
-      await storeWrongQuestions()
+      await storeRevisionQuestions()
     }
   }, [
     isCompleting,
     lesson?.isFinalTest,
-    wrongQuestions.length,
+    wrongAnswers.length,
     lessonId,
     questions.length,
     updateFinalTestProgress,
     updateLessonProgress,
-    storeWrongQuestions,
+    storeRevisionQuestions,
     router,
     getNextLockedStage
   ])
@@ -172,7 +173,7 @@ export function LessonScreen() {
         lesson={lesson}
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
-        wrongAnswersCount={wrongQuestions.length}
+        wrongAnswersCount={wrongAnswers.length}
         onBackPress={() => router.back()}
       />
       
@@ -182,15 +183,15 @@ export function LessonScreen() {
         onAnswerSubmit={onAnswerSubmit}
         onNextQuestion={goToNextQuestion}
         onLessonComplete={completeLesson}
-        wrongAnswersCount={wrongQuestions.length}
+        wrongAnswersCount={wrongAnswers.length}
         isFinalTest={lesson?.isFinalTest || false}
       />
       
       {showStarModal && (
         <StarRatingModal
-          stars={calculateStars(questions.length, wrongQuestions.length)}
+          stars={calculateStars(questions.length, wrongAnswers.length)}
           totalQuestions={questions.length}
-          wrongAnswers={wrongQuestions.length}
+          wrongAnswers={wrongAnswers.length}
           onContinue={closeModalAndExit}
           onRetry={closeModalAndRetry}
         />
