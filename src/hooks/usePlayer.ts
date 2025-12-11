@@ -1,12 +1,10 @@
 // Read more: https://github.com/gleitz/midi-js-soundfonts?tab=readme-ov-file
 
-import { Audio } from 'expo-av'
+import { AudioPlayer, createAudioPlayer } from 'expo-audio'
 import { useEffect, useRef, useState } from 'react'
 
 const SOUNDFONT_BASE_URL = 'https://gleitz.github.io/midi-js-soundfonts/FatBoy'
 const DEFAULT_INSTRUMENT = 'acoustic_grand_piano'
-
-let audioModeSet = false
 
 export interface Melody {
   note: string
@@ -59,35 +57,16 @@ const getNoteUrl = (note: string, instrument: string = DEFAULT_INSTRUMENT): stri
   return `${SOUNDFONT_BASE_URL}/${instrument}-mp3/${normalizedNote}.mp3`
 }
 
-const setAudioMode = async () => {
-  if (!audioModeSet) {
-    try {
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-        playsInSilentModeIOS: true,
-        staysActiveInBackground: false,
-        shouldDuckAndroid: true,
-        playThroughEarpieceAndroid: false
-      })
-      audioModeSet = true
-    } catch (error) {
-      console.warn('Failed to set audio mode:', error)
-    }
-  }
-}
-
 const createSound = async (
   note: string,
   instrument: string,
   volume: number = 1.0
-): Promise<Audio.Sound | null> => {
+): Promise<AudioPlayer | null> => {
   const url = getNoteUrl(note, instrument)
   try {
-    const { sound } = await Audio.Sound.createAsync(
-      { uri: url },
-      { shouldPlay: false, volume }
-    )
-    return sound
+    const player = createAudioPlayer({ uri: url })
+    player.volume = volume
+    return player
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error)
     console.error(`[MIDI Player] Failed to load note ${note}:`, errorMessage)
@@ -107,18 +86,20 @@ const calculateBeatDuration = (tempo: number): number => {
 
 export const usePlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const activeSoundsRef = useRef<Set<Audio.Sound>>(new Set())
+  const activeSoundsRef = useRef<Set<AudioPlayer>>(new Set())
   const cancelPromiseRef = useRef<Promise<void> | null>(null)
   const isPlayingRef = useRef(false)
 
-  const setupUnloadOnFinish = (sound: Audio.Sound): void => {
-    sound.setOnPlaybackStatusUpdate((status) => {
+  const setupUnloadOnFinish = (player: AudioPlayer): void => {
+    player.addListener('playbackStatusUpdate', (status) => {
       if (status.isLoaded && status.didJustFinish) {
-        activeSoundsRef.current.delete(sound)
-        sound.unloadAsync().catch((error: unknown) => {
+        activeSoundsRef.current.delete(player)
+        try {
+          player.remove()
+        } catch (error: unknown) {
           const errorMessage = error instanceof Error ? error.message : String(error)
-          console.warn('[MIDI Player] Error unloading finished sound:', errorMessage)
-        })
+          console.warn('[MIDI Player] Error removing finished player:', errorMessage)
+        }
       }
     })
   }
@@ -128,15 +109,14 @@ export const usePlayer = () => {
     setIsPlaying(false)
     const soundsToCancel = Array.from(activeSoundsRef.current)
     activeSoundsRef.current.clear()
-    
+
     await Promise.all(
-      soundsToCancel.map(async (sound) => {
+      soundsToCancel.map(async (player) => {
         try {
-          const status = await sound.getStatusAsync()
-          if (status.isLoaded && status.isPlaying) {
-            await sound.stopAsync()
+          if (player.playing) {
+            player.pause()
           }
-          await sound.unloadAsync()
+          player.remove()
         } catch (error: unknown) {
           const errorMessage = error instanceof Error ? error.message : String(error)
           console.warn('[MIDI Player] Error during sound cleanup:', errorMessage)
@@ -151,37 +131,65 @@ export const usePlayer = () => {
   ): Promise<void> => {
     if (!isPlayingRef.current) return
 
+    // Preload all sounds first
     const sounds = await Promise.all(
       notes.map((item) => createSound(item.note, instrument, 1.0))
     )
 
-    const validSounds = sounds.filter((sound) => sound !== null) as Audio.Sound[]
+    const validSounds = sounds.filter((sound) => sound !== null) as AudioPlayer[]
 
     if (validSounds.length === 0) {
       console.warn('[MIDI Player] No sounds loaded successfully')
       return
     }
 
-    validSounds.forEach((sound) => {
-      activeSoundsRef.current.add(sound)
-      setupUnloadOnFinish(sound)
-    })
-
+    // Wait for all players to be ready by checking their status
     await Promise.all(
-      validSounds.map(async (sound) => {
-        if (!isPlayingRef.current) {
-          activeSoundsRef.current.delete(sound)
-          return
-        }
-        try {
-          await sound.playAsync()
-        } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : String(error)
-          console.error('[MIDI Player] Failed to play note:', errorMessage)
-          activeSoundsRef.current.delete(sound)
-        }
+      validSounds.map(async (player) => {
+        return new Promise<void>((resolve) => {
+          let attempts = 0
+          const maxAttempts = 100 // 1 second max wait
+          const checkLoaded = () => {
+            attempts++
+            if (player.isLoaded || attempts >= maxAttempts) {
+              resolve()
+            } else {
+              setTimeout(checkLoaded, 10)
+            }
+          }
+          checkLoaded()
+        })
       })
     )
+
+    validSounds.forEach((player) => {
+      activeSoundsRef.current.add(player)
+      setupUnloadOnFinish(player)
+    })
+
+    // Play all notes simultaneously - use a small delay to ensure all players are ready
+    await new Promise<void>((resolve) => {
+      const executePlay = () => {
+        // Play all notes at the exact same time
+        validSounds.forEach((player) => {
+          if (!isPlayingRef.current) {
+            activeSoundsRef.current.delete(player)
+            return
+          }
+          try {
+            player.play()
+          } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            console.error('[MIDI Player] Failed to play note:', errorMessage)
+            activeSoundsRef.current.delete(player)
+          }
+        })
+        resolve()
+      }
+
+      // Small delay to ensure all are ready, then execute
+      setTimeout(executePlay, 5)
+    })
   }
 
   const playMelody = async (
@@ -189,36 +197,96 @@ export const usePlayer = () => {
     instrument: string,
     beatDuration: number
   ): Promise<void> => {
-    for (let i = 0; i < notes.length; i++) {
-      if (!isPlayingRef.current) break
+    if (!isPlayingRef.current) return
 
-      const { note, duration = 0.5 } = notes[i]
-      const sound = await createSound(note, instrument, 1.0)
+    // Preload all sounds first for precise timing
+    const players = await Promise.all(
+      notes.map((item) => createSound(item.note, instrument, 1.0))
+    )
 
-      if (!sound) continue
+    const validPlayers = players.filter((player) => player !== null) as AudioPlayer[]
 
-      activeSoundsRef.current.add(sound)
-      setupUnloadOnFinish(sound)
-
-      try {
-        if (!isPlayingRef.current) {
-          activeSoundsRef.current.delete(sound)
-          await sound.unloadAsync()
-          break
-        }
-
-        await sound.playAsync()
-
-        const noteDuration = duration * beatDuration
-        if (i < notes.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, noteDuration))
-        }
-      } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : String(error)
-        console.error(`[MIDI Player] Failed to play melody note ${note}:`, errorMessage)
-        activeSoundsRef.current.delete(sound)
-      }
+    if (validPlayers.length === 0) {
+      console.warn('[MIDI Player] No sounds loaded successfully')
+      return
     }
+
+    // Wait for all players to be ready
+    await Promise.all(
+      validPlayers.map(async (player) => {
+        return new Promise<void>((resolve) => {
+          let attempts = 0
+          const maxAttempts = 100 // 1 second max wait
+          const checkLoaded = () => {
+            attempts++
+            if (player.isLoaded || attempts >= maxAttempts) {
+              resolve()
+            } else {
+              setTimeout(checkLoaded, 10)
+            }
+          }
+          checkLoaded()
+        })
+      })
+    )
+
+    // Register all players
+    validPlayers.forEach((player) => {
+      activeSoundsRef.current.add(player)
+      setupUnloadOnFinish(player)
+    })
+
+    // Calculate precise start times for each note
+    const scheduledTimes: number[] = []
+    let cumulativeTime = 0
+
+    notes.forEach(({ duration = 0.5 }) => {
+      scheduledTimes.push(cumulativeTime)
+      cumulativeTime += duration * beatDuration
+    })
+
+    // Schedule all notes with precise timing using a single timer loop
+    const startTime = Date.now()
+    const scheduleInterval = 5 // Check every 5ms for precision
+
+    await new Promise<void>((resolve) => {
+      const scheduleNotes = () => {
+        if (!isPlayingRef.current) {
+          resolve()
+          return
+        }
+
+        const elapsed = Date.now() - startTime
+
+        validPlayers.forEach((player, index) => {
+          const scheduledTime = scheduledTimes[index]
+          const timeDiff = elapsed - scheduledTime
+
+          // Play note if it's time (within 10ms tolerance for precision)
+          if (timeDiff >= -10 && timeDiff <= scheduleInterval && !player.playing) {
+            try {
+              if (isPlayingRef.current) {
+                player.play()
+              }
+            } catch (error: unknown) {
+              const errorMessage = error instanceof Error ? error.message : String(error)
+              console.error('[MIDI Player] Failed to play melody note:', errorMessage)
+              activeSoundsRef.current.delete(player)
+            }
+          }
+        })
+
+        // Continue scheduling until all notes have been played
+        const lastNoteTime = scheduledTimes[scheduledTimes.length - 1] + (notes[notes.length - 1].duration || 0.5) * beatDuration
+        if (elapsed < lastNoteTime + 100) {
+          setTimeout(scheduleNotes, scheduleInterval)
+        } else {
+          resolve()
+        }
+      }
+
+      scheduleNotes()
+    })
   }
 
   const play = async (
@@ -236,13 +304,11 @@ export const usePlayer = () => {
     setIsPlaying(false)
     cancelPromiseRef.current = cancelAllSounds()
     await cancelPromiseRef.current
-    
+
     isPlayingRef.current = true
     setIsPlaying(true)
-    
+
     try {
-      await setAudioMode()
-      
       const instrument = options.instrument || DEFAULT_INSTRUMENT
       const tempo = options.tempo || 120
       const beatDuration = calculateBeatDuration(tempo)
