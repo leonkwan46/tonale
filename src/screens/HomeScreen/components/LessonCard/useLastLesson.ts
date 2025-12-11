@@ -1,9 +1,8 @@
-import { useUser } from '@/hooks/useUser'
+import { useProgress, type ProgressData } from '@/hooks/useProgressContext'
+import { useUser } from '@/hooks/useUserContext'
 import { Lesson } from '@/theory/curriculum/types'
-import { allStageLessons, getLastAccessedLessonLocal, getLessonById } from '@/utils/lesson'
-import { getUserProgressData } from '@/utils/progress'
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 interface LessonResult {
   lesson: Lesson | null
@@ -12,191 +11,144 @@ interface LessonResult {
   refresh: () => Promise<void>
 }
 
+type LastAccess = { lessonId: string; timestamp: number } | null
+
 export const useLastLesson = (): LessonResult => {
-  const { loading: userLoading, user, progressInitialized } = useUser()
+  const { loading: userLoading, user } = useUser()
+  const {
+    progressData,
+    initialized,
+    getLessonById,
+    getLastAccessedLessonLocal,
+    allStageLessons
+  } = useProgress()
+  
   const [lesson, setLesson] = useState<Lesson | null>(null)
-  const [loading, setLoading] = useState(true)
   const [allCompleted, setAllCompleted] = useState(false)
-  const isMountedRef = useRef(true)
+
+  const loading = userLoading || !initialized || !user
 
   const fetchLesson = useCallback(async () => {
-    // Wait for user context to finish loading and progress to be initialized
-    if (userLoading || !user || !progressInitialized) {
-      if (isMountedRef.current) {
-        setLoading(true)
-      }
-      return
-    }
-
-    if (!isMountedRef.current) return
+    if (loading) return
 
     try {
-      if (isMountedRef.current) {
-        setLoading(true)
-      }
-      
       const lastAccess = await getLastAccessedLessonLocal()
-      const progressData = getUserProgressData()
+      const currentLesson = findLessonToDisplay(
+        lastAccess,
+        progressData,
+        allStageLessons,
+        getLessonById
+      )
       
-      if (!isMountedRef.current) return
-      
-      let currentLesson = findLessonToDisplay(lastAccess, progressData)
-      
-      if (!currentLesson || isAllLessonsCompleted()) {
-        if (isMountedRef.current) {
-          setAllCompleted(true)
+      if (!currentLesson) {
+        const allCompleted = findIncompleteLessonFromIndex(
+          0,
+          progressData,
+          allStageLessons,
+          getLessonById
+        ) === null
+        setAllCompleted(allCompleted)
           setLesson(null)
-          setLoading(false)
-        }
       } else {
         const lessonWithProgress = mergeProgressData(currentLesson, progressData)
-        if (isMountedRef.current) {
           setLesson(lessonWithProgress)
           setAllCompleted(false)
-          setLoading(false)
-        }
       }
     } catch (error) {
       console.error('Failed to get lesson:', error)
-      if (isMountedRef.current) {
         setLesson(null)
         setAllCompleted(false)
-        setLoading(false)
-      }
     }
-  }, [userLoading, user, progressInitialized])
+  }, [
+    loading,
+    progressData,
+    getLastAccessedLessonLocal,
+    allStageLessons,
+    getLessonById
+  ])
 
-  // Single effect: cleanup on unmount and trigger fetch when ready
+  // Reactive update: refreshes when progressData or user state changes
+  // Handles updates when lessons are completed and context data changes
   useEffect(() => {
-    isMountedRef.current = true
-    
-    // Fetch lesson when conditions are met
-    if (!userLoading && user && progressInitialized) {
+    if (!loading) {
       fetchLesson()
-    } else if (!userLoading && !user) {
-      // User logged out
-      if (isMountedRef.current) {
+    } else {
         setLesson(null)
         setAllCompleted(false)
-        setLoading(false)
-      }
     }
-    
-    return () => {
-      isMountedRef.current = false
-    }
-  }, [userLoading, user, progressInitialized, fetchLesson])
+  }, [loading, progressData, fetchLesson])
 
-  // Only use useFocusEffect to refresh when screen comes into focus
+  // Navigation-based refresh: refreshes when screen comes into focus
+  // Catches AsyncStorage updates from other screens (e.g., theory screen lesson selection)
+  // that may not have triggered context updates yet
   useFocusEffect(useCallback(() => {
-    if (!userLoading && user && progressInitialized) {
+    if (!loading) {
       fetchLesson()
     }
-  }, [userLoading, user, progressInitialized, fetchLesson]))
+  }, [loading, fetchLesson]))
 
   return { lesson, loading, allCompleted, refresh: fetchLesson }
 }
 
-const findLessonToDisplay = (
-  lastAccess: { lessonId: string; timestamp: number } | null,
-  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): Lesson | null => {
+// Helper Functions
+function findIncompleteLessonFromIndex(
+  startIndex: number,
+  progressData: Record<string, ProgressData>,
+  allStageLessons: { id: string }[],
+  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
+): Lesson | null {
+  for (let i = startIndex; i < allStageLessons.length; i++) {
+    const stageLesson = allStageLessons[i]
+    const lesson = getLessonById(stageLesson.id, progressData) ?? null
+    if (!lesson) continue
+    
+    const progress = progressData[stageLesson.id]
+    if (progress?.isLocked ?? lesson.isLocked ?? false) continue
+    if (isLessonComplete(lesson, progress)) continue
+    
+    return lesson
+  }
+  return null
+}
+
+function findLessonToDisplay(
+  lastAccess: LastAccess,
+  progressData: Record<string, ProgressData>,
+  allStageLessons: { id: string }[],
+  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
+): Lesson | null {
   if (lastAccess) {
-    const lesson = getLessonById(lastAccess.lessonId) ?? null
+    const lesson = getLessonById(lastAccess.lessonId, progressData) ?? null
     if (!lesson) return null
 
-    const isComplete = isLessonComplete(lesson, progressData[lastAccess.lessonId])
-    
-    if (isComplete) {
-      return findNextIncompleteLesson(lastAccess.lessonId, progressData)
+    const progress = progressData[lastAccess.lessonId]
+    if (isLessonComplete(lesson, progress)) {
+      const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
+      if (currentIndex === -1) return null
+      return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons, getLessonById)
     }
     
     return lesson
   }
   
-  return getFirstIncompleteLesson(progressData)
+  return findIncompleteLessonFromIndex(0, progressData, allStageLessons, getLessonById)
 }
 
-const isLessonComplete = (
+function isLessonComplete(
   lesson: Lesson,
-  progress: { isLocked: boolean; stars?: number; isPassed?: boolean } | undefined
-): boolean => {
+  progress: ProgressData | undefined
+): boolean {
   if (lesson.isFinalTest) {
     return progress?.isPassed === true
   }
   return (progress?.stars ?? 0) >= 3
 }
 
-const isLessonLocked = (
+function mergeProgressData(
   lesson: Lesson,
-  progress: { isLocked: boolean; stars?: number; isPassed?: boolean } | undefined
-): boolean => {
-  return progress?.isLocked ?? lesson.isLocked ?? false
-}
-
-const getFirstIncompleteLesson = (
-  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): Lesson | null => {
-  for (const stageLesson of allStageLessons) {
-    const lesson = getLessonById(stageLesson.id)
-    if (!lesson) continue
-    
-    if (isLessonLocked(lesson, progressData[stageLesson.id])) continue
-    if (isLessonComplete(lesson, progressData[stageLesson.id])) continue
-    
-    return lesson
-  }
-  return null
-}
-
-const findNextIncompleteLesson = (
-  currentLessonId: string,
-  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): Lesson | null => {
-  const currentIndex = allStageLessons.findIndex(lesson => lesson.id === currentLessonId)
-  if (currentIndex === -1) return null
-
-  for (let i = currentIndex + 1; i < allStageLessons.length; i++) {
-    const stageLesson = allStageLessons[i]
-    const lesson = getLessonById(stageLesson.id)
-    if (!lesson) continue
-    
-    if (isLessonLocked(lesson, progressData[stageLesson.id])) continue
-    if (isLessonComplete(lesson, progressData[stageLesson.id])) continue
-    
-    return lesson
-  }
-
-  return null
-}
-
-const isAllLessonsCompleted = (): boolean => {
-  const progressData = getUserProgressData()
-  let incompleteCount = 0
-  let completeCount = 0
-  
-  for (const stageLesson of allStageLessons) {
-    const lesson = getLessonById(stageLesson.id)
-    if (!lesson) continue
-    
-    const progress = progressData[stageLesson.id]
-    if (isLessonLocked(lesson, progress)) continue
-    
-    if (isLessonComplete(lesson, progress)) {
-      completeCount++
-    } else {
-      incompleteCount++
-    }
-  }
-  
-  return incompleteCount === 0 && completeCount > 0
-}
-
-const mergeProgressData = (
-  lesson: Lesson,
-  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): Lesson => {
-  const progress = progressData[lesson.id]
+  progressData: Record<string, ProgressData>
+): Lesson {
+  const progress: ProgressData | undefined = progressData[lesson.id]
   return {
     ...lesson,
     isLocked: progress?.isLocked ?? lesson.isLocked,

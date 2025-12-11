@@ -1,0 +1,145 @@
+appId: com.leonkwan46.tonale
+
+---
+- clearState
+- launchApp
+- runFlow:
+    file: helpers/loginAccount.yaml
+- tapOn:
+    id: "tab-theory"
+
+# Setup: Generate 2 revision questions by answering incorrectly
+- tapOn:
+    id: "tab-theory"
+- assertVisible:
+    id: "lesson-title-stage-0-lesson-1"
+- tapOn:
+    id: "lesson-title-stage-0-lesson-1"
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/10"
+# Answer first question incorrectly (choice-.* = wrong, correct-choice-.* = correct)
+- tapOn:
+    id: "choice-.*"
+- assertVisible: "2/10"
+# Answer second question incorrectly
+- tapOn:
+    id: "choice-.*"
+- assertVisible: "3/10"
+# Complete remaining questions correctly
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "4/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "5/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "6/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "7/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "8/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "9/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "10/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "Continue"
+- tapOn: "Continue"
+
+# Navigate to home screen
+- tapOn:
+    id: "tab-index"
+
+# Navigate to revision screen
+- assertVisible:
+    id: "start-revision-button"
+- tapOn:
+    id: "start-revision-button"
+
+# First session: Answer both questions correctly (count: 1 each)
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "2/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+# Exit - questions still remain (need 2 correct total to remove)
+- tapOn:
+    id: "exit-button"
+- assertVisible:
+    id: "tab-index"
+
+# Second session: Answer first question correctly again (count: 2 - removed)
+- assertVisible:
+    id: "start-revision-button"
+- tapOn:
+    id: "start-revision-button"
+- assertVisible:
+    id: "question-counter"
+- assertVisible: "1/2"
+- assertVisible:
+    id: "choice-.*"
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+# Answer second question incorrectly (count: 0, stays in revision)
+- assertVisible: "2/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "choice-.*"
+
+# Completion modal: 1 question remains
+- assertVisible:
+    id: "revision-completion-modal"
+# Revise button restarts with remaining questions
+- tapOn:
+    id: "revise-button"
+
+# Answer remaining question correctly (count: 1)
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/1"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+# Revise again
+- tapOn:
+    id: "revise-button"
+# Answer correctly again (count: 2 - removed, all cleared!)
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/1"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "okay-button"
+
+# Verify completion state on home screen
+- assertVisible:
+    id: "tab-index"
+- assertVisible:
+    id: "revision-card"
+- assertVisible:
+    id: "revision-card-completion-text"
+- assertVisible: "All Done!\nYou've cleared all your revision questions!"

@@ -1,8 +1,6 @@
-import { THEORY_OPENED_STAGES_KEY } from '@/constants/cache'
-import { getStageById, getStageRequirements } from '@/utils/lesson'
+import { useProgress } from '@/hooks'
 import { stagesArray } from '@/theory/curriculum/stages/helpers'
 import { Stage, StageLesson } from '@/theory/curriculum/types'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from 'expo-router'
 import * as React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -11,8 +9,11 @@ import { scale } from 'react-native-size-matters'
 import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'
 import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
 
+export const TheoryScreenBody = () => {
+  const { getStageById, getStageRequirements } = useProgress()
+
 // UI Utility Functions for TheoryScreenBody
-const getVisibleLessonsForStage = (stageId: string): StageLesson[] => {
+  const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
   const stage = getStageById(stageId)
   if (!stage) return []
   
@@ -23,9 +24,9 @@ const getVisibleLessonsForStage = (stageId: string): StageLesson[] => {
   
   // If stage is locked, show lessons as locked
   return stage.lessons.map(lesson => ({ ...lesson, isLocked: true }))
-}
+  }, [getStageById])
 
-const getStageDisplayData = (stageId: string): {
+  const getStageDisplayData = useCallback((stageId: string): {
   stage: Stage | undefined
   isAccessible: boolean
   blockingMessage: string
@@ -55,9 +56,7 @@ const getStageDisplayData = (stageId: string): {
     blockingMessage,
     lessons
   }
-}
-
-export const TheoryScreenBody = () => {
+  }, [getStageById, getStageRequirements, getVisibleLessonsForStage])
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
@@ -103,16 +102,7 @@ export const TheoryScreenBody = () => {
       const initialCollapsedState: Record<string, boolean> = {}
       const initialVisibleState: Record<string, boolean> = {}
 
-      // Load persisted opened stage ids
-      try {
-        const stored = await AsyncStorage.getItem(THEORY_OPENED_STAGES_KEY)
-        const parsed: string[] = stored ? JSON.parse(stored) : []
-        openedStageIdsRef.current = new Set(Array.isArray(parsed) ? parsed : [])
-      } catch {
-        openedStageIdsRef.current = new Set()
-      }
-
-      // Determine highest unlocked stage (furthest)
+      // Determine highest unlocked stage (furthest) - auto-open this stage
       const unlockedStages = stagesArray.filter(s => s.isUnlocked)
       const furthest = unlockedStages.length > 0
         ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
@@ -125,8 +115,7 @@ export const TheoryScreenBody = () => {
           animatedHeights.current[stage.id] = new Animated.Value(1)
         }
 
-        const userWantsOpen = openedStageIdsRef.current.has(stage.id)
-        const shouldBeOpen = userWantsOpen || (furthestId === stage.id)
+        const shouldBeOpen = furthestId === stage.id
 
         if (stage.isCleared) {
           // Cleared stages are collapsible; open if shouldBeOpen, otherwise collapse
@@ -172,14 +161,8 @@ export const TheoryScreenBody = () => {
         [stageId]: false
       }))
       
-      // Persist user intent to keep this stage open
-      try {
-        openedStageIdsRef.current.add(stageId)
-        const toStore = JSON.stringify(Array.from(openedStageIdsRef.current))
-        void AsyncStorage.setItem(THEORY_OPENED_STAGES_KEY, toStore)
-      } catch {
-        // ignore storage errors
-      }
+      // Track user intent to keep this stage open (session-only, not persisted)
+      openedStageIdsRef.current.add(stageId)
 
       // Small delay to ensure DOM update, then start fade in animation and scroll
       setTimeout(() => {
@@ -197,14 +180,8 @@ export const TheoryScreenBody = () => {
       }, 10)
     }
     if (newCollapsedState) {
-      // Persist user intent to keep this stage closed
-      try {
-        openedStageIdsRef.current.delete(stageId)
-        const toStore = JSON.stringify(Array.from(openedStageIdsRef.current))
-        void AsyncStorage.setItem(THEORY_OPENED_STAGES_KEY, toStore)
-      } catch {
-        // ignore storage errors
-      }
+      // Track user intent to keep this stage closed (session-only, not persisted)
+      openedStageIdsRef.current.delete(stageId)
     }
   }
 

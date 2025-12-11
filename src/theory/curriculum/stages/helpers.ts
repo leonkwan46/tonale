@@ -1,12 +1,13 @@
-import { getUserProgressData } from '@/utils/progress'
 import { Lesson, Stage } from '../types'
 import { stage1, stageOneLessons } from './stageOne'
 import { stage2, stageTwoLessons } from './stageTwo'
 import { stage0, stageZeroLessons } from './stageZero'
 
-export const getLessonProgress = (lessonId: string): { isLocked: boolean; stars?: number; isPassed?: boolean } => {
-  const userProgressData = getUserProgressData()
-  return userProgressData[lessonId] ?? { isLocked: false, stars: undefined, isPassed: undefined }
+export const getLessonProgress = (
+  lessonId: string,
+  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
+): { isLocked: boolean; stars?: number; isPassed?: boolean } => {
+  return progressData[lessonId] ?? { isLocked: false, stars: undefined, isPassed: undefined }
 }
 
 export const allLessons = [
@@ -15,17 +16,25 @@ export const allLessons = [
   ...stageTwoLessons
 ]
 
-export const getLessonWithProgress = (lessonId: string): Lesson | undefined => {
+export const getLessonWithProgress = (
+  lessonId: string,
+  progressData?: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
+): Lesson | undefined => {
   const lesson = allLessons.find(l => l.id === lessonId)
   if (!lesson) return undefined
   
-  const progressData = getLessonProgress(lessonId)
+  if (!progressData) {
+    // Return lesson without progress overlay if no progress data provided
+    return lesson
+  }
+  
+  const lessonProgress = getLessonProgress(lessonId, progressData)
   
   return {
     ...lesson,
-    isLocked: progressData.isLocked ?? lesson.isLocked ?? false,
-    stars: progressData.stars ?? lesson.stars,
-    isPassed: progressData.isPassed ?? lesson.isPassed
+    isLocked: lessonProgress.isLocked ?? lesson.isLocked ?? false,
+    stars: lessonProgress.stars ?? lesson.stars,
+    isPassed: lessonProgress.isPassed ?? lesson.isPassed
   }
 }
 

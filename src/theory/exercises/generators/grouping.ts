@@ -1,10 +1,10 @@
 import { type MusicElementData, type TimeSignatureType } from '@leonkwan46/music-notation'
 import { STAGE_TWO_GROUPING_QUESTIONS } from '../../curriculum/config/grouping'
 import { Question, StageNumber } from '../../curriculum/types'
+import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, shuffleArray } from '../utils/question'
 import { formatAsNotation } from '../utils/timeSignature'
-import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 
 // ============================================================================
 // QUESTION CREATION
@@ -109,7 +109,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   }
   
   // Create a signature from the elements: type, pitch, and key properties
-  const elementSignature = elements.map(element => {
+  const elementSignature = elements.map((element: MusicElementData) => {
     const parts: string[] = []
     
     if (element.type) parts.push(`type:${element.type}`)

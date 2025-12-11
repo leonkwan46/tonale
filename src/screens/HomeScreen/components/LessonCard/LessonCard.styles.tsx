@@ -46,8 +46,53 @@ export const ContinueButton = styled(Pressable)(({ theme }) => ({
 }))
 
 export const ContinueButtonText = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.lg,
+  fontSize: scale(theme.typography.lg),
   color: theme.colors.background,
   fontFamily: getSourGummyFontFamily('bold')
+}))
+
+export const SkeletonCardButton = styled.View(({ theme }) => ({
+  width: scale(theme.components.cardButton.size),
+  height: scale(theme.components.cardButton.size),
+  backgroundColor: theme.colors.border,
+  borderRadius: scale(15),
+  opacity: 0.3
+}))
+
+export const SkeletonDescriptionContainer = styled.View(({ theme }) => ({
+  flex: 1,
+  gap: scale(8)
+}))
+
+export const SkeletonTitle = styled.View(({ theme }) => ({
+  width: '70%',
+  height: scale(20),
+  backgroundColor: theme.colors.border,
+  borderRadius: scale(4),
+  opacity: 0.3
+}))
+
+export const SkeletonDescription = styled.View(({ theme }) => ({
+  width: '90%',
+  height: scale(16),
+  backgroundColor: theme.colors.border,
+  borderRadius: scale(4),
+  opacity: 0.3
+}))
+
+export const SkeletonButton = styled.View(({ theme }) => ({
+  width: '100%',
+  height: scale(50),
+  backgroundColor: theme.colors.border,
+  borderRadius: scale(15),
+  opacity: 0.3
+}))
+
+export const NoLessonText = styled.Text(({ theme }) => ({
+  fontSize: scale(theme.typography.base),
+  color: theme.colors.secondary,
+  fontFamily: getSourGummyFontFamily('400'),
+  textAlign: 'center',
+  paddingVertical: scale(20)
 }))
 

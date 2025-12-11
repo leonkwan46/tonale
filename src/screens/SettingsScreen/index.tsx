@@ -1,7 +1,5 @@
 import { auth } from '@/config/firebase/firebase'
-import { THEORY_OPENED_STAGES_KEY } from '@/constants/cache'
-import { clearAllUserData } from '@/utils/userProgress'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useProgress } from '@/hooks'
 import { useRouter } from 'expo-router'
 import { signOut } from 'firebase/auth'
 import { Alert, useColorScheme } from 'react-native'
@@ -19,6 +17,7 @@ import {
 export function SettingsScreen() {
   const colorScheme = useColorScheme() ?? 'light'
   const router = useRouter()
+  const { clearAllUserData } = useProgress()
   const currentUser = auth.currentUser
 
   const handleLogout = () => {
@@ -40,9 +39,6 @@ export function SettingsScreen() {
               try {
                 // Clear all user-specific data from AsyncStorage
                 await clearAllUserData()
-                
-                // Clear theory screen opened stages state
-                await AsyncStorage.removeItem(THEORY_OPENED_STAGES_KEY)
               } catch (clearError) {
                 // Log but don't block logout if data clearing fails
                 // User is already signed out, so they can't access the data anyway

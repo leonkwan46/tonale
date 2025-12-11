@@ -1,35 +1,41 @@
-import { forceRefreshProgress } from '@/utils/userProgress'
-import { useLastLesson, useUser } from '@/hooks'
+import { useLastLesson, useProgress, useUser } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents'
 import { useCallback, useState } from 'react'
 import { GreetingBanner } from './components/GreetingBanner'
 import { HomeScreenBackground } from './components/HomeScreenBackground'
 import { LessonCard } from './components/LessonCard'
+import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
 export function HomeScreen() {
-  const { user, profile, loading } = useUser()
+  const { user, profile, loading, fetchProfile } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
+  const { refreshProgress, refreshRevisionQuestions } = useProgress()
   const [refreshing, setRefreshing] = useState(false)
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
     try {
-      await forceRefreshProgress()
-      await refreshLesson()
+      await Promise.all([
+        fetchProfile(),
+        refreshProgress(),
+        refreshRevisionQuestions(),
+        refreshLesson()
+      ])
     } catch (error) {
-      console.error('Failed to refresh progress:', error)
+      console.error('Failed to refresh:', error)
     } finally {
       setRefreshing(false)
     }
-  }, [refreshLesson])
+  }, [fetchProfile, refreshLesson, refreshProgress, refreshRevisionQuestions])
 
   return (
     <ScreenContainer>
       <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh}>
         <GreetingBanner user={user} profile={profile} loading={loading} />
-        <StrikeBar user={user} />
+        <StrikeBar />
         <LessonCard />
+        <RevisionCard />
       </HomeScreenBackground>
     </ScreenContainer>
   )

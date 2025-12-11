@@ -2,7 +2,7 @@ import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYN
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
-import { VisualComponent } from '@/theory/curriculum/types'
+import type { VisualComponent } from '@types'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'

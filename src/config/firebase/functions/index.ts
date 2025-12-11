@@ -3,3 +3,6 @@ export { createUserData, deleteUserData, getUserData, updateUserData, type UserP
 
 // Export lesson progress functions
 export * from './lessonProgress'
+
+// Export revision questions functions
+export * from './revisionQuestions'

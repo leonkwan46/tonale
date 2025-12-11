@@ -1,10 +1,10 @@
-import { NOTES } from '@leonkwan46/music-notation'
+import { NOTES, type MusicElementData } from '@leonkwan46/music-notation'
 import { ARTICULATION_SIGNS_DEFINITIONS } from '../../../config/gradeSyllabus/musicalTerms'
 import { STAGE_ONE_TIE_SLUR_QUESTIONS } from '../../curriculum/config/tieSlur'
 import { Question, StageNumber } from '../../curriculum/types'
+import type { TieSlurQuestion } from '../custom/tieSlur/helpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
-import type { TieSlurQuestion } from '../custom/tieSlur/helpers'
 
 const allSignDefinitions = [...new Set(Object.values(ARTICULATION_SIGNS_DEFINITIONS))]
 
@@ -74,7 +74,7 @@ const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage
 const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.visualComponent?.elements && question.visualComponent.elements.length > 0) {
     const questionType = question.correctAnswer === 'Tie' || question.correctAnswer === 'Slur' ? 'recognition' : 'meaning'
-    const elementSignature = question.visualComponent.elements.map(el => {
+    const elementSignature = question.visualComponent.elements.map((el: MusicElementData) => {
       const parts: string[] = []
       if (el.type) parts.push(`type:${el.type}`)
       if (el.pitch) parts.push(`pitch:${el.pitch}`)
