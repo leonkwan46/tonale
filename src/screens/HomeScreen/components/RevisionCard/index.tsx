@@ -27,7 +27,7 @@ export const RevisionCard: React.FC = () => {
   const hasRevisionQuestions = revisionQuestions && revisionQuestions.length > 0
 
   return (
-    <RevisionCardContainer hasRevisionQuestions={hasRevisionQuestions}>
+    <RevisionCardContainer hasRevisionQuestions={hasRevisionQuestions} testID="revision-card">
       <RevisionCardContent>
         <IconContainer hasRevisionQuestions={hasRevisionQuestions}>
           <IconText>♪</IconText>
@@ -35,10 +35,11 @@ export const RevisionCard: React.FC = () => {
         <ContentSection>
           {hasRevisionQuestions ? (
             <>
-              <RevisionText>You&apos;ve got {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
+              <RevisionText testID="revision-card-text">You&apos;ve got {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
               <StartButtonContainer isPressed={isPressed}>
                 <StartButtonDepth />
                 <StartButton
+                  testID="start-revision-button"
                   onPress={handleStartRevision}
                   onPressIn={() => setIsPressed(true)}
                   onPressOut={() => setIsPressed(false)}
@@ -48,7 +49,7 @@ export const RevisionCard: React.FC = () => {
               </StartButtonContainer>
             </>
           ) : (
-            <RevisionText>{'All Done!\nYou\'ve cleared all your revision questions!'}</RevisionText>
+            <RevisionText testID="revision-card-completion-text">{'All Done!\nYou\'ve cleared all your revision questions!'}</RevisionText>
           )}
         </ContentSection>
       </RevisionCardContent>

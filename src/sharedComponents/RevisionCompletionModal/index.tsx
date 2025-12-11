@@ -25,11 +25,11 @@ export const RevisionCompletionModal: React.FC<RevisionCompletionModalProps> = (
 
   return (
     <ModalOverlay>
-      <ModalContainer isTablet={isTablet}>
-        <TitleText isTablet={isTablet}>
+      <ModalContainer isTablet={isTablet} testID="revision-completion-modal">
+        <TitleText isTablet={isTablet} testID="revision-completion-title">
           {isAllComplete ? 'Congratulations!' : 'Revision Complete!'}
         </TitleText>
-        <DescriptionText isTablet={isTablet}>
+        <DescriptionText isTablet={isTablet} testID="revision-completion-description">
           {isAllComplete
             ? 'You\'ve completed all your revision questions! Great job!'
             : `You have ${remainingQuestions} question${remainingQuestions !== 1 ? 's' : ''} left to revise.`}
