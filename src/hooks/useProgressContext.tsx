@@ -368,11 +368,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   // ============================================================================
 
   const loadRevisionQuestions = useCallback(async () => {
-    if (!user) {
-      setRevisionQuestions([])
-      return
-    }
-
     try {
       const result = await getRevisionQuestionsFn({})
       if (result.data.success) {
@@ -381,7 +376,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error('Failed to load revision questions:', error)
     }
-  }, [user])
+  }, [])
 
   useEffect(() => {
     if (user && initialized) {
@@ -408,8 +403,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [user, initializeUserProgress])
 
   const refreshRevisionQuestions = useCallback(async () => {
+    if (!user) return
     await loadRevisionQuestions()
-  }, [loadRevisionQuestions])
+  }, [loadRevisionQuestions, user])
 
   const updateProgress = useCallback((lessonId: string, data: Partial<ProgressData>) => {
     const updatedData = {

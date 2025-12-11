@@ -4,12 +4,13 @@ import { useCallback, useState } from 'react'
 import { GreetingBanner } from './components/GreetingBanner'
 import { HomeScreenBackground } from './components/HomeScreenBackground'
 import { LessonCard } from './components/LessonCard'
+import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
 export function HomeScreen() {
   const { user, profile, loading, fetchProfile } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
-  const { refreshProgress } = useProgress()
+  const { refreshProgress, refreshRevisionQuestions } = useProgress()
   const [refreshing, setRefreshing] = useState(false)
 
   const handleRefresh = useCallback(async () => {
@@ -18,6 +19,7 @@ export function HomeScreen() {
       await Promise.all([
         fetchProfile(),
         refreshProgress(),
+        refreshRevisionQuestions(),
         refreshLesson()
       ])
     } catch (error) {
@@ -25,7 +27,7 @@ export function HomeScreen() {
     } finally {
       setRefreshing(false)
     }
-  }, [fetchProfile, refreshLesson, refreshProgress])
+  }, [fetchProfile, refreshLesson, refreshProgress, refreshRevisionQuestions])
 
   return (
     <ScreenContainer>
@@ -33,6 +35,7 @@ export function HomeScreen() {
         <GreetingBanner user={user} profile={profile} loading={loading} />
         <StrikeBar />
         <LessonCard />
+        <RevisionCard />
       </HomeScreenBackground>
     </ScreenContainer>
   )

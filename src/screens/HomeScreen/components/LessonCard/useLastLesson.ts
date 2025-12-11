@@ -48,16 +48,16 @@ export const useLastLesson = (): LessonResult => {
           getLessonById
         ) === null
         setAllCompleted(allCompleted)
-        setLesson(null)
+          setLesson(null)
       } else {
         const lessonWithProgress = mergeProgressData(currentLesson, progressData)
-        setLesson(lessonWithProgress)
-        setAllCompleted(false)
+          setLesson(lessonWithProgress)
+          setAllCompleted(false)
       }
     } catch (error) {
       console.error('Failed to get lesson:', error)
-      setLesson(null)
-      setAllCompleted(false)
+        setLesson(null)
+        setAllCompleted(false)
     }
   }, [
     loading,
@@ -73,8 +73,8 @@ export const useLastLesson = (): LessonResult => {
     if (!loading) {
       fetchLesson()
     } else {
-      setLesson(null)
-      setAllCompleted(false)
+        setLesson(null)
+        setAllCompleted(false)
     }
   }, [loading, progressData, fetchLesson])
 

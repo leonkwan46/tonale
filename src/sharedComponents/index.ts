@@ -7,7 +7,7 @@ export { DisplayCard } from './DisplayCard'
 export { FinalTestFailureModal } from './FinalTestFailureModal'
 export { Loading } from './Loading'
 export { PianoKeyboard } from './PianoKeyboard'
+export { RevisionCompletionModal } from './RevisionCompletionModal'
 export { StarRatingModal } from './StarRatingModal'
 export { CustomTabBar } from './TabBars/CustomTabBar'
 export { WarningModal } from './WarningModal'
-

@@ -14,7 +14,7 @@ import { LessonScreenBody } from './LessonScreenBody'
 export function LessonScreen() {
   const router = useRouter()
   const { lessonId, from } = useLocalSearchParams<{ lessonId: string, from: string }>()
-  const { progressData, updateFinalTestProgress, updateLessonProgress, getLessonById, getNextLockedStage, trackLessonAccessLocal } = useProgress()
+  const { progressData, updateFinalTestProgress, updateLessonProgress, getLessonById, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()
   const lesson = lessonId ? getLessonById(lessonId, progressData) : null
   
   const generateQuestions = useCallback((lessonData: typeof lesson): Question[] => {
@@ -81,10 +81,11 @@ export function LessonScreen() {
     
     try {
       await storeRevisionQuestionsFn({ questions })
+      await refreshRevisionQuestions()
     } catch (error) {
       console.error('Failed to store revision questions:', error)
     }
-  }, [lessonId, wrongAnswers])
+  }, [lessonId, wrongAnswers, refreshRevisionQuestions])
 
   const completeLesson = useCallback(async () => {
     if (isCompleting) return // Prevent duplicate calls
