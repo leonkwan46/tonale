@@ -1,17 +1,18 @@
 import type {
-  RevisionQuestionsResponse,
-  StoreRevisionQuestionPayload,
-  StoreRevisionQuestionResponse,
-  StoreRevisionQuestionsPayload,
-  VisualComponent
+    RevisionQuestionsResponse,
+    StoreRevisionQuestionPayload,
+    StoreRevisionQuestionResponse,
+    StoreRevisionQuestionsPayload,
+    VisualComponent
 } from '@types'
 import {
-  deleteRevisionQuestionFromFirestore,
-  deleteRevisionQuestionsByLessonFromFirestore,
-  getRevisionQuestionsFromFirestore,
-  storeRevisionQuestionInFirestore,
-  storeRevisionQuestionsInFirestore,
-  type RevisionQuestionInput
+    deleteRevisionQuestionFromFirestore,
+    deleteRevisionQuestionsByLessonFromFirestore,
+    deleteRevisionQuestionsFromFirestore,
+    getRevisionQuestionsFromFirestore,
+    storeRevisionQuestionInFirestore,
+    storeRevisionQuestionsInFirestore,
+    type RevisionQuestionInput
 } from './firestore'
 
 /**
@@ -163,6 +164,29 @@ export async function deleteRevisionQuestionService(
   return {
     success: true,
     message: 'Revision question deleted successfully'
+  }
+}
+
+export async function deleteRevisionQuestionsService(
+  userId: string,
+  ids: string[]
+): Promise<StoreRevisionQuestionResponse> {
+  if (!Array.isArray(ids)) {
+    throw new Error('ids is required and must be an array')
+  }
+  
+  if (ids.length === 0) {
+    return {
+      success: true,
+      message: 'No revision questions to delete'
+    }
+  }
+  
+  await deleteRevisionQuestionsFromFirestore(userId, ids)
+  
+  return {
+    success: true,
+    message: `Successfully deleted ${ids.length} revision question(s)`
   }
 }
 

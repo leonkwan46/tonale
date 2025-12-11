@@ -1,16 +1,16 @@
 import type {
-    RevisionQuestion,
-    RevisionQuestionsResponse,
-    StoreRevisionQuestionPayload,
-    StoreRevisionQuestionResponse,
-    StoreRevisionQuestionsPayload
+  RevisionQuestion,
+  RevisionQuestionsResponse,
+  StoreRevisionQuestionPayload,
+  StoreRevisionQuestionResponse,
+  StoreRevisionQuestionsPayload
 } from '@types'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../firebase'
 
 export type {
-    RevisionQuestion, RevisionQuestionsResponse,
-    StoreRevisionQuestionPayload, StoreRevisionQuestionResponse, StoreRevisionQuestionsPayload
+  RevisionQuestion, RevisionQuestionsResponse,
+  StoreRevisionQuestionPayload, StoreRevisionQuestionResponse, StoreRevisionQuestionsPayload
 }
 
 export const storeRevisionQuestionFn = httpsCallable<
@@ -32,6 +32,11 @@ export const deleteRevisionQuestionFn = httpsCallable<
   { id: string },
   StoreRevisionQuestionResponse
 >(functions, 'deleteRevisionQuestion')
+
+export const deleteRevisionQuestionsFn = httpsCallable<
+  { ids: string[] },
+  StoreRevisionQuestionResponse
+>(functions, 'deleteRevisionQuestions')
 
 export const deleteRevisionQuestionsByLessonFn = httpsCallable<
   { lessonId: string },

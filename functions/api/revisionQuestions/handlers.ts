@@ -1,16 +1,17 @@
 import type {
-  RevisionQuestionsResponse,
-  StoreRevisionQuestionPayload,
-  StoreRevisionQuestionResponse,
-  StoreRevisionQuestionsPayload
+    RevisionQuestionsResponse,
+    StoreRevisionQuestionPayload,
+    StoreRevisionQuestionResponse,
+    StoreRevisionQuestionsPayload
 } from '@types'
 import * as functions from 'firebase-functions/v1'
 import {
-  deleteRevisionQuestionService,
-  deleteRevisionQuestionsByLessonService,
-  getRevisionQuestionsService,
-  storeRevisionQuestionService,
-  storeRevisionQuestionsService
+    deleteRevisionQuestionService,
+    deleteRevisionQuestionsByLessonService,
+    deleteRevisionQuestionsService,
+    getRevisionQuestionsService,
+    storeRevisionQuestionService,
+    storeRevisionQuestionsService
 } from './service'
 
 export const storeRevisionQuestion = functions.https.onCall(
@@ -79,6 +80,30 @@ export const deleteRevisionQuestion = functions.https.onCall(
       
       console.error('Error deleting revision question:', error)
       throw new functions.https.HttpsError('internal', 'Failed to delete revision question')
+    }
+  }
+)
+
+export const deleteRevisionQuestions = functions.https.onCall(
+  async (data: { ids: string[] }, context) => {
+    if (!context?.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+    }
+
+    const userId = context.auth.uid
+    const { ids } = data
+
+    try {
+      return await deleteRevisionQuestionsService(userId, ids) as StoreRevisionQuestionResponse
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      
+      if (errorMessage.includes('required') || errorMessage.includes('must be')) {
+        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+      }
+      
+      console.error('Error deleting revision questions:', error)
+      throw new functions.https.HttpsError('internal', 'Failed to delete revision questions')
     }
   }
 )

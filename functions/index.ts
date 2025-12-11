@@ -17,6 +17,7 @@ import {
 
 import {
     deleteRevisionQuestion,
+    deleteRevisionQuestions,
     deleteRevisionQuestionsByLesson,
     getRevisionQuestions,
     storeRevisionQuestion,
@@ -32,5 +33,5 @@ export { createUserData, deleteUserData, getUserData, updateUserData }
 export { deleteLessonProgress, getAllLessonProgress, getLessonProgress, updateLessonProgress }
 
 // Export revisionQuestions CRUD functions
-export { deleteRevisionQuestion, deleteRevisionQuestionsByLesson, getRevisionQuestions, storeRevisionQuestion, storeRevisionQuestions }
+export { deleteRevisionQuestion, deleteRevisionQuestions, deleteRevisionQuestionsByLesson, getRevisionQuestions, storeRevisionQuestion, storeRevisionQuestions }
 

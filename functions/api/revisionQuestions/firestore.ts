@@ -84,6 +84,25 @@ export async function deleteRevisionQuestionFromFirestore(
   })
 }
 
+export async function deleteRevisionQuestionsFromFirestore(
+  userId: string,
+  ids: string[]
+): Promise<void> {
+  if (ids.length === 0) return
+
+  const userRef = admin.firestore().collection('users').doc(userId)
+  
+  const updates: Record<string, unknown> = {
+    updatedAt: FieldValue.serverTimestamp()
+  }
+  
+  ids.forEach(id => {
+    updates[`revisionQuestions.${id}`] = FieldValue.delete()
+  })
+  
+  await userRef.update(updates)
+}
+
 export async function deleteRevisionQuestionsByLessonFromFirestore(
   userId: string,
   lessonId: string
@@ -105,15 +124,7 @@ export async function deleteRevisionQuestionsByLessonFromFirestore(
   
   // Delete all matching questions
   if (questionIdsToDelete.length > 0) {
-    const updates: Record<string, unknown> = {
-      updatedAt: FieldValue.serverTimestamp()
-    }
-    
-    questionIdsToDelete.forEach(questionId => {
-      updates[`revisionQuestions.${questionId}`] = FieldValue.delete()
-    })
-    
-    await userRef.update(updates)
+    await deleteRevisionQuestionsFromFirestore(userId, questionIdsToDelete)
   }
 }
 
