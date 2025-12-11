@@ -1,8 +1,8 @@
-import { NOTES, type ClefType } from '@leonkwan46/music-notation'
+import { NOTES, type ClefType, type MusicElementData } from '@leonkwan46/music-notation'
+import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { getIntervalPairs, getNotesForPitches } from '../utils/interval'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
-import { Question, StageNumber } from '../../curriculum/types'
 
 const INTERVAL_ORDER = ['Semitone', 'Tone'] as const
 
@@ -52,8 +52,6 @@ export const createSemitoneToneQuestion = (
     }
   }
 }
-
-import { type MusicElementData } from '@leonkwan46/music-notation'
 
 const getDuplicateIdentifier = (question: Question): string | null => {
   const pitches = question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).filter(Boolean)

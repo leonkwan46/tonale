@@ -2,9 +2,9 @@ import { NOTES, type MusicElementData } from '@leonkwan46/music-notation'
 import { ARTICULATION_SIGNS_DEFINITIONS } from '../../../config/gradeSyllabus/musicalTerms'
 import { STAGE_ONE_TIE_SLUR_QUESTIONS } from '../../curriculum/config/tieSlur'
 import { Question, StageNumber } from '../../curriculum/types'
+import type { TieSlurQuestion } from '../custom/tieSlur/helpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
-import type { TieSlurQuestion } from '../custom/tieSlur/helpers'
 
 const allSignDefinitions = [...new Set(Object.values(ARTICULATION_SIGNS_DEFINITIONS))]
 

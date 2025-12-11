@@ -1,10 +1,10 @@
 import { type MusicElementData, type TimeSignatureType } from '@leonkwan46/music-notation'
 import { STAGE_TWO_GROUPING_QUESTIONS } from '../../curriculum/config/grouping'
 import { Question, StageNumber } from '../../curriculum/types'
+import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, shuffleArray } from '../utils/question'
 import { formatAsNotation } from '../utils/timeSignature'
-import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 
 // ============================================================================
 // QUESTION CREATION

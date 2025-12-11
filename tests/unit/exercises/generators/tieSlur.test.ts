@@ -1,10 +1,10 @@
 import { createSlurDefinitionQuestion, createTieDefinitionQuestion, createTieSlurQuestions } from '@/theory/exercises/generators/tieSlur'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('tieSlur generator', () => {
