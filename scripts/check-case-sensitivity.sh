@@ -2,9 +2,6 @@
 
 # Script to detect case-sensitivity issues in Git
 # This prevents issues where the same file is tracked with different casing
-# (e.g., TabBars vs tabBars) which causes problems on case-sensitive filesystems
-
-echo "🔍 Checking for case-sensitivity issues..."
 
 # Get all tracked files and check for duplicates that differ only in case
 # We'll use git ls-files to get all tracked files, then check for case conflicts
@@ -48,5 +45,4 @@ if [ -n "$DUPLICATES" ]; then
 fi
 
 rm -f "$TEMP_FILE"
-echo "✅ No case-sensitivity issues found"
 exit 0
