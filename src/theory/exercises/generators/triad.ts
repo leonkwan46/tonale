@@ -1,4 +1,4 @@
-import { NOTES, type ClefType, type Note } from '@leonkwan46/music-notation'
+import { NOTES, type ClefType, type MusicElementData, type Note } from '@leonkwan46/music-notation'
 import { Question, StageNumber } from '../../curriculum/types'
 import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
@@ -39,7 +39,7 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
 
 const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.correctAnswer) return question.correctAnswer
-  return question.visualComponent?.elements?.map(element => element.pitch).join('|') ?? null
+  return question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).join('|') ?? null
 }
 
 export const createTriadQuestions = (questionsCount: number, stage: StageNumber): Question[] => {

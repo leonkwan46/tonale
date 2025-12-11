@@ -299,7 +299,7 @@ const shouldSkipBalancing = (question: Question): boolean => {
  * Find the index of the correct answer in choices
  */
 const findCorrectAnswerIndex = (question: Question): number => {
-  return question.choices.findIndex(choice => choice === question.correctAnswer)
+  return question.choices.findIndex((choice: string) => choice === question.correctAnswer)
 }
 
 /**

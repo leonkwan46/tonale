@@ -53,8 +53,10 @@ export const createSemitoneToneQuestion = (
   }
 }
 
+import { type MusicElementData } from '@leonkwan46/music-notation'
+
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const pitches = question.visualComponent?.elements?.map(element => element.pitch).filter(Boolean)
+  const pitches = question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).filter(Boolean)
   if (pitches && pitches.length > 0) {
     return pitches.join('|')
   }

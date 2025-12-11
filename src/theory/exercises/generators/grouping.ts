@@ -109,7 +109,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   }
   
   // Create a signature from the elements: type, pitch, and key properties
-  const elementSignature = elements.map(element => {
+  const elementSignature = elements.map((element: MusicElementData) => {
     const parts: string[] = []
     
     if (element.type) parts.push(`type:${element.type}`)
