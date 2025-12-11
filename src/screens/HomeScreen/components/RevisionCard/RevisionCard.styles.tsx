@@ -5,11 +5,11 @@ import { scale } from 'react-native-size-matters'
 
 export const RevisionCardContainer = styled(View)<{ hasRevisionQuestions: boolean }>(({ theme, hasRevisionQuestions }) => ({
   width: '100%',
-  backgroundColor: '#282828',
+  backgroundColor: 'transparent',
   borderRadius: scale(25),
   paddingVertical: scale(16),
   paddingHorizontal: scale(16),
-  borderWidth: 2,
+  borderWidth: scale(2),
   borderColor: hasRevisionQuestions ? '#FF6E52' : theme.colors.success,
   gap: scale(12)
 }))
@@ -44,12 +44,12 @@ export const ContentSection = styled(View)({
   gap: scale(12)
 })
 
-export const RevisionText = styled(Text)({
+export const RevisionText = styled(Text)(({ theme }) => ({
   fontSize: scale(16),
-  color: '#FFFFFF',
+  color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('semibold'),
   lineHeight: scale(24)
-})
+}))
 
 export const StartButtonContainer = styled(View)<{ isPressed: boolean }>(({ isPressed }) => ({
   position: 'relative',
@@ -75,9 +75,9 @@ export const StartButton = styled(Pressable)({
   position: 'relative'
 })
 
-export const StartButtonText = styled(Text)({
+export const StartButtonText = styled(Text)(({ theme }) => ({
   fontSize: scale(18),
-  color: '#FFFFFF',
+  color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('bold')
-})
+}))
 
