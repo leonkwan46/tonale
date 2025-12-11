@@ -1,7 +1,7 @@
 import { useDevice } from '@/hooks'
-import { Question } from '@/theory/curriculum/types'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
+import type { Question } from '@types'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
@@ -53,10 +53,11 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         setShowCorrectAnswer(true)
       }
       
-      // Don't move to next question if final test failed (3 wrong answers)
-      const shouldProceed = !(isFinalTest && !isCorrect && wrongAnswersCount >= 3)
+      // Block if: final test, wrong answer, and this would be the 3rd wrong
+      const totalWrong = wrongAnswersCount + (isCorrect ? 0 : 1)
+      const shouldBlock = isFinalTest && !isCorrect && totalWrong > 3
       
-      if (shouldProceed) {
+      if (!shouldBlock) {
         const timer = setTimeout(() => {
           onNextQuestion()
         }, 1500) // Same delay for both correct and incorrect answers

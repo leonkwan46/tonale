@@ -1,4 +1,4 @@
-import { Question } from '@/theory/curriculum/types'
+import type { Question } from '@types'
 import * as React from 'react'
 import { useCallback } from 'react'
 import { useDevice } from '../../../hooks'

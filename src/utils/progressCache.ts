@@ -2,29 +2,8 @@ import { LESSON_PROGRESS_CACHE_KEY } from '@/constants/cache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LessonProgressCache } from '@types'
 
-let userProgressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> = {}
-let progressInitialized = false
-
-export const getUserProgressData = (): Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> => {
-  return userProgressData
-}
-
-export const setUserProgressData = (data: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>): void => {
-  userProgressData = data
-}
-
-export const clearUserProgressData = (): void => {
-  userProgressData = {}
-  progressInitialized = false
-}
-
-export const markProgressInitialized = (): void => {
-  progressInitialized = true
-}
-
-export const isProgressInitialized = (): boolean => {
-  return progressInitialized
-}
+// Cache is considered stale after 24 hours (in milliseconds)
+const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000
 
 export const saveProgressCache = async (
   userId: string, 
@@ -41,9 +20,6 @@ export const saveProgressCache = async (
     console.error('Failed to save progress to device cache:', error)
   }
 }
-
-// Cache is considered stale after 24 hours (in milliseconds)
-const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000
 
 export const loadProgressCache = async (userId: string): Promise<LessonProgressCache | null> => {
   try {
@@ -62,14 +38,10 @@ export const loadProgressCache = async (userId: string): Promise<LessonProgressC
     if (cache.timestamp) {
       const cacheAge = Date.now() - cache.timestamp
       if (cacheAge > CACHE_MAX_AGE_MS) {
-        // Cache is stale, clear it and return null
-        console.log('Cache is stale, clearing it')
         await clearProgressCache()
         return null
       }
     } else {
-      // Cache has no timestamp, consider it invalid
-      console.log('Cache has no timestamp, clearing it')
       await clearProgressCache()
       return null
     }
@@ -88,4 +60,5 @@ export const clearProgressCache = async (): Promise<void> => {
     console.error('Failed to clear progress cache:', error)
   }
 }
+
 

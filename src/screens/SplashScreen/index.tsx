@@ -1,62 +1,91 @@
 import { Colors, ColorScheme } from '@/constants/Colors'
 import { useUser } from '@/hooks'
 import styled from '@emotion/native'
-import * as React from 'react'
+import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
 import Animated, {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
 } from 'react-native-reanimated'
-import { AppText, LogoAnimation, MusicBar } from './components'
+import { AppText, LogoAnimation, Wave } from './components'
+
+// Constants
+const MIN_SPLASH_TIME_MS = 2000
+const POLL_INTERVAL_MS = 100
+const FADE_OUT_DURATION_MS = 500
+const WAVE_COUNT = 5
+const WAVE_DELAY_BASE = 1.5
+const WAVE_DELAY_INCREMENT = 0.2
+
+// Font definitions
+const FONTS = {
+  SpaceMono: require('../../../assets/fonts/SpaceMono-Regular.ttf'),
+  Bravura: require('../../../assets/fonts/Bravura.otf'),
+  BravuraText: require('../../../assets/fonts/BravuraText.otf'),
+  'SourGummy-Thin': require('../../../assets/fonts/sourGummy/SourGummy-Thin.ttf'),
+  'SourGummy-ThinItalic': require('../../../assets/fonts/sourGummy/SourGummy-ThinItalic.ttf'),
+  'SourGummy-ExtraLight': require('../../../assets/fonts/sourGummy/SourGummy-ExtraLight.ttf'),
+  'SourGummy-ExtraLightItalic': require('../../../assets/fonts/sourGummy/SourGummy-ExtraLightItalic.ttf'),
+  'SourGummy-Light': require('../../../assets/fonts/sourGummy/SourGummy-Light.ttf'),
+  'SourGummy-LightItalic': require('../../../assets/fonts/sourGummy/SourGummy-LightItalic.ttf'),
+  'SourGummy-Regular': require('../../../assets/fonts/sourGummy/SourGummy-Regular.ttf'),
+  'SourGummy-Italic': require('../../../assets/fonts/sourGummy/SourGummy-Italic.ttf'),
+  'SourGummy-Medium': require('../../../assets/fonts/sourGummy/SourGummy-Medium.ttf'),
+  'SourGummy-MediumItalic': require('../../../assets/fonts/sourGummy/SourGummy-MediumItalic.ttf'),
+  'SourGummy-SemiBold': require('../../../assets/fonts/sourGummy/SourGummy-SemiBold.ttf'),
+  'SourGummy-SemiBoldItalic': require('../../../assets/fonts/sourGummy/SourGummy-SemiBoldItalic.ttf'),
+  'SourGummy-Bold': require('../../../assets/fonts/sourGummy/SourGummy-Bold.ttf'),
+  'SourGummy-BoldItalic': require('../../../assets/fonts/sourGummy/SourGummy-BoldItalic.ttf'),
+  'SourGummy-ExtraBold': require('../../../assets/fonts/sourGummy/SourGummy-ExtraBold.ttf'),
+  'SourGummy-ExtraBoldItalic': require('../../../assets/fonts/sourGummy/SourGummy-ExtraBoldItalic.ttf'),
+  'SourGummy-Black': require('../../../assets/fonts/sourGummy/SourGummy-Black.ttf'),
+  'SourGummy-BlackItalic': require('../../../assets/fonts/sourGummy/SourGummy-BlackItalic.ttf')
+} as const
 
 interface SplashScreenProps {
   onComplete: () => void
 }
 
 export function SplashScreen({ onComplete }: SplashScreenProps) {
+  const [fontsLoaded] = useFonts(FONTS)
   const colorScheme = useColorScheme() ?? 'light'
   const { loading: authLoading } = useUser()
-  
   const [isTransitioning, setIsTransitioning] = useState(false)
-
-  // Animation values
   const containerOpacity = useSharedValue(1)
 
   const startExitAnimation = useCallback(() => {
     setIsTransitioning(true)
-    
-    // Call onComplete immediately to ensure navigation happens
     onComplete()
-    
-    // Start fade animation for visual effect
     containerOpacity.value = withTiming(0, {
-      duration: 500,
+      duration: FADE_OUT_DURATION_MS,
       easing: Easing.out(Easing.ease)
     })
   }, [containerOpacity, onComplete])
 
   useEffect(() => {
-    // Minimum splash time for better UX
-    const MIN_SPLASH_TIME = 2000
+    if (authLoading || !fontsLoaded) return
+
     const startTime = Date.now()
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
 
     const checkCompletion = () => {
       const elapsedTime = Date.now() - startTime
-      const minTimeReached = elapsedTime >= MIN_SPLASH_TIME
-      
-      if (!authLoading && minTimeReached) {
+      if (elapsedTime >= MIN_SPLASH_TIME_MS) {
         startExitAnimation()
       } else {
-        // Check again in 100ms
-        setTimeout(checkCompletion, 100)
+        timeoutId = setTimeout(checkCompletion, POLL_INTERVAL_MS)
       }
     }
 
     checkCompletion()
-  }, [authLoading, startExitAnimation])
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
+  }, [authLoading, fontsLoaded, startExitAnimation])
 
   const containerStyle = useAnimatedStyle(() => ({
     opacity: containerOpacity.value
@@ -64,31 +93,33 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <Container colorScheme={colorScheme} style={containerStyle}>
-      {/* Main content */}
-      <Content>
-        {/* Logo with animation */}
+      {!fontsLoaded ? (
+        <MusicLogoContainer>
+          <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
+        </MusicLogoContainer>
+      ) : (
+        <>
+      <MusicLogoContainer>
         <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
-        
-        {/* App name and tagline */}
         <AppText
           appName="tonale"
           tagline="Master music through focused practice"
           colorScheme={colorScheme}
           isTransitioning={isTransitioning}
         />
-      </Content>
-
-      {/* Animated music bars */}
-      <MusicBarsContainer>
-        {Array.from({ length: 5 }, (_, index) => (
-          <MusicBar
+      </MusicLogoContainer>
+      <WavesContainer>
+            {Array.from({ length: WAVE_COUNT }, (_, index) => (
+          <Wave
             key={index}
-            delay={index * 0.2 + 1.5}
+                delay={index * WAVE_DELAY_INCREMENT + WAVE_DELAY_BASE}
             colorScheme={colorScheme}
             isTransitioning={isTransitioning}
           />
         ))}
-      </MusicBarsContainer>
+      </WavesContainer>
+        </>
+      )}
     </Container>
   )
 }
@@ -101,14 +132,14 @@ const Container = styled(Animated.View)<{ colorScheme: ColorScheme }>`
   background-color: ${props => Colors[props.colorScheme].background};
 `
 
-const Content = styled.View`
+const MusicLogoContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   padding-horizontal: 20px;
 `
 
-const MusicBarsContainer = styled.View`
+const WavesContainer = styled.View`
   position: absolute;
   bottom: 30%;
   flex-direction: row;

@@ -1,9 +1,10 @@
 import { useLastLesson } from '@/hooks'
 import { CardButton, Description } from '@/screens/TheoryScreen/components/LessonSection/components'
+import { Loading } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
 import { useState } from 'react'
-import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer } from './LessonCard.styles'
+import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
 
 export const LessonCard: React.FC = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
@@ -11,7 +12,13 @@ export const LessonCard: React.FC = () => {
   const [isPressed, setIsPressed] = useState(false)
 
   if (loading) {
-    return null
+    return (
+      <LessonCardContainer>
+        <CardContentContainer>
+          <Loading size="large" />
+        </CardContentContainer>
+      </LessonCardContainer>
+    )
   }
 
   if (allCompleted) {
@@ -26,7 +33,13 @@ export const LessonCard: React.FC = () => {
   }
 
   if (!lesson) {
-    return null
+    return (
+      <LessonCardContainer>
+        <CardContentContainer>
+          <NoLessonText>Sorry, no lesson found here</NoLessonText>
+        </CardContentContainer>
+      </LessonCardContainer>
+    )
   }
 
   const handleContinuePress = () => {

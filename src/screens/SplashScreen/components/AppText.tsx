@@ -3,11 +3,11 @@ import styled from '@emotion/native'
 import * as React from 'react'
 import { useEffect } from 'react'
 import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withTiming
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withDelay,
+    withTiming
 } from 'react-native-reanimated'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -101,7 +101,7 @@ const AppNameText = styled.Text<{ colorScheme: ColorScheme }>`
   margin-bottom: 12px;
   letter-spacing: -0.5px;
   color: ${props => Colors[props.colorScheme].text};
-  font-family: "${getSourGummyFontFamily('700')}";
+  font-family: ${getSourGummyFontFamily('700')};
 `
 
 const TaglineContainer = styled(Animated.View)``
@@ -113,5 +113,5 @@ const TaglineText = styled.Text<{ colorScheme: ColorScheme }>`
   line-height: 22px;
   opacity: 0.8;
   color: ${props => Colors[props.colorScheme].icon};
-  font-family: "${getSourGummyFontFamily('400')}";
+  font-family: ${getSourGummyFontFamily('400')};
 `

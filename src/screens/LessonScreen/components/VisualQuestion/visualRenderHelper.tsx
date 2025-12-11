@@ -12,7 +12,7 @@ import {
   SemiquaverRest,
   type MusicElementData
 } from '@leonkwan46/music-notation'
-import { VisualComponent } from '@/theory/curriculum/types'
+import type { VisualComponent } from '@types'
 
 // Helper function to generate triplet elements for display
 export const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3): MusicElementData[][] => {

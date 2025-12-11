@@ -28,6 +28,9 @@ jobs:
         echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
         npm ci
         
+    - name: Check for case-sensitivity issues
+      run: ./scripts/check-case-sensitivity.sh
+      
     - name: Run linting
       run: npm run lint
       

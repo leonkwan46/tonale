@@ -1,5 +1,6 @@
 import { getCumulativeNoteDefinitions } from '@/theory/curriculum/config/noteRange'
-import { Question, StageNumber } from '@/theory/curriculum/types'
+import type { Question } from '@types'
+import type { StageNumber } from '@/theory/curriculum/types'
 import { getAllNoteTypes, getAllRestTypes, getKeys, getTimeSignatures } from '@/theory/exercises/utils/exercise'
 
 export const TEST_STAGES: StageNumber[] = [0, 1, 2]
