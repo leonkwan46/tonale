@@ -1,5 +1,5 @@
-import { createArticulationQuestion, createArticulationQuestions } from '@/theory/exercises/generators/articulation'
-import { getStageOneArticulationTerms } from '@/theory/curriculum/config/musicalTerms'
+import { createArticulationQuestion, createArticulationQuestions } from '@/subjects/theory/exercises/generators/articulation'
+import { getStageOneArticulationTerms } from '@/subjects/theory/curriculum/config/musicalTerms'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,

@@ -2,7 +2,7 @@ import {
     GRADE_ONE_INTERVALS,
     GRADE_THREE_INTERVALS,
     GRADE_TWO_INTERVALS
-} from '../../../config/gradeSyllabus/intervals'
+} from '../../../../config/gradeSyllabus/intervals'
 
 export const STAGE_ONE_INTERVALS = GRADE_ONE_INTERVALS
 

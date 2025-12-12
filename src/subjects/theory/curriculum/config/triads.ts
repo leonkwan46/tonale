@@ -1,10 +1,10 @@
 import {
-  GRADE_FIVE_CHORDS,
-  GRADE_FOUR_CHORDS,
-  GRADE_ONE_CHORDS,
-  GRADE_THREE_CHORDS,
-  GRADE_TWO_CHORDS
-} from '../../../config/gradeSyllabus/chords'
+    GRADE_FIVE_CHORDS,
+    GRADE_FOUR_CHORDS,
+    GRADE_ONE_CHORDS,
+    GRADE_THREE_CHORDS,
+    GRADE_TWO_CHORDS
+} from '../../../../config/gradeSyllabus/chords'
 
 export const STAGE_ONE_TRIADS = GRADE_ONE_CHORDS
 

@@ -1,7 +1,7 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { useProgress } from '@/hooks'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
-import { generateLessonQuestions } from '@/theory/exercises/generate'
+import { generateLessonQuestions } from '@/subjects/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import type { Question } from '@types'

@@ -1,5 +1,5 @@
-import { createTriadQuestion, createTriadQuestions } from '@/theory/exercises/generators/triad'
-import { getChordsByStage } from '@/theory/exercises/utils/triad'
+import { createTriadQuestion, createTriadQuestions } from '@/subjects/theory/exercises/generators/triad'
+import { getChordsByStage } from '@/subjects/theory/exercises/utils/triad'
 import {
     validateCorrectAnswerInChoices,
     validateKeyForStage,

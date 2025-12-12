@@ -1,4 +1,4 @@
-import { createNoteIdentificationQuestion, createNoteIdentificationQuestions } from '@/theory/exercises/generators/noteIdentification'
+import { createNoteIdentificationQuestion, createNoteIdentificationQuestions } from '@/subjects/theory/exercises/generators/noteIdentification'
 import {
   validateCorrectAnswerInChoices,
   validatePitchForStage,

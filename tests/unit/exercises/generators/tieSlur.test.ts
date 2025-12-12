@@ -1,4 +1,4 @@
-import { createSlurDefinitionQuestion, createTieDefinitionQuestion, createTieSlurQuestions } from '@/theory/exercises/generators/tieSlur'
+import { createSlurDefinitionQuestion, createTieDefinitionQuestion, createTieSlurQuestions } from '@/subjects/theory/exercises/generators/tieSlur'
 import {
     validateCorrectAnswerInChoices,
     validateQuestionCount,

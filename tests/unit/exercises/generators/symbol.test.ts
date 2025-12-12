@@ -1,4 +1,4 @@
-import { createSymbolQuestions } from '@/theory/exercises/generators/symbol'
+import { createSymbolQuestions } from '@/subjects/theory/exercises/generators/symbol'
 import {
   validateQuestionCount,
   validateQuestionStructure,

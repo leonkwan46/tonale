@@ -2,7 +2,7 @@ import { NOTES, type MusicElementData } from '@leonkwan46/music-notation'
 import {
     TERM_DISPLAY_NAMES,
     TermDisplayNamesKeys
-} from '../../../config/gradeSyllabus'
+} from '../../../../config/gradeSyllabus'
 import {
     STAGE_ONE_MUSICAL_TERMS,
     STAGE_ONE_MUSICAL_TERMS_DEFINITIONS,

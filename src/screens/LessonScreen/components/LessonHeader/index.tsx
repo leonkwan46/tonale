@@ -1,14 +1,14 @@
-import { Lesson } from '@/theory/curriculum/types'
+import { Lesson } from '@/subjects/theory/curriculum/types'
 import * as React from 'react'
 import { useDevice } from '../../../../hooks'
 import { BackArrowIcon } from './BackArrowIcon'
 import {
-  BackButton,
-  Header,
-  ProgressText,
-  ProgressTracker,
-  XMark,
-  XMarksContainer
+    BackButton,
+    Header,
+    ProgressText,
+    ProgressTracker,
+    XMark,
+    XMarksContainer
 } from './LessonHeader.styles'
 
 interface LessonHeaderProps {

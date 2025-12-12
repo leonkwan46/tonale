@@ -1,4 +1,4 @@
-import { createRestValueQuestion, createRestValueQuestions } from '@/theory/exercises/generators/restValue'
+import { createRestValueQuestion, createRestValueQuestions } from '@/subjects/theory/exercises/generators/restValue'
 import {
   validateQuestionStructure,
   validateCorrectAnswerInChoices,

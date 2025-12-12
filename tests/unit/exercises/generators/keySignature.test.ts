@@ -1,4 +1,4 @@
-import { createKeySignatureQuestion, createKeySignatureQuestions } from '@/theory/exercises/generators/keySignature'
+import { createKeySignatureQuestion, createKeySignatureQuestions } from '@/subjects/theory/exercises/generators/keySignature'
 import {
   validateCorrectAnswerInChoices,
   validateKeyForStage,

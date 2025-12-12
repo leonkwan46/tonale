@@ -1,5 +1,5 @@
-import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/theory/exercises/generators/grouping'
-import { getTimeSignatures } from '@/theory/exercises/utils/exercise'
+import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/subjects/theory/exercises/generators/grouping'
+import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,

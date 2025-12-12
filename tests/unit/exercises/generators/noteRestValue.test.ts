@@ -1,4 +1,4 @@
-import { createNoteRestValueQuestions } from '@/theory/exercises/generators/noteRestValue'
+import { createNoteRestValueQuestions } from '@/subjects/theory/exercises/generators/noteRestValue'
 import {
   validateNoteTypeForStage,
   validateQuestionCount,

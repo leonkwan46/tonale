@@ -1,4 +1,4 @@
-import { createRestValueNameQuestions } from '@/theory/exercises/generators/restValueName'
+import { createRestValueNameQuestions } from '@/subjects/theory/exercises/generators/restValueName'
 import {
   validateRestTypeForStage,
   validateQuestionCount,

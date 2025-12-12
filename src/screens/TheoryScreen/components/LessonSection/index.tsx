@@ -1,6 +1,6 @@
 import { usePreventDoubleTap } from '@/hooks'
 import { WarningModal } from '@/sharedComponents'
-import { Lesson } from '@/theory/curriculum'
+import { Lesson } from '@/subjects/theory/curriculum'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
 import { useState } from 'react'

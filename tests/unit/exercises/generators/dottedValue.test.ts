@@ -1,4 +1,4 @@
-import { createDottedValueQuestions } from '@/theory/exercises/generators/dottedValue'
+import { createDottedValueQuestions } from '@/subjects/theory/exercises/generators/dottedValue'
 import {
   validateNoteTypeForStage,
   validateQuestionCount,

@@ -1,5 +1,5 @@
 import { NOTES, type MusicElementData } from '@leonkwan46/music-notation'
-import { ARTICULATION_SIGNS_DEFINITIONS } from '../../../config/gradeSyllabus/musicalTerms'
+import { ARTICULATION_SIGNS_DEFINITIONS } from '../../../../config/gradeSyllabus/musicalTerms'
 import { STAGE_ONE_TIE_SLUR_QUESTIONS } from '../../curriculum/config/tieSlur'
 import { Question, StageNumber } from '../../curriculum/types'
 import type { TieSlurQuestion } from '../custom/tieSlur/helpers'

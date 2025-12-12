@@ -1,13 +1,13 @@
 import type { ClefType, Note } from '@leonkwan46/music-notation'
 import { ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS } from '@leonkwan46/music-notation'
 import {
-  GRADE_ONE_BASS_PITCH_RANGE,
-  GRADE_ONE_TREBLE_PITCH_RANGE,
-  GRADE_TWO_BASS_PITCH_RANGE,
-  GRADE_TWO_TREBLE_PITCH_RANGE,
-  PRE_GRADE_BASS_PITCH_RANGE,
-  PRE_GRADE_TREBLE_PITCH_RANGE
-} from '../../../config/gradeSyllabus/pitchRange'
+    GRADE_ONE_BASS_PITCH_RANGE,
+    GRADE_ONE_TREBLE_PITCH_RANGE,
+    GRADE_TWO_BASS_PITCH_RANGE,
+    GRADE_TWO_TREBLE_PITCH_RANGE,
+    PRE_GRADE_BASS_PITCH_RANGE,
+    PRE_GRADE_TREBLE_PITCH_RANGE
+} from '../../../../config/gradeSyllabus/pitchRange'
 import { StageNumber } from '../../curriculum/types'
 
 const getPitchDefinitions = (clef: ClefType) => {

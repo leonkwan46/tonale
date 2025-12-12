@@ -109,7 +109,7 @@ export const usePlayer = () => {
     setIsPlaying(false)
     const soundsToCancel = Array.from(activeSoundsRef.current)
     activeSoundsRef.current.clear()
-
+    
     await Promise.all(
       soundsToCancel.map(async (player) => {
         try {
@@ -172,18 +172,18 @@ export const usePlayer = () => {
       const executePlay = () => {
         // Play all notes at the exact same time
         validSounds.forEach((player) => {
-          if (!isPlayingRef.current) {
+        if (!isPlayingRef.current) {
             activeSoundsRef.current.delete(player)
-            return
-          }
-          try {
+          return
+        }
+        try {
             player.play()
-          } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error)
-            console.error('[MIDI Player] Failed to play note:', errorMessage)
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : String(error)
+          console.error('[MIDI Player] Failed to play note:', errorMessage)
             activeSoundsRef.current.delete(player)
-          }
-        })
+        }
+      })
         resolve()
       }
 
@@ -267,9 +267,9 @@ export const usePlayer = () => {
             try {
               if (isPlayingRef.current) {
                 player.play()
-              }
-            } catch (error: unknown) {
-              const errorMessage = error instanceof Error ? error.message : String(error)
+        }
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error)
               console.error('[MIDI Player] Failed to play melody note:', errorMessage)
               activeSoundsRef.current.delete(player)
             }
@@ -282,7 +282,7 @@ export const usePlayer = () => {
           setTimeout(scheduleNotes, scheduleInterval)
         } else {
           resolve()
-        }
+    }
       }
 
       scheduleNotes()
@@ -304,10 +304,10 @@ export const usePlayer = () => {
     setIsPlaying(false)
     cancelPromiseRef.current = cancelAllSounds()
     await cancelPromiseRef.current
-
+    
     isPlayingRef.current = true
     setIsPlaying(true)
-
+    
     try {
       const instrument = options.instrument || DEFAULT_INSTRUMENT
       const tempo = options.tempo || 120

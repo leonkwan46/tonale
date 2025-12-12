@@ -1,5 +1,5 @@
-import { createSemitoneToneQuestion, createSemitoneToneQuestions } from '@/theory/exercises/generators/semitonesTones'
-import { getIntervalPairs } from '@/theory/exercises/utils/interval'
+import { createSemitoneToneQuestion, createSemitoneToneQuestions } from '@/subjects/theory/exercises/generators/semitonesTones'
+import { getIntervalPairs } from '@/subjects/theory/exercises/utils/interval'
 import {
   validateCorrectAnswerInChoices,
   validatePitchForStage,

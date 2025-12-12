@@ -1,6 +1,6 @@
-import { getCumulativeNoteDefinitions } from '@/theory/curriculum/config/noteRange'
-import { createIntervalQuestion, createIntervalQuestions } from '@/theory/exercises/generators/interval'
-import { getStageIntervals } from '@/theory/exercises/utils/interval'
+import { getCumulativeNoteDefinitions } from '@/subjects/theory/curriculum/config/noteRange'
+import { createIntervalQuestion, createIntervalQuestions } from '@/subjects/theory/exercises/generators/interval'
+import { getStageIntervals } from '@/subjects/theory/exercises/utils/interval'
 import {
     validateCorrectAnswerInChoices,
     validatePitchForStage,
