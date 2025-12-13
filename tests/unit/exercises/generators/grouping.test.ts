@@ -1,11 +1,11 @@
 import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/subjects/theory/exercises/generators/grouping'
 import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('grouping generator', () => {
@@ -30,16 +30,16 @@ describe('grouping generator', () => {
 
       it('should have type trueFalse', () => {
         const question = createNoteGroupingQuestion(stage)
-        expect(question.type).toBe('trueFalse')
+        expect(question.answerInterface).toBe('trueFalse')
       })
 
       it('should have valid visual component', () => {
         const question = createNoteGroupingQuestion(stage)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.elements).toBeDefined()
-        expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-        expect(question.visualComponent?.elements?.length).toBeGreaterThan(0)
-        expect(question.visualComponent?.timeSignature).toBeDefined()
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.elements).toBeDefined()
+        expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+        expect(question.questionInterface?.elements?.length).toBeGreaterThan(0)
+        expect(question.questionInterface?.timeSignature).toBeDefined()
       })
 
       it('should have explanation', () => {
@@ -50,7 +50,7 @@ describe('grouping generator', () => {
 
       it('should only use stage 2 time signatures', () => {
         const question = createNoteGroupingQuestion(stage)
-        const timeSignature = question.visualComponent?.timeSignature
+        const timeSignature = question.questionInterface?.timeSignature
         if (timeSignature) {
           const timeSigs = getTimeSignatures(stage)
           const timeSigValues = timeSigs.map(ts => 
@@ -91,7 +91,7 @@ describe('grouping generator', () => {
           typeof ts === 'string' ? ts : `${ts.topNumber}/${ts.bottomNumber}`
         )
         questions.forEach(question => {
-          const timeSignature = question.visualComponent?.timeSignature
+          const timeSignature = question.questionInterface?.timeSignature
           if (timeSignature) {
             expect(timeSigValues).toContain(timeSignature)
           }
@@ -102,7 +102,7 @@ describe('grouping generator', () => {
         const questions = createNoteGroupingQuestions(20, stage)
         const timeSigCounts = new Map<string, number>()
         questions.forEach(question => {
-          const timeSig = question.visualComponent?.timeSignature
+          const timeSig = question.questionInterface?.timeSignature
           if (timeSig) {
             timeSigCounts.set(timeSig, (timeSigCounts.get(timeSig) || 0) + 1)
           }

@@ -3,7 +3,7 @@ import { createAudioPlayer } from 'expo-audio'
 import { type FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useDevice, usePlayer } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
-import { VisualQuestion } from '../components/VisualQuestion'
+import { QuestionInterface } from '../components/QuestionInterface'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
 
 interface LessonScreenBodyProps {
@@ -28,8 +28,8 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
   const { isTablet } = useDevice()
   const { play, stop, isPlaying } = usePlayer()
   const currentQuestion = questions[currentQuestionIndex]
-  const { question, visualComponent, type } = currentQuestion
-  const rhythmPattern = type === 'rhythmTap' && Array.isArray(currentQuestion.correctAnswer)
+  const { title, questionInterface, answerInterface } = currentQuestion
+  const rhythmPattern = answerInterface === 'rhythmTap' && Array.isArray(currentQuestion.correctAnswer)
     ? currentQuestion.correctAnswer
     : undefined
   const isLastQuestion = currentQuestionIndex === questions.length - 1
@@ -37,14 +37,14 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
   const [isPlayingClaps, setIsPlayingClaps] = useState(false)
   const [shouldStartMetronome, setShouldStartMetronome] = useState(false)
 
-  const isNoteIdentification = visualComponent?.clef && 
-    visualComponent?.elements && 
-    visualComponent.elements.length > 0 &&
-    visualComponent.elements.some(element => element.pitch)
+  const isNoteIdentification = questionInterface?.clef && 
+    questionInterface?.elements && 
+    questionInterface.elements.length > 0 &&
+    questionInterface.elements.some(element => element.pitch)
 
-  const isRhythmTapQuestion = type === 'rhythmTap'
-  const isRhythmQuestion = visualComponent?.rhythmMelody !== undefined || isRhythmTapQuestion
-  const rhythmMelody = visualComponent?.rhythmMelody
+  const isRhythmTapQuestion = answerInterface === 'rhythmTap'
+  const isRhythmQuestion = questionInterface?.rhythmMelody !== undefined || isRhythmTapQuestion
+  const rhythmMelody = questionInterface?.rhythmMelody
 
   useEffect(() => {
     setShouldStartMetronome(false)
@@ -119,19 +119,19 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
         testID="question-text"
         isTablet={isTablet}
       >
-        {question}
+        {title}
       </QuestionText>
 
-      {visualComponent && (
-        <VisualQuestion 
-          visualComponent={visualComponent}
+      {questionInterface && (
+        <QuestionInterface 
+          questionInterface={questionInterface}
           onPlaybackPress={isRhythmQuestion ? handlePlayRhythm : undefined}
           isPlaying={isPlaying || isPlayingClaps}
         />
       )}
       
       <AnswerInterface 
-        questionType={type}
+        answerInterface={answerInterface}
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmitInternal}
         onNextQuestion={handleNextQuestionInternal}

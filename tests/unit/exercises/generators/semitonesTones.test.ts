@@ -1,12 +1,12 @@
 import { createSemitoneToneQuestion, createSemitoneToneQuestions } from '@/subjects/theory/exercises/generators/semitonesTones'
 import { getIntervalPairs } from '@/subjects/theory/exercises/utils/interval'
 import {
-  validateCorrectAnswerInChoices,
-  validatePitchForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validatePitchForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('semitonesTones generator', () => {
@@ -41,18 +41,18 @@ describe('semitonesTones generator', () => {
         it('should have type multipleChoice', () => {
           if (treblePairs.length > 0) {
             const question = createSemitoneToneQuestion(stage, 'treble')
-            expect(question.type).toBe('multipleChoice')
+            expect(question.answerInterface).toBe('multipleChoice')
           }
         })
 
         it('should have valid visual component', () => {
           if (treblePairs.length > 0) {
             const question = createSemitoneToneQuestion(stage, 'treble')
-            expect(question.visualComponent).toBeDefined()
-            expect(question.visualComponent?.clef).toBe('treble')
-            expect(question.visualComponent?.elements).toBeDefined()
-            expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-            expect(question.visualComponent?.elements?.length).toBe(2)
+            expect(question.questionInterface).toBeDefined()
+            expect(question.questionInterface?.clef).toBe('treble')
+            expect(question.questionInterface?.elements).toBeDefined()
+            expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+            expect(question.questionInterface?.elements?.length).toBe(2)
           }
         })
 
@@ -74,8 +74,8 @@ describe('semitonesTones generator', () => {
         it('should use stage 1 pitch range for treble clef', () => {
           if (treblePairs.length > 0) {
             const question = createSemitoneToneQuestion(stage, 'treble')
-            const pitch1 = question.visualComponent?.elements?.[0]?.pitch
-            const pitch2 = question.visualComponent?.elements?.[1]?.pitch
+            const pitch1 = question.questionInterface?.elements?.[0]?.pitch
+            const pitch2 = question.questionInterface?.elements?.[1]?.pitch
             if (pitch1) validatePitchForStage(pitch1, stage, 'treble')
             if (pitch2) validatePitchForStage(pitch2, stage, 'treble')
           }
@@ -107,8 +107,8 @@ describe('semitonesTones generator', () => {
         it('should use stage 1 pitch range for bass clef', () => {
           if (bassPairs.length > 0) {
             const question = createSemitoneToneQuestion(stage, 'bass')
-            const pitch1 = question.visualComponent?.elements?.[0]?.pitch
-            const pitch2 = question.visualComponent?.elements?.[1]?.pitch
+            const pitch1 = question.questionInterface?.elements?.[0]?.pitch
+            const pitch2 = question.questionInterface?.elements?.[1]?.pitch
             if (pitch1) validatePitchForStage(pitch1, stage, 'bass')
             if (pitch2) validatePitchForStage(pitch2, stage, 'bass')
           }
@@ -148,8 +148,8 @@ describe('semitonesTones generator', () => {
 
       it('should include both treble and bass clef questions', () => {
         const questions = createSemitoneToneQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter(q => q.questionInterface?.clef === 'treble')
+        const bassQuestions = questions.filter(q => q.questionInterface?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

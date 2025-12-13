@@ -62,7 +62,7 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
   const needsStaffRendering = correctTerm === 'staccato' || correctTerm === 'accent' || correctTerm === 'fermata'
   const shouldRenderAsSymbol = !(stage === 0 && (correctTerm === 'staccato' || correctTerm === 'legato'))
 
-  let visualComponent
+  let questionInterface
   if (needsStaffRendering) {
     const noteElement: MusicElementData = {
       pitch: 'F4',
@@ -73,14 +73,14 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
       ...(correctTerm === 'fermata' && { hasFermata: true })
     }
     
-    visualComponent = {
+    questionInterface = {
       type: 'musicStaff' as const,
       clef: 'treble' as const,
       elements: [noteElement],
       size: 'sml' as const
     }
   } else {
-    visualComponent = {
+    questionInterface = {
       type: 'termAndSign' as const,
       symbolType: correctTerm,
       renderAsSymbol: shouldRenderAsSymbol
@@ -89,20 +89,20 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
 
   return {
     id: generateQuestionId('musical-term-smufl'),
-    question: 'What is this musical term/sign?',
+    title: 'What is this musical term/sign?',
     correctAnswer: correctDefinition,
     choices: generateWrongChoices(Object.values(distinctDefinitions), correctDefinition),
     explanation: `The term '${TERM_DISPLAY_NAMES[correctTerm as TermDisplayNamesKeys] || correctTerm}' means ${correctDefinition}.`,
-    type: 'multipleChoice',
-    visualComponent
+    answerInterface: 'multipleChoice',
+    questionInterface
   }
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.visualComponent?.symbolType) {
-    return question.visualComponent.symbolType
+  if (question.questionInterface?.symbolType) {
+    return question.questionInterface.symbolType
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createMusicalTermQuestions = (

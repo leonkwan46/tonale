@@ -35,13 +35,13 @@ describe('musicalTerm generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createMusicalTermQuestion(stage)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component', () => {
         const question = createMusicalTermQuestion(stage)
-        expect(question.visualComponent).toBeDefined()
-        expect(['termAndSign', 'musicStaff']).toContain(question.visualComponent?.type)
+        expect(question.questionInterface).toBeDefined()
+        expect(['termAndSign', 'musicStaff']).toContain(question.questionInterface?.type)
       })
 
       it('should have explanation', () => {

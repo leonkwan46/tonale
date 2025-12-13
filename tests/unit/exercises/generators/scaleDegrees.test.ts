@@ -1,13 +1,13 @@
 import { createScaleDegreeQuestion, createScaleDegreeQuestions } from '@/subjects/theory/exercises/generators/scaleDegrees'
 import { getKeys } from '@/subjects/theory/exercises/utils/exercise'
 import {
-  validateCorrectAnswerInChoices,
-  validateKeyForStage,
-  validatePitchForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateKeyForStage,
+    validatePitchForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('scaleDegrees generator', () => {
@@ -41,19 +41,19 @@ describe('scaleDegrees generator', () => {
         it('should have type multipleChoice', () => {
           if (availableKeys.length > 0) {
             const question = createScaleDegreeQuestion(stage, 'treble')
-            expect(question.type).toBe('multipleChoice')
+            expect(question.answerInterface).toBe('multipleChoice')
           }
         })
 
         it('should have valid visual component', () => {
           if (availableKeys.length > 0) {
             const question = createScaleDegreeQuestion(stage, 'treble')
-            expect(question.visualComponent).toBeDefined()
-            expect(question.visualComponent?.clef).toBe('treble')
-            expect(question.visualComponent?.keyName).toBeDefined()
-            expect(question.visualComponent?.elements).toBeDefined()
-            expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-            expect(question.visualComponent?.elements?.length).toBe(1)
+            expect(question.questionInterface).toBeDefined()
+            expect(question.questionInterface?.clef).toBe('treble')
+            expect(question.questionInterface?.keyName).toBeDefined()
+            expect(question.questionInterface?.elements).toBeDefined()
+            expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+            expect(question.questionInterface?.elements?.length).toBe(1)
           }
         })
 
@@ -68,7 +68,7 @@ describe('scaleDegrees generator', () => {
         it('should only use stage 2 keys', () => {
           if (availableKeys.length > 0) {
             const question = createScaleDegreeQuestion(stage, 'treble')
-            const keyName = question.visualComponent?.keyName
+            const keyName = question.questionInterface?.keyName
             if (keyName) {
               validateKeyForStage(keyName, stage)
             }
@@ -78,7 +78,7 @@ describe('scaleDegrees generator', () => {
         it('should use stage 2 pitch range for treble clef', () => {
           if (availableKeys.length > 0) {
             const question = createScaleDegreeQuestion(stage, 'treble')
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, stage, 'treble')
             }
@@ -111,7 +111,7 @@ describe('scaleDegrees generator', () => {
         it('should use stage 2 pitch range for bass clef', () => {
           if (availableKeys.length > 0) {
             const question = createScaleDegreeQuestion(stage, 'bass')
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, stage, 'bass')
             }
@@ -146,7 +146,7 @@ describe('scaleDegrees generator', () => {
       it('should only use stage 2 keys', () => {
         const questions = createScaleDegreeQuestions(10, stage)
         questions.forEach(question => {
-          const keyName = question.visualComponent?.keyName
+          const keyName = question.questionInterface?.keyName
           if (keyName) {
             validateKeyForStage(keyName, stage)
           }
@@ -155,8 +155,8 @@ describe('scaleDegrees generator', () => {
 
       it('should include both treble and bass clef questions', () => {
         const questions = createScaleDegreeQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter(q => q.questionInterface?.clef === 'treble')
+        const bassQuestions = questions.filter(q => q.questionInterface?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

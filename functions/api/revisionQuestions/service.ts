@@ -1,9 +1,9 @@
 import type {
+    QuestionInterface,
     RevisionQuestionsResponse,
     StoreRevisionQuestionPayload,
     StoreRevisionQuestionResponse,
-    StoreRevisionQuestionsPayload,
-    VisualComponent
+    StoreRevisionQuestionsPayload
 } from '@types'
 import {
     deleteRevisionQuestionFromFirestore,
@@ -16,15 +16,15 @@ import {
 } from './firestore'
 
 /**
- * Compress visualComponent by removing undefined/null/empty fields
+ * Compress questionInterface by removing undefined/null/empty fields
  * This reduces storage size while preserving all essential data
  */
-function compressVisualComponent(visualComponent?: VisualComponent): VisualComponent | undefined {
-  if (!visualComponent) return undefined
+function compressQuestionInterface(questionInterface?: QuestionInterface): QuestionInterface | undefined {
+  if (!questionInterface) return undefined
   
   const compressed: Record<string, unknown> = {}
   
-  for (const [key, value] of Object.entries(visualComponent)) {
+  for (const [key, value] of Object.entries(questionInterface)) {
     // Only include defined, non-null, non-empty values
     if (value !== undefined && value !== null && value !== '') {
       // Handle arrays - only include if non-empty
@@ -38,13 +38,13 @@ function compressVisualComponent(visualComponent?: VisualComponent): VisualCompo
     }
   }
   
-  return Object.keys(compressed).length > 0 ? (compressed as unknown as VisualComponent) : undefined
+  return Object.keys(compressed).length > 0 ? (compressed as unknown as QuestionInterface) : undefined
 }
 
 export function validateStoreRevisionQuestionPayload(
   data: StoreRevisionQuestionPayload
 ): void {
-  const { id, lessonId, question, correctAnswer, choices, type } = data
+  const { id, lessonId, title, correctAnswer, choices, answerInterface } = data
 
   if (!id || typeof id !== 'string') {
     throw new Error('id is required and must be a string')
@@ -54,8 +54,8 @@ export function validateStoreRevisionQuestionPayload(
     throw new Error('lessonId is required and must be a string')
   }
 
-  if (!question || typeof question !== 'string') {
-    throw new Error('question is required and must be a string')
+  if (!title || typeof title !== 'string') {
+    throw new Error('title is required and must be a string')
   }
 
   if (!correctAnswer || typeof correctAnswer !== 'string') {
@@ -66,8 +66,8 @@ export function validateStoreRevisionQuestionPayload(
     throw new Error('choices is required and must be an array')
   }
 
-  if (!type || !['multipleChoice', 'trueFalse', 'keyPress'].includes(type)) {
-    throw new Error('type must be "multipleChoice", "trueFalse", or "keyPress"')
+  if (!answerInterface || !['multipleChoice', 'trueFalse', 'keyPress'].includes(answerInterface)) {
+    throw new Error('answerInterface must be "multipleChoice", "trueFalse", or "keyPress"')
   }
 }
 
@@ -77,16 +77,16 @@ export async function storeRevisionQuestionService(
 ): Promise<StoreRevisionQuestionResponse> {
   validateStoreRevisionQuestionPayload(payload)
   
-  // Compress visualComponent before storing
+  // Compress questionInterface before storing
   const compressedPayload: RevisionQuestionInput = {
     id: payload.id,
     lessonId: payload.lessonId,
-    question: payload.question,
+    title: payload.title,
     correctAnswer: payload.correctAnswer,
     choices: payload.choices,
     explanation: payload.explanation,
-    type: payload.type,
-    visualComponent: compressVisualComponent(payload.visualComponent),
+    answerInterface: payload.answerInterface,
+    questionInterface: compressQuestionInterface(payload.questionInterface),
     correctCount: payload.correctCount
   }
   
@@ -130,16 +130,16 @@ export async function storeRevisionQuestionsService(
     validateStoreRevisionQuestionPayload(question)
   })
   
-  // Compress visualComponent for each question
+  // Compress questionInterface for each question
   const compressedQuestions: RevisionQuestionInput[] = payload.questions.map(question => ({
     id: question.id,
     lessonId: question.lessonId,
-    question: question.question,
+    title: question.title,
     correctAnswer: question.correctAnswer,
     choices: question.choices,
     explanation: question.explanation,
-    type: question.type,
-    visualComponent: compressVisualComponent(question.visualComponent),
+    answerInterface: question.answerInterface,
+    questionInterface: compressQuestionInterface(question.questionInterface),
     correctCount: question.correctCount
   }))
   

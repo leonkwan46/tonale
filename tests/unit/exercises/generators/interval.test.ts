@@ -68,7 +68,7 @@ describe('interval generator', () => {
           if (trebleNotes.length >= 2) {
             try {
               const question = createIntervalQuestion(stage, 'treble', trebleNotes[0].pitch, trebleNotes[1].pitch)
-              expect(question.type).toBe('multipleChoice')
+              expect(question.answerInterface).toBe('multipleChoice')
             } catch (error) {
               if (error instanceof Error && error.message.includes('is not part of stage')) {
                 expect(true).toBe(true)
@@ -83,11 +83,11 @@ describe('interval generator', () => {
           if (trebleNotes.length >= 2) {
             try {
               const question = createIntervalQuestion(stage, 'treble', trebleNotes[0].pitch, trebleNotes[1].pitch)
-              expect(question.visualComponent).toBeDefined()
-              expect(question.visualComponent?.clef).toBe('treble')
-              expect(question.visualComponent?.elements).toBeDefined()
-              expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-              expect(question.visualComponent?.elements?.length).toBe(2)
+              expect(question.questionInterface).toBeDefined()
+              expect(question.questionInterface?.clef).toBe('treble')
+              expect(question.questionInterface?.elements).toBeDefined()
+              expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+              expect(question.questionInterface?.elements?.length).toBe(2)
             } catch (error) {
               if (error instanceof Error && error.message.includes('is not part of stage')) {
                 expect(true).toBe(true)
@@ -133,8 +133,8 @@ describe('interval generator', () => {
           if (trebleNotes.length >= 2) {
             try {
               const question = createIntervalQuestion(stage, 'treble', trebleNotes[0].pitch, trebleNotes[1].pitch)
-              const pitch1 = question.visualComponent?.elements?.[0]?.pitch
-              const pitch2 = question.visualComponent?.elements?.[1]?.pitch
+              const pitch1 = question.questionInterface?.elements?.[0]?.pitch
+              const pitch2 = question.questionInterface?.elements?.[1]?.pitch
               if (pitch1) validatePitchForStage(pitch1, stage, 'treble')
               if (pitch2) validatePitchForStage(pitch2, stage, 'treble')
             } catch (error) {
@@ -183,8 +183,8 @@ describe('interval generator', () => {
           if (bassNotes.length >= 2) {
             try {
               const question = createIntervalQuestion(stage, 'bass', bassNotes[0].pitch, bassNotes[1].pitch)
-              const pitch1 = question.visualComponent?.elements?.[0]?.pitch
-              const pitch2 = question.visualComponent?.elements?.[1]?.pitch
+              const pitch1 = question.questionInterface?.elements?.[0]?.pitch
+              const pitch2 = question.questionInterface?.elements?.[1]?.pitch
               if (pitch1) validatePitchForStage(pitch1, stage, 'bass')
               if (pitch2) validatePitchForStage(pitch2, stage, 'bass')
             } catch (error) {
@@ -232,8 +232,8 @@ describe('interval generator', () => {
 
       it('should include both treble and bass clef questions', () => {
         const questions = createIntervalQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter(q => q.questionInterface?.clef === 'treble')
+        const bassQuestions = questions.filter(q => q.questionInterface?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

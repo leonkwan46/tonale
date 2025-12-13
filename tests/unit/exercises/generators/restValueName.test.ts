@@ -1,9 +1,9 @@
 import { createRestValueNameQuestions } from '@/subjects/theory/exercises/generators/restValueName'
 import {
-  validateRestTypeForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueQuestions
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateRestTypeForStage,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('restValueName generator', () => {
@@ -31,7 +31,7 @@ describe('restValueName generator', () => {
       it('should only use stage 0 rest types', () => {
         const questions = createRestValueNameQuestions(10, stage)
         questions.forEach(question => {
-          const restType = question.visualComponent?.noteType
+          const restType = question.questionInterface?.noteType
           if (restType) {
             validateRestTypeForStage(restType, stage)
           }
@@ -55,7 +55,7 @@ describe('restValueName generator', () => {
       it('should only use stage 1 rest types', () => {
         const questions = createRestValueNameQuestions(10, stage)
         questions.forEach(question => {
-          const restType = question.visualComponent?.noteType
+          const restType = question.questionInterface?.noteType
           if (restType) {
             validateRestTypeForStage(restType, stage)
           }
@@ -79,7 +79,7 @@ describe('restValueName generator', () => {
       it('should only use stage 2 rest types', () => {
         const questions = createRestValueNameQuestions(10, stage)
         questions.forEach(question => {
-          const restType = question.visualComponent?.noteType
+          const restType = question.questionInterface?.noteType
           if (restType) {
             validateRestTypeForStage(restType, stage)
           }

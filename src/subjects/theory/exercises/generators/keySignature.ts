@@ -2,8 +2,8 @@ import { CLEFS } from '@leonkwan46/music-notation'
 import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool, getKeys } from '../utils/exercise'
 import {
-  generateQuestionId,
-  generateWrongChoices
+    generateQuestionId,
+    generateWrongChoices
 } from '../utils/question'
 
 type StageKey = ReturnType<typeof getKeys>[number]
@@ -15,12 +15,12 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): 
   
   return {
     id: generateQuestionId('key-sig'),
-    question: 'What key signature is this?',
+    title: 'What key signature is this?',
     correctAnswer: correctKey.toString(),
     choices: generateWrongChoices(keyNames, correctKey.toString()),
     explanation: `${correctKey.toString()} is one of the Grade 1 key signatures.`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       clef: CLEFS.TREBLE,
       elements: [],
       keyName: correctKey
@@ -29,14 +29,14 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): 
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.correctAnswer) {
+  if (typeof question.correctAnswer === 'string') {
     return question.correctAnswer
   }
 
-  const visualComponent = question.visualComponent
+  const questionInterface = question.questionInterface
   const keyName =
-    visualComponent && 'keyName' in visualComponent
-      ? (visualComponent as { keyName?: unknown }).keyName
+    questionInterface && 'keyName' in questionInterface
+      ? (questionInterface as { keyName?: unknown }).keyName
       : undefined
 
   if (typeof keyName === 'string') {

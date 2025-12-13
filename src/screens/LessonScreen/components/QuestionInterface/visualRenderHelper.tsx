@@ -1,18 +1,18 @@
 import {
-  Crotchet,
-  CrotchetRest,
-  Minim,
-  MinimRest,
-  NoteType,
-  Quaver,
-  QuaverRest,
-  Semibreve,
-  SemibreveRest,
-  Semiquaver,
-  SemiquaverRest,
-  type MusicElementData
+    Crotchet,
+    CrotchetRest,
+    Minim,
+    MinimRest,
+    NoteType,
+    Quaver,
+    QuaverRest,
+    Semibreve,
+    SemibreveRest,
+    Semiquaver,
+    SemiquaverRest,
+    type MusicElementData
 } from '@leonkwan46/music-notation'
-import type { VisualComponent } from '@types'
+import type { QuestionInterface } from '@types'
 
 // Helper function to generate triplet elements for display
 export const generateTripletElements = (noteType: NoteType, numberOfNotes: number = 3): MusicElementData[][] => {
@@ -25,7 +25,7 @@ export const generateTripletElements = (noteType: NoteType, numberOfNotes: numbe
   return elements
 }
 
-export const renderNoteComponent = (noteType: VisualComponent['noteType']) => {
+export const renderNoteComponent = (noteType: QuestionInterface['noteType']) => {
   // Handle dotted note/rest objects
   if (typeof noteType === 'object' && noteType.type) {
     const { type, dots = 0 } = noteType
@@ -89,4 +89,3 @@ export const renderNoteComponent = (noteType: VisualComponent['noteType']) => {
   
   throw new Error(`Invalid noteType: ${JSON.stringify(noteType)}`)
 }
-

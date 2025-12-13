@@ -1,11 +1,11 @@
 import { createNoteIdentificationQuestion, createNoteIdentificationQuestions } from '@/subjects/theory/exercises/generators/noteIdentification'
 import {
-  validateCorrectAnswerInChoices,
-  validatePitchForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validatePitchForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('noteIdentification generator', () => {
@@ -29,16 +29,16 @@ describe('noteIdentification generator', () => {
 
         it('should have type multipleChoice', () => {
           const question = createNoteIdentificationQuestion(0, 'treble')
-          expect(question.type).toBe('multipleChoice')
+          expect(question.answerInterface).toBe('multipleChoice')
         })
 
         it('should have valid visual component with treble clef', () => {
           const question = createNoteIdentificationQuestion(0, 'treble')
-          expect(question.visualComponent).toBeDefined()
-          expect(question.visualComponent?.clef).toBe('treble')
-          expect(question.visualComponent?.elements).toBeDefined()
-          expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-          expect(question.visualComponent?.elements?.length).toBeGreaterThan(0)
+          expect(question.questionInterface).toBeDefined()
+          expect(question.questionInterface?.clef).toBe('treble')
+          expect(question.questionInterface?.elements).toBeDefined()
+          expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+          expect(question.questionInterface?.elements?.length).toBeGreaterThan(0)
         })
 
         it('should have explanation', () => {
@@ -49,12 +49,12 @@ describe('noteIdentification generator', () => {
 
         it('should include treble clef in question text', () => {
           const question = createNoteIdentificationQuestion(0, 'treble')
-          expect(question.question).toContain('treble')
+          expect(question.title).toContain('treble')
         })
 
         it('should use stage 0 note range for treble clef', () => {
           const question = createNoteIdentificationQuestion(0, 'treble')
-          const pitch = question.visualComponent?.elements?.[0]?.pitch
+          const pitch = question.questionInterface?.elements?.[0]?.pitch
           expect(pitch).toBeDefined()
           if (pitch) {
             validatePitchForStage(pitch, 0, 'treble')
@@ -71,7 +71,7 @@ describe('noteIdentification generator', () => {
           }
           const question = createNoteIdentificationQuestion(0, 'treble', customNoteData)
           expect(question.correctAnswer).toBe('C')
-          expect(question.visualComponent?.elements?.[0]?.pitch).toBe('C4')
+          expect(question.questionInterface?.elements?.[0]?.pitch).toBe('C4')
         })
 
         it('should throw error if noteData missing letterName', () => {
@@ -106,21 +106,21 @@ describe('noteIdentification generator', () => {
 
         it('should have valid visual component with bass clef', () => {
           const question = createNoteIdentificationQuestion(0, 'bass')
-          expect(question.visualComponent).toBeDefined()
-          expect(question.visualComponent?.clef).toBe('bass')
-          expect(question.visualComponent?.elements).toBeDefined()
-          expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-          expect(question.visualComponent?.elements?.length).toBeGreaterThan(0)
+          expect(question.questionInterface).toBeDefined()
+          expect(question.questionInterface?.clef).toBe('bass')
+          expect(question.questionInterface?.elements).toBeDefined()
+          expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+          expect(question.questionInterface?.elements?.length).toBeGreaterThan(0)
         })
 
         it('should include bass clef in question text', () => {
           const question = createNoteIdentificationQuestion(0, 'bass')
-          expect(question.question).toContain('bass')
+          expect(question.title).toContain('bass')
         })
 
         it('should use stage 0 note range for bass clef', () => {
           const question = createNoteIdentificationQuestion(0, 'bass')
-          const pitch = question.visualComponent?.elements?.[0]?.pitch
+          const pitch = question.questionInterface?.elements?.[0]?.pitch
           expect(pitch).toBeDefined()
           if (pitch) {
             validatePitchForStage(pitch, 0, 'bass')
@@ -143,7 +143,7 @@ describe('noteIdentification generator', () => {
 
         it('should use stage 1 note range for treble clef', () => {
           const question = createNoteIdentificationQuestion(1, 'treble')
-          const pitch = question.visualComponent?.elements?.[0]?.pitch
+          const pitch = question.questionInterface?.elements?.[0]?.pitch
           expect(pitch).toBeDefined()
           if (pitch) {
             validatePitchForStage(pitch, 1, 'treble')
@@ -164,7 +164,7 @@ describe('noteIdentification generator', () => {
 
         it('should use stage 1 note range for bass clef', () => {
           const question = createNoteIdentificationQuestion(1, 'bass')
-          const pitch = question.visualComponent?.elements?.[0]?.pitch
+          const pitch = question.questionInterface?.elements?.[0]?.pitch
           expect(pitch).toBeDefined()
           if (pitch) {
             validatePitchForStage(pitch, 1, 'bass')
@@ -187,7 +187,7 @@ describe('noteIdentification generator', () => {
 
         it('should use stage 2 note range for treble clef', () => {
           const question = createNoteIdentificationQuestion(2, 'treble')
-          const pitch = question.visualComponent?.elements?.[0]?.pitch
+          const pitch = question.questionInterface?.elements?.[0]?.pitch
           expect(pitch).toBeDefined()
           if (pitch) {
             validatePitchForStage(pitch, 2, 'treble')
@@ -208,7 +208,7 @@ describe('noteIdentification generator', () => {
 
         it('should use stage 2 note range for bass clef', () => {
           const question = createNoteIdentificationQuestion(2, 'bass')
-          const pitch = question.visualComponent?.elements?.[0]?.pitch
+          const pitch = question.questionInterface?.elements?.[0]?.pitch
           expect(pitch).toBeDefined()
           if (pitch) {
             validatePitchForStage(pitch, 2, 'bass')
@@ -248,13 +248,13 @@ describe('noteIdentification generator', () => {
         it('should only use stage 0 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 0, 'treble')
           questions.forEach(question => {
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 0, 'treble')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map(q => q.questionInterface?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -262,7 +262,7 @@ describe('noteIdentification generator', () => {
         it('should have treble clef in all questions', () => {
           const questions = createNoteIdentificationQuestions(5, 0, 'treble')
           questions.forEach(question => {
-            expect(question.visualComponent?.clef).toBe('treble')
+            expect(question.questionInterface?.clef).toBe('treble')
           })
         })
       })
@@ -281,13 +281,13 @@ describe('noteIdentification generator', () => {
         it('should only use stage 0 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 0, 'bass')
           questions.forEach(question => {
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 0, 'bass')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map(q => q.questionInterface?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -295,7 +295,7 @@ describe('noteIdentification generator', () => {
         it('should have bass clef in all questions', () => {
           const questions = createNoteIdentificationQuestions(5, 0, 'bass')
           questions.forEach(question => {
-            expect(question.visualComponent?.clef).toBe('bass')
+            expect(question.questionInterface?.clef).toBe('bass')
           })
         })
       })
@@ -316,13 +316,13 @@ describe('noteIdentification generator', () => {
         it('should only use stage 1 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 1, 'treble')
           questions.forEach(question => {
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 1, 'treble')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map(q => q.questionInterface?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -342,13 +342,13 @@ describe('noteIdentification generator', () => {
         it('should only use stage 1 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 1, 'bass')
           questions.forEach(question => {
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 1, 'bass')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map(q => q.questionInterface?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -370,13 +370,13 @@ describe('noteIdentification generator', () => {
         it('should only use stage 2 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 2, 'treble')
           questions.forEach(question => {
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 2, 'treble')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map(q => q.questionInterface?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -396,13 +396,13 @@ describe('noteIdentification generator', () => {
         it('should only use stage 2 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 2, 'bass')
           questions.forEach(question => {
-            const pitch = question.visualComponent?.elements?.[0]?.pitch
+            const pitch = question.questionInterface?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 2, 'bass')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map(q => q.questionInterface?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })

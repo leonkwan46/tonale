@@ -11,12 +11,12 @@ const allSignDefinitions = [...new Set(Object.values(ARTICULATION_SIGNS_DEFINITI
 export const createTieDefinitionQuestion = (_stage: StageNumber): Question => {
   return {
     id: generateQuestionId('tie'),
-    question: 'What is this musical symbol?',
+    title: 'What is this musical symbol?',
     correctAnswer: ARTICULATION_SIGNS_DEFINITIONS.tie,
     choices: generateWrongChoices(allSignDefinitions, ARTICULATION_SIGNS_DEFINITIONS.tie),
     explanation: 'A tie connects two notes of the same pitch, combining their durations.',
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'musicStaff',
       clef: 'treble',
       elements: [
@@ -31,12 +31,12 @@ export const createTieDefinitionQuestion = (_stage: StageNumber): Question => {
 export const createSlurDefinitionQuestion = (_stage: StageNumber): Question => {
   return {
     id: generateQuestionId('slur'),
-    question: 'What is this musical symbol?',
+    title: 'What is this musical symbol?',
     correctAnswer: ARTICULATION_SIGNS_DEFINITIONS.slur,
     choices: generateWrongChoices(allSignDefinitions, ARTICULATION_SIGNS_DEFINITIONS.slur),
     explanation: 'A slur indicates that notes should be played smoothly and connected.',
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'musicStaff',
       clef: 'treble',
       elements: [
@@ -59,22 +59,22 @@ const getTieSlurQuestionsForStage = (stage: StageNumber): readonly TieSlurQuesti
 }
 
 const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage: StageNumber): Question => {
-  const symbolType = customQuestion.visualComponent?.symbolType || 'tie'
+  const symbolType = customQuestion.questionInterface?.symbolType || 'tie'
   return {
     id: generateQuestionId(`${symbolType}-${customQuestion.questionType}`),
-    question: customQuestion.question,
+    title: customQuestion.title,
     correctAnswer: customQuestion.correctAnswer,
     choices: customQuestion.choices,
     explanation: customQuestion.explanation,
-    type: 'multipleChoice',
-    visualComponent: customQuestion.visualComponent
+    answerInterface: 'multipleChoice',
+    questionInterface: customQuestion.questionInterface
   }
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.visualComponent?.elements && question.visualComponent.elements.length > 0) {
+  if (question.questionInterface?.elements && question.questionInterface.elements.length > 0) {
     const questionType = question.correctAnswer === 'Tie' || question.correctAnswer === 'Slur' ? 'recognition' : 'meaning'
-    const elementSignature = question.visualComponent.elements.map((el: MusicElementData) => {
+    const elementSignature = question.questionInterface.elements.map((el: MusicElementData) => {
       const parts: string[] = []
       if (el.type) parts.push(`type:${el.type}`)
       if (el.pitch) parts.push(`pitch:${el.pitch}`)
@@ -86,7 +86,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
     }).join(';')
     return `tieSlur|${questionType}|${elementSignature}`
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createTieSlurQuestions = (questionsCount: number, stage: StageNumber): Question[] => {

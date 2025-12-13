@@ -34,18 +34,18 @@ describe('triad generator', () => {
 
         it('should have type multipleChoice', () => {
           const question = createTriadQuestion(stage, 'treble')
-          expect(question.type).toBe('multipleChoice')
+          expect(question.answerInterface).toBe('multipleChoice')
         })
 
         it('should have valid visual component with chord structure', () => {
           const question = createTriadQuestion(stage, 'treble')
-          expect(question.visualComponent).toBeDefined()
-          expect(question.visualComponent?.type).toBe('musicStaff')
-          expect(question.visualComponent?.clef).toBe('treble')
-          expect(question.visualComponent?.isChord).toBe(true)
-          expect(question.visualComponent?.elements).toBeDefined()
-          expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-          expect(question.visualComponent?.elements?.length).toBe(3)
+          expect(question.questionInterface).toBeDefined()
+          expect(question.questionInterface?.type).toBe('musicStaff')
+          expect(question.questionInterface?.clef).toBe('treble')
+          expect(question.questionInterface?.isChord).toBe(true)
+          expect(question.questionInterface?.elements).toBeDefined()
+          expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+          expect(question.questionInterface?.elements?.length).toBe(3)
         })
 
         it('should have explanation', () => {
@@ -85,8 +85,8 @@ describe('triad generator', () => {
 
         it('should have valid visual component with bass clef', () => {
           const question = createTriadQuestion(stage, 'bass')
-          expect(question.visualComponent?.clef).toBe('bass')
-          expect(question.visualComponent?.elements?.length).toBe(3)
+          expect(question.questionInterface?.clef).toBe('bass')
+          expect(question.questionInterface?.elements?.length).toBe(3)
         })
       })
     })
@@ -126,8 +126,8 @@ describe('triad generator', () => {
 
       it('should include both treble and bass clef questions', () => {
         const questions = createTriadQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter(q => q.questionInterface?.clef === 'treble')
+        const bassQuestions = questions.filter(q => q.questionInterface?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

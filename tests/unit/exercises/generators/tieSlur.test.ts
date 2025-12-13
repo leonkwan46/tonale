@@ -27,18 +27,18 @@ describe('tieSlur generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createTieDefinitionQuestion(0)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component with tie elements', () => {
         const question = createTieDefinitionQuestion(0)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.type).toBe('musicStaff')
-        expect(question.visualComponent?.elements).toBeDefined()
-        expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-        expect(question.visualComponent?.elements?.length).toBeGreaterThanOrEqual(2)
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.type).toBe('musicStaff')
+        expect(question.questionInterface?.elements).toBeDefined()
+        expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+        expect(question.questionInterface?.elements?.length).toBeGreaterThanOrEqual(2)
 
-        const elements = question.visualComponent?.elements || []
+        const elements = question.questionInterface?.elements || []
         const hasTieStart = elements.some((el: any) => el.tieStart === true)
         const hasTieEnd = elements.some((el: any) => el.tieEnd === true)
         expect(hasTieStart).toBe(true)
@@ -102,18 +102,18 @@ describe('tieSlur generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createSlurDefinitionQuestion(0)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component with slur elements', () => {
         const question = createSlurDefinitionQuestion(0)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.type).toBe('musicStaff')
-        expect(question.visualComponent?.elements).toBeDefined()
-        expect(Array.isArray(question.visualComponent?.elements)).toBe(true)
-        expect(question.visualComponent?.elements?.length).toBeGreaterThanOrEqual(2)
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.type).toBe('musicStaff')
+        expect(question.questionInterface?.elements).toBeDefined()
+        expect(Array.isArray(question.questionInterface?.elements)).toBe(true)
+        expect(question.questionInterface?.elements?.length).toBeGreaterThanOrEqual(2)
 
-        const elements = question.visualComponent?.elements || []
+        const elements = question.questionInterface?.elements || []
         const hasSlurStart = elements.some((el: any) => el.slurStart === true)
         const hasSlurEnd = elements.some((el: any) => el.slurEnd === true)
         expect(hasSlurStart).toBe(true)
@@ -228,8 +228,8 @@ describe('tieSlur generator', () => {
       it('should respect deduplication logic', () => {
         const questions = createTieSlurQuestions(20, 1)
         const questionSignatures = questions.map(q => {
-          if (q.visualComponent?.elements && q.visualComponent.elements.length > 0) {
-            return q.visualComponent.elements.map((el: any) => {
+          if (q.questionInterface?.elements && q.questionInterface.elements.length > 0) {
+            return q.questionInterface.elements.map((el: any) => {
               const parts: string[] = []
               if (el.type) parts.push(`type:${el.type}`)
               if (el.pitch) parts.push(`pitch:${el.pitch}`)

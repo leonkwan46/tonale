@@ -1,11 +1,11 @@
 import { createAccidentalQuestion, createAccidentalQuestions } from '@/subjects/theory/exercises/generators/accidentals'
 import { getAccidentals } from '@/subjects/theory/exercises/utils/exercise'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('accidentals generator', () => {
@@ -31,15 +31,15 @@ describe('accidentals generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createAccidentalQuestion(stage)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component', () => {
         const question = createAccidentalQuestion(stage)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.type).toBe('termAndSign')
-        expect(question.visualComponent?.symbolType).toBeDefined()
-        expect(['sharp', 'flat', 'natural']).toContain(question.visualComponent?.symbolType)
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.type).toBe('termAndSign')
+        expect(question.questionInterface?.symbolType).toBeDefined()
+        expect(['sharp', 'flat', 'natural']).toContain(question.questionInterface?.symbolType)
       })
 
       it('should have explanation', () => {
@@ -57,7 +57,7 @@ describe('accidentals generator', () => {
       it('should accept custom accidental parameter', () => {
         if (stageAccidentals.length > 0) {
           const question = createAccidentalQuestion(stage, stageAccidentals[0])
-          expect(question.visualComponent?.symbolType).toBeDefined()
+          expect(question.questionInterface?.symbolType).toBeDefined()
         }
       })
     })

@@ -1,11 +1,11 @@
 import { createRestValueQuestion, createRestValueQuestions } from '@/subjects/theory/exercises/generators/restValue'
 import {
-  validateQuestionStructure,
-  validateCorrectAnswerInChoices,
-  validateRestTypeForStage,
-  validateUniqueChoices,
-  validateUniqueQuestions,
-  validateQuestionCount
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateRestTypeForStage,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('restValue generator', () => {
@@ -28,14 +28,14 @@ describe('restValue generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createRestValueQuestion(0)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component', () => {
         const question = createRestValueQuestion(0)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.type).toBe('noteValue')
-        expect(question.visualComponent?.noteType).toBeDefined()
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.type).toBe('noteValue')
+        expect(question.questionInterface?.noteType).toBeDefined()
       })
 
       it('should have explanation', () => {
@@ -46,7 +46,7 @@ describe('restValue generator', () => {
 
       it('should use stage 0 rest types', () => {
         const question = createRestValueQuestion(0)
-        const restType = question.visualComponent?.noteType
+        const restType = question.questionInterface?.noteType
         expect(restType).toBeDefined()
         validateRestTypeForStage(restType, 0)
       })
@@ -71,12 +71,12 @@ describe('restValue generator', () => {
       it('should accept custom restType parameter', () => {
         const customRestType = { type: 'minim', dots: 0 }
         const question = createRestValueQuestion(1, customRestType)
-        expect(question.visualComponent?.noteType).toEqual(customRestType)
+        expect(question.questionInterface?.noteType).toEqual(customRestType)
       })
 
       it('should use stage 1 rest types', () => {
         const question = createRestValueQuestion(1)
-        const restType = question.visualComponent?.noteType
+        const restType = question.questionInterface?.noteType
         expect(restType).toBeDefined()
         validateRestTypeForStage(restType, 1)
       })
@@ -95,7 +95,7 @@ describe('restValue generator', () => {
 
       it('should use stage 2 rest types', () => {
         const question = createRestValueQuestion(2)
-        const restType = question.visualComponent?.noteType
+        const restType = question.questionInterface?.noteType
         expect(restType).toBeDefined()
         validateRestTypeForStage(restType, 2)
       })
@@ -131,12 +131,12 @@ describe('restValue generator', () => {
       it('should only use stage 0 rest types', () => {
         const questions = createRestValueQuestions(10, 0)
         questions.forEach(question => {
-          const restType = question.visualComponent?.noteType
+          const restType = question.questionInterface?.noteType
           validateRestTypeForStage(restType, 0)
         })
         const restTypes = new Set(
           questions.map(q => {
-            const restType = q.visualComponent?.noteType
+            const restType = q.questionInterface?.noteType
             return typeof restType === 'string' ? restType : JSON.stringify(restType)
           })
         )
@@ -158,12 +158,12 @@ describe('restValue generator', () => {
       it('should only use stage 1 rest types', () => {
         const questions = createRestValueQuestions(10, 1)
         questions.forEach(question => {
-          const restType = question.visualComponent?.noteType
+          const restType = question.questionInterface?.noteType
           validateRestTypeForStage(restType, 1)
         })
         const restTypes = new Set(
           questions.map(q => {
-            const restType = q.visualComponent?.noteType
+            const restType = q.questionInterface?.noteType
             return typeof restType === 'string' ? restType : JSON.stringify(restType)
           })
         )
@@ -185,12 +185,12 @@ describe('restValue generator', () => {
       it('should only use stage 2 rest types', () => {
         const questions = createRestValueQuestions(10, 2)
         questions.forEach(question => {
-          const restType = question.visualComponent?.noteType
+          const restType = question.questionInterface?.noteType
           validateRestTypeForStage(restType, 2)
         })
         const restTypes = new Set(
           questions.map(q => {
-            const restType = q.visualComponent?.noteType
+            const restType = q.questionInterface?.noteType
             return typeof restType === 'string' ? restType : JSON.stringify(restType)
           })
         )

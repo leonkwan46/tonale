@@ -5,10 +5,10 @@
 // ============================================================================
 
 // Import shared curriculum types (used in this file)
-import type { Question, VisualComponent } from '@types'
+import type { Question, QuestionInterface } from '@types'
 
 // Re-export types for use in exercises
-export type { Question, VisualComponent }
+export type { Question, QuestionInterface }
 
 // Stage number type for exercise generation
 export type StageNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6

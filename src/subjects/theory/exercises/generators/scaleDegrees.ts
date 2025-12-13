@@ -40,12 +40,12 @@ export const createScaleDegreeQuestion = (
   
   return {
     id: generateQuestionId('scale-degree'),
-    question: `What scale degree is this note in ${keyDisplayName}?`,
+    title: `What scale degree is this note in ${keyDisplayName}?`,
     correctAnswer,
     choices: generateWrongChoices(allDegrees, correctAnswer),
     explanation: `In ${keyDisplayName}, this note is the ${correctAnswer} degree.`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       clef,
       keyName: selectedKey,
       elements: [
@@ -62,9 +62,9 @@ export const createScaleDegreeQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const visualComponent = question.visualComponent
-  const keyName = visualComponent && 'keyName' in visualComponent
-    ? (visualComponent as { keyName?: unknown }).keyName
+  const questionInterface = question.questionInterface
+  const keyName = questionInterface && 'keyName' in questionInterface
+    ? (questionInterface as { keyName?: unknown }).keyName
     : undefined
   
   if (!keyName) return null

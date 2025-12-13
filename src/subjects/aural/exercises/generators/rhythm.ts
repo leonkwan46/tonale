@@ -1,5 +1,5 @@
 import { generateQuestionId } from '@/subjects/theory/exercises/utils/question';
-import { Question, StageNumber, type VisualComponent } from '../../curriculum/types';
+import { Question, StageNumber, type QuestionInterface } from '../../curriculum/types';
 
 interface RhythmPattern {
   notes: { type: string; dots?: number }[]
@@ -155,15 +155,15 @@ export const createRhythmQuestions = (
     
     questions.push({
       id: generateQuestionId('rhythm-echo'),
-      question: 'Clap back the rhythm you hear.',
+      title: 'Clap back the rhythm you hear.',
       correctAnswer: timestamps,
       choices: [],
       explanation: `The rhythm pattern is: ${patternString}`,
-      type: 'rhythmTap',
-      visualComponent: {
+      answerInterface: 'rhythmTap',
+      questionInterface: {
         type: 'playback',
         rhythmMelody: melody
-      } as VisualComponent
+      } as QuestionInterface
     })
   }
   

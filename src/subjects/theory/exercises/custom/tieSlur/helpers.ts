@@ -1,35 +1,35 @@
-import type { VisualComponent } from '../../../curriculum/types'
+import type { QuestionInterface } from '../../../curriculum/types'
 
 export type TieSlurQuestion = {
-  question: string
+  title: string
   correctAnswer: string
   choices: string[]
   explanation?: string
   questionType: 'meaning' | 'recognition'
-  visualComponent: VisualComponent
+  questionInterface: QuestionInterface
 }
 
 export const createTieRecognitionQuestions = (
-  visualComponents: VisualComponent[]
+  questionInterfaces: QuestionInterface[]
 ): TieSlurQuestion[] => {
-  return visualComponents.map(visualComponent => ({
-    question: 'What is this musical symbol?',
+  return questionInterfaces.map(questionInterface => ({
+    title: 'What is this musical symbol?',
     correctAnswer: 'Tie',
     choices: ['Tie', 'Slur'],
-    visualComponent,
+    questionInterface,
     questionType: 'recognition',
     explanation: 'This is a tie. A tie connects two notes of the same pitch, combining their durations.'
   }))
 }
 
 export const createSlurRecognitionQuestions = (
-  visualComponents: VisualComponent[]
+  questionInterfaces: QuestionInterface[]
 ): TieSlurQuestion[] => {
-  return visualComponents.map(visualComponent => ({
-    question: 'What is this musical symbol?',
+  return questionInterfaces.map(questionInterface => ({
+    title: 'What is this musical symbol?',
     correctAnswer: 'Slur',
     choices: ['Tie', 'Slur'],
-    visualComponent,
+    questionInterface,
     questionType: 'recognition',
     explanation: 'This is a slur. A slur indicates that notes should be played smoothly and connected.'
   }))

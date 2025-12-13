@@ -1,9 +1,9 @@
 import { createNoteValueNameQuestions } from '@/subjects/theory/exercises/generators/noteValueName'
 import {
-  validateNoteTypeForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueQuestions
+    validateNoteTypeForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('noteValueName generator', () => {
@@ -31,7 +31,7 @@ describe('noteValueName generator', () => {
       it('should only use stage 0 note types', () => {
         const questions = createNoteValueNameQuestions(10, stage)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           if (noteType) {
             validateNoteTypeForStage(noteType, stage)
           }
@@ -55,7 +55,7 @@ describe('noteValueName generator', () => {
       it('should only use stage 1 note types', () => {
         const questions = createNoteValueNameQuestions(10, stage)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           if (noteType) {
             validateNoteTypeForStage(noteType, stage)
           }
@@ -79,7 +79,7 @@ describe('noteValueName generator', () => {
       it('should only use stage 2 note types', () => {
         const questions = createNoteValueNameQuestions(10, stage)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           if (noteType) {
             validateNoteTypeForStage(noteType, stage)
           }

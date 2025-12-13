@@ -1,11 +1,11 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
-import { extractNotePrefix } from '../utils/interval'
 import { getNewNotesForStage } from '../../curriculum/config/noteRange'
 import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool } from '../utils/exercise'
+import { extractNotePrefix } from '../utils/interval'
 import {
-  generateQuestionId,
-  generateWrongChoices
+    generateQuestionId,
+    generateWrongChoices
 } from '../utils/question'
 
 interface Note {
@@ -55,12 +55,12 @@ export const createNoteIdentificationQuestion = (
 
   return {
     id: generateQuestionId('note-id'),
-    question: questionText,
+    title: questionText,
     correctAnswer,
     choices: questionType === 'keyPress' ? [] : generateWrongChoices(noteLetterNames, correctNoteData.letterName),
     explanation: `This note is ${correctNoteData.letterName} on the ${clef} clef.`,
-    type: questionType,
-    visualComponent: {
+    answerInterface: questionType,
+    questionInterface: {
       clef: clef,
       size: 'xs',
       elements: [
@@ -77,9 +77,9 @@ export const createNoteIdentificationQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const pitch = question.visualComponent?.elements?.[0]?.pitch
+  const pitch = question.questionInterface?.elements?.[0]?.pitch
   if (pitch) return pitch
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createNoteIdentificationQuestions = (

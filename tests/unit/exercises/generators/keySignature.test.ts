@@ -1,11 +1,11 @@
 import { createKeySignatureQuestion, createKeySignatureQuestions } from '@/subjects/theory/exercises/generators/keySignature'
 import {
-  validateCorrectAnswerInChoices,
-  validateKeyForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateKeyForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('keySignature generator', () => {
@@ -28,14 +28,14 @@ describe('keySignature generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createKeySignatureQuestion(2)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component with keyName', () => {
         const question = createKeySignatureQuestion(2)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.keyName).toBeDefined()
-        expect(question.visualComponent?.clef).toBeDefined()
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.keyName).toBeDefined()
+        expect(question.questionInterface?.clef).toBeDefined()
       })
 
       it('should have explanation', () => {
@@ -46,12 +46,12 @@ describe('keySignature generator', () => {
 
       it('should accept custom key parameter', () => {
         const defaultQuestion = createKeySignatureQuestion(2)
-        const keyName = defaultQuestion.visualComponent?.keyName
+        const keyName = defaultQuestion.questionInterface?.keyName
 
         if (keyName) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const question = createKeySignatureQuestion(2, keyName as any)
-          expect(question.visualComponent?.keyName).toEqual(keyName)
+          expect(question.questionInterface?.keyName).toEqual(keyName)
           const expectedAnswer = typeof keyName === 'string'
             ? keyName
             : (keyName as unknown as { toString(): string }).toString()
@@ -61,7 +61,7 @@ describe('keySignature generator', () => {
 
       it('should have correct answer matching keyName', () => {
         const question = createKeySignatureQuestion(2)
-        const keyName = question.visualComponent?.keyName
+        const keyName = question.questionInterface?.keyName
         if (keyName) {
           const expectedAnswer = typeof keyName === 'string'
             ? keyName
@@ -72,7 +72,7 @@ describe('keySignature generator', () => {
 
       it('should only use stage 2 keys', () => {
         const question = createKeySignatureQuestion(2)
-        const keyName = question.visualComponent?.keyName
+        const keyName = question.questionInterface?.keyName
         expect(keyName).toBeDefined()
         if (keyName) {
           validateKeyForStage(keyName, 2)
@@ -110,14 +110,14 @@ describe('keySignature generator', () => {
       it('should only use stage 2 keys', () => {
         const questions = createKeySignatureQuestions(10, 2)
         questions.forEach(question => {
-          const keyName = question.visualComponent?.keyName
+          const keyName = question.questionInterface?.keyName
           if (keyName) {
             validateKeyForStage(keyName, 2)
           }
         })
         const keyNames = new Set(
           questions.map(q => {
-            const keyName = q.visualComponent?.keyName
+            const keyName = q.questionInterface?.keyName
             return keyName ? (typeof keyName === 'string' ? keyName : (keyName as { toString(): string }).toString()) : null
           }).filter(Boolean)
         )
@@ -133,7 +133,7 @@ describe('keySignature generator', () => {
 
       it('should have correct deduplication logic', () => {
         const questions = createKeySignatureQuestions(20, 2)
-        const correctAnswers = questions.map(q => q.correctAnswer)
+        const correctAnswers = questions.map(q => q.correctAnswer).filter((key): key is string => typeof key === 'string')
 
         const keyCounts = new Map<string, number>()
         correctAnswers.forEach(key => {
@@ -149,8 +149,8 @@ describe('keySignature generator', () => {
       it('should generate questions with valid keyName in visual component', () => {
         const questions = createKeySignatureQuestions(5, 2)
         questions.forEach(question => {
-          expect(question.visualComponent?.keyName).toBeDefined()
-          const keyName = question.visualComponent?.keyName
+          expect(question.questionInterface?.keyName).toBeDefined()
+          const keyName = question.questionInterface?.keyName
           const expectedAnswer = keyName ? (typeof keyName === 'string' ? keyName : (keyName as { toString(): string }).toString()) : ''
           expect(question.correctAnswer).toBe(expectedAnswer)
         })

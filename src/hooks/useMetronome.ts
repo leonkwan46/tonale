@@ -1,9 +1,7 @@
 import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef } from 'react'
 
-// Metronome constants - 120 BPM = 0.5 seconds per beat
-const BEAT_INTERVAL_MS = 500 // 120 BPM = 60/120 = 0.5 seconds = 500ms
-const BEAT_INTERVAL_SEC = BEAT_INTERVAL_MS / 1000
+// Metronome constants
 const SCHEDULE_INTERVAL_MS = 25 // Check every 25ms for precision
 const SCHEDULE_AHEAD_SEC = 0.1 // Schedule 100ms ahead to account for timer jitter
 
@@ -36,7 +34,6 @@ export const useMetronome = (options: UseMetronomeOptions = {}): UseMetronomeRet
   
   // Calculate beat interval based on BPM
   const beatIntervalSec = 60 / bpm
-  const beatIntervalMs = beatIntervalSec * 1000
 
   // Initialize metronome sound buffer
   useEffect(() => {
@@ -45,7 +42,7 @@ export const useMetronome = (options: UseMetronomeOptions = {}): UseMetronomeRet
     } catch (error) {
       console.warn('Could not load metronome sound:', error)
     }
-  }, [])
+  }, [METRONOME_SOUND])
 
   const playMetronomeBeatAtTime = useCallback(async (scheduledTime: number) => {
     if (!metronomeBufferRef.current) return

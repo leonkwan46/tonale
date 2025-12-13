@@ -309,7 +309,6 @@ const getStageRequirements = (stageId: string): {
   // Determine which stage array to use based on ID prefix
   const isAural = stageId.startsWith('aural-')
   const stagesArray = isAural ? auralStagesArray : theoryStagesArray
-  const calculateUnlockStatus = isAural ? calculateAuralStageUnlockStatus : calculateTheoryStageUnlockStatus
   
   const stage = stagesArray.find(s => s.id === stageId)
   if (!stage) {

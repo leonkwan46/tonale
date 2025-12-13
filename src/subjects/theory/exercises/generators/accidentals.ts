@@ -1,7 +1,7 @@
 import { ACCIDENTALS, type AccidentalType } from '@leonkwan46/music-notation'
+import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool, getAccidentals } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
-import { Question, StageNumber } from '../../curriculum/types'
 
 const ACCIDENTAL_TO_SYMBOL: Partial<Record<AccidentalType, string>> = {
   [ACCIDENTALS.SHARP]: 'sharp',
@@ -36,12 +36,12 @@ export const createAccidentalQuestion = (
   
   return {
     id: generateQuestionId('accidental'),
-    question: 'What accidental is this?',
+    title: 'What accidental is this?',
     correctAnswer,
     choices: generateWrongChoices(availableChoices, correctAnswer, 3, true),
     explanation: `This is a ${correctAnswer.toLowerCase()} accidental.`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'termAndSign',
       symbolType,
       enableTTS: false
@@ -50,9 +50,9 @@ export const createAccidentalQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const symbolType = question.visualComponent?.symbolType
+  const symbolType = question.questionInterface?.symbolType
   if (symbolType) return symbolType
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createAccidentalQuestions = (

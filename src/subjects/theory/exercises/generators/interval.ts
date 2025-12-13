@@ -1,9 +1,9 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
+import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
+import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../utils/interval'
-import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
-import { Question, StageNumber } from '../../curriculum/types'
 
 const CLEFS: ClefType[] = ['treble', 'bass']
 
@@ -24,12 +24,12 @@ export const createIntervalQuestion = (
   
   return {
     id: generateQuestionId('interval'),
-    question: 'What interval is this above the tonic?',
+    title: 'What interval is this above the tonic?',
     correctAnswer,
     choices: generateWrongChoices([...stageIntervals], correctAnswer),
     explanation: `The interval above the tonic is a ${calculatedInterval.simpleName} (${calculatedInterval.semitones} semitones).`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       clef,
       elements: [
         {
@@ -52,7 +52,7 @@ export const createIntervalQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 const generateQuestionsForClef = (stage: StageNumber, clef: ClefType): Question[] => {

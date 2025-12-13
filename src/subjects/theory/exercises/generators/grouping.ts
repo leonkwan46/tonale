@@ -101,8 +101,8 @@ const createBalancedQuestionPool = (
  * Generate a unique identifier for a grouping question based on time signature and elements
  */
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const timeSignature = question.visualComponent?.timeSignature
-  const elements = question.visualComponent?.elements
+  const timeSignature = question.questionInterface?.timeSignature
+  const elements = question.questionInterface?.elements
   
   if (!timeSignature || !elements || elements.length === 0) {
     return null
@@ -140,12 +140,12 @@ const createQuestionFromElements = (
   
   return {
     id: generateQuestionId('grouping'),
-    question: 'Is this note grouping correct for the time signature?',
+    title: 'Is this note grouping correct for the time signature?',
     correctAnswer,
     choices: ['True', 'False'],
     explanation: explanation || `Notes should be grouped to show the beat structure of the ${timeSignatureStr} time signature.`,
-    type: 'trueFalse',
-    visualComponent: {
+    answerInterface: 'trueFalse',
+    questionInterface: {
       size,
       timeSignature: timeSignatureStr,
       elements,

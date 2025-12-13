@@ -2,19 +2,19 @@ import { useDevice } from '@/hooks'
 import { compareRhythmPattern } from '@/subjects/aural/exercises/generators/rhythm'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
-import type { Question } from '@types'
+import type { AnswerType, Question } from '@types'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
-import { KeyPress } from './QuestionTypes/KeyPress'
-import { MultipleChoice } from './QuestionTypes/MultipleChoice'
-import { RhythmTap } from './QuestionTypes/RhythmTap'
-import { TrueFalse } from './QuestionTypes/TrueFalse'
-import { QUESTION_TYPE, QuestionType } from './QuestionTypes/types'
+import { KeyPress } from './AnswerTypes/KeyPress'
+import { MultipleChoice } from './AnswerTypes/MultipleChoice'
+import { RhythmTap } from './AnswerTypes/RhythmTap'
+import { TrueFalse } from './AnswerTypes/TrueFalse'
+import { ANSWER_TYPE } from './AnswerTypes/types'
 
 interface AnswerInterfaceProps {
-  questionType: QuestionType
+  answerInterface: AnswerType
   questionData: Question
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
@@ -25,7 +25,7 @@ interface AnswerInterfaceProps {
 }
 
 export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({ 
-  questionType,
+  answerInterface,
   questionData,
   onAnswerSubmit,
   onNextQuestion,
@@ -53,7 +53,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   // ==========================
   useEffect(() => {
     // For rhythm tap, we check showResult directly (selectedAnswer may be null)
-    const hasAnswer = selectedAnswer !== null || (questionType === QUESTION_TYPE.RHYTHM_TAP && showResult)
+    const hasAnswer = selectedAnswer !== null || (answerInterface === ANSWER_TYPE.RHYTHM_TAP && showResult)
     
     if (showResult && hasAnswer) {
       if (!isCorrect) {
@@ -74,7 +74,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         }
       }
     }
-  }, [showResult, isCorrect, selectedAnswer, questionType, onNextQuestion, isFinalTest, wrongAnswersCount])
+  }, [showResult, isCorrect, selectedAnswer, answerInterface, onNextQuestion, isFinalTest, wrongAnswersCount])
 
   const handleChoiceSelect = (choice: string) => {
     if (selectedAnswer !== null) return // Already answered
@@ -142,8 +142,8 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   }
 
   const renderAnswerComponent = () => {
-    switch (questionType) {
-      case QUESTION_TYPE.MULTIPLE_CHOICE:
+    switch (answerInterface) {
+      case ANSWER_TYPE.MULTIPLE_CHOICE:
         return (
           <MultipleChoice
             key={questionData.id}
@@ -158,7 +158,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
             isNoteIdentification={isNoteIdentification}
           />
         )
-      case QUESTION_TYPE.TRUE_FALSE:
+      case ANSWER_TYPE.TRUE_FALSE:
         return (
           <TrueFalse
             choices={questionData.choices}
@@ -170,7 +170,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
             testID={`correct-answer-${typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}`}
           />
         )
-      case QUESTION_TYPE.KEY_PRESS:
+      case ANSWER_TYPE.KEY_PRESS:
         return (
           <KeyPress
             key={questionData.id}
@@ -178,7 +178,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
             onKeyPress={handleKeyPress}
           />
         )
-      case QUESTION_TYPE.RHYTHM_TAP:
+      case ANSWER_TYPE.RHYTHM_TAP:
         const rhythmPattern = Array.isArray(questionData.correctAnswer) 
           ? questionData.correctAnswer 
           : []

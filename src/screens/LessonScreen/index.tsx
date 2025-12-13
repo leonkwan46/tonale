@@ -77,18 +77,18 @@ export function LessonScreen() {
     if (!lessonId || wrongAnswers.length === 0) return
     
     const questions = wrongAnswers
-      .filter(question => question.type !== 'rhythmTap')
+      .filter(question => question.answerInterface !== 'rhythmTap')
       .map(question => ({
       id: question.id,
       lessonId,
-      question: question.question,
+      title: question.title,
         correctAnswer: typeof question.correctAnswer === 'string' 
           ? question.correctAnswer 
           : '',
       choices: question.choices,
       explanation: question.explanation,
-      type: question.type,
-      visualComponent: question.visualComponent as Record<string, unknown> | undefined,
+      answerInterface: question.answerInterface,
+      questionInterface: question.questionInterface as Record<string, unknown> | undefined,
       correctCount: 0
     }))
     

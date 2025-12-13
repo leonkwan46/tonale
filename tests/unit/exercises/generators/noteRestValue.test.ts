@@ -1,10 +1,10 @@
 import { createNoteRestValueQuestions } from '@/subjects/theory/exercises/generators/noteRestValue'
 import {
-  validateNoteTypeForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateRestTypeForStage,
-  validateUniqueQuestions
+    validateNoteTypeForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateRestTypeForStage,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('noteRestValue generator', () => {
@@ -31,8 +31,8 @@ describe('noteRestValue generator', () => {
 
       it('should include both note and rest questions', () => {
         const questions = createNoteRestValueQuestions(10, stage)
-        const noteQuestions = questions.filter(q => q.visualComponent?.type === 'noteValue' && !q.visualComponent?.noteType?.toString().includes('rest'))
-        const restQuestions = questions.filter(q => q.visualComponent?.noteType?.toString().includes('rest'))
+        const noteQuestions = questions.filter(q => q.questionInterface?.type === 'noteValue' && !q.questionInterface?.noteType?.toString().includes('rest'))
+        const restQuestions = questions.filter(q => q.questionInterface?.noteType?.toString().includes('rest'))
         expect(noteQuestions.length).toBeGreaterThan(0)
         expect(restQuestions.length).toBeGreaterThan(0)
       })
@@ -40,7 +40,7 @@ describe('noteRestValue generator', () => {
       it('should only use stage 0 note and rest types', () => {
         const questions = createNoteRestValueQuestions(10, stage)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           if (noteType) {
             if (typeof noteType === 'string' && noteType.includes('rest')) {
               validateRestTypeForStage(noteType, stage)

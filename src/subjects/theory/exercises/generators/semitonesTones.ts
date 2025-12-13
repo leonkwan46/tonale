@@ -24,12 +24,12 @@ export const createSemitoneToneQuestion = (
   
   return {
     id: generateQuestionId('semitone-tone'),
-    question: 'What is the interval between these two notes?',
+    title: 'What is the interval between these two notes?',
     correctAnswer,
     choices: generateWrongChoices([...INTERVAL_ORDER], correctAnswer, 3, true),
     explanation: `The interval between these notes is a ${correctAnswer.toLowerCase()} (${intervalType === 'semitone' ? '1 semitone' : '2 semitones'}).`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       clef,
       size: 'xs',
       elements: [
@@ -54,11 +54,11 @@ export const createSemitoneToneQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const pitches = question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).filter(Boolean)
+  const pitches = question.questionInterface?.elements?.map((element: MusicElementData) => element.pitch).filter(Boolean)
   if (pitches && pitches.length > 0) {
     return pitches.join('|')
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createSemitoneToneQuestions = (

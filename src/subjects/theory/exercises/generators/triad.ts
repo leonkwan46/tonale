@@ -16,12 +16,12 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
   
   return {
     id: generateQuestionId('triad'),
-    question: 'What is this tonic triad?',
+    title: 'What is this tonic triad?',
     correctAnswer: selectedChordKey,
     choices: generateWrongChoices(chordKeys, selectedChordKey),
     explanation: `The notes ${flatNotes.join('-')} form the ${selectedChordKey} tonic triad.`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'musicStaff',
       clef,
       size: 'xs',
@@ -38,8 +38,8 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.correctAnswer) return question.correctAnswer
-  return question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).join('|') ?? null
+  if (typeof question.correctAnswer === 'string') return question.correctAnswer
+  return question.questionInterface?.elements?.map((element: MusicElementData) => element.pitch).join('|') ?? null
 }
 
 export const createTriadQuestions = (questionsCount: number, stage: StageNumber): Question[] => {

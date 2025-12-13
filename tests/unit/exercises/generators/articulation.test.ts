@@ -1,11 +1,11 @@
-import { createArticulationQuestion, createArticulationQuestions } from '@/subjects/theory/exercises/generators/articulation'
 import { getStageOneArticulationTerms } from '@/subjects/theory/curriculum/config/musicalTerms'
+import { createArticulationQuestion, createArticulationQuestions } from '@/subjects/theory/exercises/generators/articulation'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('articulation generator', () => {
@@ -32,13 +32,13 @@ describe('articulation generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createArticulationQuestion(stage)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component', () => {
         const question = createArticulationQuestion(stage)
-        expect(question.visualComponent).toBeDefined()
-        expect(['termAndSign', 'musicStaff']).toContain(question.visualComponent?.type)
+        expect(question.questionInterface).toBeDefined()
+        expect(['termAndSign', 'musicStaff']).toContain(question.questionInterface?.type)
       })
 
       it('should have explanation', () => {

@@ -1,25 +1,27 @@
 import { getCumulativeNoteDefinitions } from '@/subjects/theory/curriculum/config/noteRange'
-import type { Question } from '@types'
 import type { StageNumber } from '@/subjects/theory/curriculum/types'
 import { getAllNoteTypes, getAllRestTypes, getKeys, getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
+import type { Question } from '@types'
 
 export const TEST_STAGES: StageNumber[] = [0, 1, 2]
 
 export const validateQuestionStructure = (question: Question): void => {
   expect(question).toHaveProperty('id')
-  expect(question).toHaveProperty('question')
+  expect(question).toHaveProperty('title')
   expect(question).toHaveProperty('correctAnswer')
   expect(question).toHaveProperty('choices')
-  expect(question).toHaveProperty('type')
+  expect(question).toHaveProperty('answerInterface')
   expect(typeof question.id).toBe('string')
-  expect(typeof question.question).toBe('string')
-  expect(typeof question.correctAnswer).toBe('string')
+  expect(typeof question.title).toBe('string')
+  expect(typeof question.correctAnswer === 'string' || Array.isArray(question.correctAnswer)).toBe(true)
   expect(Array.isArray(question.choices)).toBe(true)
   expect(question.choices.length).toBeGreaterThan(0)
 }
 
 export const validateCorrectAnswerInChoices = (question: Question): void => {
-  expect(question.choices).toContain(question.correctAnswer)
+  if (typeof question.correctAnswer === 'string') {
+    expect(question.choices).toContain(question.correctAnswer)
+  }
 }
 
 export const validateUniqueChoices = (question: Question): void => {

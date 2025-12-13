@@ -1,11 +1,11 @@
 import { createNoteValueQuestion, createNoteValueQuestions } from '@/subjects/theory/exercises/generators/noteValue'
 import {
-  validateCorrectAnswerInChoices,
-  validateNoteTypeForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateNoteTypeForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('noteValue generator', () => {
@@ -28,14 +28,14 @@ describe('noteValue generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createNoteValueQuestion(0)
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component', () => {
         const question = createNoteValueQuestion(0)
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.type).toBe('noteValue')
-        expect(question.visualComponent?.noteType).toBeDefined()
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.type).toBe('noteValue')
+        expect(question.questionInterface?.noteType).toBeDefined()
       })
 
       it('should have explanation', () => {
@@ -46,7 +46,7 @@ describe('noteValue generator', () => {
 
       it('should use stage 0 note types', () => {
         const question = createNoteValueQuestion(0)
-        const noteType = question.visualComponent?.noteType
+        const noteType = question.questionInterface?.noteType
         expect(noteType).toBeDefined()
         validateNoteTypeForStage(noteType, 0)
       })
@@ -71,12 +71,12 @@ describe('noteValue generator', () => {
       it('should accept custom noteType parameter', () => {
         const customNoteType = { type: 'minim', dots: 0 }
         const question = createNoteValueQuestion(1, customNoteType)
-        expect(question.visualComponent?.noteType).toEqual(customNoteType)
+        expect(question.questionInterface?.noteType).toEqual(customNoteType)
       })
 
       it('should use stage 1 note types', () => {
         const question = createNoteValueQuestion(1)
-        const noteType = question.visualComponent?.noteType
+        const noteType = question.questionInterface?.noteType
         expect(noteType).toBeDefined()
         validateNoteTypeForStage(noteType, 1)
       })
@@ -95,7 +95,7 @@ describe('noteValue generator', () => {
 
       it('should use stage 2 note types', () => {
         const question = createNoteValueQuestion(2)
-        const noteType = question.visualComponent?.noteType
+        const noteType = question.questionInterface?.noteType
         expect(noteType).toBeDefined()
         validateNoteTypeForStage(noteType, 2)
       })
@@ -131,12 +131,12 @@ describe('noteValue generator', () => {
       it('should only use stage 0 note types', () => {
         const questions = createNoteValueQuestions(10, 0)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           validateNoteTypeForStage(noteType, 0)
         })
         const noteTypes = new Set(
           questions.map(q => {
-            const noteType = q.visualComponent?.noteType
+            const noteType = q.questionInterface?.noteType
             return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
           })
         )
@@ -158,12 +158,12 @@ describe('noteValue generator', () => {
       it('should only use stage 1 note types', () => {
         const questions = createNoteValueQuestions(10, 1)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           validateNoteTypeForStage(noteType, 1)
         })
         const noteTypes = new Set(
           questions.map(q => {
-            const noteType = q.visualComponent?.noteType
+            const noteType = q.questionInterface?.noteType
             return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
           })
         )
@@ -185,12 +185,12 @@ describe('noteValue generator', () => {
       it('should only use stage 2 note types', () => {
         const questions = createNoteValueQuestions(10, 2)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           validateNoteTypeForStage(noteType, 2)
         })
         const noteTypes = new Set(
           questions.map(q => {
-            const noteType = q.visualComponent?.noteType
+            const noteType = q.questionInterface?.noteType
             return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
           })
         )

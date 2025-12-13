@@ -1,12 +1,12 @@
 import { createTimeSignatureQuestion, createTimeSignatureQuestions } from '@/subjects/theory/exercises/generators/timeSignature'
 import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateTimeSignatureForStage,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateTimeSignatureForStage,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('timeSignature generator', () => {
@@ -32,14 +32,14 @@ describe('timeSignature generator', () => {
 
       it('should have type multipleChoice', () => {
         const question = createTimeSignatureQuestion(stage, timeSigs[0])
-        expect(question.type).toBe('multipleChoice')
+        expect(question.answerInterface).toBe('multipleChoice')
       })
 
       it('should have valid visual component', () => {
         const question = createTimeSignatureQuestion(stage, timeSigs[0])
-        expect(question.visualComponent).toBeDefined()
-        expect(question.visualComponent?.type).toBe('timeSignature')
-        expect(question.visualComponent?.timeSignatureValue).toBeDefined()
+        expect(question.questionInterface).toBeDefined()
+        expect(question.questionInterface?.type).toBe('timeSignature')
+        expect(question.questionInterface?.timeSignatureValue).toBeDefined()
       })
 
       it('should have explanation', () => {
@@ -50,16 +50,16 @@ describe('timeSignature generator', () => {
 
       it('should include time signature notation in question text', () => {
         const question = createTimeSignatureQuestion(stage, timeSigs[0])
-        const timeSigValue = question.visualComponent?.timeSignatureValue
+        const timeSigValue = question.questionInterface?.timeSignatureValue
         if (timeSigValue) {
-          expect(question.question).toContain(timeSigValue)
+          expect(question.title).toContain(timeSigValue)
         }
       })
 
       it('should only use stage 0 time signatures', () => {
         expect(timeSigs.length).toBeGreaterThan(0)
         const question = createTimeSignatureQuestion(stage, timeSigs[0])
-        const timeSignatureValue = question.visualComponent?.timeSignatureValue
+        const timeSignatureValue = question.questionInterface?.timeSignatureValue
         expect(timeSignatureValue).toBeDefined()
         if (timeSignatureValue) {
           validateTimeSignatureForStage(timeSignatureValue, stage)
@@ -97,7 +97,7 @@ describe('timeSignature generator', () => {
       it('should only use stage 1 time signatures', () => {
         expect(timeSigs.length).toBeGreaterThan(0)
         const question = createTimeSignatureQuestion(stage, timeSigs[0])
-        const timeSignatureValue = question.visualComponent?.timeSignatureValue
+        const timeSignatureValue = question.questionInterface?.timeSignatureValue
         expect(timeSignatureValue).toBeDefined()
         if (timeSignatureValue) {
           validateTimeSignatureForStage(timeSignatureValue, stage)
@@ -126,7 +126,7 @@ describe('timeSignature generator', () => {
       it('should only use stage 2 time signatures', () => {
         expect(timeSigs.length).toBeGreaterThan(0)
         const question = createTimeSignatureQuestion(stage, timeSigs[0])
-        const timeSignatureValue = question.visualComponent?.timeSignatureValue
+        const timeSignatureValue = question.questionInterface?.timeSignatureValue
         expect(timeSignatureValue).toBeDefined()
         if (timeSignatureValue) {
           validateTimeSignatureForStage(timeSignatureValue, stage)
@@ -166,13 +166,13 @@ describe('timeSignature generator', () => {
       it('should only use stage 0 time signatures', () => {
         const questions = createTimeSignatureQuestions(10, stage)
         questions.forEach(question => {
-          const timeSignatureValue = question.visualComponent?.timeSignatureValue
+          const timeSignatureValue = question.questionInterface?.timeSignatureValue
           if (timeSignatureValue) {
             validateTimeSignatureForStage(timeSignatureValue, stage)
           }
         })
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map(q => q.questionInterface?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })
@@ -181,14 +181,14 @@ describe('timeSignature generator', () => {
         const questions = createTimeSignatureQuestions(5, stage)
         validateQuestionCount(questions, 5)
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map(q => q.questionInterface?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })
 
       it('should have correct deduplication', () => {
         const questions = createTimeSignatureQuestions(20, stage)
-        const timeSigValues = questions.map(q => q.visualComponent?.timeSignatureValue)
+        const timeSigValues = questions.map(q => q.questionInterface?.timeSignatureValue)
         const valueCounts = new Map<string, number>()
         timeSigValues.forEach(val => {
           if (val) {
@@ -215,13 +215,13 @@ describe('timeSignature generator', () => {
       it('should only use stage 1 time signatures', () => {
         const questions = createTimeSignatureQuestions(10, stage)
         questions.forEach(question => {
-          const timeSignatureValue = question.visualComponent?.timeSignatureValue
+          const timeSignatureValue = question.questionInterface?.timeSignatureValue
           if (timeSignatureValue) {
             validateTimeSignatureForStage(timeSignatureValue, stage)
           }
         })
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map(q => q.questionInterface?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })
@@ -243,13 +243,13 @@ describe('timeSignature generator', () => {
       it('should only use stage 2 time signatures', () => {
         const questions = createTimeSignatureQuestions(10, stage)
         questions.forEach(question => {
-          const timeSignatureValue = question.visualComponent?.timeSignatureValue
+          const timeSignatureValue = question.questionInterface?.timeSignatureValue
           if (timeSignatureValue) {
             validateTimeSignatureForStage(timeSignatureValue, stage)
           }
         })
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map(q => q.questionInterface?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })

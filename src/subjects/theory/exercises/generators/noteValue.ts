@@ -1,10 +1,10 @@
+import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool, getAllNoteTypes } from '../utils/exercise'
 import {
-  generateQuestionId,
-  generateWrongChoices
+    generateQuestionId,
+    generateWrongChoices
 } from '../utils/question'
 import { ensureFourChoicesForStage2, noteTypeToString } from '../utils/timeValue'
-import { Question, StageNumber } from '../../curriculum/types'
 
 export const createNoteValueQuestion = (
   stage: StageNumber,
@@ -19,12 +19,12 @@ export const createNoteValueQuestion = (
   
   return {
     id: generateQuestionId('note-value'),
-    question: 'What is this note value?',
+    title: 'What is this note value?',
     correctAnswer: correctAnswerString,
     choices: generateWrongChoices(choiceStrings, correctAnswerString),
     explanation: `The correct answer is ${correctAnswerString}.`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'noteValue',
       noteType: correctNoteType
     }
@@ -32,11 +32,11 @@ export const createNoteValueQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const noteType = question.visualComponent?.noteType
+  const noteType = question.questionInterface?.noteType
   if (noteType !== undefined) {
     return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createNoteValueQuestions = (questionsCount: number, stage: StageNumber): Question[] => {

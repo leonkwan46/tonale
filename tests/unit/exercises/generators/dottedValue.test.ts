@@ -1,10 +1,10 @@
 import { createDottedValueQuestions } from '@/subjects/theory/exercises/generators/dottedValue'
 import {
-  validateNoteTypeForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateRestTypeForStage,
-  validateUniqueQuestions
+    validateNoteTypeForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateRestTypeForStage,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('dottedValue generator', () => {
@@ -32,7 +32,7 @@ describe('dottedValue generator', () => {
       it('should only use stage 2 note and rest types', () => {
         const questions = createDottedValueQuestions(10, stage)
         questions.forEach(question => {
-          const noteType = question.visualComponent?.noteType
+          const noteType = question.questionInterface?.noteType
           if (noteType) {
             if (typeof noteType === 'object' && noteType.dots === 1) {
               if (typeof noteType.type === 'string' && noteType.type.includes('rest')) {
@@ -48,11 +48,11 @@ describe('dottedValue generator', () => {
       it('should include both note and rest questions', () => {
         const questions = createDottedValueQuestions(10, stage)
         const hasNoteQuestions = questions.some(q => {
-          const noteType = q.visualComponent?.noteType
+          const noteType = q.questionInterface?.noteType
           return noteType && typeof noteType === 'object' && !noteType.type?.toString().includes('rest')
         })
         const hasRestQuestions = questions.some(q => {
-          const noteType = q.visualComponent?.noteType
+          const noteType = q.questionInterface?.noteType
           return noteType && typeof noteType === 'object' && noteType.type?.toString().includes('rest')
         })
         expect(hasNoteQuestions || hasRestQuestions).toBe(true)

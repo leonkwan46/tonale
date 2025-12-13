@@ -130,7 +130,7 @@ export const getPitchDefinitionsForClef = (clef: ClefType): Note[] => {
 }
 
 export const getTimeValueKeyFromComponent = (question: Question): string | null => {
-  const noteType = question.visualComponent?.noteType
+  const noteType = question.questionInterface?.noteType
   if (noteType === undefined) return null
   return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
 }
@@ -282,7 +282,7 @@ export const generateQuestionsFromPool = (
  */
 const shouldSkipBalancing = (question: Question): boolean => {
   // True/False questions should always have fixed order (True, False)
-  if (question.type === 'trueFalse') {
+  if (question.answerInterface === 'trueFalse') {
     return true
   }
   

@@ -1,16 +1,16 @@
-import type { RevisionQuestion, VisualComponent } from '@types'
+import type { QuestionInterface, RevisionQuestion } from '@types'
 import * as admin from 'firebase-admin'
 import { FieldValue } from 'firebase-admin/firestore'
 
 export interface RevisionQuestionInput {
   id: string
   lessonId: string
-  question: string
+  title: string
   correctAnswer: string
   choices: string[]
   explanation?: string
-  type: 'multipleChoice' | 'trueFalse' | 'keyPress'
-  visualComponent?: VisualComponent
+  answerInterface: 'multipleChoice' | 'trueFalse' | 'keyPress'
+  questionInterface?: QuestionInterface
   correctCount?: number
 }
 

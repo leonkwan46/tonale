@@ -1,8 +1,8 @@
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
+import { Question, StageNumber } from '../../curriculum/types'
 import { generateQuestionsFromPool, getTimeSignatures } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { formatAsNotation, formatAsText, generateWrongAnswers } from '../utils/timeSignature'
-import { Question, StageNumber } from '../../curriculum/types'
 
 
 export const createTimeSignatureQuestion = (
@@ -30,12 +30,12 @@ export const createTimeSignatureQuestion = (
   
   return {
     id: generateQuestionId('time-sig'),
-    question: `What does the ${notation} time signature mean?`,
+    title: `What does the ${notation} time signature mean?`,
     correctAnswer,
     choices: generateWrongChoices(wrongAnswers, correctAnswer),
     explanation: `The ${notation} time signature means ${correctAnswer}.`,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'timeSignature',
       timeSignatureValue: notation
     }
@@ -43,7 +43,7 @@ export const createTimeSignatureQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const timeSignatureValue = question.visualComponent?.timeSignatureValue
+  const timeSignatureValue = question.questionInterface?.timeSignatureValue
   return timeSignatureValue ?? null
 }
 

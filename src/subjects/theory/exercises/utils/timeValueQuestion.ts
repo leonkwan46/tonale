@@ -69,12 +69,12 @@ export const createValueBeatQuestion = ({
 
   return {
     id: generateQuestionId(`${questionKind}-value-beats`),
-    question: questionText,
+    title: questionText,
     correctAnswer,
     choices: generateWrongChoices(choiceStrings, correctAnswer),
     explanation,
-    type: 'multipleChoice',
-    visualComponent: {
+    answerInterface: 'multipleChoice',
+    questionInterface: {
       type: 'noteValue',
       noteType: timeValue
     }

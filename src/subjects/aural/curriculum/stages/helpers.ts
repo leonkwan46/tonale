@@ -1,5 +1,5 @@
-import { Lesson, Stage } from '../types';
-import { stage0, stageZeroLessons } from './stageZero';
+import { Lesson, Stage } from '../types'
+import { stage0, stageZeroLessons } from './stageZero'
 
 export const getLessonProgress = (
   lessonId: string,

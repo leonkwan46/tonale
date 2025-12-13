@@ -12,7 +12,7 @@ export const createArticulationQuestion = (stage: StageNumber, termKey?: string)
   
   const needsStaffRendering = correctTerm === 'staccato' || correctTerm === 'accent' || correctTerm === 'fermata'
   
-  let visualComponent
+  let questionInterface
   if (needsStaffRendering) {
     const noteElement: MusicElementData = {
       pitch: 'F4',
@@ -23,14 +23,14 @@ export const createArticulationQuestion = (stage: StageNumber, termKey?: string)
       ...(correctTerm === 'fermata' && { hasFermata: true })
     }
     
-    visualComponent = {
+    questionInterface = {
       type: 'musicStaff' as const,
       clef: 'treble' as const,
       elements: [noteElement],
       size: 'sml' as const
     }
   } else {
-    visualComponent = {
+    questionInterface = {
       type: 'termAndSign' as const,
       symbolType: correctTerm
     }
@@ -38,21 +38,21 @@ export const createArticulationQuestion = (stage: StageNumber, termKey?: string)
   
   return {
     id: generateQuestionId('articulation'),
-    question: 'What does this articulation marking mean?',
+    title: 'What does this articulation marking mean?',
     correctAnswer: correctDefinition,
     choices: generateWrongChoices(Object.values(articulationTerms), correctDefinition),
     explanation: `The articulation marking '${correctTerm}' means ${correctDefinition}.`,
-    type: 'multipleChoice',
-    visualComponent
+    answerInterface: 'multipleChoice',
+    questionInterface
   }
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  const symbolType = question.visualComponent?.symbolType
+  const symbolType = question.questionInterface?.symbolType
   if (symbolType && typeof symbolType === 'string') {
     return symbolType
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createArticulationQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
