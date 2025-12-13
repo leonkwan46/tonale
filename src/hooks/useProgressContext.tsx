@@ -2,12 +2,22 @@ import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebas
 import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
-import { calculateStageUnlockStatus, getLessonWithProgress, stagesArray } from '@/subjects/theory/curriculum/stages/helpers'
-import { Lesson, Stage, StageLesson } from '@/subjects/theory/curriculum/types'
+import { stagesArray as auralStagesArray, calculateStageUnlockStatus as calculateAuralStageUnlockStatus, getLessonWithProgress as getAuralLessonWithProgress } from '@/subjects/aural/curriculum/stages/helpers'
+import { Lesson as AuralLesson, Stage as AuralStage, StageLesson as AuralStageLesson } from '@/subjects/aural/curriculum/types'
+import { calculateStageUnlockStatus as calculateTheoryStageUnlockStatus, getLessonWithProgress as getTheoryLessonWithProgress, stagesArray as theoryStagesArray } from '@/subjects/theory/curriculum/stages/helpers'
+import { Lesson as TheoryLesson, Stage as TheoryStage, StageLesson as TheoryStageLesson } from '@/subjects/theory/curriculum/types'
 import { clearProgressCache, loadProgressCache, saveProgressCache } from '@/utils/progressCache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { RevisionQuestion } from '@types'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+
+// Combined types - both theory and aural use the same structure
+type Lesson = TheoryLesson | AuralLesson
+type Stage = TheoryStage | AuralStage
+type StageLesson = TheoryStageLesson | AuralStageLesson
+
+// Combined stages array
+const allStagesArray: Stage[] = [...theoryStagesArray, ...auralStagesArray]
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -101,8 +111,23 @@ const getLastAccessedLessonLocal = async (): Promise<LastLessonAccess | null> =>
 const refreshStageUnlockStatus = (
   progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
 ): void => {
-  stagesArray.forEach(stage => {
-    stage.isUnlocked = calculateStageUnlockStatus(stage.id, stagesArray)
+  // Refresh theory stages
+  theoryStagesArray.forEach(stage => {
+    stage.isUnlocked = calculateTheoryStageUnlockStatus(stage.id, theoryStagesArray)
+    
+    stage.lessons.forEach(lesson => {
+      if (!stage.isUnlocked) {
+        lesson.isLocked = true
+      } else {
+        const lessonProgress = progressData[lesson.id]
+        lesson.isLocked = lessonProgress?.isLocked ?? lesson.isLocked ?? false
+      }
+    })
+  })
+  
+  // Refresh aural stages
+  auralStagesArray.forEach(stage => {
+    stage.isUnlocked = calculateAuralStageUnlockStatus(stage.id, auralStagesArray)
     
     stage.lessons.forEach(lesson => {
       if (!stage.isUnlocked) {
@@ -116,8 +141,23 @@ const refreshStageUnlockStatus = (
 }
 
 const updateLessonInStages = (lessonId: string, progressUpdate: { stars?: number; isPassed?: boolean }): void => {
-  stagesArray.forEach((stage: Stage) => {
-    stage.lessons.forEach((lesson: StageLesson) => {
+  // Update in theory stages
+  theoryStagesArray.forEach((stage: TheoryStage) => {
+    stage.lessons.forEach((lesson: TheoryStageLesson) => {
+      if (lesson.id === lessonId) {
+        if (progressUpdate.stars !== undefined) {
+          lesson.stars = progressUpdate.stars
+        }
+        if (progressUpdate.isPassed !== undefined) {
+          lesson.isPassed = progressUpdate.isPassed
+        }
+      }
+    })
+  })
+  
+  // Update in aural stages
+  auralStagesArray.forEach((stage: AuralStage) => {
+    stage.lessons.forEach((lesson: AuralStageLesson) => {
       if (lesson.id === lessonId) {
         if (progressUpdate.stars !== undefined) {
           lesson.stars = progressUpdate.stars
@@ -131,8 +171,20 @@ const updateLessonInStages = (lessonId: string, progressUpdate: { stars?: number
 }
 
 const resetStageProgressData = (): void => {
-  stagesArray.forEach((stage: Stage) => {
-    stage.lessons.forEach((lesson: StageLesson) => {
+  // Reset theory stages
+  theoryStagesArray.forEach((stage: TheoryStage) => {
+    stage.lessons.forEach((lesson: TheoryStageLesson) => {
+      lesson.stars = undefined
+      lesson.isPassed = undefined
+    })
+    
+    stage.totalStars = 0
+    stage.isCleared = false
+  })
+  
+  // Reset aural stages
+  auralStagesArray.forEach((stage: AuralStage) => {
+    stage.lessons.forEach((lesson: AuralStageLesson) => {
       lesson.stars = undefined
       lesson.isPassed = undefined
     })
@@ -145,8 +197,30 @@ const resetStageProgressData = (): void => {
 const updateStageLessonsWithProgress = (
   progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
 ): void => {
-  stagesArray.forEach((stage: Stage) => {
-    stage.lessons.forEach((lesson: StageLesson) => {
+  // Update theory stages
+  theoryStagesArray.forEach((stage: TheoryStage) => {
+    stage.lessons.forEach((lesson: TheoryStageLesson) => {
+      const lessonProgress = progressData[lesson.id]
+      if (lessonProgress) {
+        lesson.isLocked = lessonProgress.isLocked
+        lesson.stars = lessonProgress.stars
+        lesson.isPassed = lessonProgress.isPassed
+      } else {
+        lesson.stars = undefined
+        lesson.isPassed = undefined
+      }
+    })
+    
+    const regularLessons = stage.lessons.filter(lesson => !lesson.isFinalTest)
+    const finalTest = stage.lessons.find(lesson => lesson.isFinalTest)
+    
+    stage.totalStars = regularLessons.reduce((total, lesson) => total + (lesson.stars || 0), 0)
+    stage.isCleared = finalTest ? (finalTest.isPassed === true) : false
+  })
+  
+  // Update aural stages
+  auralStagesArray.forEach((stage: AuralStage) => {
+    stage.lessons.forEach((lesson: AuralStageLesson) => {
       const lessonProgress = progressData[lesson.id]
       if (lessonProgress) {
         lesson.isLocked = lessonProgress.isLocked
@@ -197,17 +271,34 @@ const getLessonById = (
   id: string,
   progressData?: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
 ): Lesson | undefined => {
-  return getLessonWithProgress(id, progressData)
+  // Check theory first
+  const theoryLesson = getTheoryLessonWithProgress(id, progressData)
+  if (theoryLesson) return theoryLesson
+  
+  // Check aural
+  const auralLesson = getAuralLessonWithProgress(id, progressData)
+  if (auralLesson) return auralLesson
+  
+  return undefined
 }
 
 const allStageLessons: StageLesson[] = [
-  ...stagesArray[0].lessons,
-  ...stagesArray[1].lessons,
-  ...stagesArray[2].lessons
+  ...theoryStagesArray[0].lessons,
+  ...theoryStagesArray[1].lessons,
+  ...theoryStagesArray[2].lessons,
+  ...auralStagesArray[0].lessons // aural only has stage 0
 ]
 
 const getStageById = (id: string): Stage | undefined => {
-  return stagesArray.find(stage => stage.id === id)
+  // Check theory stages first
+  const theoryStage = theoryStagesArray.find(stage => stage.id === id)
+  if (theoryStage) return theoryStage
+  
+  // Check aural stages
+  const auralStage = auralStagesArray.find(stage => stage.id === id)
+  if (auralStage) return auralStage
+  
+  return undefined
 }
 
 const getStageRequirements = (stageId: string): { 
@@ -215,6 +306,11 @@ const getStageRequirements = (stageId: string): {
   missingPrerequisites: Stage[]
   progressNeeded: string[]
 } => {
+  // Determine which stage array to use based on ID prefix
+  const isAural = stageId.startsWith('aural-')
+  const stagesArray = isAural ? auralStagesArray : theoryStagesArray
+  const calculateUnlockStatus = isAural ? calculateAuralStageUnlockStatus : calculateTheoryStageUnlockStatus
+  
   const stage = stagesArray.find(s => s.id === stageId)
   if (!stage) {
     return { isUnlocked: false, missingPrerequisites: [], progressNeeded: [] }
@@ -225,7 +321,8 @@ const getStageRequirements = (stageId: string): {
   
   if (stage.prerequisiteStages) {
     stage.prerequisiteStages.forEach(prereqId => {
-      const prereqStage = stagesArray.find(s => s.id === prereqId)
+      // Check both arrays for prerequisites (could be cross-subject)
+      const prereqStage = allStagesArray.find(s => s.id === prereqId)
       if (prereqStage && !prereqStage.isCleared) {
         missingPrerequisites.push(prereqStage)
         const lessonsWithoutStars = prereqStage.lessons.filter(l => l.stars === 0)
@@ -246,7 +343,7 @@ const getStageRequirements = (stageId: string): {
 }
 
 const getNextLockedStage = (): Stage | undefined => {
-  return stagesArray
+  return allStagesArray
     .filter(stage => !stage.isUnlocked)
     .sort((a, b) => a.order - b.order)[0]
 }
@@ -290,11 +387,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       resetStageProgressData()
       
       const result = await getAllLessonProgressFn()
-      console.log('[getAllLessonProgress] Response:', JSON.stringify(result.data, null, 2))
       
       if (result.data.success) {
         const lessonsData = result.data.data
-        console.log('[getAllLessonProgress] Lessons data:', Object.keys(lessonsData).length, 'lessons')
         
         if (Object.keys(lessonsData).length === 0) {
           initializeEmptyProgress()
