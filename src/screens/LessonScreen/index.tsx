@@ -1,6 +1,7 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { useProgress } from '@/hooks'
 import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
+import { generateAuralQuestions } from '@/subjects/aural/exercises/generate'
 import { generateLessonQuestions } from '@/subjects/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
@@ -19,7 +20,15 @@ export function LessonScreen() {
   
   const generateQuestions = useCallback((lessonData: typeof lesson): Question[] => {
     if (!lessonData || !lessonData.exerciseConfig) return []
+    
+    // Check if it's an aural lesson by ID prefix
+    const isAuralLesson = lessonData.id.startsWith('aural-')
+    
+    if (isAuralLesson) {
+      return generateAuralQuestions(lessonData.exerciseConfig)
+    } else {
     return generateLessonQuestions(lessonData.exerciseConfig)
+    }
   }, [])
   
   const [questions, setQuestions] = useState<Question[]>(() => {
@@ -67,11 +76,15 @@ export function LessonScreen() {
   const storeRevisionQuestions = useCallback(async () => {
     if (!lessonId || wrongAnswers.length === 0) return
     
-    const questions = wrongAnswers.map(question => ({
+    const questions = wrongAnswers
+      .filter(question => question.type !== 'rhythmTap')
+      .map(question => ({
       id: question.id,
       lessonId,
       question: question.question,
-      correctAnswer: question.correctAnswer,
+        correctAnswer: typeof question.correctAnswer === 'string' 
+          ? question.correctAnswer 
+          : '',
       choices: question.choices,
       explanation: question.explanation,
       type: question.type,
