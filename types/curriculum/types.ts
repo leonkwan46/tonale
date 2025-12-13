@@ -33,7 +33,9 @@ export interface QuestionInterface {
   enableTTS?: boolean
   
   // Playback specific
-  rhythmMelody?: { note: string; duration: number }[]
+  rhythm?: number[] // Durations in seconds for rhythm exercises (uses clap sounds)
+  melody?: { note: string; duration: number }[] // Full melody with notes and durations (uses instrument sounds)
+  tempo?: number // Tempo in BPM for rhythm exercises (used for metronome sync)
 }
 
 export interface Question {

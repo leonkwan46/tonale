@@ -1,4 +1,5 @@
 import { useDevice, useMetronome } from '@/hooks'
+import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -12,18 +13,24 @@ import {
 // Pre-load clap sound at module level for bundler resolution
 const CLAP_SOUND = require('../../../../../../../assets/sounds/clap.mp3')
 
+type ButtonState = 'default' | 'correct' | 'incorrect'
+
 interface RhythmTapProps {
   onTapSubmit: (timestamps: number[]) => void
   disabled?: boolean
   shouldStartMetronome?: boolean
   rhythmDuration?: number
+  buttonState?: ButtonState
+  tempo?: number
 }
 
 export const RhythmTap: React.FC<RhythmTapProps> = ({
   onTapSubmit,
   disabled = false,
   shouldStartMetronome = false,
-  rhythmDuration = 0
+  rhythmDuration = 0,
+  buttonState = 'default',
+  tempo = 120
 }) => {
   const { isTablet } = useDevice()
   const [tapTimestamps, setTapTimestamps] = useState<number[]>([])
@@ -42,11 +49,8 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
       player.volume = 0.8
       void player.play()
       
-      player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
-        if (status.isLoaded && status.didJustFinish) {
-          player.remove()
-        }
-      })
+      // Clean up the player after it finishes playing
+      setupAutoCleanup(player)
     } catch (error) {
       console.warn('Could not play clap sound:', error)
     }
@@ -55,7 +59,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
   const { start: startMetronome, stop: stopMetronome } = useMetronome({
     enabled: false,
     volume: 0.4,
-    bpm: 120
+    bpm: tempo
   })
 
   useEffect(() => {
@@ -165,11 +169,13 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
         disabled={isButtonDisabled}
       >
         <TapButtonDepth 
+          buttonState={buttonState}
           isActive={isRecording} 
           isDisabled={isButtonDisabled}
           isTablet={isTablet} 
         />
         <TapButtonContent 
+          buttonState={buttonState}
           isActive={isRecording} 
           isDisabled={isButtonDisabled}
           isTablet={isTablet}

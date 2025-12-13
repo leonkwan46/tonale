@@ -1,5 +1,6 @@
 // Read more: https://github.com/gleitz/midi-js-soundfonts?tab=readme-ov-file
 
+import { addSafePlaybackListener, safeRemovePlayer, setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { AudioPlayer, createAudioPlayer } from 'expo-audio'
 import { useEffect, useRef, useState } from 'react'
 
@@ -91,15 +92,13 @@ export const usePlayer = () => {
   const isPlayingRef = useRef(false)
 
   const setupUnloadOnFinish = (player: AudioPlayer): void => {
-    player.addListener('playbackStatusUpdate', (status) => {
+    // Set up automatic cleanup when player finishes
+    setupAutoCleanup(player)
+    
+    // Also track in our set for manual cleanup scenarios using safe listener
+    addSafePlaybackListener(player, (status) => {
       if (status.isLoaded && status.didJustFinish) {
         activeSoundsRef.current.delete(player)
-        try {
-          player.remove()
-        } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : String(error)
-          console.warn('[MIDI Player] Error removing finished player:', errorMessage)
-        }
       }
     })
   }
@@ -110,19 +109,10 @@ export const usePlayer = () => {
     const soundsToCancel = Array.from(activeSoundsRef.current)
     activeSoundsRef.current.clear()
     
-    await Promise.all(
-      soundsToCancel.map(async (player) => {
-        try {
-          if (player.playing) {
-            player.pause()
-          }
-          player.remove()
-        } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : String(error)
-          console.warn('[MIDI Player] Error during sound cleanup:', errorMessage)
-        }
-      })
-    )
+    // Use safe removal to prevent double-removal crashes
+    soundsToCancel.forEach((player) => {
+      safeRemovePlayer(player)
+    })
   }
 
   const playChord = async (
@@ -341,8 +331,16 @@ export const usePlayer = () => {
 
   useEffect(() => {
     return () => {
-      cancelAllSounds().catch(() => {
-        // Ignore errors during unmount cleanup
+      // Clean up synchronously to ensure it completes before unmount/refresh
+      // This is critical during refresh when Expo's SharedObjectRegistry cleanup can crash
+      isPlayingRef.current = false
+      setIsPlaying(false)
+      const soundsToCancel = Array.from(activeSoundsRef.current)
+      activeSoundsRef.current.clear()
+      
+      // Clean up all players synchronously
+      soundsToCancel.forEach((player) => {
+        safeRemovePlayer(player)
       })
     }
   }, [])

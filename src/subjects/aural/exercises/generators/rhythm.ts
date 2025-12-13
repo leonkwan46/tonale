@@ -1,157 +1,140 @@
-import { generateQuestionId } from '@/subjects/theory/exercises/utils/question';
-import { Question, StageNumber, type QuestionInterface } from '../../curriculum/types';
+import { generateQuestionId } from '@/subjects/theory/exercises/utils/question'
+import {
+  BEAT_TOLERANCE,
+  DEFAULT_TEMPO,
+  getStagePatternConfig,
+  MIN_PATTERN_LENGTH,
+  NOTE_BEAT_VALUES,
+  strictness
+} from '../../curriculum/config/rhythm'
+import { Question, StageNumber, type QuestionInterface } from '../../curriculum/types'
 
-interface RhythmPattern {
-  notes: { type: string; dots?: number }[]
+interface RhythmNote {
+  type: string
+  dots?: number
 }
 
-const getBeats = (noteType: string | { type: string; dots?: number }): number => {
-  const type = typeof noteType === 'string' ? noteType : noteType.type
-  
-  const beatMap: Record<string, number> = {
-    minim: 2,
-    crotchet: 1,
-    quaver: 0.5
+interface RhythmPattern {
+  notes: RhythmNote[]
+}
+
+const getBeats = (note: RhythmNote | string): number => {
+  const type = typeof note === 'string' ? note : note.type
+  const dots = typeof note === 'object' ? (note.dots || 0) : 0
+  const baseBeats = NOTE_BEAT_VALUES[type] || 1
+  if (dots === 1) return baseBeats * 1.5
+  if (dots === 2) return baseBeats * 1.75
+  return baseBeats
+}
+
+const ensureMinimumLength = (group: RhythmNote[], remainingBeats: number): void => {
+  if (group.length < MIN_PATTERN_LENGTH) {
+    group.push({ type: 'crotchet' })
+    if (remainingBeats >= 1) {
+      group.push({ type: 'crotchet' })
+    }
   }
-  
-  return beatMap[type] || 1
+}
+
+const generateRhythmGroup = (beatsForBar: number, availableGroupings: { beats: number; notes: RhythmNote[] }[]): RhythmNote[] => {
+  const group: RhythmNote[] = []
+  let remainingBeats = beatsForBar
+  while (remainingBeats > BEAT_TOLERANCE) {
+    const validGroupings = availableGroupings.filter(grouping => grouping.beats <= remainingBeats + BEAT_TOLERANCE)
+    if (validGroupings.length === 0) break
+    const selectedGrouping = validGroupings[Math.floor(Math.random() * validGroupings.length)]
+    group.push(...selectedGrouping.notes)
+    remainingBeats -= selectedGrouping.beats
+  }
+  ensureMinimumLength(group, remainingBeats)
+  return group
 }
 
 const generateRhythmPattern = (stage: StageNumber): RhythmPattern => {
-  const simpleNoteTypes = ['crotchet', 'minim', 'quaver'] as const
-  const totalBeats = 4
-  const maxNotes = 6
-  
-  const pattern: { type: string }[] = []
-  let remainingBeats = totalBeats
-  
-  while (remainingBeats > 0.01 && pattern.length < maxNotes) {
-    const validNotes = simpleNoteTypes.filter(note => getBeats(note) <= remainingBeats + 0.01)
-    if (validNotes.length === 0) break
-    
-    const weights = validNotes.map(note => note === 'crotchet' ? 3 : note === 'minim' ? 2 : 1)
-    const totalWeight = weights.reduce((sum, w) => sum + w, 0)
-    let random = Math.random() * totalWeight
-    
-    let selectedNote = validNotes[0]
-    for (let i = 0; i < validNotes.length; i++) {
-      random -= weights[i]
-      if (random <= 0) {
-        selectedNote = validNotes[i]
-        break
-      }
+  const stageConfig = getStagePatternConfig(stage)
+  const bars = stageConfig.defaultBeatsPerBar
+  const allNotes: RhythmNote[] = []
+  for (const beatsForBar of bars) {
+    allNotes.push(...generateRhythmGroup(beatsForBar, stageConfig.availableGroupings))
     }
-    
-    pattern.push({ type: selectedNote })
-    remainingBeats -= getBeats(selectedNote)
-  }
-  
-  if (pattern.length < 2) {
-    pattern.push({ type: 'crotchet' })
-    if (remainingBeats >= 1) {
-      pattern.push({ type: 'crotchet' })
-    }
-  }
-  
-  return { notes: pattern }
+  return { notes: allNotes }
 }
 
 const patternToString = (pattern: RhythmPattern): string => {
-  return pattern.notes.map(note => {
-    const dots = note.dots ? '.'.repeat(note.dots) : ''
-    return `${note.type}${dots}`
-  }).join(' - ')
+  return pattern.notes
+    .map(note => `${note.type}${note.dots ? '.'.repeat(note.dots) : ''}`)
+    .join(' - ')
 }
 
-const patternToTimestamps = (pattern: RhythmPattern, tempo: number = 120): number[] => {
+const patternToTimestamps = (pattern: RhythmPattern, tempo: number = DEFAULT_TEMPO): number[] => {
   const beatDuration = 60 / tempo
   const timestamps: number[] = [0]
   let currentTime = 0
-  
   for (let i = 0; i < pattern.notes.length - 1; i++) {
     currentTime += getBeats(pattern.notes[i]) * beatDuration
     timestamps.push(currentTime)
   }
-  
   return timestamps
 }
 
-const rhythmPatternToMelody = (pattern: RhythmPattern, tempo: number = 120): { note: string; duration: number }[] => {
+const rhythmPatternToDurations = (pattern: RhythmPattern, tempo: number = DEFAULT_TEMPO): number[] => {
   const beatDuration = 60 / tempo
-  return pattern.notes.map(note => ({
-    note: 'C4',
-    duration: getBeats(note) * beatDuration
-  }))
+  return pattern.notes.map(note => getBeats(note) * beatDuration)
 }
 
 export const compareRhythmPattern = (
   userTimestamps: number[],
   expectedTimestamps: number[],
-  tolerance: number = 0.15
+  tolerance: number = strictness.tolerance
 ): boolean => {
-  if (userTimestamps.length === 0 || expectedTimestamps.length === 0) {
-    return false
-  }
+  if (userTimestamps.length === 0 || expectedTimestamps.length === 0) return false
 
-  const normalizedUser = userTimestamps.map(ts => ts - (userTimestamps[0] || 0))
-  const normalizedExpected = expectedTimestamps.map(ts => ts - (expectedTimestamps[0] || 0))
+  const userTimestampsFromStart = userTimestamps.map(ts => ts - (userTimestamps[0] || 0))
+  const expectedTimestampsFromStart = expectedTimestamps.map(ts => ts - (expectedTimestamps[0] || 0))
+  if (Math.abs(userTimestampsFromStart.length - expectedTimestampsFromStart.length) > 1) return false
   
-  if (Math.abs(normalizedUser.length - normalizedExpected.length) > 1) {
-    return false
+  const userBeatIntervals: number[] = []
+  const expectedBeatIntervals: number[] = []
+  for (let i = 1; i < userTimestampsFromStart.length; i++) {
+    userBeatIntervals.push(userTimestampsFromStart[i] - userTimestampsFromStart[i - 1])
+  }
+  for (let i = 1; i < expectedTimestampsFromStart.length; i++) {
+    expectedBeatIntervals.push(expectedTimestampsFromStart[i] - expectedTimestampsFromStart[i - 1])
   }
   
-  const userIntervals: number[] = []
-  const expectedIntervals: number[] = []
+  const userTotalDuration = userTimestampsFromStart[userTimestampsFromStart.length - 1] || 0
+  const expectedTotalDuration = expectedTimestampsFromStart[expectedTimestampsFromStart.length - 1] || 0
+  const tempoRatio = expectedTotalDuration > 0 ? userTotalDuration / expectedTotalDuration : 1
+  if (tempoRatio < strictness.tempoMin || tempoRatio > strictness.tempoMax) return false
   
-  for (let i = 1; i < normalizedUser.length; i++) {
-    userIntervals.push(normalizedUser[i] - normalizedUser[i - 1])
-  }
-  
-  for (let i = 1; i < normalizedExpected.length; i++) {
-    expectedIntervals.push(normalizedExpected[i] - normalizedExpected[i - 1])
-  }
-  
-  const minLength = Math.min(userIntervals.length, expectedIntervals.length)
-  const userTotalDuration = normalizedUser[normalizedUser.length - 1] || 0
-  const expectedTotalDuration = normalizedExpected[normalizedExpected.length - 1] || 0
-  const tempoScale = expectedTotalDuration > 0 ? userTotalDuration / expectedTotalDuration : 1
-  
-  if (tempoScale < 0.5 || tempoScale > 2.0) {
-    return false
-  }
-  
-  let matchCount = 0
-  for (let i = 0; i < minLength; i++) {
-    const userInterval = userIntervals[i] || 0
-    const expectedInterval = expectedIntervals[i] || 0
-    const scaledExpected = expectedInterval * tempoScale
-    const difference = Math.min(
-      Math.abs(userInterval - scaledExpected),
+  const numIntervalsToCompare = Math.min(userBeatIntervals.length, expectedBeatIntervals.length)
+  let matchingIntervalsCount = 0
+  for (let i = 0; i < numIntervalsToCompare; i++) {
+    const userInterval = userBeatIntervals[i] ?? 0
+    const expectedInterval = expectedBeatIntervals[i] ?? 0
+    const expectedIntervalScaledByTempo = expectedInterval * tempoRatio
+    const intervalDifference = Math.min(
+      Math.abs(userInterval - expectedIntervalScaledByTempo),
       Math.abs(userInterval - expectedInterval)
     )
-    const relativeTolerance = Math.max(expectedInterval * 0.3, tolerance)
-    
-    if (difference <= relativeTolerance) {
-      matchCount++
-    }
+    const allowedTolerance = Math.max(expectedInterval * strictness.relative, tolerance)
+    if (intervalDifference <= allowedTolerance) matchingIntervalsCount++
   }
   
-  const requiredMatches = Math.ceil(minLength * 0.7)
-  return matchCount >= requiredMatches
+  const minimumRequiredMatches = Math.ceil(numIntervalsToCompare * strictness.match)
+  return matchingIntervalsCount >= minimumRequiredMatches
 }
 
 export const createRhythmQuestions = (
   count: number,
   stage: StageNumber
 ): Question[] => {
-  const tempo = 120
   const questions: Question[] = []
-  
   for (let i = 0; i < count; i++) {
     const pattern = generateRhythmPattern(stage)
     const patternString = patternToString(pattern)
-    const timestamps = patternToTimestamps(pattern, tempo)
-    const melody = rhythmPatternToMelody(pattern, tempo)
+    const timestamps = patternToTimestamps(pattern, DEFAULT_TEMPO)
+    const durations = rhythmPatternToDurations(pattern, DEFAULT_TEMPO)
     
     questions.push({
       id: generateQuestionId('rhythm-echo'),
@@ -162,10 +145,10 @@ export const createRhythmQuestions = (
       answerInterface: 'rhythmTap',
       questionInterface: {
         type: 'playback',
-        rhythmMelody: melody
+        rhythm: durations,
+        tempo: DEFAULT_TEMPO
       } as QuestionInterface
     })
   }
-  
   return questions
 }

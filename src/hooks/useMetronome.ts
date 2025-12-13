@@ -1,3 +1,4 @@
+import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef } from 'react'
 
@@ -66,11 +67,7 @@ export const useMetronome = (options: UseMetronomeOptions = {}): UseMetronomeRet
       }
       
       // Clean up the player after it finishes playing
-      player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
-        if (status.isLoaded && status.didJustFinish) {
-          player.remove()
-        }
-      })
+      setupAutoCleanup(player)
     } catch (error) {
       console.warn('Could not play metronome beat:', error)
     }

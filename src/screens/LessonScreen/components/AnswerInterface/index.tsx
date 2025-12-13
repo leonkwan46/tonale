@@ -185,6 +185,11 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         const rhythmDuration = rhythmPattern.length > 0 
           ? (rhythmPattern[rhythmPattern.length - 1] + 0.5) * 1000
           : 0
+        const buttonState = showResult 
+          ? (isCorrect ? 'correct' : 'incorrect')
+          : 'default'
+        const tempo = questionData.questionInterface?.tempo || 120
+        
         return (
           <RhythmTap
             key={questionData.id}
@@ -192,6 +197,8 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
             disabled={showResult}
             shouldStartMetronome={shouldStartMetronome}
             rhythmDuration={rhythmDuration}
+            buttonState={buttonState}
+            tempo={tempo}
           />
         )
       default:

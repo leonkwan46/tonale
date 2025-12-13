@@ -1,4 +1,5 @@
 import { createAudioPlayer } from 'expo-audio'
+import { setupAutoCleanup } from './audioPlayerUtils'
 
 export const playSuccessSound = async () => {
   try {
@@ -7,11 +8,7 @@ export const playSuccessSound = async () => {
     await player.play()
     
     // Clean up the player after it finishes playing
-    player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
-      if (status.isLoaded && status.didJustFinish) {
-        player.remove()
-      }
-    })
+    setupAutoCleanup(player)
   } catch (error) {
     console.warn('Could not play success sound:', error)
   }
@@ -24,13 +21,9 @@ export const playErrorSound = async () => {
     await player.play()
     
     // Clean up the player after it finishes playing
-    player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
-      if (status.isLoaded && status.didJustFinish) {
-        player.remove()
-      }
-    })
+    setupAutoCleanup(player)
   } catch (error) {
-    console.warn('Could not play success sound:', error)
+    console.warn('Could not play error sound:', error)
   }
 }
 
@@ -41,11 +34,7 @@ export const playLessonFinishedSound = async () => {
     await player.play()
     
     // Clean up the player after it finishes playing
-    player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
-      if (status.isLoaded && status.didJustFinish) {
-        player.remove()
-      }
-    })
+    setupAutoCleanup(player)
   } catch (error) {
     console.warn('Could not play lesson complete sound:', error)
   }
@@ -58,11 +47,7 @@ export const playLessonFailedSound = async () => {
     await player.play()
     
     // Clean up the player after it finishes playing
-    player.addListener('playbackStatusUpdate', (status: { isLoaded?: boolean; didJustFinish?: boolean }) => {
-      if (status.isLoaded && status.didJustFinish) {
-        player.remove()
-      }
-    })
+    setupAutoCleanup(player)
   } catch (error) {
     console.warn('Could not play lesson failed sound:', error)
   }

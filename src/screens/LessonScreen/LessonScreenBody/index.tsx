@@ -1,3 +1,4 @@
+import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import type { Question } from '@types'
 import { createAudioPlayer } from 'expo-audio'
 import { type FC, useCallback, useEffect, useRef, useState } from 'react'
@@ -43,8 +44,9 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
     questionInterface.elements.some(element => element.pitch)
 
   const isRhythmTapQuestion = answerInterface === 'rhythmTap'
-  const isRhythmQuestion = questionInterface?.rhythmMelody !== undefined || isRhythmTapQuestion
-  const rhythmMelody = questionInterface?.rhythmMelody
+  const isRhythmQuestion = questionInterface?.rhythm !== undefined || isRhythmTapQuestion
+  const rhythm = questionInterface?.rhythm
+  const melody = questionInterface?.melody
 
   useEffect(() => {
     setShouldStartMetronome(false)
@@ -62,11 +64,7 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
       await player.play()
       
       // Clean up the player after it finishes playing
-      player.addListener('playbackStatusUpdate', (status) => {
-        if (status.isLoaded && status.didJustFinish) {
-          player.remove()
-        }
-      })
+      setupAutoCleanup(player)
     } catch (error) {
       console.warn('Could not play clap sound:', error)
     }
@@ -93,11 +91,37 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
         setShouldStartMetronome(false)
       }, (lastTimestamp + 0.5) * 1000)
       clapTimeoutsRef.current.push(finalTimeout)
-    } else if (rhythmMelody) {
-    await stop()
-    await play(rhythmMelody, { instrument: 'acoustic_grand_piano', tempo: 120 })
+    } else if (rhythm) {
+      setIsPlayingClaps(true)
+      setShouldStartMetronome(true)
+      
+      // Convert durations to timestamps
+      const timestamps: number[] = [0]
+      let cumulativeTime = 0
+      for (let i = 0; i < rhythm.length - 1; i++) {
+        cumulativeTime += rhythm[i]
+        timestamps.push(cumulativeTime)
+      }
+      
+      timestamps.forEach((timestamp) => {
+        const timeout = setTimeout(() => {
+          void playClapSound()
+        }, timestamp * 1000)
+        clapTimeoutsRef.current.push(timeout)
+      })
+
+      const totalDuration = rhythm.reduce((sum, dur) => sum + dur, 0)
+      const finalTimeout = setTimeout(() => {
+        setIsPlayingClaps(false)
+        setShouldStartMetronome(false)
+      }, (totalDuration + 0.5) * 1000)
+      clapTimeoutsRef.current.push(finalTimeout)
+    } else if (melody) {
+      // Play actual melody with instrument sounds
+      await stop()
+      await play(melody, { instrument: 'acoustic_grand_piano', tempo: 120 })
     }
-  }, [isRhythmTapQuestion, rhythmPattern, rhythmMelody, playClapSound, play, stop])
+  }, [isRhythmTapQuestion, rhythmPattern, rhythm, melody, playClapSound, play, stop])
 
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
