@@ -39,3 +39,31 @@ export const CollapsibleLessonsContainer = styled(Animated.View)(() => ({
   width: '100%',
   overflow: 'hidden'
 }))
+
+export const MessageOverlay = styled.View(() => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  height: scale(180), // Same height as TopCloudsCover
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 20
+}))
+
+export const MessageContainer = styled.View(() => ({
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  padding: scale(12),
+  borderRadius: scale(8)
+}))
+
+export const MessageText = styled.Text(() => ({
+  color: 'white',
+  fontSize: scale(14),
+  textAlign: 'center'
+}))
+
+export const Spacer = styled.View(() => ({
+  height: scale(180), // Same height as TopCloudsCover
+  width: '100%'
+}))

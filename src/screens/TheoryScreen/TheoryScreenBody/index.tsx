@@ -2,310 +2,251 @@ import { useProgress } from '@/hooks'
 import { stagesArray } from '@/subjects/theory/curriculum/stages/helpers'
 import { Stage, StageLesson } from '@/subjects/theory/curriculum/types'
 import { useFocusEffect } from 'expo-router'
-import * as React from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Animated, ScrollView, Text, View } from 'react-native'
-import { scale } from 'react-native-size-matters'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { Animated, ScrollView, View } from 'react-native'
 import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'
-import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
+import {
+  CollapsibleLessonsContainer,
+  ContentContainer,
+  ContentWrapper,
+  LessonContent,
+  MessageContainer,
+  MessageOverlay,
+  MessageText,
+  PartialLessonContainer,
+  Spacer,
+  StageContainer
+} from './TheoryScreenBody.styles'
 
 export const TheoryScreenBody = () => {
   const { getStageById, getStageRequirements } = useProgress()
 
-// UI Utility Functions for TheoryScreenBody
-  const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
-  const stage = getStageById(stageId)
-  if (!stage) return []
-  
-  // If stage is unlocked, show all lessons
-  if (stage.isUnlocked) {
-    return stage.lessons.map(lesson => ({ ...lesson, isLocked: false }))
-  }
-  
-  // If stage is locked, show lessons as locked
-  return stage.lessons.map(lesson => ({ ...lesson, isLocked: true }))
-  }, [getStageById])
-
-  const getStageDisplayData = useCallback((stageId: string): {
-  stage: Stage | undefined
-  isAccessible: boolean
-  blockingMessage: string
-  lessons: StageLesson[]
-} => {
-  const stage = getStageById(stageId)
-  if (!stage) {
-    return {
-      stage: undefined,
-      isAccessible: false,
-      blockingMessage: 'Stage not found',
-      lessons: []
-    }
-  }
-  
-  const requirements = getStageRequirements(stageId)
-  const lessons = getVisibleLessonsForStage(stageId)
-  
-  let blockingMessage = ''
-  if (!requirements.isUnlocked && requirements.progressNeeded.length > 0) {
-    blockingMessage = requirements.progressNeeded.join(', ')
-  }
-  
-  return {
-    stage,
-    isAccessible: requirements.isUnlocked,
-    blockingMessage,
-    lessons
-  }
-  }, [getStageById, getStageRequirements, getVisibleLessonsForStage])
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
-  const [refreshKey, setRefreshKey] = useState(0) // Force re-render when progress updates
+  const [refreshKey, setRefreshKey] = useState(0)
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
   const openedStageIdsRef = useRef<Set<string>>(new Set())
 
-  // Helper function to scroll to a stage
-  const scrollToStage = (stageId: string, offset: number = 100) => {
-    if (stageRefs.current[stageId] && scrollViewRef.current) {
-      stageRefs.current[stageId].measureLayout(
-        scrollViewRef.current as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-        (x: number, y: number) => {
-          scrollViewRef.current?.scrollTo({
-            y: Math.max(0, y - offset),
-            animated: true
-          })
-        },
-        () => {
-          // Fallback if measureLayout fails
-          scrollViewRef.current?.scrollToEnd({ animated: true })
-        }
-      )
+  const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
+    const stage = getStageById(stageId)
+    if (!stage) return []
+
+    return stage.lessons.map(lesson => ({
+      ...lesson,
+      isLocked: !stage.isUnlocked
+    }))
+  }, [getStageById])
+
+  const getStageDisplayData = useCallback((stageId: string) => {
+    const stage = getStageById(stageId)
+    if (!stage) {
+      return {
+        stage: undefined,
+        isAccessible: false,
+        blockingMessage: 'Stage not found',
+        lessons: []
+      }
     }
-  }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true })
-    }, 100)
+    const requirements = getStageRequirements(stageId)
+    const lessons = getVisibleLessonsForStage(stageId)
+    const blockingMessage = !requirements.isUnlocked && requirements.progressNeeded.length > 0
+      ? requirements.progressNeeded.join(', ')
+      : ''
 
-    return () => clearTimeout(timer)
+    return {
+      stage,
+      isAccessible: requirements.isUnlocked,
+      blockingMessage,
+      lessons
+    }
+  }, [getStageById, getStageRequirements, getVisibleLessonsForStage])
+
+  const scrollToStage = useCallback((stageId: string, offset: number = 100) => {
+    const stageRef = stageRefs.current[stageId]
+    if (!stageRef || !scrollViewRef.current) return
+
+    stageRef.measureLayout(
+      scrollViewRef.current as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      (x: number, y: number) => {
+        scrollViewRef.current?.scrollTo({
+          y: Math.max(0, y - offset),
+          animated: true
+        })
+      },
+      () => {
+        scrollViewRef.current?.scrollToEnd({ animated: true })
+      }
+    )
   }, [])
 
-  useFocusEffect(
-    useCallback(() => {
-      setRefreshKey(prev => prev + 1)
-    }, [])
-  )
-  useEffect(() => {
-    const initState = async () => {
-      const initialCollapsedState: Record<string, boolean> = {}
-      const initialVisibleState: Record<string, boolean> = {}
+  const toggleStageCollapse = useCallback((stageId: string) => {
+    const isCollapsed = collapsedStages[stageId]
+    const willCollapse = !isCollapsed
 
-      // Determine highest unlocked stage (furthest) - auto-open this stage
-      const unlockedStages = stagesArray.filter(s => s.isUnlocked)
-      const furthest = unlockedStages.length > 0
-        ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
-        : undefined
-      const furthestId = furthest?.id
+    setVisibleStages(prev => ({ ...prev, [stageId]: !willCollapse }))
+    setCollapsedStages(prev => ({ ...prev, [stageId]: willCollapse }))
 
-      stagesArray.forEach(stage => {
-        // Initialize animated value for each stage
-        if (!animatedHeights.current[stage.id]) {
-          animatedHeights.current[stage.id] = new Animated.Value(1)
-        }
-
-        const shouldBeOpen = furthestId === stage.id
-
-        if (stage.isCleared) {
-          // Cleared stages are collapsible; open if shouldBeOpen, otherwise collapse
-          initialCollapsedState[stage.id] = !shouldBeOpen
-          initialVisibleState[stage.id] = shouldBeOpen
-          animatedHeights.current[stage.id].setValue(shouldBeOpen ? 1 : 0)
-        } else {
-          // Non-cleared stages should remain visible (not collapsible)
-          initialVisibleState[stage.id] = true
-          animatedHeights.current[stage.id].setValue(1)
-        }
-      })
-
-      setCollapsedStages(initialCollapsedState)
-      setVisibleStages(initialVisibleState)
-    }
-
-    void initState()
-  }, [refreshKey])
-
-  const toggleStageCollapse = (stageId: string) => {
-    const isCurrentlyCollapsed = collapsedStages[stageId]
-    const newCollapsedState = !isCurrentlyCollapsed
-    
-    if (newCollapsedState) {
-      // Collapsing: hide content immediately (no scroll)
-      setVisibleStages(prev => ({
-        ...prev,
-        [stageId]: false
-      }))
-      setCollapsedStages(prev => ({
-        ...prev,
-        [stageId]: true
-      }))
+    if (willCollapse) {
+      openedStageIdsRef.current.delete(stageId)
     } else {
-      // Expanding: show then fade in
-      setVisibleStages(prev => ({
-        ...prev,
-        [stageId]: true
-      }))
-      setCollapsedStages(prev => ({
-        ...prev,
-        [stageId]: false
-      }))
-      
-      // Track user intent to keep this stage open (session-only, not persisted)
       openedStageIdsRef.current.add(stageId)
-
-      // Small delay to ensure DOM update, then start fade in animation and scroll
       setTimeout(() => {
         animatedHeights.current[stageId].setValue(0)
         Animated.timing(animatedHeights.current[stageId], {
           toValue: 1,
           duration: 200,
           useNativeDriver: true
-        }).start()
-        
-        // Scroll to the expanded content
-        setTimeout(() => {
+        }).start(() => {
           scrollToStage(stageId, 0)
-        }, 150) // Wait for content to be rendered
+        })
       }, 10)
     }
-    if (newCollapsedState) {
-      // Track user intent to keep this stage closed (session-only, not persisted)
-      openedStageIdsRef.current.delete(stageId)
-    }
-  }
+  }, [collapsedStages, scrollToStage])
 
-  // Get all unlocked stages plus a preview of the next locked stage
-  const displayStages = stagesArray.filter(stage => stage.isUnlocked)
-  const nextLockedStage = stagesArray.find(stage => !stage.isUnlocked && stage.order === Math.min(...stagesArray.filter(s => !s.isUnlocked).map(s => s.order)))
-  
-  if (nextLockedStage) {
-    displayStages.push(nextLockedStage)
-  }
-  
-  // Check if there's no next stage (all stages completed)
+  const handleContentSizeChange = useCallback(() => {
+    scrollViewRef.current?.scrollToEnd({ animated: true })
+  }, [])
+
+  const initializeStageStates = useCallback(() => {
+    const initialCollapsedState: Record<string, boolean> = {}
+    const initialVisibleState: Record<string, boolean> = {}
+
+    const unlockedStages = stagesArray.filter(s => s.isUnlocked)
+    const furthest = unlockedStages.length > 0
+      ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
+      : undefined
+    const furthestId = furthest?.id
+
+    stagesArray.forEach(stage => {
+      if (!animatedHeights.current[stage.id]) {
+        animatedHeights.current[stage.id] = new Animated.Value(1)
+      }
+
+      const shouldBeOpen = furthestId === stage.id
+
+      if (stage.isCleared) {
+        initialCollapsedState[stage.id] = !shouldBeOpen
+        initialVisibleState[stage.id] = shouldBeOpen
+        animatedHeights.current[stage.id].setValue(shouldBeOpen ? 1 : 0)
+      } else {
+        initialVisibleState[stage.id] = true
+        animatedHeights.current[stage.id].setValue(1)
+      }
+    })
+
+    setCollapsedStages(initialCollapsedState)
+    setVisibleStages(initialVisibleState)
+  }, [])
+
+  useEffect(() => {
+    initializeStageStates()
+  }, [initializeStageStates, refreshKey])
+
+  useFocusEffect(
+    useCallback(() => {
+      setRefreshKey(prev => prev + 1)
+    }, [])
+  )
+
+  const unlockedStages = stagesArray.filter(stage => stage.isUnlocked)
+  const lockedStages = stagesArray.filter(stage => !stage.isUnlocked)
+  const nextLockedStage = lockedStages.length > 0
+    ? lockedStages.reduce((min, s) => (s.order < min.order ? s : min), lockedStages[0])
+    : undefined
+
+  const displayStages = nextLockedStage
+    ? [...unlockedStages, nextLockedStage]
+    : unlockedStages
+
+  const sortedStages = displayStages.sort((a, b) => b.order - a.order)
   const hasNextStage = nextLockedStage !== undefined
 
-  // Sort stages by order (reverse for display from bottom to top)
-  const sortedStages = displayStages.sort((a, b) => b.order - a.order)
+  const renderLesson = useCallback((
+    lesson: StageLesson,
+    reversedIndex: number,
+    originalIndex: number,
+    lessonsToShow: StageLesson[],
+    isPreviewStage: boolean
+  ) => {
+    const shouldBePartial = isPreviewStage && reversedIndex === 0
+
+    return (
+      <Fragment key={lesson.id}>
+        <PartialLessonContainer isPartial={shouldBePartial}>
+          <LessonContent isPartial={shouldBePartial}>
+            <LessonSection
+              index={originalIndex}
+              lesson={lesson}
+              allStageLessons={lessonsToShow}
+            />
+          </LessonContent>
+        </PartialLessonContainer>
+        {reversedIndex < lessonsToShow.length - 1 && !lesson.isFinalTest && <LessonDivider />}
+      </Fragment>
+    )
+  }, [])
+
+  const renderStage = useCallback((stage: Stage) => {
+    const stageData = getStageDisplayData(stage.id)
+    const isCollapsed = collapsedStages[stage.id] ?? false
+    const isVisible = visibleStages[stage.id] !== false
+    const isPreviewStage = !stage.isUnlocked
+    const lessonsToShow = isPreviewStage ? stageData.lessons.slice(0, 2) : stageData.lessons
+
+    return (
+      <StageContainer
+        key={stage.id}
+        ref={(ref) => {
+          if (ref) stageRefs.current[stage.id] = ref
+        }}
+      >
+        {stage.isCleared && (
+          <StageHeader
+            stage={stage}
+            isCollapsed={isCollapsed}
+            onToggle={() => toggleStageCollapse(stage.id)}
+            showToggle={true}
+          />
+        )}
+
+        {isVisible && (
+          <CollapsibleLessonsContainer
+            style={{
+              opacity: stage.isCleared ? animatedHeights.current[stage.id] : 1
+            }}
+          >
+            {lessonsToShow
+              .slice()
+              .reverse()
+              .map((lesson, reversedIndex) => {
+                const originalIndex = lessonsToShow.length - 1 - reversedIndex
+                return renderLesson(lesson, reversedIndex, originalIndex, lessonsToShow, isPreviewStage)
+              })}
+          </CollapsibleLessonsContainer>
+        )}
+      </StageContainer>
+    )
+  }, [collapsedStages, visibleStages, getStageDisplayData, toggleStageCollapse, renderLesson])
 
   return (
-    <ContentWrapper ref={scrollViewRef}>
+    <ContentWrapper ref={scrollViewRef} onContentSizeChange={handleContentSizeChange}>
       <ContentContainer>
         <TopCloudsCover />
-        
-        {/* Show "next stage in progress" message when no next stage exists */}
-        {!hasNextStage && (
-          <View style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: scale(180), // Same height as TopCloudsCover
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 20
-          }}>
-            <View style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              padding: scale(12),
-              borderRadius: scale(8)
-            }}>
-              <Text style={{
-                color: 'white',
-                fontSize: scale(14),
-                textAlign: 'center'
-              }}>
-                Next stage still in progress...
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        {/* Spacer to maintain 1.25 space when no next stage */}
-        {!hasNextStage && (
-          <View style={{
-            height: scale(180), // Same height as TopCloudsCover
-            width: '100%'
-          }} />
-        )}
-        
-        {sortedStages.map((stage, stageIndex) => {
-          const stageData = getStageDisplayData(stage.id)
-          const isCollapsed = collapsedStages[stage.id] || false
-          const isVisible = visibleStages[stage.id] !== false // Default to true if not set
-          const isPreviewStage = !stage.isUnlocked
-          
-          // For preview stage, only show 1.25 lessons
-          let lessonsToShow = stageData.lessons
-          if (isPreviewStage) {
-            lessonsToShow = stageData.lessons.slice(0, 2) // Show 2 lessons for preview
-          }
 
-          return (
-            <StageContainer 
-              key={stage.id} 
-              ref={(ref) => {
-                if (ref) {
-                  stageRefs.current[stage.id] = ref
-                }
-              }}
-            >
-              {/* Show stage header only for cleared stages */}
-              {stage.isCleared && (
-                <StageHeader
-                  stage={stage}
-                  isCollapsed={isCollapsed}
-                  onToggle={() => toggleStageCollapse(stage.id)}
-                  showToggle={true}
-                />
-              )}
-              
-              {/* Lessons container - collapsible for cleared stages */}
-              {isVisible && (
-                <CollapsibleLessonsContainer
-                  style={{
-                    opacity: stage.isCleared ? animatedHeights.current[stage.id] : 1
-                  }}
-                >
-                  {lessonsToShow
-                    .slice()
-                    .reverse()
-                    .map((lesson, reversedIndex) => {
-                      const originalIndex = lessonsToShow.length - 1 - reversedIndex
-                      const isLastLesson = reversedIndex === 0 // Topmost lesson in this stage
-                      const shouldBePartial = isPreviewStage && isLastLesson
-                      
-                      return (
-                        <React.Fragment key={lesson.id}>
-                          <PartialLessonContainer isPartial={shouldBePartial}>
-                            <LessonContent isPartial={shouldBePartial}>
-                              <LessonSection 
-                                index={originalIndex} 
-                                lesson={lesson}
-                                allStageLessons={lessonsToShow}
-                              />
-                            </LessonContent>
-                          </PartialLessonContainer>
-                          {reversedIndex < lessonsToShow.length - 1 && !lesson.isFinalTest && <LessonDivider />}
-                        </React.Fragment>
-                      )
-                    })}
-                </CollapsibleLessonsContainer>
-              )}
-            </StageContainer>
-          )
-        })}
+        {!hasNextStage && (
+          <MessageOverlay>
+            <MessageContainer>
+              <MessageText>Next stage still in progress...</MessageText>
+            </MessageContainer>
+          </MessageOverlay>
+        )}
+
+        {!hasNextStage && <Spacer />}
+
+        {sortedStages.map(renderStage)}
       </ContentContainer>
     </ContentWrapper>
   )
