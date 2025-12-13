@@ -2,7 +2,6 @@ import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYN
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
-import type { VisualComponent } from '@types'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
@@ -13,41 +12,47 @@ import {
   Tuplets,
   type MusicElementData
 } from '@leonkwan46/music-notation'
-import * as React from 'react'
+import type { VisualComponent } from '@types'
+import { type FC } from 'react'
 import { scale } from 'react-native-size-matters'
 import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
-import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
+import { PlaybackCard, PlaybackText, PlayButton, SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
 import { generateTripletElements, renderNoteComponent } from './visualRenderHelper'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
+  onPlaybackPress?: () => void
+  isPlaying?: boolean
 }
 
-export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
+export const VisualQuestion: FC<VisualQuestionProps> = ({ 
+  visualComponent, 
+  onPlaybackPress,
+  isPlaying = false
+}: VisualQuestionProps) => {
   const { isTablet } = useDevice()
   const theme = useTheme()
 
-  // Check if this visual needs extra height (complex music staff with pitch elements)
   const needsExtraHeight = visualComponent.clef && 
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
     visualComponent.elements.some(element => element.pitch) &&
     visualComponent.type !== 'termAndSign'
 
-  // Check if this should render individual notes (single element, no clef)
   const shouldRenderIndividualNotes = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
     visualComponent.type !== 'termAndSign' && 
+    visualComponent.type !== 'playback' &&
     visualComponent.elements?.length === 1 && 
     !visualComponent.clef
 
-  // Check if this should render music staff (default case)
   const shouldRenderMusicStaff = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
     visualComponent.type !== 'termAndSign' && 
+    visualComponent.type !== 'playback' &&
+    !onPlaybackPress &&
     !(visualComponent.elements?.length === 1 && !visualComponent.clef)
 
-  // SMuFL symbol helpers
   const renderAsSymbol = visualComponent.renderAsSymbol !== false
 
   const symbolText = renderAsSymbol && visualComponent.symbolType ? 
@@ -69,7 +74,6 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
                         visualComponent.symbolType === 'decresc.' || 
                         visualComponent.symbolType === 'dim.'
 
-  // TTS helpers
   const shouldShowTTSButton =
     visualComponent.symbolType &&
     visualComponent.enableTTS !== false &&
@@ -80,6 +84,8 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       pronounceTerm(visualComponent.symbolType)
     }
   }
+
+  const shouldShowPlayback = visualComponent.type === 'playback' || onPlaybackPress
 
   return (
     <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'termAndSign'} needsExtraSpacing={needsExtraHeight || false}>
@@ -122,6 +128,27 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
             </TTSButton>
           )}
         </SMuFLCard>
+      )}
+      
+      {shouldShowPlayback && (
+        <PlaybackCard isTablet={isTablet}>
+          <PlaybackText isTablet={isTablet}>
+            Listen to the question
+          </PlaybackText>
+          <PlayButton 
+            isTablet={isTablet}
+            onPress={onPlaybackPress}
+            disabled={isPlaying || !onPlaybackPress}
+            style={{ opacity: (isPlaying || !onPlaybackPress) ? 0.6 : 1 }}
+          >
+            <Ionicons 
+              name={isPlaying ? 'pause' : 'play'} 
+              size={isTablet ? scale(40) : scale(50)} 
+              color="#fff"
+              style={{ marginLeft: isPlaying ? 0 : scale(2) }}
+            />
+          </PlayButton>
+        </PlaybackCard>
       )}
       
       {shouldRenderIndividualNotes && visualComponent.elements?.[0]?.type && (
