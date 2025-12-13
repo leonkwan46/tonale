@@ -1,7 +1,7 @@
 import type { ClefType, KeyName, MusicElementData } from '@leonkwan46/music-notation'
 
 export interface VisualComponent {
-  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'termAndSign' | 'triplet'
+  type?: 'musicStaff' | 'timeSignature' | 'noteValue' | 'termAndSign' | 'triplet' | 'playback'
   clef?: ClefType
   elements?: MusicElementData[]
   timeSignature?: string
@@ -18,15 +18,16 @@ export interface VisualComponent {
   renderAsSymbol?: boolean
   size?: 'xs' | 'sml' | 'med' | 'lg' | 'xl' | 'xxl'
   showStaff?: boolean
+  rhythmMelody?: { note: string; duration: number }[]
 }
 
 export interface Question {
   id: string
   question: string
-  correctAnswer: string
+  correctAnswer: string | number[]
   choices: string[]
   explanation?: string
-  type: 'multipleChoice' | 'trueFalse' | 'keyPress'
+  type: 'multipleChoice' | 'trueFalse' | 'keyPress' | 'rhythmTap'
   visualComponent?: VisualComponent
 }
 
