@@ -1,7 +1,5 @@
-import { Lesson, Stage } from '../types'
-import { stage1, stageOneLessons } from './stageOne'
-import { stage2, stageTwoLessons } from './stageTwo'
-import { stage0, stageZeroLessons } from './stageZero'
+import { Lesson, Stage } from '../types';
+import { stage0, stageZeroLessons } from './stageZero';
 
 export const getLessonProgress = (
   lessonId: string,
@@ -11,9 +9,7 @@ export const getLessonProgress = (
 }
 
 export const allLessons = [
-  ...stageZeroLessons,
-  ...stageOneLessons,
-  ...stageTwoLessons
+  ...stageZeroLessons
 ]
 
 export const getLessonWithProgress = (
@@ -58,7 +54,7 @@ export const calculateStageUnlockStatus = (stageId: string, allStagesData: Stage
 }
 
 const createStageData = (): Stage[] => {
-  const stageData: Stage[] = [stage0, stage1, stage2]
+  const stageData: Stage[] = [stage0]
   
   stageData.forEach(stage => {
     stage.isUnlocked = calculateStageUnlockStatus(stage.id, stageData)

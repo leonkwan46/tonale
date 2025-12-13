@@ -17,6 +17,6 @@ export const stage2: Stage = {
   isUnlocked: false,
   totalStars: 0,
   order: 2,
-  prerequisiteStages: ['aural-stage-1']
+  prerequisiteStages: ['aural-stage-0']
 }
 
