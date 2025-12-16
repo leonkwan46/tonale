@@ -35,16 +35,16 @@ export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ isTablet
   zIndex: 1
 }))
 
-export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void }>(({ theme, isTablet, isPlaying, onPlaybackPress }) => ({
+export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => ({
   width: isTablet ? scale(80) : scale(100),
   height: isTablet ? scale(80) : scale(100),
   borderRadius: isTablet ? scale(40) : scale(50),
-  backgroundColor: theme.colors.primary,
+  backgroundColor: disabled ? '#9E9E9E' : theme.colors.primary,
   alignItems: 'center',
   justifyContent: 'center',
   activeOpacity: 0.8,
   overflow: 'hidden',
-  opacity: (isPlaying || !onPlaybackPress) ? 0.6 : 1,
+  opacity: (isPlaying || !onPlaybackPress) ? 0.6 : (disabled ? 0.5 : 1),
   zIndex: 10
 }))
 

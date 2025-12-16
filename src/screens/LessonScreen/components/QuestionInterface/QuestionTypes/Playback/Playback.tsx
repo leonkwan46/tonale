@@ -1,74 +1,89 @@
 import { useDevice } from '@/hooks'
+import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import type { QuestionInterface } from '@types'
-import { type FC, useCallback, useEffect, useRef, useState } from 'react'
+import { type FC, useCallback } from 'react'
 import { scale } from 'react-native-size-matters'
 import { QUESTION_TYPE } from '../types'
+import { DEFAULT_TEMPO } from './constants'
+import { useAudioFilePlayback } from './hooks/useAudioFilePlayback'
+import { usePlaybackRipples } from './hooks/usePlaybackRipples'
+import { useRhythmClaps } from './hooks/useRhythmClaps'
 import { AnimationContainer, IconWrapper, PlaybackCard, PlaybackText, PlayButton } from './Playback.styles'
 import { RippleAnimation } from './RippleAnimation'
+import { convertDurationsToTimestamps } from './utils'
 
 interface PlaybackProps {
   questionInterface: QuestionInterface
   onPlaybackPress?: () => void
   isPlaying?: boolean
+  onClapPlayingChange?: (isPlaying: boolean) => void
+  correctAnswer?: string | number[]
+  answerInterface?: string
+  enableMetronome?: boolean
+  isAnswering?: boolean
+  onPlaybackFinish?: () => void
+  onPlaybackStart?: () => void
 }
 
 export const Playback: FC<PlaybackProps> = ({ 
   questionInterface, 
   onPlaybackPress, 
-  isPlaying = false
+  isPlaying = false,
+  onClapPlayingChange,
+  correctAnswer,
+  answerInterface,
+  enableMetronome,
+  isAnswering = false,
+  onPlaybackFinish,
+  onPlaybackStart
 }) => {
   const { isTablet } = useDevice()
-  const [ripples, setRipples] = useState<number[]>([])
-  const rippleIdRef = useRef(0)
-  const timeoutRefsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
+  const theme = useTheme()
 
-  const removeRipple = useCallback((id: number) => {
-    setRipples(prev => prev.filter(rippleId => rippleId !== id))
-  }, [])
+  const tempo = questionInterface.tempo || DEFAULT_TEMPO
+  const rhythmPattern = answerInterface === 'rhythmTap' && Array.isArray(correctAnswer)
+    ? correctAnswer
+    : undefined
 
-  useEffect(() => {
-    if (!isPlaying) {
-      setRipples([])
-      timeoutRefsRef.current.forEach(timeout => clearTimeout(timeout))
-      timeoutRefsRef.current.clear()
+  const { isPlaying: isPlayingAudioFile, play: playAudioFile } = useAudioFilePlayback()
+  
+  const { isPlaying: isPlayingClaps, playRhythmClaps } = useRhythmClaps({
+    tempo,
+    enableMetronome,
+    onClapPlayingChange,
+    onPlaybackStart,
+    onPlaybackFinish
+  })
+
+  const isCurrentlyPlaying = isPlaying || isPlayingClaps || isPlayingAudioFile
+
+  const { ripples, removeRipple } = usePlaybackRipples({
+    isPlaying: isCurrentlyPlaying,
+    rhythm: questionInterface.rhythm
+  })
+
+  const handlePlaybackPressInternal = useCallback(async () => {
+    const { rhythm, audioFile } = questionInterface
+
+    if (audioFile) {
+      await playAudioFile(audioFile, onPlaybackStart, onPlaybackFinish)
       return
     }
 
-    // Support both rhythm and melody for visual animations
-    const rhythm = questionInterface.rhythm
-    const melody = questionInterface.melody
-    
-    let durations: number[] = []
-    if (rhythm) {
-      durations = rhythm
-    } else if (melody) {
-      durations = melody.map(note => note.duration)
-    }
-    
-    if (!durations.length) return
-
-    const beatTimestamps: number[] = [0]
-    let cumulativeTime = 0
-    
-    for (let i = 0; i < durations.length - 1; i++) {
-      cumulativeTime += durations[i]
-      beatTimestamps.push(cumulativeTime)
+    if (onPlaybackPress) {
+      onPlaybackPress()
+      onPlaybackStart?.()
+      return
     }
 
-    beatTimestamps.forEach(timestamp => {
-      const timeout = setTimeout(() => {
-        setRipples(prev => [...prev, rippleIdRef.current++])
-        timeoutRefsRef.current.delete(timeout)
-      }, timestamp * 1000)
-      timeoutRefsRef.current.add(timeout)
-    })
-
-    return () => {
-      timeoutRefsRef.current.forEach(timeout => clearTimeout(timeout))
-      timeoutRefsRef.current.clear()
+    if (rhythmPattern && rhythmPattern.length > 0) {
+      playRhythmClaps(rhythmPattern, true)
+    } else if (rhythm && rhythm.length > 0) {
+      const timestamps = convertDurationsToTimestamps(rhythm)
+      playRhythmClaps(timestamps, true)
     }
-  }, [isPlaying, questionInterface.rhythm, questionInterface.melody])
+  }, [questionInterface, rhythmPattern, onPlaybackPress, playRhythmClaps, playAudioFile, onPlaybackStart, onPlaybackFinish])
 
   if (questionInterface.type !== QUESTION_TYPE.PLAYBACK && !onPlaybackPress) return null
 
@@ -87,18 +102,18 @@ export const Playback: FC<PlaybackProps> = ({
         ))}
       <PlayButton 
         isTablet={isTablet}
-          isPlaying={isPlaying}
-          onPlaybackPress={onPlaybackPress}
-        onPress={onPlaybackPress}
-        disabled={isPlaying || !onPlaybackPress}
+        isPlaying={isCurrentlyPlaying}
+        onPlaybackPress={handlePlaybackPressInternal}
+        onPress={handlePlaybackPressInternal}
+        disabled={isCurrentlyPlaying || isAnswering || (!onPlaybackPress && !questionInterface.rhythm && !questionInterface.audioFile)}
       >
-          <IconWrapper isPlaying={isPlaying}>
-        <Ionicons 
-          name={isPlaying ? 'pause' : 'play'} 
-          size={isTablet ? scale(40) : scale(50)} 
-          color="#fff"
-        />
-          </IconWrapper>
+        <IconWrapper isPlaying={isCurrentlyPlaying}>
+          <Ionicons 
+            name={isCurrentlyPlaying ? 'pause' : 'play'} 
+            size={isTablet ? scale(40) : scale(50)} 
+            color={theme.colors.background}
+          />
+        </IconWrapper>
       </PlayButton>
       </AnimationContainer>
     </PlaybackCard>
