@@ -10,7 +10,6 @@ import {
   TapButtonText
 } from './RhythmTap.styles'
 
-// Pre-load clap sound at module level for bundler resolution
 const CLAP_SOUND = require('../../../../../../../assets/sounds/clap.mp3')
 
 type ButtonState = 'default' | 'correct' | 'incorrect'
@@ -18,19 +17,23 @@ type ButtonState = 'default' | 'correct' | 'incorrect'
 interface RhythmTapProps {
   onTapSubmit: (timestamps: number[]) => void
   disabled?: boolean
-  shouldStartMetronome?: boolean
   rhythmDuration?: number
   buttonState?: ButtonState
   tempo?: number
+  questionInterface?: { rhythm?: number[]; audioFile?: string }
+  onRecordingChange?: (isRecording: boolean) => void
+  onPlaybackFinishRef?: React.MutableRefObject<(() => void) | null>
 }
 
 export const RhythmTap: React.FC<RhythmTapProps> = ({
   onTapSubmit,
   disabled = false,
-  shouldStartMetronome = false,
   rhythmDuration = 0,
   buttonState = 'default',
-  tempo = 120
+  tempo = 120,
+  questionInterface,
+  onRecordingChange,
+  onPlaybackFinishRef
 }) => {
   const { isTablet } = useDevice()
   const [tapTimestamps, setTapTimestamps] = useState<number[]>([])
@@ -49,7 +52,6 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
       player.volume = 0.8
       void player.play()
       
-      // Clean up the player after it finishes playing
       setupAutoCleanup(player)
     } catch (error) {
       console.warn('Could not play clap sound:', error)
@@ -62,15 +64,40 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
     bpm: tempo
   })
 
-  useEffect(() => {
-    if (shouldStartMetronome) {
-      setMetronomeEnabled(true)
-      startMetronome()
-    } else {
+  const isPulseExercise = questionInterface?.audioFile && !questionInterface?.rhythm
+
+  const submitAnswer = useCallback(() => {
+    if (hasSubmittedRef.current) return
+    
+    hasSubmittedRef.current = true
+    setIsTimeWindowExpired(true)
+    setIsRecording(false)
+    onRecordingChange?.(false)
+    
+    if (metronomeEnabled) {
       setMetronomeEnabled(false)
       stopMetronome()
     }
-  }, [shouldStartMetronome, startMetronome, stopMetronome])
+    
+    const finalTimestamps = tapTimestampsRef.current.length > 0 
+      ? tapTimestampsRef.current 
+      : [0]
+    
+    setTimeout(() => {
+      onTapSubmit(finalTimestamps)
+    }, 0)
+  }, [metronomeEnabled, isPulseExercise, onRecordingChange, onTapSubmit, stopMetronome])
+
+  useEffect(() => {
+    if (isPulseExercise && onPlaybackFinishRef) {
+      onPlaybackFinishRef.current = submitAnswer
+      return () => {
+        if (onPlaybackFinishRef) {
+          onPlaybackFinishRef.current = null
+        }
+      }
+    }
+  }, [isPulseExercise, onPlaybackFinishRef, submitAnswer])
 
   useEffect(() => {
     if (disabled) {
@@ -81,6 +108,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
       setTapTimestamps([])
       tapTimestampsRef.current = []
       setIsRecording(false)
+      onRecordingChange?.(false)
       setIsTimeWindowExpired(false)
       startTimeRef.current = null
       hasSubmittedRef.current = false
@@ -89,7 +117,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
         autoSubmitTimeoutRef.current = null
       }
     }
-  }, [disabled, metronomeEnabled, stopMetronome])
+  }, [disabled, metronomeEnabled, stopMetronome, onRecordingChange])
 
   useEffect(() => {
     return () => {
@@ -107,39 +135,24 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
     
     if (!isRecording) {
       setIsRecording(true)
+      onRecordingChange?.(true)
       startTimeRef.current = currentTime
       const initialTimestamps = [0]
       tapTimestampsRef.current = initialTimestamps
       setTapTimestamps(initialTimestamps)
       
-      if (!metronomeEnabled) {
+      if (!metronomeEnabled && !isPulseExercise) {
         setMetronomeEnabled(true)
         startMetronome()
       }
 
-      if (rhythmDuration > 0) {
+      if (rhythmDuration > 0 && !isPulseExercise) {
         if (autoSubmitTimeoutRef.current) {
           clearTimeout(autoSubmitTimeoutRef.current)
         }
         
         autoSubmitTimeoutRef.current = setTimeout(() => {
-          if (!hasSubmittedRef.current) {
-            hasSubmittedRef.current = true
-            setIsTimeWindowExpired(true)
-            
-            if (metronomeEnabled) {
-              setMetronomeEnabled(false)
-              stopMetronome()
-            }
-            
-            const finalTimestamps = tapTimestampsRef.current.length > 0 
-              ? tapTimestampsRef.current 
-              : [0]
-            
-            setTimeout(() => {
-              onTapSubmit(finalTimestamps)
-            }, 0)
-          }
+          submitAnswer()
         }, rhythmDuration)
       }
     } else if (!isTimeWindowExpired) {
@@ -152,7 +165,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
     }
 
     playClapSound()
-  }, [disabled, isRecording, tapTimestamps.length, isTimeWindowExpired, metronomeEnabled, startMetronome, stopMetronome, playClapSound, rhythmDuration, onTapSubmit])
+  }, [disabled, isRecording, tapTimestamps.length, isTimeWindowExpired, metronomeEnabled, isPulseExercise, startMetronome, stopMetronome, playClapSound, rhythmDuration, submitAnswer, onRecordingChange])
 
   const isButtonDisabled = disabled || isTimeWindowExpired || hasSubmittedRef.current
 

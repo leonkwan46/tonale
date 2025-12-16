@@ -16,14 +16,19 @@ export const TapButtonContainer = styled.TouchableOpacity<{ isPressed: boolean, 
 
 type ButtonState = 'default' | 'correct' | 'incorrect'
 
-export const TapButtonDepth = styled.View<{ buttonState: ButtonState, isActive: boolean, isDisabled: boolean, isTablet: boolean }>(({ theme, buttonState, isTablet }) => {
+export const TapButtonDepth = styled.View<{ buttonState: ButtonState, isActive: boolean, isDisabled: boolean, isTablet: boolean }>(({ theme, buttonState, isDisabled, isTablet }) => {
   const getDepthColor = () => {
+    // Show correct/incorrect colors even when disabled (for result display)
     switch (buttonState) {
       case 'correct':
         return '#2a8a3a'
       case 'incorrect':
         return '#b52a2a'
       default:
+        // Only show disabled color when buttonState is default and disabled
+        if (isDisabled) {
+          return '#616161'
+        }
         return '#156382'
     }
   }
@@ -39,14 +44,19 @@ export const TapButtonDepth = styled.View<{ buttonState: ButtonState, isActive: 
   }
 })
 
-export const TapButtonContent = styled.View<{ buttonState: ButtonState, isActive: boolean, isDisabled: boolean, isTablet: boolean }>(({ theme, buttonState, isTablet }) => {
+export const TapButtonContent = styled.View<{ buttonState: ButtonState, isActive: boolean, isDisabled: boolean, isTablet: boolean }>(({ theme, buttonState, isDisabled, isTablet }) => {
   const getBackgroundColor = () => {
+    // Show correct/incorrect colors even when disabled (for result display)
     switch (buttonState) {
       case 'correct':
         return theme.colors.success
       case 'incorrect':
         return theme.colors.error
       default:
+        // Only show disabled color when buttonState is default and disabled
+        if (isDisabled) {
+          return '#9E9E9E'
+        }
         return theme.colors.primary
     }
   }
