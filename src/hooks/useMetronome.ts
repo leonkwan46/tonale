@@ -2,8 +2,8 @@ import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef } from 'react'
 
-// Metronome constants
-const SCHEDULE_INTERVAL_MS = 25 // Check every 25ms for precision
+// Metronome constants - match rhythm claps for synchronization
+const SCHEDULE_INTERVAL_MS = 5 // Check every 5ms for precision (matches rhythm claps)
 const SCHEDULE_AHEAD_SEC = 0.1 // Schedule 100ms ahead to account for timer jitter
 
 interface UseMetronomeOptions {
@@ -13,7 +13,7 @@ interface UseMetronomeOptions {
 }
 
 interface UseMetronomeReturn {
-  start: () => void
+  start: (sharedStartTime?: number) => void
   stop: () => void
   isRunning: boolean
 }
@@ -97,17 +97,19 @@ export const useMetronome = (options: UseMetronomeOptions = {}): UseMetronomeRet
     }
   }, [playMetronomeBeatAtTime, beatIntervalSec])
 
-  const start = useCallback(() => {
+  const start = useCallback((sharedStartTime?: number) => {
     if (metronomeSchedulerRef.current) return // Already running
     
     // Reset metronome state
-    metronomeStartTimeRef.current = Date.now()
+    // Use shared start time if provided (for synchronization with rhythm claps)
+    // Otherwise use current time
+    metronomeStartTimeRef.current = sharedStartTime ?? Date.now()
     nextBeatTimeRef.current = 0
     beatNumberRef.current = 0
     scheduledBeatsRef.current.clear()
     isRunningRef.current = true
     
-    // Start scheduler that runs every 25ms
+    // Start scheduler that runs every 5ms for precision (matches rhythm claps)
     metronomeSchedulerRef.current = setInterval(metronomeScheduler, SCHEDULE_INTERVAL_MS)
     
     // Run scheduler immediately to schedule first beat
