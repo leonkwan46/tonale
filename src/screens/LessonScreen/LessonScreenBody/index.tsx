@@ -1,8 +1,6 @@
-import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import type { Question } from '@types'
-import { createAudioPlayer } from 'expo-audio'
 import { type FC, useCallback, useEffect, useRef, useState } from 'react'
-import { useDevice, usePlayer } from '../../../hooks'
+import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { QuestionInterface } from '../components/QuestionInterface'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
@@ -27,113 +25,49 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
   isFinalTest = false
 }) => {
   const { isTablet } = useDevice()
-  const { play, stop, isPlaying } = usePlayer()
   const currentQuestion = questions[currentQuestionIndex]
   const { title, questionInterface, answerInterface } = currentQuestion
-  const rhythmPattern = answerInterface === 'rhythmTap' && Array.isArray(currentQuestion.correctAnswer)
-    ? currentQuestion.correctAnswer
-    : undefined
   const isLastQuestion = currentQuestionIndex === questions.length - 1
-  const clapTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
-  const [isPlayingClaps, setIsPlayingClaps] = useState(false)
-  const [shouldStartMetronome, setShouldStartMetronome] = useState(false)
+  const [isAnswering, setIsAnswering] = useState(false)
+  const [hasPlaybackStarted, setHasPlaybackStarted] = useState(false)
+  const [hasPlaybackFinished, setHasPlaybackFinished] = useState(false)
+  const onPlaybackFinishRef = useRef<(() => void) | null>(null)
 
-  const isNoteIdentification = questionInterface?.clef && 
-    questionInterface?.elements && 
-    questionInterface.elements.length > 0 &&
-    questionInterface.elements.some(element => element.pitch)
-
-  const isRhythmTapQuestion = answerInterface === 'rhythmTap'
-  const isRhythmQuestion = questionInterface?.rhythm !== undefined || isRhythmTapQuestion
-  const rhythm = questionInterface?.rhythm
-  const melody = questionInterface?.melody
+  const isPulseExercise = questionInterface?.audioFile && !questionInterface?.rhythm && answerInterface === 'rhythmTap'
+  const isRhythmExercise = questionInterface?.rhythm && !questionInterface?.audioFile && answerInterface === 'rhythmTap'
 
   useEffect(() => {
-    setShouldStartMetronome(false)
-    return () => {
-      clapTimeoutsRef.current.forEach(timeout => clearTimeout(timeout))
-      clapTimeoutsRef.current = []
-    }
-  }, [currentQuestionIndex])
-
-  const playClapSound = useCallback(async () => {
-    try {
-      const clapSound = require('../../../../assets/sounds/clap.mp3')
-      const player = createAudioPlayer(clapSound)
-      player.volume = 0.8
-      await player.play()
-      
-      // Clean up the player after it finishes playing
-      setupAutoCleanup(player)
-    } catch (error) {
-      console.warn('Could not play clap sound:', error)
-    }
-  }, [])
-
-  const handlePlayRhythm = useCallback(async () => {
-    clapTimeoutsRef.current.forEach(timeout => clearTimeout(timeout))
-    clapTimeoutsRef.current = []
-
-    if (isRhythmTapQuestion && rhythmPattern) {
-      setIsPlayingClaps(true)
-      setShouldStartMetronome(true)
-      
-      rhythmPattern.forEach((timestamp) => {
-        const timeout = setTimeout(() => {
-          void playClapSound()
-        }, timestamp * 1000)
-        clapTimeoutsRef.current.push(timeout)
-      })
-
-      const lastTimestamp = rhythmPattern[rhythmPattern.length - 1] || 0
-      const finalTimeout = setTimeout(() => {
-        setIsPlayingClaps(false)
-        setShouldStartMetronome(false)
-      }, (lastTimestamp + 0.5) * 1000)
-      clapTimeoutsRef.current.push(finalTimeout)
-    } else if (rhythm) {
-      setIsPlayingClaps(true)
-      setShouldStartMetronome(true)
-      
-      // Convert durations to timestamps
-      const timestamps: number[] = [0]
-      let cumulativeTime = 0
-      for (let i = 0; i < rhythm.length - 1; i++) {
-        cumulativeTime += rhythm[i]
-        timestamps.push(cumulativeTime)
-      }
-      
-      timestamps.forEach((timestamp) => {
-        const timeout = setTimeout(() => {
-          void playClapSound()
-        }, timestamp * 1000)
-        clapTimeoutsRef.current.push(timeout)
-      })
-
-      const totalDuration = rhythm.reduce((sum, dur) => sum + dur, 0)
-      const finalTimeout = setTimeout(() => {
-        setIsPlayingClaps(false)
-        setShouldStartMetronome(false)
-      }, (totalDuration + 0.5) * 1000)
-      clapTimeoutsRef.current.push(finalTimeout)
-    } else if (melody) {
-      // Play actual melody with instrument sounds
-      await stop()
-      await play(melody, { instrument: 'acoustic_grand_piano', tempo: 120 })
-    }
-  }, [isRhythmTapQuestion, rhythmPattern, rhythm, melody, playClapSound, play, stop])
+    setHasPlaybackStarted(false)
+    setHasPlaybackFinished(false)
+  }, [currentQuestion.id])
 
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
   }, [onAnswerSubmit])
 
   const handleNextQuestionInternal = useCallback(() => {
+    setIsAnswering(false)
     if (isLastQuestion) {
       onLessonComplete?.()
     } else {
       onNextQuestion()
     }
   }, [isLastQuestion, onLessonComplete, onNextQuestion])
+
+  const handleAnsweringStateChange = useCallback((isAnsweringState: boolean) => {
+    setIsAnswering(isAnsweringState)
+  }, [])
+
+  const handlePlaybackStart = useCallback(() => {
+    setHasPlaybackStarted(true)
+  }, [])
+
+  const handlePlaybackFinish = useCallback(() => {
+    if (isRhythmExercise) {
+      setHasPlaybackFinished(true)
+    }
+    onPlaybackFinishRef.current?.()
+  }, [isRhythmExercise])
 
   if (questions.length === 0) return null
 
@@ -148,21 +82,31 @@ export const LessonScreenBody: FC<LessonScreenBodyProps> = ({
 
       {questionInterface && (
         <QuestionInterface 
+          key={`question-${currentQuestion.id}`}
           questionInterface={questionInterface}
-          onPlaybackPress={isRhythmQuestion ? handlePlayRhythm : undefined}
-          isPlaying={isPlaying || isPlayingClaps}
+          correctAnswer={currentQuestion.correctAnswer}
+          answerInterface={answerInterface}
+          isAnswering={isAnswering}
+          onPlaybackFinish={handlePlaybackFinish}
+          onPlaybackStart={isPulseExercise ? handlePlaybackStart : undefined}
         />
       )}
       
       <AnswerInterface 
+        key={`answer-${currentQuestion.id}`}
         answerInterface={answerInterface}
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmitInternal}
         onNextQuestion={handleNextQuestionInternal}
-        isNoteIdentification={isNoteIdentification}
         wrongAnswersCount={wrongAnswersCount}
         isFinalTest={isFinalTest}
-        shouldStartMetronome={shouldStartMetronome}
+        onAnsweringStateChange={handleAnsweringStateChange}
+        onPlaybackFinishRef={onPlaybackFinishRef}
+        hasPlaybackStarted={
+          isPulseExercise ? hasPlaybackStarted : 
+          isRhythmExercise ? hasPlaybackFinished : 
+          true
+        }
       />
       
     </BodyContainer>

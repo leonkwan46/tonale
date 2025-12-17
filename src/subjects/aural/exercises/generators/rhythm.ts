@@ -87,38 +87,61 @@ export const compareRhythmPattern = (
   expectedTimestamps: number[],
   tolerance: number = strictness.tolerance
 ): boolean => {
-  if (userTimestamps.length === 0 || expectedTimestamps.length === 0) return false
+  if (userTimestamps.length === 0 || expectedTimestamps.length === 0) {
+    return false
+  }
 
-  const userTimestampsFromStart = userTimestamps.map(ts => ts - (userTimestamps[0] || 0))
-  const expectedTimestampsFromStart = expectedTimestamps.map(ts => ts - (expectedTimestamps[0] || 0))
-  if (Math.abs(userTimestampsFromStart.length - expectedTimestampsFromStart.length) > 1) return false
+  const normalizeTimestamps = (timestamps: number[]): number[] => 
+    timestamps.map(ts => ts - (timestamps[0] || 0))
   
-  const userBeatIntervals: number[] = []
-  const expectedBeatIntervals: number[] = []
-  for (let i = 1; i < userTimestampsFromStart.length; i++) {
-    userBeatIntervals.push(userTimestampsFromStart[i] - userTimestampsFromStart[i - 1])
+  const calculateIntervals = (timestamps: number[]): number[] => {
+    const intervals: number[] = []
+    for (let i = 1; i < timestamps.length; i++) {
+      intervals.push(timestamps[i] - timestamps[i - 1])
+    }
+    return intervals
   }
-  for (let i = 1; i < expectedTimestampsFromStart.length; i++) {
-    expectedBeatIntervals.push(expectedTimestampsFromStart[i] - expectedTimestampsFromStart[i - 1])
+
+  const userTimestampsFromStart = normalizeTimestamps(userTimestamps)
+  const expectedTimestampsFromStart = normalizeTimestamps(expectedTimestamps)
+  
+  if (Math.abs(userTimestampsFromStart.length - expectedTimestampsFromStart.length) > 1) {
+    return false
   }
+  
+  const userBeatIntervals = calculateIntervals(userTimestampsFromStart)
+  const expectedBeatIntervals = calculateIntervals(expectedTimestampsFromStart)
   
   const userTotalDuration = userTimestampsFromStart[userTimestampsFromStart.length - 1] || 0
   const expectedTotalDuration = expectedTimestampsFromStart[expectedTimestampsFromStart.length - 1] || 0
   const tempoRatio = expectedTotalDuration > 0 ? userTotalDuration / expectedTotalDuration : 1
-  if (tempoRatio < strictness.tempoMin || tempoRatio > strictness.tempoMax) return false
+  
+  if (tempoRatio < strictness.tempoMin || tempoRatio > strictness.tempoMax) {
+    return false
+  }
   
   const numIntervalsToCompare = Math.min(userBeatIntervals.length, expectedBeatIntervals.length)
   let matchingIntervalsCount = 0
-  for (let i = 0; i < numIntervalsToCompare; i++) {
+  
+  const startIndex = 1
+  
+  for (let i = startIndex; i < numIntervalsToCompare; i++) {
     const userInterval = userBeatIntervals[i] ?? 0
     const expectedInterval = expectedBeatIntervals[i] ?? 0
     const expectedIntervalScaledByTempo = expectedInterval * tempoRatio
-    const intervalDifference = Math.min(
-      Math.abs(userInterval - expectedIntervalScaledByTempo),
-      Math.abs(userInterval - expectedInterval)
-    )
-    const allowedTolerance = Math.max(expectedInterval * strictness.relative, tolerance)
-    if (intervalDifference <= allowedTolerance) matchingIntervalsCount++
+    
+    const diffToScaled = Math.abs(userInterval - expectedIntervalScaledByTempo)
+    const diffToOriginal = Math.abs(userInterval - expectedInterval)
+    const intervalDifference = Math.min(diffToScaled, diffToOriginal)
+    
+    const baseInterval = Math.abs(tempoRatio - 1) < 0.1 ? expectedInterval : expectedIntervalScaledByTempo
+    const allowedTolerance = Math.max(baseInterval * strictness.relative, tolerance)
+    const isMatch = intervalDifference <= allowedTolerance
+    if (isMatch) matchingIntervalsCount++
+  }
+  
+  if (numIntervalsToCompare > 0) {
+    matchingIntervalsCount++
   }
   
   const minimumRequiredMatches = Math.ceil(numIntervalsToCompare * strictness.match)

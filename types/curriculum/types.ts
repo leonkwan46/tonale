@@ -35,6 +35,7 @@ export interface QuestionInterface {
   // Playback specific
   rhythm?: number[] // Durations in seconds for rhythm exercises (uses clap sounds)
   melody?: { note: string; duration: number }[] // Full melody with notes and durations (uses instrument sounds)
+  audioFile?: string // Path to MP3 audio file (e.g., require('../../assets/sounds/songs/chopin-1.mp3'))
   tempo?: number // Tempo in BPM for rhythm exercises (used for metronome sync)
 }
 

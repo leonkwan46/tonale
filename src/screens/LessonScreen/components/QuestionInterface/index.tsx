@@ -11,12 +11,22 @@ interface QuestionInterfaceProps {
   questionInterface: QuestionInterfaceType
   onPlaybackPress?: () => void
   isPlaying?: boolean
+  correctAnswer?: string | number[]
+  answerInterface?: string
+  isAnswering?: boolean
+  onPlaybackFinish?: () => void
+  onPlaybackStart?: () => void
 }
 
 export const QuestionInterface: FC<QuestionInterfaceProps> = ({ 
   questionInterface, 
   onPlaybackPress,
-  isPlaying = false
+  isPlaying = false,
+  correctAnswer,
+  answerInterface,
+  isAnswering = false,
+  onPlaybackFinish,
+  onPlaybackStart
 }: QuestionInterfaceProps) => {
   const { isTablet } = useDevice()
 
@@ -40,6 +50,13 @@ export const QuestionInterface: FC<QuestionInterfaceProps> = ({
     !onPlaybackPress &&
     !(questionInterface.elements?.length === 1 && !questionInterface.clef)
 
+  const enableMetronome: boolean = !!(
+    (questionInterface.rhythm && !questionInterface.audioFile) ||
+    (!!questionInterface.audioFile && !questionInterface.rhythm)
+  )
+
+  const shouldRenderPlayback = !!(onPlaybackPress || questionInterface.rhythm || questionInterface.audioFile)
+
   const renderQuestionInterface = () => {
     switch (questionInterface.type) {
       case QUESTION_TYPE.TIME_SIGNATURE:
@@ -55,10 +72,9 @@ export const QuestionInterface: FC<QuestionInterfaceProps> = ({
         return <TermAndSign questionInterface={questionInterface} />
       
       case QUESTION_TYPE.PLAYBACK:
-        return <Playback questionInterface={questionInterface} onPlaybackPress={onPlaybackPress} isPlaying={isPlaying} />
+        return <Playback questionInterface={questionInterface} onPlaybackPress={onPlaybackPress} isPlaying={isPlaying} correctAnswer={correctAnswer} answerInterface={answerInterface} enableMetronome={enableMetronome} isAnswering={isAnswering} onPlaybackFinish={onPlaybackFinish} onPlaybackStart={onPlaybackStart} />
       
       default:
-        // Handle default cases: individual notes, music staff, or playback via onPlaybackPress
         return (
           <>
             {shouldRenderIndividualNotes && (
@@ -71,8 +87,18 @@ export const QuestionInterface: FC<QuestionInterfaceProps> = ({
                 needsExtraHeight={needsExtraHeight || false}
               />
             )}
-            {onPlaybackPress && (
-              <Playback questionInterface={questionInterface} onPlaybackPress={onPlaybackPress} isPlaying={isPlaying} />
+            {shouldRenderPlayback && (
+              <Playback
+                questionInterface={questionInterface}
+                onPlaybackPress={onPlaybackPress}
+                isPlaying={isPlaying}
+                correctAnswer={correctAnswer}
+                answerInterface={answerInterface}
+                enableMetronome={enableMetronome}
+                isAnswering={isAnswering}
+                onPlaybackFinish={onPlaybackFinish}
+                onPlaybackStart={onPlaybackStart}
+              />
             )}
           </>
         )

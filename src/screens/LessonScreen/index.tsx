@@ -41,6 +41,7 @@ export function LessonScreen() {
   const [showStarModal, setShowStarModal] = useState(false)
   const [showFailureModal, setShowFailureModal] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
+  const [lessonResetKey, setLessonResetKey] = useState(0)
   
   const restartLesson = useCallback(() => {
     if (!lesson) return
@@ -48,6 +49,7 @@ export function LessonScreen() {
     setWrongAnswers([])
     setQuestions(generateQuestions(lesson))
     setIsCompleting(false)
+    setLessonResetKey(prev => prev + 1)
   }, [lesson, generateQuestions])
 
   const onAnswerSubmit = useCallback((isCorrect: boolean) => {
@@ -192,6 +194,7 @@ export function LessonScreen() {
       />
       
       <LessonScreenBody
+        key={lessonResetKey}
         questions={questions}
         currentQuestionIndex={currentQuestionIndex}
         onAnswerSubmit={onAnswerSubmit}

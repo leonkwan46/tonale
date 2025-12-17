@@ -1,10 +1,11 @@
 import { useDevice } from '@/hooks'
+import { comparePulsePattern } from '@/subjects/aural/exercises/generators/pulse'
 import { compareRhythmPattern } from '@/subjects/aural/exercises/generators/rhythm'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { AnswerType, Question } from '@types'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Text } from 'react-native'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
 import { KeyPress } from './AnswerTypes/KeyPress'
@@ -18,10 +19,11 @@ interface AnswerInterfaceProps {
   questionData: Question
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
-  isNoteIdentification?: boolean
   wrongAnswersCount?: number
   isFinalTest?: boolean
-  shouldStartMetronome?: boolean
+  onAnsweringStateChange?: (isAnswering: boolean) => void
+  onPlaybackFinishRef?: React.MutableRefObject<(() => void) | null>
+  hasPlaybackStarted?: boolean
 }
 
 export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({ 
@@ -29,30 +31,49 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   questionData,
   onAnswerSubmit,
   onNextQuestion,
-  isNoteIdentification = false,
   wrongAnswersCount = 0,
   isFinalTest = false,
-  shouldStartMetronome = false
+  onAnsweringStateChange,
+  onPlaybackFinishRef,
+  hasPlaybackStarted = true
 }) => {
   const { isTablet } = useDevice()
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
-
-  // Reset state when questionData changes (new question)
+  const [isRhythmTapRecording, setIsRhythmTapRecording] = useState(false)
+  const internalPlaybackFinishRef = useRef<(() => void) | null>(null)
+  
   useEffect(() => {
-    setSelectedAnswer(null)
-    setShowResult(false)
-    setIsCorrect(null)
-    setShowCorrectAnswer(false)
-  }, [questionData.id])
+    if (onPlaybackFinishRef) {
+      onPlaybackFinishRef.current = () => {
+        internalPlaybackFinishRef.current?.()
+      }
+    }
+    return () => {
+      if (onPlaybackFinishRef) {
+        onPlaybackFinishRef.current = null
+      }
+    }
+  }, [onPlaybackFinishRef])
 
-  // ==========================
-  // Handle Answer Result
-  // ==========================
+  const questionInterface = questionData.questionInterface
+  const isNoteIdentification = questionInterface?.clef && 
+    questionInterface?.elements && 
+    questionInterface.elements.length > 0 &&
+    questionInterface.elements.some(element => element.pitch)
+
+  const notifyAnsweringState = useCallback((recording: boolean, showingResult: boolean) => {
+    if (answerInterface === ANSWER_TYPE.RHYTHM_TAP) {
+      const isAnswering = recording || showingResult
+      onAnsweringStateChange?.(isAnswering)
+    } else {
+      onAnsweringStateChange?.(false)
+    }
+  }, [answerInterface, onAnsweringStateChange])
+
   useEffect(() => {
-    // For rhythm tap, we check showResult directly (selectedAnswer may be null)
     const hasAnswer = selectedAnswer !== null || (answerInterface === ANSWER_TYPE.RHYTHM_TAP && showResult)
     
     if (showResult && hasAnswer) {
@@ -60,14 +81,13 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
         setShowCorrectAnswer(true)
       }
       
-      // Block if: final test, wrong answer, and this would be the 3rd wrong
       const totalWrong = wrongAnswersCount + (isCorrect ? 0 : 1)
       const shouldBlock = isFinalTest && !isCorrect && totalWrong > 3
       
       if (!shouldBlock) {
         const timer = setTimeout(() => {
           onNextQuestion()
-        }, 1500) // Same delay for both correct and incorrect answers
+        }, 1500)
 
         return () => {
           clearTimeout(timer)
@@ -77,7 +97,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   }, [showResult, isCorrect, selectedAnswer, answerInterface, onNextQuestion, isFinalTest, wrongAnswersCount])
 
   const handleChoiceSelect = (choice: string) => {
-    if (selectedAnswer !== null) return // Already answered
+    if (selectedAnswer !== null) return
     
     setSelectedAnswer(choice)
     const correct = typeof questionData.correctAnswer === 'string' 
@@ -85,20 +105,19 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
       : false
     setIsCorrect(correct)
     setShowResult(true)
+    notifyAnsweringState(isRhythmTapRecording, true)
     
-    // Play success sound immediately when answer is correct
     if (correct) {
       playSuccessSound()
     } else {
       playErrorSound()
     }
     
-    // Call parent callback
     onAnswerSubmit(correct)
   }
 
   const handleKeyPress = (key: string) => {
-    if (selectedAnswer !== null) return // Already answered
+    if (selectedAnswer !== null) return
     
     setSelectedAnswer(key)
     const correct = typeof questionData.correctAnswer === 'string'
@@ -106,38 +125,45 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
       : false
     setIsCorrect(correct)
     setShowResult(true)
+    notifyAnsweringState(isRhythmTapRecording, true)
     
-    // Play success sound immediately when answer is correct
     if (correct) {
       playSuccessSound()
     } else {
       playErrorSound()
     }
     
-    // Call parent callback
     onAnswerSubmit(correct)
   }
 
   const handleRhythmTapSubmit = (userTimestamps: number[]) => {
-    if (selectedAnswer !== null || showResult) return // Already answered
+    if (selectedAnswer !== null || showResult) return
     
     const expectedTimestamps = Array.isArray(questionData.correctAnswer) 
       ? questionData.correctAnswer 
       : []
-    const correct = compareRhythmPattern(userTimestamps, expectedTimestamps, 0.15)
     
-    setSelectedAnswer('submitted') // Mark as answered
+    const isPulseExercise = questionInterface?.audioFile && !questionInterface?.rhythm
+
+    const correct = isPulseExercise
+      ? comparePulsePattern(userTimestamps, expectedTimestamps)
+      : compareRhythmPattern(userTimestamps, expectedTimestamps)
+    
+    if (isPulseExercise) {
+      console.log('[Pulse Debug] Result:', correct ? 'CORRECT' : 'INCORRECT')
+    }
+    
+    setSelectedAnswer('submitted')
     setIsCorrect(correct)
     setShowResult(true)
+    notifyAnsweringState(false, true)
     
-    // Play success sound immediately when answer is correct
     if (correct) {
       playSuccessSound()
     } else {
       playErrorSound()
     }
     
-    // Call parent callback
     onAnswerSubmit(correct)
   }
 
@@ -194,11 +220,16 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
           <RhythmTap
             key={questionData.id}
             onTapSubmit={handleRhythmTapSubmit}
-            disabled={showResult}
-            shouldStartMetronome={shouldStartMetronome}
+            disabled={showResult || !hasPlaybackStarted}
             rhythmDuration={rhythmDuration}
             buttonState={buttonState}
             tempo={tempo}
+            questionInterface={questionData.questionInterface}
+            onRecordingChange={(isRecording) => {
+              setIsRhythmTapRecording(isRecording)
+              notifyAnsweringState(isRecording, showResult)
+            }}
+            onPlaybackFinishRef={internalPlaybackFinishRef}
           />
         )
       default:
@@ -212,4 +243,3 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
     </AnswerInterfaceContainer>
   )
 }
-

@@ -6,10 +6,10 @@ export interface RevisionQuestionInput {
   id: string
   lessonId: string
   title: string
-  correctAnswer: string
+  correctAnswer: string | number[]
   choices: string[]
   explanation?: string
-  answerInterface: 'multipleChoice' | 'trueFalse' | 'keyPress'
+  answerInterface: 'multipleChoice' | 'trueFalse' | 'keyPress' | 'rhythmTap'
   questionInterface?: QuestionInterface
   correctCount?: number
 }

@@ -10,7 +10,7 @@ export const NOTE_BEAT_VALUES: Record<string, number> = {
 export const DEFAULT_TEMPO = 90
 export const MIN_PATTERN_LENGTH = 2
 export const BEAT_TOLERANCE = 0.01
-export const TIMING_STRICTNESS_LEVEL = 3
+export const TIMING_STRICTNESS_LEVEL = 2
 
 export interface StrictnessConfig {
   tolerance: number
@@ -21,11 +21,11 @@ export interface StrictnessConfig {
 }
 
 export const STRICTNESS_CONFIG: StrictnessConfig[] = [
-  { tolerance: 0.06, relative: 0.12, match: 0.85, tempoMin: 0.7, tempoMax: 1.5 },
-  { tolerance: 0.04, relative: 0.08, match: 0.9, tempoMin: 0.8, tempoMax: 1.3 },
-  { tolerance: 0.025, relative: 0.05, match: 0.93, tempoMin: 0.85, tempoMax: 1.2 },
-  { tolerance: 0.012, relative: 0.03, match: 0.96, tempoMin: 0.9, tempoMax: 1.12 },
-  { tolerance: 0.006, relative: 0.02, match: 0.99, tempoMin: 0.96, tempoMax: 1.04 }
+  { tolerance: 0.08, relative: 0.15, match: 0.7, tempoMin: 0.65, tempoMax: 1.6 },
+  { tolerance: 0.06, relative: 0.12, match: 0.7, tempoMin: 0.75, tempoMax: 1.4 },
+  { tolerance: 0.04, relative: 0.08, match: 0.8, tempoMin: 0.8, tempoMax: 1.3 },
+  { tolerance: 0.025, relative: 0.05, match: 0.8, tempoMin: 0.85, tempoMax: 1.2 },
+  { tolerance: 0.015, relative: 0.03, match: 0.9, tempoMin: 0.9, tempoMax: 1.15 }
 ]
 
 export const getStrictnessConfig = (level: number): StrictnessConfig => {
