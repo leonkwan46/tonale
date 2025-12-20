@@ -1,5 +1,4 @@
 import { useMicrophonePermission } from '@/hooks'
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import * as React from 'react'
 import { useState } from 'react'
 import {
