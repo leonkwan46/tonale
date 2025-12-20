@@ -330,12 +330,15 @@ export const usePlayer = () => {
   }
 
   useEffect(() => {
+    // Capture the current ref value to use in cleanup
+    const activeSounds = activeSoundsRef.current
+    
     return () => {
       // Clean up synchronously to ensure it completes before unmount/refresh
       // This is critical during refresh when Expo's SharedObjectRegistry cleanup can crash
       isPlayingRef.current = false
       setIsPlaying(false)
-      const soundsToCancel = Array.from(activeSoundsRef.current)
+      const soundsToCancel = Array.from(activeSounds)
       activeSoundsRef.current.clear()
       
       // Clean up all players synchronously
