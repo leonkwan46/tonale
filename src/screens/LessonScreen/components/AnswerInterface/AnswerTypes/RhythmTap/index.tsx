@@ -86,7 +86,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
     setTimeout(() => {
       onTapSubmit(finalTimestamps)
     }, 0)
-  }, [metronomeEnabled, isPulseExercise, onRecordingChange, onTapSubmit, stopMetronome])
+  }, [metronomeEnabled, onRecordingChange, onTapSubmit, stopMetronome])
 
   useEffect(() => {
     if (isPulseExercise && onPlaybackFinishRef) {
@@ -165,7 +165,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
     }
 
     playClapSound()
-  }, [disabled, isRecording, tapTimestamps.length, isTimeWindowExpired, metronomeEnabled, isPulseExercise, startMetronome, stopMetronome, playClapSound, rhythmDuration, submitAnswer, onRecordingChange])
+  }, [disabled, isRecording, tapTimestamps.length, isTimeWindowExpired, metronomeEnabled, isPulseExercise, startMetronome, playClapSound, rhythmDuration, submitAnswer, onRecordingChange])
 
   const isButtonDisabled = disabled || isTimeWindowExpired || hasSubmittedRef.current
 

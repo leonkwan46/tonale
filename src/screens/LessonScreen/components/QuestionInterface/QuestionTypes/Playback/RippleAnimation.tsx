@@ -61,7 +61,7 @@ export const RippleAnimation: React.FC<RippleAnimationProps> = ({
       ringOpacity.value = 0.5
       borderWidth.value = 2
     }
-  }, [onComplete, isTablet])
+  }, [onComplete, isTablet, borderWidth, ringOpacity, ringScale, waterOpacity, waterScale])
 
   const waterStyle = useAnimatedStyle(() => ({
     transform: [{ scale: waterScale.value }],
