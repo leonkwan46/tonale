@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { GreetingBanner } from './components/GreetingBanner'
 import { HomeScreenBackground } from './components/HomeScreenBackground'
 import { LessonCard } from './components/LessonCard'
+import { MicrophonePermissionTest } from './components/MicrophonePermissionTest'
 import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
@@ -34,6 +35,7 @@ export function HomeScreen() {
       <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh}>
         <GreetingBanner user={user} profile={profile} loading={loading} />
         <StrikeBar />
+        <MicrophonePermissionTest />
         <LessonCard />
         <RevisionCard />
       </HomeScreenBackground>

@@ -1,6 +1,7 @@
 import { useMicrophonePermission } from '@/hooks'
 import * as React from 'react'
 import { useState } from 'react'
+import { Alert, Platform } from 'react-native'
 import {
   ButtonContainer,
   ButtonDepth,
@@ -50,9 +51,43 @@ export const MicrophonePermissionTest: React.FC = () => {
 
   const handleRequestPermission = async () => {
     if (!isModuleAvailable) {
+      Alert.alert(
+        'Permission Module Not Available',
+        'The native permissions module is not linked. Please rebuild the app:\n\n' +
+        (Platform.OS === 'ios' 
+          ? 'Run: npx expo run:ios' 
+          : 'Run: npx expo run:android')
+      )
       return
     }
-    await requestPermission()
+    
+    try {
+      const newStatus = await requestPermission()
+      
+      // Show user feedback
+      if (newStatus === 'granted') {
+        Alert.alert('Success', 'Microphone permission granted!')
+      } else if (newStatus === 'denied') {
+        Alert.alert(
+          'Permission Denied',
+          'Microphone permission was denied. You can enable it in Settings.'
+        )
+      } else if (newStatus === 'blocked') {
+        Alert.alert(
+          'Permission Blocked',
+          'Microphone permission is blocked. Please enable it in your device Settings.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: openAppSettings }
+          ]
+        )
+      } else if (newStatus !== 'unavailable') {
+        Alert.alert('Permission Status', `Permission status: ${newStatus}`)
+      }
+    } catch (error) {
+      console.error('[MicrophonePermissionTest] Error requesting permission:', error)
+      Alert.alert('Error', `Failed to request permission: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
   }
 
   const handleCheckPermission = async () => {

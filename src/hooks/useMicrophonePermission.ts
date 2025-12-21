@@ -1,131 +1,185 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NativeModules, Platform } from 'react-native'
 import type { Permission } from 'react-native-permissions'
 
-let permissionsModule: typeof import('react-native-permissions') | null = null
-let isModuleAvailable = false
+type PermissionsModule = typeof import('react-native-permissions')
 
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  permissionsModule = require('react-native-permissions')
-  if (permissionsModule && (NativeModules.RNPermissions || permissionsModule.PERMISSIONS)) {
-    isModuleAvailable = true
-  } else {
-    console.warn('[Permissions] JS module found but native module not linked. Rebuild native projects.')
-    isModuleAvailable = false
-  }
-} catch {
-  console.warn('[Permissions] Module not available. Rebuild native projects to enable.')
-  isModuleAvailable = false
-}
+export const PermissionStatus = {
+  GRANTED: 'granted',
+  DENIED: 'denied',
+  BLOCKED: 'blocked',
+  LIMITED: 'limited',
+  UNAVAILABLE: 'unavailable',
+  NULL: null
+} as const
 
-const getMicrophonePermissionType = (): Permission | null => {
-  if (!permissionsModule) return null
-  return Platform.OS === 'ios'
-    ? permissionsModule.PERMISSIONS.IOS.MICROPHONE
-    : permissionsModule.PERMISSIONS.ANDROID.RECORD_AUDIO
-}
-
-export type PermissionStatus = 'granted' | 'denied' | 'blocked' | 'limited' | 'unavailable' | null
+export type PermissionStatusType = typeof PermissionStatus[keyof typeof PermissionStatus]
 
 export interface UseMicrophonePermissionReturn {
-  status: PermissionStatus | null
+  status: PermissionStatusType | null
   isGranted: boolean
   isLoading: boolean
   isModuleAvailable: boolean
-  requestPermission: () => Promise<PermissionStatus>
-  checkPermission: () => Promise<PermissionStatus>
+  requestPermission: () => Promise<PermissionStatusType>
+  checkPermission: () => Promise<PermissionStatusType>
   openAppSettings: () => Promise<void>
 }
 
-/**
- * Hook for managing microphone permissions on iOS and Android
- * 
- * @example
- * ```tsx
- * const { status, isGranted, requestPermission } = useMicrophonePermission()
- * 
- * const handleRecord = async () => {
- *   if (!isGranted) {
- *     const newStatus = await requestPermission()
- *     if (newStatus !== 'granted') {
- *       // Handle permission denied
- *       return
- *     }
- *   }
- *   // Proceed with recording
- * }
- * ```
- */
+interface ModuleAvailability {
+  module: PermissionsModule | null
+  isAvailable: boolean
+}
+
+const initializePermissionsModule = (): ModuleAvailability => {
+  let permissionsModule: PermissionsModule | null = null
+  let isModuleAvailable = false
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    permissionsModule = require('react-native-permissions')
+    
+    const hasOldArchModule = !!NativeModules.RNPermissions
+    let hasNewArchModule = false
+    
+    try {
+      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const TurboModuleRegistry = require('react-native').TurboModuleRegistry
+      if (TurboModuleRegistry) {
+        const RNPermissionsModule = TurboModuleRegistry.get('RNPermissionsModule')
+        hasNewArchModule = !!RNPermissionsModule
+      }
+    } catch (error) {
+      console.debug('[Permissions] TurboModuleRegistry not available:', error)
+    }
+    
+    const hasJSMethods = permissionsModule && 
+      typeof permissionsModule.request === 'function' && 
+      typeof permissionsModule.check === 'function' &&
+      permissionsModule.PERMISSIONS
+    
+    const hasNativeModule = hasOldArchModule || hasNewArchModule
+    
+    if (hasJSMethods && hasNativeModule) {
+      isModuleAvailable = true
+    } else if (hasJSMethods && !hasNativeModule) {
+      console.warn('[Permissions] JS module found but native module not linked. Rebuild native projects.')
+    } else {
+      console.warn('[Permissions] Module not properly loaded')
+    }
+  } catch (error) {
+    console.warn('[Permissions] Module not available. Rebuild native projects to enable.', error)
+  }
+
+  return { module: permissionsModule, isAvailable: isModuleAvailable }
+}
+
+const { module: permissionsModule, isAvailable: isModuleAvailable } = initializePermissionsModule()
+
+const getMicrophonePermissionType = (module: PermissionsModule | null): Permission | null => {
+  if (!module || !module.PERMISSIONS) return null
+  
+  try {
+    if (Platform.OS === 'ios') {
+      return module.PERMISSIONS.IOS?.MICROPHONE || null
+    }
+    return module.PERMISSIONS.ANDROID?.RECORD_AUDIO || null
+  } catch (error) {
+    console.error('[Permissions] Error getting permission type:', error)
+    return null
+  }
+}
+
+const isNativeModuleError = (error: unknown): boolean => {
+  const errorMessage = error instanceof Error ? error.message : String(error)
+  return errorMessage.includes('TurboModuleRegistry') || errorMessage.includes('RNPermissionsModule')
+}
+
+const handlePermissionError = (error: unknown, operation: string): PermissionStatusType => {
+  console.error(`[Permissions] Error ${operation} microphone permission:`, error)
+  
+  if (isNativeModuleError(error)) {
+    console.error('[Permissions] Native module not linked. Rebuild required.')
+    return PermissionStatus.UNAVAILABLE
+  }
+  
+  return PermissionStatus.DENIED
+}
+
+const executePermissionOperation = async (
+  operation: (permissionType: Permission) => Promise<string>,
+  permissionType: Permission | null,
+  setStatus: (status: PermissionStatusType) => void,
+  setIsLoading: (loading: boolean) => void,
+  operationName: string
+): Promise<PermissionStatusType> => {
+  if (!isModuleAvailable || !permissionsModule) {
+    setStatus(PermissionStatus.UNAVAILABLE)
+    setIsLoading(false)
+    return PermissionStatus.UNAVAILABLE
+  }
+
+  if (!permissionType) {
+    console.warn(`[Permissions] Cannot ${operationName}: permission type is null`)
+    setStatus(PermissionStatus.UNAVAILABLE)
+    setIsLoading(false)
+    return PermissionStatus.UNAVAILABLE
+  }
+
+  try {
+    setIsLoading(true)
+    const permissionStatus = await operation(permissionType)
+    const normalizedStatus = permissionStatus as PermissionStatusType
+    setStatus(normalizedStatus)
+    return normalizedStatus
+  } catch (error) {
+    const errorStatus = handlePermissionError(error, operationName)
+    setStatus(errorStatus)
+    return errorStatus
+  } finally {
+    setIsLoading(false)
+  }
+}
+
 export const useMicrophonePermission = (): UseMicrophonePermissionReturn => {
-  const [status, setStatus] = useState<PermissionStatus | null>(null)
+  const [status, setStatus] = useState<PermissionStatusType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const checkPermission = async (): Promise<PermissionStatus> => {
-    if (!isModuleAvailable || !permissionsModule) {
-      const unavailableStatus: PermissionStatus = 'unavailable'
-      setStatus(unavailableStatus)
+  const checkPermission = useCallback(async (): Promise<PermissionStatusType> => {
+    if (!permissionsModule) {
+      setStatus(PermissionStatus.UNAVAILABLE)
       setIsLoading(false)
-      return unavailableStatus
+      return PermissionStatus.UNAVAILABLE
     }
+    
+    const permissionType = getMicrophonePermissionType(permissionsModule)
+    return executePermissionOperation(
+      (type) => permissionsModule.check(type),
+      permissionType,
+      setStatus,
+      setIsLoading,
+      'check'
+    )
+  }, [setStatus, setIsLoading])
 
-    const permissionType = getMicrophonePermissionType()
-    if (!permissionType) {
-      const unavailableStatus: PermissionStatus = 'unavailable'
-      setStatus(unavailableStatus)
+  const requestPermission = useCallback(async (): Promise<PermissionStatusType> => {
+    if (!permissionsModule) {
+      setStatus(PermissionStatus.UNAVAILABLE)
       setIsLoading(false)
-      return unavailableStatus
+      return PermissionStatus.UNAVAILABLE
     }
+    
+    const permissionType = getMicrophonePermissionType(permissionsModule)
+    return executePermissionOperation(
+      (type) => permissionsModule.request(type),
+      permissionType,
+      setStatus,
+      setIsLoading,
+      'request'
+    )
+  }, [setStatus, setIsLoading])
 
-    try {
-      setIsLoading(true)
-      const permissionStatus = await permissionsModule.check(permissionType)
-      const normalizedStatus = permissionStatus as PermissionStatus
-      setStatus(normalizedStatus)
-      return normalizedStatus
-    } catch (error) {
-      console.error('[Permissions] Error checking microphone permission:', error)
-      const deniedStatus: PermissionStatus = 'denied'
-      setStatus(deniedStatus)
-      return deniedStatus
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const requestPermission = async (): Promise<PermissionStatus> => {
-    if (!isModuleAvailable || !permissionsModule) {
-      const unavailableStatus: PermissionStatus = 'unavailable'
-      setStatus(unavailableStatus)
-      setIsLoading(false)
-      return unavailableStatus
-    }
-
-    const permissionType = getMicrophonePermissionType()
-    if (!permissionType) {
-      const unavailableStatus: PermissionStatus = 'unavailable'
-      setStatus(unavailableStatus)
-      setIsLoading(false)
-      return unavailableStatus
-    }
-
-    try {
-      setIsLoading(true)
-      const permissionStatus = await permissionsModule.request(permissionType)
-      const normalizedStatus = permissionStatus as PermissionStatus
-      setStatus(normalizedStatus)
-      return normalizedStatus
-    } catch (error) {
-      console.error('[Permissions] Error requesting microphone permission:', error)
-      const deniedStatus: PermissionStatus = 'denied'
-      setStatus(deniedStatus)
-      return deniedStatus
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const openAppSettings = async (): Promise<void> => {
+  const openAppSettings = useCallback(async (): Promise<void> => {
     if (!isModuleAvailable || !permissionsModule) {
       console.warn('[Permissions] Cannot open settings: module not available')
       return
@@ -136,18 +190,18 @@ export const useMicrophonePermission = (): UseMicrophonePermissionReturn => {
     } catch (error) {
       console.error('[Permissions] Error opening app settings:', error)
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (isModuleAvailable) {
       void checkPermission()
     } else {
       setIsLoading(false)
-      setStatus('unavailable')
+      setStatus(PermissionStatus.UNAVAILABLE)
     }
-  }, [])
+  }, [checkPermission])
 
-  const isGranted = status === 'granted'
+  const isGranted = status === PermissionStatus.GRANTED
 
   return {
     status,
@@ -159,4 +213,3 @@ export const useMicrophonePermission = (): UseMicrophonePermissionReturn => {
     openAppSettings
   }
 }
-

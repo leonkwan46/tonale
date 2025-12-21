@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.leonkwan46.tonale"
+      "bundleIdentifier": "com.leonkwan46.tonale",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Allow tonale to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -43,13 +46,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-audio",
-      [
-        "react-native-permissions",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
-        }
-      ]
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": true

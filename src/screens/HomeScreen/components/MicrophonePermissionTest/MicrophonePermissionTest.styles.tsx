@@ -29,18 +29,18 @@ export const ButtonContainer = styled(View)<{ isPressed: boolean }>(({ isPressed
   transform: [{ scale: isPressed ? 0.95 : 1 }]
 }))
 
-export const ButtonDepth = styled(View)({
+export const ButtonDepth = styled(View)(({ theme }) => ({
   position: 'absolute',
   top: scale(3),
   left: scale(3),
-  backgroundColor: '#DE6B54',
+  backgroundColor: theme.colors.error,
   borderRadius: scale(15),
   width: '100%',
   height: '100%'
-})
+}))
 
 export const TestButton = styled(Pressable)(({ theme, disabled }) => ({
-  backgroundColor: disabled ? theme.colors.secondary : '#F58970',
+  backgroundColor: disabled ? theme.colors.secondary : theme.colors.accent,
   borderRadius: scale(15),
   paddingVertical: scale(12),
   paddingHorizontal: scale(20),
