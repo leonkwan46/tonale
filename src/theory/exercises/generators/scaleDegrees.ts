@@ -1,8 +1,9 @@
 import { KEY_NAMES, NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { generateQuestionsFromPool, getKeys, getPitchDefinitionsForClef } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { getNoteAtScaleDegree, getScaleDegreeName } from '../utils/scaleDegree'
+import { generateExplanation } from '../utils/explanation'
 
 type MusicNotationKey = (typeof KEY_NAMES)[keyof typeof KEY_NAMES]
 const SCALE_DEGREES = [1, 2, 3, 4, 5, 6, 7] as const
@@ -38,26 +39,32 @@ export const createScaleDegreeQuestion = (
   const allDegrees = SCALE_DEGREES.map(getScaleDegreeName)
   const keyDisplayName = selectedKey.toString()
   
+  const visualComponent = {
+    clef,
+    keyName: selectedKey,
+    elements: [
+      {
+        pitch: targetNote.pitch,
+        type: NOTES.SEMIBREVE,
+        accidental: targetNote.accidental,
+        stem: targetNote.stem,
+        ledgerLines: targetNote.ledgerLines
+      }
+    ]
+  }
+  
   return {
     id: generateQuestionId('scale-degree'),
     question: `What scale degree is this note in ${keyDisplayName}?`,
     correctAnswer,
     choices: generateWrongChoices(allDegrees, correctAnswer),
-    explanation: `In ${keyDisplayName}, this note is the ${correctAnswer} degree.`,
+    explanation: generateExplanation('scaleDegrees', {
+      correctAnswer,
+      key: selectedKey,
+      degree: correctAnswer
+    }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      clef,
-      keyName: selectedKey,
-      elements: [
-        {
-          pitch: targetNote.pitch,
-          type: NOTES.SEMIBREVE,
-          accidental: targetNote.accidental,
-          stem: targetNote.stem,
-          ledgerLines: targetNote.ledgerLines
-        }
-      ]
-    }
+    visualComponent
   }
 }
 

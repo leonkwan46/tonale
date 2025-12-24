@@ -1,19 +1,22 @@
+import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
 import {
   CommonTime,
   CutTime,
   TimeSignature as LibraryTimeSignature,
-  parseTimeSignature
+  parseTimeSignature,
+  TimeSignatureType
 } from '@leonkwan46/music-notation'
 import * as React from 'react'
 
 interface TimeSignatureProps {
-  timeSignature: string
+  timeSignature: TimeSignatureType | string
 }
 
 export const TimeSignature: React.FC<TimeSignatureProps> = ({ 
   timeSignature
 }) => {
-  const parsedTimeSignature = parseTimeSignature(timeSignature)
+  const timeSignatureString = typeof timeSignature === 'string' ? timeSignature : formatAsNotation(timeSignature)
+  const parsedTimeSignature = parseTimeSignature(timeSignatureString)
   
   if (typeof parsedTimeSignature === 'string') {
     return parsedTimeSignature === 'common' ? (

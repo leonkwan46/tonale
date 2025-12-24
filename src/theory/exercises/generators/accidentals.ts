@@ -1,7 +1,8 @@
 import { ACCIDENTALS, type AccidentalType } from '@leonkwan46/music-notation'
+import type { Question, StageNumber } from '@types'
 import { generateQuestionsFromPool, getAccidentals } from '../utils/exercise'
+import { generateExplanation } from '../utils/explanation'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
-import { Question, StageNumber } from '../../curriculum/types'
 
 const ACCIDENTAL_TO_SYMBOL: Partial<Record<AccidentalType, string>> = {
   [ACCIDENTALS.SHARP]: 'sharp',
@@ -34,18 +35,20 @@ export const createAccidentalQuestion = (
     stageAccidentals.some(acc => ACCIDENTAL_NAMES[acc] === choice)
   )
   
+  const visualComponent = {
+    type: 'termAndSign' as const,
+    symbolType,
+    enableTTS: false
+  }
+  
   return {
     id: generateQuestionId('accidental'),
     question: 'What accidental is this?',
     correctAnswer,
     choices: generateWrongChoices(availableChoices, correctAnswer, 3, true),
-    explanation: `This is a ${correctAnswer.toLowerCase()} accidental.`,
+    explanation: generateExplanation('accidentals', { correctAnswer }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      type: 'termAndSign',
-      symbolType,
-      enableTTS: false
-    }
+    visualComponent
   }
 }
 

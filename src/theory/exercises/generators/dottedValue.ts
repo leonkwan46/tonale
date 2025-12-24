@@ -7,9 +7,9 @@ import {
   getValueKindFromId
 } from '../utils/exercise'
 import { createValueBeatQuestion } from '../utils/timeValueQuestion'
-import { Question, StageNumber } from '../../curriculum/types'
-import { createNoteValueQuestion } from './noteValue'
-import { createRestValueQuestion } from './restValue'
+import type { Question, StageNumber } from '@types'
+import { createNoteValueQuestion } from './utils/noteValue'
+import { createRestValueQuestion } from './utils/restValue'
 
 const getDuplicateIdentifier = (question: Question): string | null => {
   const typeKey = getTimeValueKeyFromComponent(question)

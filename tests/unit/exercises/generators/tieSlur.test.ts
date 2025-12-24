@@ -182,8 +182,8 @@ describe('tieSlur generator', () => {
       it('should only include definition questions (no custom questions)', () => {
         const questions = createTieSlurQuestions(10, 0)
         questions.forEach(question => {
-          const isTieDefinition = question.explanation?.includes('tie') && question.correctAnswer === 'Held together'
-          const isSlurDefinition = question.explanation?.includes('slur') && question.correctAnswer === 'Smoothly connected'
+          const isTieDefinition = question.explanation?.text?.includes('tie') && question.correctAnswer === 'Held together'
+          const isSlurDefinition = question.explanation?.text?.includes('slur') && question.correctAnswer === 'Smoothly connected'
           expect(isTieDefinition || isSlurDefinition).toBe(true)
         })
       })
@@ -210,8 +210,8 @@ describe('tieSlur generator', () => {
 
       it('should include both tie and slur definition questions in pool', () => {
         const questions = createTieSlurQuestions(10, 1)
-        const tieQuestions = questions.filter(q => q.explanation?.includes('tie') || q.correctAnswer === 'Held together')
-        const slurQuestions = questions.filter(q => q.explanation?.includes('slur') || q.correctAnswer === 'Smoothly connected')
+        const tieQuestions = questions.filter(q => q.explanation?.text?.includes('tie') || q.correctAnswer === 'Held together')
+        const slurQuestions = questions.filter(q => q.explanation?.text?.includes('slur') || q.correctAnswer === 'Smoothly connected')
 
         expect(tieQuestions.length).toBeGreaterThan(0)
         expect(slurQuestions.length).toBeGreaterThan(0)
@@ -262,8 +262,8 @@ describe('tieSlur generator', () => {
       it('should only include definition questions (no custom questions)', () => {
         const questions = createTieSlurQuestions(10, 2)
         questions.forEach(question => {
-          const isTieDefinition = question.explanation?.includes('tie') && question.correctAnswer === 'Held together'
-          const isSlurDefinition = question.explanation?.includes('slur') && question.correctAnswer === 'Smoothly connected'
+          const isTieDefinition = question.explanation?.text?.includes('tie') && question.correctAnswer === 'Held together'
+          const isSlurDefinition = question.explanation?.text?.includes('slur') && question.correctAnswer === 'Smoothly connected'
           expect(isTieDefinition || isSlurDefinition).toBe(true)
         })
       })

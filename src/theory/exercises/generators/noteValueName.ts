@@ -1,13 +1,13 @@
-import { 
-  generateQuestionsFromPool, 
+import type { Question, StageNumber } from '@types'
+import {
+  generateQuestionsFromPool,
   getAllNoteTypes,
-  getTimeValueKeyFromComponent,
   getQuestionTypeFromId,
+  getTimeValueKeyFromComponent,
   getValueKindFromId
 } from '../utils/exercise'
 import { createValueBeatQuestion } from '../utils/timeValueQuestion'
-import { Question, StageNumber } from '../../curriculum/types'
-import { createNoteValueQuestion } from './noteValue'
+import { createNoteValueQuestion } from './utils/noteValue'
 
 const getDuplicateIdentifier = (question: Question): string | null => {
   const typeKey = getTimeValueKeyFromComponent(question)

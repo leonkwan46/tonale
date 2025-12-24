@@ -1,8 +1,9 @@
 import { NOTES, type ClefType, type MusicElementData } from '@leonkwan46/music-notation'
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { getIntervalPairs, getNotesForPitches } from '../utils/interval'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
+import { generateExplanation } from '../utils/explanation'
 
 const INTERVAL_ORDER = ['Semitone', 'Tone'] as const
 
@@ -22,34 +23,41 @@ export const createSemitoneToneQuestion = (
   const { tonicNote, targetNote } = getNotesForPitches(pitch1, pitch2, clef)
   const correctAnswer = intervalType === 'semitone' ? 'Semitone' : 'Tone'
   
+  const visualComponent = {
+    clef,
+    size: 'xs' as const,
+    elements: [
+      {
+        pitch: tonicNote.pitch,
+        type: NOTES.CROTCHET,
+        accidental: tonicNote.accidental,
+        stem: tonicNote.stem,
+        ledgerLines: tonicNote.ledgerLines,
+        spacing: 80 // TODO: This need to be updated, when we fixed library
+      },
+      {
+        pitch: targetNote.pitch,
+        type: NOTES.CROTCHET,
+        accidental: targetNote.accidental,
+        stem: targetNote.stem,
+        ledgerLines: targetNote.ledgerLines
+      }
+    ]
+  }
+  
   return {
     id: generateQuestionId('semitone-tone'),
     question: 'What is the interval between these two notes?',
     correctAnswer,
     choices: generateWrongChoices([...INTERVAL_ORDER], correctAnswer, 3, true),
-    explanation: `The interval between these notes is a ${correctAnswer.toLowerCase()} (${intervalType === 'semitone' ? '1 semitone' : '2 semitones'}).`,
+    explanation: generateExplanation('semitonesTones', {
+      correctAnswer,
+      answer: correctAnswer.toLowerCase(),
+      count: intervalType === 'semitone' ? '1' : '2',
+      type: intervalType === 'semitone' ? 'semitone' : 'semitones'
+    }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      clef,
-      size: 'xs',
-      elements: [
-        {
-          pitch: tonicNote.pitch,
-          type: NOTES.CROTCHET,
-          accidental: tonicNote.accidental,
-          stem: tonicNote.stem,
-          ledgerLines: tonicNote.ledgerLines,
-          spacing: 80 // TODO: This need to be updated, when we fixed library
-        },
-        {
-          pitch: targetNote.pitch,
-          type: NOTES.CROTCHET,
-          accidental: targetNote.accidental,
-          stem: targetNote.stem,
-          ledgerLines: targetNote.ledgerLines
-        }
-      ]
-    }
+    visualComponent
   }
 }
 

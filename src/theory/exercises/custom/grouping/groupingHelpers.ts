@@ -1,10 +1,11 @@
+import type { Explanation } from '@types'
 import { NOTES, TimeSignatureType, type MusicElementData } from '@leonkwan46/music-notation'
 
 export type GroupingQuestion = {
   elements: MusicElementData[]
-  timeSignature: TimeSignatureType | string
+  timeSignature: TimeSignatureType
   correctAnswer: 'True' | 'False'
-  explanation?: string
+  explanation?: Explanation
   size?: 'xs' | 'sml' | 'med' | 'lg' | 'xl' | 'xxl'
 }
 

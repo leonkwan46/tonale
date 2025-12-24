@@ -2,7 +2,7 @@ import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYN
 import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { TimeSignature } from '@/sharedComponents/TimeSignature'
-import type { VisualComponent } from '@types'
+import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
@@ -13,6 +13,7 @@ import {
   Tuplets,
   type MusicElementData
 } from '@leonkwan46/music-notation'
+import type { VisualComponent } from '@types'
 import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
@@ -84,19 +85,19 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
   return (
     <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'termAndSign'} needsExtraSpacing={needsExtraHeight || false}>
       {visualComponent.type === 'timeSignature' && (
-        <DisplayCard extraHeight={false}>
+        <DisplayCard>
           <TimeSignature timeSignature={visualComponent.timeSignatureValue || ''} />
         </DisplayCard>
       )}
       
       {visualComponent.type === 'noteValue' && visualComponent.noteType && (
-        <DisplayCard extraHeight={false}>
+        <DisplayCard>
           {renderNoteComponent(visualComponent.noteType)}
         </DisplayCard>
       )}
       
       {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
-        <DisplayCard extraHeight={false}>
+        <DisplayCard>
           <Tuplets
             noteType={visualComponent.tupletConfig.noteType as NoteType}
             numberOfNotes={visualComponent.tupletConfig.numberOfNotes}
@@ -125,17 +126,23 @@ export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent 
       )}
       
       {shouldRenderIndividualNotes && visualComponent.elements?.[0]?.type && (
-        <DisplayCard extraHeight={false}>
+        <DisplayCard>
           {renderNoteComponent(visualComponent.elements[0].type)}
         </DisplayCard>
       )}
       
       {shouldRenderMusicStaff && (
-        <DisplayCard extraHeight={needsExtraHeight}>
+        <DisplayCard minHeight={needsExtraHeight ? 300 : 200}>
           <MusicStaff
             size={visualComponent.size}
             clef={visualComponent.clef}
-            timeSignature={visualComponent.timeSignature ? parseTimeSignatureFromLibrary(visualComponent.timeSignature) : undefined}
+            timeSignature={visualComponent.timeSignature 
+              ? parseTimeSignatureFromLibrary(
+                  typeof visualComponent.timeSignature === 'string'
+                    ? visualComponent.timeSignature
+                    : formatAsNotation(visualComponent.timeSignature)
+                )
+              : undefined}
             keyName={visualComponent.keyName}
             elements={visualComponent.isChord 
               ? [visualComponent.elements || []] 

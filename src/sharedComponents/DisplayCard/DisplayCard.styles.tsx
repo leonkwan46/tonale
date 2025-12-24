@@ -1,6 +1,6 @@
 import styled from '@emotion/native'
 
-export const DisplayCardContainer = styled.View<{ isTablet: boolean; extraHeight?: boolean }>(({ theme, isTablet, extraHeight }) => ({
+export const DisplayCardContainer = styled.View<{ isTablet: boolean; minHeight?: number }>(({ theme, isTablet, minHeight = 200 }) => ({
   backgroundColor: '#ffffff',
   borderRadius: 16,
   borderWidth: 1,
@@ -9,7 +9,8 @@ export const DisplayCardContainer = styled.View<{ isTablet: boolean; extraHeight
   justifyContent: 'center',
   width: '100%',
   maxWidth: isTablet ? 460 : 360,
-  minHeight: extraHeight ? 300 : 200,
+  minHeight,
+  overflow: 'hidden',
   ...(isTablet && {
     transform: [{ scale: 1.4 }]
   })

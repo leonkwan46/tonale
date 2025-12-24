@@ -1,8 +1,9 @@
 import { type MusicElementData, type TimeSignatureType } from '@leonkwan46/music-notation'
+import type { Explanation, Question, StageNumber } from '@types'
 import { STAGE_TWO_GROUPING_QUESTIONS } from '../../curriculum/config/grouping'
-import { Question, StageNumber } from '../../curriculum/types'
 import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
+import { generateExplanation } from '../utils/explanation'
 import { generateQuestionId, shuffleArray } from '../utils/question'
 import { formatAsNotation } from '../utils/timeSignature'
 
@@ -10,14 +11,6 @@ import { formatAsNotation } from '../utils/timeSignature'
 // QUESTION CREATION
 // ============================================================================
 
-/**
- * Format time signature as string
- */
-const formatTimeSignature = (timeSignature: TimeSignatureType | string): string => {
-  return typeof timeSignature === 'string' 
-    ? timeSignature 
-    : formatAsNotation(timeSignature)
-}
 
 /**
  * Get grouping questions for a specific stage
@@ -41,7 +34,7 @@ const groupQuestionsByTimeSignature = (questions: readonly GroupingQuestion[]): 
   const grouped = new Map<string, GroupingQuestion[]>()
   
   for (const question of questions) {
-    const timeSigStr = formatTimeSignature(question.timeSignature)
+    const timeSigStr = formatAsNotation(question.timeSignature)
     if (!grouped.has(timeSigStr)) {
       grouped.set(timeSigStr, [])
     }
@@ -131,26 +124,29 @@ const getDuplicateIdentifier = (question: Question): string | null => {
  */
 const createQuestionFromElements = (
   elements: MusicElementData[],
-  timeSignature: TimeSignatureType | string,
+  timeSignature: TimeSignatureType,
   correctAnswer: 'True' | 'False',
-  explanation?: string,
+  explanation?: Explanation,
   size: 'xs' | 'sml' | 'med' | 'lg' | 'xl' | 'xxl' = 'lg'
 ): Question => {
-  const timeSignatureStr = formatTimeSignature(timeSignature)
+  const visualComponent = {
+    size,
+    timeSignature,
+    elements,
+    showStaff: false
+  }
   
   return {
     id: generateQuestionId('grouping'),
     question: 'Is this note grouping correct for the time signature?',
     correctAnswer,
     choices: ['True', 'False'],
-    explanation: explanation || `Notes should be grouped to show the beat structure of the ${timeSignatureStr} time signature.`,
+    explanation: explanation || generateExplanation('grouping', {
+      correctAnswer,
+      timeSignature
+    }, visualComponent),
     type: 'trueFalse',
-    visualComponent: {
-      size,
-      timeSignature: timeSignatureStr,
-      elements,
-      showStaff: false
-    }
+    visualComponent
   }
 }
 

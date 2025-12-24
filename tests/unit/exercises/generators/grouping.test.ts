@@ -1,5 +1,6 @@
 import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/theory/exercises/generators/grouping'
 import { getTimeSignatures } from '@/theory/exercises/utils/exercise'
+import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,
@@ -104,7 +105,8 @@ describe('grouping generator', () => {
         questions.forEach(question => {
           const timeSig = question.visualComponent?.timeSignature
           if (timeSig) {
-            timeSigCounts.set(timeSig, (timeSigCounts.get(timeSig) || 0) + 1)
+            const timeSigStr = formatAsNotation(timeSig)
+            timeSigCounts.set(timeSigStr, (timeSigCounts.get(timeSigStr) || 0) + 1)
           }
         })
         expect(timeSigCounts.size).toBeGreaterThan(0)

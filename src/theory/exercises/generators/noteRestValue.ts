@@ -1,4 +1,4 @@
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { createNoteValueNameQuestions } from './noteValueName'
 import { createRestValueNameQuestions } from './restValueName'
 

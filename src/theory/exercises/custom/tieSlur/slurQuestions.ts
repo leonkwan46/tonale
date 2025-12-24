@@ -22,7 +22,7 @@ export const SLUR_QUESTIONS = createSlurRecognitionQuestions([
       { pitch: 'C3', type: NOTES.SEMIBREVE, stem: 'up', slurStart: true },
       { pitch: 'D3', type: NOTES.SEMIBREVE, stem: 'up', slurEnd: true }
     ],
-    size: 'sml'
+    size: 'xs'
   },
   {
     type: 'musicStaff',

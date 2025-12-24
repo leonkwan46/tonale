@@ -1,9 +1,10 @@
 import { NOTES, type ClefType } from '@leonkwan46/music-notation'
-import { generateQuestionsFromPool } from '../utils/exercise'
-import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../utils/interval'
+import type { Question, StageNumber } from '@types'
 import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
+import { generateQuestionsFromPool } from '../utils/exercise'
+import { generateExplanation } from '../utils/explanation'
+import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../utils/interval'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
-import { Question, StageNumber } from '../../curriculum/types'
 
 const CLEFS: ClefType[] = ['treble', 'bass']
 
@@ -22,32 +23,39 @@ export const createIntervalQuestion = (
     throw new Error(`Interval ${correctAnswer} is not part of stage ${stage} syllabus`)
   }
   
+  const visualComponent = {
+    clef,
+    size: 'xs' as const,
+    elements: [
+      {
+        pitch: tonicNote.pitch,
+        type: NOTES.CROTCHET,
+        accidental: tonicNote.accidental,
+        stem: tonicNote.stem,
+        ledgerLines: tonicNote.ledgerLines
+      },
+      {
+        pitch: targetNote.pitch,
+        type: NOTES.CROTCHET,
+        accidental: targetNote.accidental,
+        stem: targetNote.stem,
+        ledgerLines: targetNote.ledgerLines
+      }
+    ]
+  }
+  
   return {
     id: generateQuestionId('interval'),
     question: 'What interval is this above the tonic?',
     correctAnswer,
     choices: generateWrongChoices([...stageIntervals], correctAnswer),
-    explanation: `The interval above the tonic is a ${calculatedInterval.simpleName} (${calculatedInterval.semitones} semitones).`,
+    explanation: generateExplanation('interval', {
+      correctAnswer,
+      simpleName: calculatedInterval.simpleName,
+      semitones: calculatedInterval.semitones
+    }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      clef,
-      elements: [
-        {
-          pitch: tonicNote.pitch,
-          type: NOTES.CROTCHET,
-          accidental: tonicNote.accidental,
-          stem: tonicNote.stem,
-          ledgerLines: tonicNote.ledgerLines
-        },
-        {
-          pitch: targetNote.pitch,
-          type: NOTES.CROTCHET,
-          accidental: targetNote.accidental,
-          stem: targetNote.stem,
-          ledgerLines: targetNote.ledgerLines
-        }
-      ]
-    }
+    visualComponent
   }
 }
 

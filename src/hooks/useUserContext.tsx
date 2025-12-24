@@ -30,7 +30,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const fetchProfile = async () => {
     try {
       const result = await getUserData()
-      console.log('[fetchProfile] Response:', JSON.stringify(result.data, null, 2))
       setProfile(result.data.data)
     } catch (error) {
       console.error('[fetchProfile] Error fetching user profile:', error)

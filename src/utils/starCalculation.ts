@@ -28,7 +28,8 @@ export const getStarMessage = (stars: number): string => {
 }
 
 export const getStarDescription = (stars: number, totalQuestions: number, wrongAnswers: number): string => {
-  const accuracy = totalQuestions > 0 ? Math.round(((totalQuestions - wrongAnswers) / totalQuestions) * 100) : 0
+  const correctAnswers = Math.max(0, totalQuestions - wrongAnswers)
+  const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0
   
   switch (stars) {
     case 3:
