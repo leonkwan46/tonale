@@ -60,7 +60,8 @@ describe('semitonesTones generator', () => {
           if (treblePairs.length > 0) {
             const question = createSemitoneToneQuestion(stage, 'treble')
             expect(question.explanation).toBeDefined()
-            expect(typeof question.explanation).toBe('string')
+            expect(question.explanation?.text).toBeDefined()
+            expect(typeof question.explanation?.text).toBe('string')
           }
         })
 

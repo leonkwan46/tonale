@@ -41,7 +41,8 @@ describe('keySignature generator', () => {
       it('should have explanation', () => {
         const question = createKeySignatureQuestion(2)
         expect(question.explanation).toBeDefined()
-        expect(typeof question.explanation).toBe('string')
+        expect(question.explanation?.text).toBeDefined()
+        expect(typeof question.explanation?.text).toBe('string')
       })
 
       it('should accept custom key parameter', () => {

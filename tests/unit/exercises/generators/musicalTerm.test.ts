@@ -47,7 +47,8 @@ describe('musicalTerm generator', () => {
       it('should have explanation', () => {
         const question = createMusicalTermQuestion(stage)
         expect(question.explanation).toBeDefined()
-        expect(typeof question.explanation).toBe('string')
+        expect(question.explanation?.text).toBeDefined()
+        expect(typeof question.explanation?.text).toBe('string')
       })
 
       it('should only use stage 0 musical terms', () => {
