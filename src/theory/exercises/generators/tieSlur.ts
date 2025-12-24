@@ -72,10 +72,6 @@ export const createTieSlurQuestions = (questionsCount: number, stage: StageNumbe
     ...tieMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage)),
     ...slurMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage))
   )
-
-  uniquePool.forEach((element, index) => {
-    console.log(`Element ${index}:`, element)
-  })
   
   return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }
