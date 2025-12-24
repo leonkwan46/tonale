@@ -1,3 +1,4 @@
+import type { Question, StageNumber } from '@types'
 import {
   generateQuestionsFromPool,
   getAllRestTypes,
@@ -6,8 +7,7 @@ import {
   getValueKindFromId
 } from '../utils/exercise'
 import { createValueBeatQuestion } from '../utils/timeValueQuestion'
-import { Question, StageNumber } from '../../curriculum/types'
-import { createRestValueQuestion } from './restValue'
+import { createRestValueQuestion } from './utils/restValue'
 
 const getDuplicateIdentifier = (question: Question): string | null => {
   const typeKey = getTimeValueKeyFromComponent(question)

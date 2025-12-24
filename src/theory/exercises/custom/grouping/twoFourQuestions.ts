@@ -12,7 +12,7 @@ export const TWO_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
+    explanation: { text: 'In 2/4 time, notes can be grouped together across a beat.\nAll 4 quavers are beamed here, but the beat divisions are still clear.' }
   },
   // #2
   {
@@ -23,7 +23,7 @@ export const TWO_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
+    explanation: { text: 'In 2/4 time, notes are grouped to show two beats.\nThe dotted crotchet and quaver divide the bar into two clear beats.' }
   },
   // #3
   {
@@ -35,22 +35,22 @@ export const TWO_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
+    explanation: { text: 'In 2/4 time, notes are grouped to show the beats.\nInstead of tying notes to make a beat, it is better to write crotchets.'    }
   },
   // #4
-{
+  {
     elements: [
-        createNote({ type: NOTES.QUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false, endGroup: true }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true })
+      createNote({ type: NOTES.QUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false, endGroup: true }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true })
     ],
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'med',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { text: 'In 2/4 time, notes are grouped to show two beats.\nThe grouping above shows each beat clearly.' }
   },
   // #5
   {
@@ -61,7 +61,18 @@ export const TWO_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { 
+      text: 'In 2/4 time, notes can be grouped together across a beat.\nAll 4 quavers are beamed here, but the beat divisions are still clear.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'sml',
+        timeSignature: TWO_FOUR_TIME_SIGNATURE,
+        elements: [
+          ...createBeamedGroup(NOTES.QUAVER, 4)
+        ],
+        showStaff: false
+      }
+    }
   },
   // #6
   {
@@ -72,9 +83,20 @@ export const TWO_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { 
+      text: 'In 2/4 time, notes can be grouped together across a beat.\nAll 4 quavers are beamed here, but the beat divisions are still clear.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'sml',
+        timeSignature: TWO_FOUR_TIME_SIGNATURE,
+        elements: [
+          ...createBeamedGroup(NOTES.QUAVER, 4)
+        ],
+        showStaff: false
+      }
+    }
   },
- // #7
+  // #7
   {
     elements: [
       createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
@@ -87,22 +109,54 @@ export const TWO_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'med',
     correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { 
+      text: 'In 2/4 time, notes are grouped to show two beats.\nThe grouping above shows each beat clearly.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'med',
+        timeSignature: TWO_FOUR_TIME_SIGNATURE,
+        elements: [
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+          createNote({ type: NOTES.QUAVER, showFlag: false }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false, endGroup: true }),
+          createNote({ type: NOTES.QUAVER, showFlag: false }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false, endGroup: true })
+        ],
+        showStaff: false
+      }
+    }
   },
   // #8
   {
     elements: [
-        createNote({ type: NOTES.QUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
-        createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true })
+      createNote({ type: NOTES.QUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+      createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true })
     ],
     timeSignature: TWO_FOUR_TIME_SIGNATURE,
     size: 'med',
     correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { 
+      text: 'In 2/4 time, notes are grouped to show two beats.\nThe grouping above shows each beat clearly.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'med',
+        timeSignature: TWO_FOUR_TIME_SIGNATURE,
+        elements: [
+          createNote({ type: NOTES.QUAVER, showFlag: false }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false, endGroup: true }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+          createNote({ type: NOTES.SEMIQUAVER, showFlag: false }),
+          createNote({ type: NOTES.QUAVER, showFlag: false, endGroup: true })
+        ],
+        showStaff: false
+      }
+    }
   }
 ]
 

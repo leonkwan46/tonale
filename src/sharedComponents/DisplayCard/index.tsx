@@ -4,16 +4,16 @@ import { DisplayCardContainer } from './DisplayCard.styles'
 
 interface DisplayCardProps {
   children: React.ReactNode
-  extraHeight?: boolean
+  minHeight?: number
 }
 
 export const DisplayCard: React.FC<DisplayCardProps> = ({ 
   children,
-  extraHeight = false
+  minHeight = 200
 }) => {
   const { isTablet } = useDevice()
   return (
-    <DisplayCardContainer isTablet={isTablet} extraHeight={extraHeight}>
+    <DisplayCardContainer isTablet={isTablet} minHeight={minHeight}>
       {children}
     </DisplayCardContainer>
   )

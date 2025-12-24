@@ -1,8 +1,9 @@
 import { NOTES, type ClefType, type MusicElementData, type Note } from '@leonkwan46/music-notation'
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
 import { addRegisterToChord, getChordsByStage } from '../utils/triad'
+import { generateExplanation } from '../utils/explanation'
 
 export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey?: string): Question => {
   const availableChords = getChordsByStage(stage)
@@ -14,26 +15,32 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
   const chordNotes = addRegisterToChord(flatNotes, clef, stage)
   const rootStem = chordNotes[0]?.stem || 'up'
   
+  const visualComponent = {
+    type: 'musicStaff' as const,
+    clef,
+    size: 'xs' as const,
+    elements: chordNotes.map((note: Note) => ({
+      pitch: note.pitch,
+      type: NOTES.CROTCHET,
+      accidental: note.accidental,
+      stem: rootStem,
+      ledgerLines: note.ledgerLines
+    })),
+    isChord: true
+  }
+  
   return {
     id: generateQuestionId('triad'),
     question: 'What is this tonic triad?',
     correctAnswer: selectedChordKey,
     choices: generateWrongChoices(chordKeys, selectedChordKey),
-    explanation: `The notes ${flatNotes.join('-')} form the ${selectedChordKey} tonic triad.`,
+    explanation: generateExplanation('triad', {
+      correctAnswer: selectedChordKey,
+      notes: flatNotes,
+      chordKey: selectedChordKey
+    }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      type: 'musicStaff',
-      clef,
-      size: 'xs',
-      elements: chordNotes.map((note: Note) => ({
-        pitch: note.pitch,
-        type: NOTES.CROTCHET,
-        accidental: note.accidental,
-        stem: rootStem,
-        ledgerLines: note.ledgerLines
-      })),
-      isChord: true
-    }
+    visualComponent
   }
 }
 

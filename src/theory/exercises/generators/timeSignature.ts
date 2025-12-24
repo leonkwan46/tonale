@@ -2,7 +2,8 @@ import { type TimeSignatureType } from '@leonkwan46/music-notation'
 import { generateQuestionsFromPool, getTimeSignatures } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { formatAsNotation, formatAsText, generateWrongAnswers } from '../utils/timeSignature'
-import { Question, StageNumber } from '../../curriculum/types'
+import { generateExplanation } from '../utils/explanation'
+import type { Question, StageNumber } from '@types'
 
 
 export const createTimeSignatureQuestion = (
@@ -28,17 +29,23 @@ export const createTimeSignatureQuestion = (
   const correctAnswer = formatAsText(timeSignature)
   const wrongAnswers = generateWrongAnswers(timeSignature)
   
+  const visualComponent = {
+    type: 'timeSignature' as const,
+    timeSignatureValue: notation
+  }
+  
   return {
     id: generateQuestionId('time-sig'),
     question: `What does the ${notation} time signature mean?`,
     correctAnswer,
     choices: generateWrongChoices(wrongAnswers, correctAnswer),
-    explanation: `The ${notation} time signature means ${correctAnswer}.`,
+    explanation: generateExplanation('timeSignature', {
+      correctAnswer,
+      timeSignature,
+      notation
+    }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      type: 'timeSignature',
-      timeSignatureValue: notation
-    }
+    visualComponent
   }
 }
 

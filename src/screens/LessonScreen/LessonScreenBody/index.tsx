@@ -69,9 +69,11 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmitInternal}
         onNextQuestion={handleNextQuestionInternal}
+        onLessonComplete={onLessonComplete}
         isNoteIdentification={isNoteIdentification}
         wrongAnswersCount={wrongAnswersCount}
         isFinalTest={isFinalTest}
+        isLastQuestion={isLastQuestion}
       />
       
     </BodyContainer>

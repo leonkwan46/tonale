@@ -1,10 +1,11 @@
 import { CLEFS } from '@leonkwan46/music-notation'
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { generateQuestionsFromPool, getKeys } from '../utils/exercise'
 import {
   generateQuestionId,
   generateWrongChoices
 } from '../utils/question'
+import { generateExplanation } from '../utils/explanation'
 
 type StageKey = ReturnType<typeof getKeys>[number]
 
@@ -13,18 +14,24 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): 
   const correctKey = key || keys[0]
   const keyNames = keys.map(k => k.toString())
   
+  const visualComponent = {
+    clef: CLEFS.TREBLE,
+    size: 'xs' as const,
+    elements: [],
+    keyName: correctKey
+  }
+  
   return {
     id: generateQuestionId('key-sig'),
     question: 'What key signature is this?',
     correctAnswer: correctKey.toString(),
     choices: generateWrongChoices(keyNames, correctKey.toString()),
-    explanation: `${correctKey.toString()} is one of the Grade 1 key signatures.`,
+    explanation: generateExplanation('keySignature', {
+      correctAnswer: correctKey.toString(),
+      key: correctKey
+    }, visualComponent),
     type: 'multipleChoice',
-    visualComponent: {
-      clef: CLEFS.TREBLE,
-      elements: [],
-      keyName: correctKey
-    }
+    visualComponent
   }
 }
 

@@ -109,11 +109,9 @@ const calculateStageStats = (lessons: typeof stageTwoLessons) => {
 export const stage2: Stage = {
   id: 'stage-2',
   title: 'Complete Grade 1',
-  description: 'Expand rhythm skills, introduce scales, intervals, and expressive vocabulary',
   lessons: stageTwoLessons.map(lesson => ({ ...lesson, stageId: 'stage-2' } as StageLesson)),
   order: 2,
   prerequisiteStages: ['stage-1'],
   isUnlocked: false, // Will be calculated
-  themeColor: '#7B68EE',
   ...calculateStageStats(stageTwoLessons)
 }

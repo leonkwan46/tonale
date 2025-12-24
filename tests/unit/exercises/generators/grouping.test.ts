@@ -1,5 +1,6 @@
 import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/theory/exercises/generators/grouping'
 import { getTimeSignatures } from '@/theory/exercises/utils/exercise'
+import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,
@@ -45,7 +46,8 @@ describe('grouping generator', () => {
       it('should have explanation', () => {
         const question = createNoteGroupingQuestion(stage)
         expect(question.explanation).toBeDefined()
-        expect(typeof question.explanation).toBe('string')
+        expect(question.explanation?.text).toBeDefined()
+        expect(typeof question.explanation?.text).toBe('string')
       })
 
       it('should only use stage 2 time signatures', () => {
@@ -54,9 +56,10 @@ describe('grouping generator', () => {
         if (timeSignature) {
           const timeSigs = getTimeSignatures(stage)
           const timeSigValues = timeSigs.map(ts => 
-            typeof ts === 'string' ? ts : `${ts.topNumber}/${ts.bottomNumber}`
+            typeof ts === 'string' ? ts : formatAsNotation(ts)
           )
-          expect(timeSigValues).toContain(timeSignature)
+          const timeSigStr = formatAsNotation(timeSignature)
+          expect(timeSigValues).toContain(timeSigStr)
         }
       })
     })
@@ -88,12 +91,13 @@ describe('grouping generator', () => {
         const questions = createNoteGroupingQuestions(10, stage)
         const stageTimeSigs = getTimeSignatures(stage)
         const timeSigValues = stageTimeSigs.map(ts => 
-          typeof ts === 'string' ? ts : `${ts.topNumber}/${ts.bottomNumber}`
+          typeof ts === 'string' ? ts : formatAsNotation(ts)
         )
         questions.forEach(question => {
           const timeSignature = question.visualComponent?.timeSignature
           if (timeSignature) {
-            expect(timeSigValues).toContain(timeSignature)
+            const timeSigStr = formatAsNotation(timeSignature)
+            expect(timeSigValues).toContain(timeSigStr)
           }
         })
       })
@@ -104,7 +108,8 @@ describe('grouping generator', () => {
         questions.forEach(question => {
           const timeSig = question.visualComponent?.timeSignature
           if (timeSig) {
-            timeSigCounts.set(timeSig, (timeSigCounts.get(timeSig) || 0) + 1)
+            const timeSigStr = formatAsNotation(timeSig)
+            timeSigCounts.set(timeSigStr, (timeSigCounts.get(timeSigStr) || 0) + 1)
           }
         })
         expect(timeSigCounts.size).toBeGreaterThan(0)

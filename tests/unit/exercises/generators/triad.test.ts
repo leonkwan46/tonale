@@ -51,8 +51,9 @@ describe('triad generator', () => {
         it('should have explanation', () => {
           const question = createTriadQuestion(stage, 'treble')
           expect(question.explanation).toBeDefined()
-          expect(typeof question.explanation).toBe('string')
-          expect(question.explanation).toContain('tonic triad')
+          expect(question.explanation?.text).toBeDefined()
+          expect(typeof question.explanation?.text).toBe('string')
+          expect(question.explanation?.text.length).toBeGreaterThan(0)
         })
 
         it('should only use stage 2 chord keys', () => {

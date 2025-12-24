@@ -46,6 +46,10 @@ export function LessonScreen() {
       const currentQuestion = questions[currentQuestionIndex]
       if (currentQuestion) {
         setWrongAnswers(prev => {
+          // Prevent duplicate entries for the same question
+          const alreadyExists = prev.some(q => q.id === currentQuestion.id)
+          if (alreadyExists) return prev
+          
           const updated = [...prev, currentQuestion]
           
           if (lesson?.isFinalTest && updated.length >= 3) {

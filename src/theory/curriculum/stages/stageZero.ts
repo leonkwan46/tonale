@@ -108,10 +108,8 @@ const calculateStageStats = (lessons: typeof stageZeroLessons) => {
 export const stage0: Stage = {
   id: 'stage-0',
   title: 'Pre-Grade Introduction',
-  description: 'Start with foundational note values, clefs, accidentals, and musical symbols',
   lessons: stageZeroLessons.map(lesson => ({ ...lesson, stageId: 'stage-0' } as StageLesson)),
   order: 0,
   isUnlocked: true,
-  themeColor: '#63B3ED',
   ...calculateStageStats(stageZeroLessons)
 }

@@ -1,4 +1,4 @@
-import { Stage } from '@/theory/curriculum'
+import type { Stage } from '@types'
 import styled from '@emotion/native'
 import * as React from 'react'
 import { Animated, Pressable } from 'react-native'

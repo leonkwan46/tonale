@@ -1,5 +1,5 @@
 import { NOTES } from '@leonkwan46/music-notation'
-import { StageNumber } from '../../curriculum/types'
+import type { StageNumber } from '@types'
 import { getBasicNoteTypes, getBasicRestTypes } from './exercise'
 import { getRandomItem } from './question'
 

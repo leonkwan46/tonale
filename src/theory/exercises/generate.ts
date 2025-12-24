@@ -1,5 +1,5 @@
 import { CLEFS } from '@leonkwan46/music-notation'
-import { ExerciseConfig, Question, StageNumber } from '../curriculum/types'
+import type { ExerciseConfig, Question, StageNumber } from '@types'
 import {
   createAccidentalQuestions,
   createDottedValueQuestions,
@@ -10,12 +10,9 @@ import {
   createNoteIdentificationQuestions,
   createNoteRestValueQuestions,
   createNoteValueNameQuestions,
-  createNoteValueQuestions,
   createRestValueNameQuestions,
-  createRestValueQuestions,
   createScaleDegreeQuestions,
   createSemitoneToneQuestions,
-  createSymbolQuestions,
   createTieSlurQuestions,
   createTimeSignatureQuestions,
   createTriadQuestions
@@ -56,14 +53,6 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
     case 'restNameValue':
       questions.push(...createRestValueNameQuestions(config.questionsCount, config.stage))
       break
-
-    case 'noteValue':
-      questions.push(...createNoteValueQuestions(config.questionsCount, config.stage))
-      break
-    
-    case 'restValue':
-      questions.push(...createRestValueQuestions(config.questionsCount, config.stage))
-      break
     
     case 'trebleClef':
       questions.push(...createNoteIdentificationQuestions(config.questionsCount, config.stage, CLEFS.TREBLE))
@@ -99,10 +88,6 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
     
     case 'noteGrouping':
       questions.push(...createNoteGroupingQuestions(config.questionsCount, config.stage))
-      break
-    
-    case 'symbols':
-      questions.push(...createSymbolQuestions(config.questionsCount, config.stage))
       break
     
     case 'tieSlur':

@@ -44,7 +44,8 @@ describe('noteIdentification generator', () => {
         it('should have explanation', () => {
           const question = createNoteIdentificationQuestion(0, 'treble')
           expect(question.explanation).toBeDefined()
-          expect(typeof question.explanation).toBe('string')
+          expect(question.explanation?.text).toBeDefined()
+          expect(typeof question.explanation?.text).toBe('string')
         })
 
         it('should include treble clef in question text', () => {

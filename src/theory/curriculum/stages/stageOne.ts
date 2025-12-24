@@ -98,11 +98,9 @@ const calculateStageStats = (lessons: typeof stageOneLessons) => {
 export const stage1: Stage = {
   id: 'stage-1',
   title: 'Foundation',
-  description: 'Build rhythmic literacy, note reading, and expressive awareness',
   lessons: stageOneLessons.map(lesson => ({ ...lesson, stageId: 'stage-1' } as StageLesson)),
   order: 1,
   prerequisiteStages: ['stage-0'],
   isUnlocked: false, // Will be calculated
-  themeColor: '#4A90E2',
   ...calculateStageStats(stageOneLessons)
 }

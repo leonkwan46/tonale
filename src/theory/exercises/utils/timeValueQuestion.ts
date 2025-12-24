@@ -1,5 +1,6 @@
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { getAllNoteTypes, getAllRestTypes } from './exercise'
+import { generateExplanation } from './explanation'
 import { generateQuestionId, generateWrongChoices } from './question'
 import { formatBeats, formatDottedBeatsDecomposed, noteTypeToBeats, noteTypeToString, restTypeToBeats, restTypeToString, TimeValueType } from './timeValue'
 
@@ -63,9 +64,15 @@ export const createValueBeatQuestion = ({
     ? `How many beats is this ${valueDisplayName} worth?`
     : `How many beats does this ${valueDisplayName} get?`
 
-  const explanation = isRest
-    ? `A ${valueDisplayName.toLowerCase()} lasts for ${correctAnswer}.`
-    : `A ${valueDisplayName.toLowerCase()} lasts for ${correctAnswer}.`
+  const visualComponent = {
+    type: 'noteValue' as const,
+    noteType: timeValue
+  }
+
+  const explanation = generateExplanation('timeValueQuestion', {
+    correctAnswer,
+    valueDisplayName: valueDisplayName.toLowerCase()
+  }, visualComponent)
 
   return {
     id: generateQuestionId(`${questionKind}-value-beats`),
@@ -74,10 +81,7 @@ export const createValueBeatQuestion = ({
     choices: generateWrongChoices(choiceStrings, correctAnswer),
     explanation,
     type: 'multipleChoice',
-    visualComponent: {
-      type: 'noteValue',
-      noteType: timeValue
-    }
+    visualComponent
   }
 }
 
