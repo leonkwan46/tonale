@@ -46,7 +46,8 @@ describe('grouping generator', () => {
       it('should have explanation', () => {
         const question = createNoteGroupingQuestion(stage)
         expect(question.explanation).toBeDefined()
-        expect(typeof question.explanation).toBe('string')
+        expect(question.explanation?.text).toBeDefined()
+        expect(typeof question.explanation?.text).toBe('string')
       })
 
       it('should only use stage 2 time signatures', () => {
@@ -55,9 +56,10 @@ describe('grouping generator', () => {
         if (timeSignature) {
           const timeSigs = getTimeSignatures(stage)
           const timeSigValues = timeSigs.map(ts => 
-            typeof ts === 'string' ? ts : `${ts.topNumber}/${ts.bottomNumber}`
+            typeof ts === 'string' ? ts : formatAsNotation(ts)
           )
-          expect(timeSigValues).toContain(timeSignature)
+          const timeSigStr = formatAsNotation(timeSignature)
+          expect(timeSigValues).toContain(timeSigStr)
         }
       })
     })
@@ -89,12 +91,13 @@ describe('grouping generator', () => {
         const questions = createNoteGroupingQuestions(10, stage)
         const stageTimeSigs = getTimeSignatures(stage)
         const timeSigValues = stageTimeSigs.map(ts => 
-          typeof ts === 'string' ? ts : `${ts.topNumber}/${ts.bottomNumber}`
+          typeof ts === 'string' ? ts : formatAsNotation(ts)
         )
         questions.forEach(question => {
           const timeSignature = question.visualComponent?.timeSignature
           if (timeSignature) {
-            expect(timeSigValues).toContain(timeSignature)
+            const timeSigStr = formatAsNotation(timeSignature)
+            expect(timeSigValues).toContain(timeSigStr)
           }
         })
       })

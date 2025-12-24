@@ -48,8 +48,9 @@ describe('tieSlur generator', () => {
       it('should have explanation', () => {
         const question = createTieDefinitionQuestion(0)
         expect(question.explanation).toBeDefined()
-        expect(typeof question.explanation).toBe('string')
-        expect(question.explanation).toContain('tie')
+        expect(question.explanation?.text).toBeDefined()
+        expect(typeof question.explanation?.text).toBe('string')
+        expect(question.explanation?.text).toContain('tie')
       })
     })
 
@@ -123,8 +124,9 @@ describe('tieSlur generator', () => {
       it('should have explanation', () => {
         const question = createSlurDefinitionQuestion(0)
         expect(question.explanation).toBeDefined()
-        expect(typeof question.explanation).toBe('string')
-        expect(question.explanation).toContain('slur')
+        expect(question.explanation?.text).toBeDefined()
+        expect(typeof question.explanation?.text).toBe('string')
+        expect(question.explanation?.text).toContain('slur')
       })
     })
 
@@ -182,8 +184,10 @@ describe('tieSlur generator', () => {
       it('should only include definition questions (no custom questions)', () => {
         const questions = createTieSlurQuestions(10, 0)
         questions.forEach(question => {
-          const isTieDefinition = question.explanation?.text?.includes('tie') && question.correctAnswer === 'Held together'
-          const isSlurDefinition = question.explanation?.text?.includes('slur') && question.correctAnswer === 'Smoothly connected'
+          expect(question.explanation).toBeDefined()
+          expect(question.explanation?.text).toBeDefined()
+          const isTieDefinition = question.explanation?.text?.toLowerCase().includes('tie') && question.correctAnswer === 'Held together'
+          const isSlurDefinition = question.explanation?.text?.toLowerCase().includes('slur') && question.correctAnswer === 'Smoothly connected'
           expect(isTieDefinition || isSlurDefinition).toBe(true)
         })
       })
@@ -262,8 +266,10 @@ describe('tieSlur generator', () => {
       it('should only include definition questions (no custom questions)', () => {
         const questions = createTieSlurQuestions(10, 2)
         questions.forEach(question => {
-          const isTieDefinition = question.explanation?.text?.includes('tie') && question.correctAnswer === 'Held together'
-          const isSlurDefinition = question.explanation?.text?.includes('slur') && question.correctAnswer === 'Smoothly connected'
+          expect(question.explanation).toBeDefined()
+          expect(question.explanation?.text).toBeDefined()
+          const isTieDefinition = question.explanation?.text?.toLowerCase().includes('tie') && question.correctAnswer === 'Held together'
+          const isSlurDefinition = question.explanation?.text?.toLowerCase().includes('slur') && question.correctAnswer === 'Smoothly connected'
           expect(isTieDefinition || isSlurDefinition).toBe(true)
         })
       })
