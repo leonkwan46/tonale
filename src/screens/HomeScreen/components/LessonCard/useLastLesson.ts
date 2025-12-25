@@ -1,6 +1,6 @@
 import { useProgress, type ProgressData } from '@/hooks/useProgressContext'
 import { useUser } from '@/hooks/useUserContext'
-import { Lesson } from '@/theory/curriculum/types'
+import type { Lesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 

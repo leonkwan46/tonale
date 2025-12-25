@@ -1,5 +1,5 @@
 import type { Timestamp } from 'firebase/firestore'
-import type { Question } from '../curriculum/types'
+import type { Question } from '../lesson'
 
 export interface RevisionQuestion extends Question {
   lessonId: string
@@ -25,3 +25,4 @@ export interface StoreRevisionQuestionResponse {
   success: boolean
   message: string
 }
+

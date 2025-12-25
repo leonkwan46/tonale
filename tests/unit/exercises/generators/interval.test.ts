@@ -103,7 +103,8 @@ describe('interval generator', () => {
             try {
               const question = createIntervalQuestion(stage, 'treble', trebleNotes[0].pitch, trebleNotes[1].pitch)
               expect(question.explanation).toBeDefined()
-              expect(typeof question.explanation).toBe('string')
+              expect(question.explanation?.text).toBeDefined()
+              expect(typeof question.explanation?.text).toBe('string')
             } catch (error) {
               if (error instanceof Error && error.message.includes('is not part of stage')) {
                 expect(true).toBe(true)

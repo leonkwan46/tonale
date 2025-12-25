@@ -1,62 +1,9 @@
-import { NOTES, type MusicElementData } from '@leonkwan46/music-notation'
-import { ARTICULATION_SIGNS_DEFINITIONS } from '../../../config/gradeSyllabus/musicalTerms'
+import { type MusicElementData } from '@leonkwan46/music-notation'
+import type { Question, StageNumber } from '@types'
 import { STAGE_ONE_TIE_SLUR_QUESTIONS } from '../../curriculum/config/tieSlur'
-import { Question, StageNumber } from '../../curriculum/types'
-import type { TieSlurQuestion } from '../custom/tieSlur/helpers'
+import { createSlurMeaningQuestions, createTieMeaningQuestions, SLUR_MEANING_VISUAL, TIE_MEANING_VISUAL, type TieSlurQuestion } from '../custom/tieSlur/helpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../utils/question'
-
-const allSignDefinitions = [...new Set(Object.values(ARTICULATION_SIGNS_DEFINITIONS))]
-
-export const createTieDefinitionQuestion = (_stage: StageNumber): Question => {
-  return {
-    id: generateQuestionId('tie'),
-    question: 'What is this musical symbol?',
-    correctAnswer: ARTICULATION_SIGNS_DEFINITIONS.tie,
-    choices: generateWrongChoices(allSignDefinitions, ARTICULATION_SIGNS_DEFINITIONS.tie),
-    explanation: 'A tie connects two notes of the same pitch, combining their durations.',
-    type: 'multipleChoice',
-    visualComponent: {
-      type: 'musicStaff',
-      clef: 'treble',
-      elements: [
-        { pitch: 'F4', type: NOTES.MINIM, stem: 'up', tieStart: true },
-        { pitch: 'F4', type: NOTES.MINIM, stem: 'up', tieEnd: true }
-      ],
-      size: 'sml'
-    }
-  }
-}
-
-export const createSlurDefinitionQuestion = (_stage: StageNumber): Question => {
-  return {
-    id: generateQuestionId('slur'),
-    question: 'What is this musical symbol?',
-    correctAnswer: ARTICULATION_SIGNS_DEFINITIONS.slur,
-    choices: generateWrongChoices(allSignDefinitions, ARTICULATION_SIGNS_DEFINITIONS.slur),
-    explanation: 'A slur indicates that notes should be played smoothly and connected.',
-    type: 'multipleChoice',
-    visualComponent: {
-      type: 'musicStaff',
-      clef: 'treble',
-      elements: [
-        { pitch: 'C4', type: NOTES.CROTCHET, ledgerLines: 1, stem: 'up', spacing: 80, slurStart: true },
-        { pitch: 'E4', type: NOTES.CROTCHET, stem: 'up', spacing: 80 },
-        { pitch: 'G4', type: NOTES.CROTCHET, stem: 'up', slurEnd: true }
-      ],
-      size: 'sml'
-    }
-  }
-}
-
-const getTieSlurQuestionsForStage = (stage: StageNumber): readonly TieSlurQuestion[] => {
-  switch (stage) {
-    case 1:
-      return STAGE_ONE_TIE_SLUR_QUESTIONS
-    default:
-      return []
-  }
-}
+import { generateQuestionId } from '../utils/question'
 
 const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage: StageNumber): Question => {
   const symbolType = customQuestion.visualComponent?.symbolType || 'tie'
@@ -68,6 +15,26 @@ const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage
     explanation: customQuestion.explanation,
     type: 'multipleChoice',
     visualComponent: customQuestion.visualComponent
+  }
+}
+
+// Export functions for backward compatibility
+export const createTieDefinitionQuestion = (_stage: StageNumber): Question => {
+  const [tieQuestion] = createTieMeaningQuestions([TIE_MEANING_VISUAL])
+  return convertTieSlurQuestionToQuestion(tieQuestion, _stage)
+}
+
+export const createSlurDefinitionQuestion = (_stage: StageNumber): Question => {
+  const [slurQuestion] = createSlurMeaningQuestions([SLUR_MEANING_VISUAL])
+  return convertTieSlurQuestionToQuestion(slurQuestion, _stage)
+}
+
+const getTieSlurQuestionsForStage = (stage: StageNumber): readonly TieSlurQuestion[] => {
+  switch (stage) {
+    case 1:
+      return STAGE_ONE_TIE_SLUR_QUESTIONS
+    default:
+      return []
   }
 }
 
@@ -98,11 +65,12 @@ export const createTieSlurQuestions = (questionsCount: number, stage: StageNumbe
     uniquePool.push(...customQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage)))
   }
   
+  // Add meaning questions using helpers
+  const tieMeaningQuestions = createTieMeaningQuestions([TIE_MEANING_VISUAL, TIE_MEANING_VISUAL])
+  const slurMeaningQuestions = createSlurMeaningQuestions([SLUR_MEANING_VISUAL, SLUR_MEANING_VISUAL])
   uniquePool.push(
-    createTieDefinitionQuestion(stage),
-    createTieDefinitionQuestion(stage),
-    createSlurDefinitionQuestion(stage),
-    createSlurDefinitionQuestion(stage)
+    ...tieMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage)),
+    ...slurMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage))
   )
   
   return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)

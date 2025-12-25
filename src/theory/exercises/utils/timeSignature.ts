@@ -1,8 +1,14 @@
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
 import { capitalize } from './question'
 
+export const getNonnumberedTimeSignature = (timeSignature: 'common' | 'cut') => {
+  return timeSignature === 'common' 
+    ? { beatCount: 4, noteValueName: 'crotchet' }
+    : { beatCount: 2, noteValueName: 'minim' }
+}
+
 export const formatAsNotation = (timeSignature: TimeSignatureType): string => {
-  if (typeof timeSignature === 'string') {
+  if (timeSignature === 'common' || timeSignature === 'cut') {
     return timeSignature
   }
   return `${timeSignature.topNumber}/${timeSignature.bottomNumber}`
@@ -21,9 +27,9 @@ export const getNoteValueName = (bottomNumber: number): string => {
 }
 
 export const formatAsText = (timeSignature: TimeSignatureType): string => {
-  if (typeof timeSignature === 'string') {
-    if (timeSignature === 'common') return '4 Crotchet Beats'
-    if (timeSignature === 'cut') return '2 Minim Beats'
+  if (timeSignature === 'common' || timeSignature === 'cut') {
+    const { beatCount, noteValueName } = getNonnumberedTimeSignature(timeSignature)
+    return `${beatCount} ${capitalize(noteValueName)} Beats`
   }
   const beatCount = timeSignature.topNumber
   const noteValueName = getNoteValueName(timeSignature.bottomNumber)
@@ -31,13 +37,9 @@ export const formatAsText = (timeSignature: TimeSignatureType): string => {
 }
 
 export const generateWrongAnswers = (timeSignature: TimeSignatureType): string[] => {
-  const beatCount = typeof timeSignature === 'string' 
-    ? (timeSignature === 'common' ? 4 : 2)
-    : timeSignature.topNumber
-  
-  const noteValueName = typeof timeSignature === 'string'
-    ? (timeSignature === 'common' ? 'crotchet' : 'minim')
-    : getNoteValueName(timeSignature.bottomNumber)
+  const { beatCount, noteValueName } = timeSignature === 'common' || timeSignature === 'cut'
+    ? getNonnumberedTimeSignature(timeSignature)
+    : { beatCount: timeSignature.topNumber, noteValueName: getNoteValueName(timeSignature.bottomNumber) }
   
   const allNoteValues = ['minim', 'crotchet', 'quaver']
   const alternativeNoteValues = allNoteValues.filter(value => value !== noteValueName)

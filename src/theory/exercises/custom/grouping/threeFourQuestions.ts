@@ -7,39 +7,15 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
   // #1
   {
     elements: [
-      ...createBeamedGroup(NOTES.QUAVER, 3),
-      ...createBeamedGroup(NOTES.QUAVER, 3)
-    ],
-    timeSignature: THREE_FOUR_TIME_SIGNATURE,
-    size: 'sml',
-    correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
-  },
-  // #2
-  {
-    elements: [
-      createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.QUAVER }),
-      createNote({ type: NOTES.QUAVER }),
-      createNote({ type: NOTES.CROTCHET })
-    ],
-    timeSignature: THREE_FOUR_TIME_SIGNATURE,
-    size: 'sml',
-    correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
-  },
-  // #3
-  {
-    elements: [
       ...createBeamedGroup(NOTES.QUAVER, 4),
       createNote({ type: NOTES.CROTCHET })
     ],
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { text: 'In 3/4 time, notes can be grouped together across a beat.\nThe three beats are still clear in this grouping.' }
   },
-  // #4
+  // #2
   {
     elements: [
       createNote({ type: NOTES.CROTCHET }),
@@ -49,9 +25,9 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
+    explanation: { text: 'In 3/4 time, notes are grouped to show three beats.\nThe dotted crotchet and quaver still show the beats clearly.' }
   },
-  // #5
+  // #3
   { 
     elements: [
       createNote({ type: NOTES.CROTCHET }),
@@ -60,9 +36,72 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'True',
-    explanation: 'The first group of 2 quavers is incorrect because it is not grouped by beat.'
+    explanation: { text: 'In 3/4 time, notes are grouped to show three beats.\nThe minim clearly covers beats two and three.' }
+  },
+  // #4
+  {
+    elements: [
+      createNote({ type: NOTES.QUAVER }),
+      createNote({ type: NOTES.CROTCHET }),
+      createNote({ type: NOTES.CROTCHET }),
+      createNote({ type: NOTES.QUAVER })
+    ],
+    timeSignature: THREE_FOUR_TIME_SIGNATURE,
+    size: 'sml',
+    correctAnswer: 'True',
+    explanation: { text: 'In 3/4 time, notes are grouped to show the beats.\nInstead of tying notes to make a beat, it is better to write crotchets.' }
+  },
+  // #5
+  {
+    elements: [
+      ...createBeamedGroup(NOTES.QUAVER, 3),
+      ...createBeamedGroup(NOTES.QUAVER, 3)
+    ],
+    timeSignature: THREE_FOUR_TIME_SIGNATURE,
+    size: 'sml',
+    correctAnswer: 'False',
+    explanation: { 
+      text: 'In 3/4 time, notes are grouped to show three beats.\nThe grouping above shows each beat clearly.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'sml',
+        timeSignature: THREE_FOUR_TIME_SIGNATURE,
+        elements: [
+          ...createBeamedGroup(NOTES.QUAVER, 2),
+          ...createBeamedGroup(NOTES.QUAVER, 2),
+          ...createBeamedGroup(NOTES.QUAVER, 2)
+        ],
+        showStaff: false
+      }
+    }
   },
   // #6
+  {
+    elements: [
+      createNote({ type: NOTES.CROTCHET }),
+      createNote({ type: NOTES.QUAVER }),
+      createNote({ type: NOTES.QUAVER }),
+      createNote({ type: NOTES.CROTCHET })
+    ],
+    timeSignature: THREE_FOUR_TIME_SIGNATURE,
+    size: 'sml',
+    correctAnswer: 'False',
+    explanation: { 
+      text: 'In 3/4 time, notes are grouped to show three beats.\nThe grouping above shows each beat clearly.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'sml',
+        timeSignature: THREE_FOUR_TIME_SIGNATURE,
+        elements: [
+          createNote({ type: NOTES.CROTCHET }),
+          ...createBeamedGroup(NOTES.QUAVER, 2),
+          createNote({ type: NOTES.CROTCHET })
+        ],
+        showStaff: false
+      }
+    }
+  },
+  // #7
   {
     elements: [
       createNote({ type: NOTES.CROTCHET }),
@@ -73,20 +112,19 @@ export const THREE_FOUR_QUESTIONS: GroupingQuestion[] = [
     timeSignature: THREE_FOUR_TIME_SIGNATURE,
     size: 'sml',
     correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
-  },
-  // #7
-  {
-    elements: [
-      createNote({ type: NOTES.QUAVER }),
-      createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.CROTCHET }),
-      createNote({ type: NOTES.QUAVER })
-    ],
-    timeSignature: THREE_FOUR_TIME_SIGNATURE,
-    size: 'sml',
-    correctAnswer: 'False',
-    explanation: 'The first group of 2 quavers is correct because it is grouped by beat.'
+    explanation: { 
+      text: 'In 3/4 time, notes are grouped to show three beats.\nThe grouping above shows each beat clearly.',
+      visualComponent: {
+        type: 'musicStaff',
+        size: 'sml',
+        timeSignature: THREE_FOUR_TIME_SIGNATURE,
+        elements: [
+          createNote({ type: NOTES.CROTCHET }),
+          createNote({ type: NOTES.CROTCHET }),
+          createNote({ type: NOTES.CROTCHET })
+        ],
+        showStaff: false
+      }
+    }
   }
 ]
-

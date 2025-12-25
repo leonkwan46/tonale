@@ -13,12 +13,13 @@ import {
     STAGE_ZERO_MUSICAL_TERMS,
     STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
 } from '../../curriculum/config/musicalTerms'
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import {
     generateQuestionId,
     generateWrongChoices
 } from '../utils/question'
+import { generateExplanation } from '../utils/explanation'
 
 export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string): Question => {
   let stageMusicalTerms: Record<string, string>
@@ -77,7 +78,7 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
       type: 'musicStaff' as const,
       clef: 'treble' as const,
       elements: [noteElement],
-      size: 'sml' as const
+      size: 'xs' as const
     }
   } else {
     visualComponent = {
@@ -92,7 +93,11 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
     question: 'What is this musical term/sign?',
     correctAnswer: correctDefinition,
     choices: generateWrongChoices(Object.values(distinctDefinitions), correctDefinition),
-    explanation: `The term '${TERM_DISPLAY_NAMES[correctTerm as TermDisplayNamesKeys] || correctTerm}' means ${correctDefinition}.`,
+    explanation: generateExplanation('musicalTerm', {
+      correctAnswer: correctDefinition,
+      term: TERM_DISPLAY_NAMES[correctTerm as TermDisplayNamesKeys] || correctTerm,
+      definition: correctDefinition
+    }, visualComponent),
     type: 'multipleChoice',
     visualComponent
   }

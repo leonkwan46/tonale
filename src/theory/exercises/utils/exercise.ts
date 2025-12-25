@@ -1,4 +1,5 @@
 import { ACCIDENTALS, ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type AccidentalType, type ClefType, type Note } from '@leonkwan46/music-notation'
+import type { Question, StageNumber } from '@types'
 import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../../curriculum/config/keySignatures'
 import {
     STAGE_ONE_ALL_NOTE_TYPES,
@@ -13,7 +14,6 @@ import {
     STAGE_ZERO_REST_TYPES
 } from '../../curriculum/config/noteValues'
 import { STAGE_ONE_TIME_SIGNATURES, STAGE_THREE_TIME_SIGNATURES, STAGE_TWO_TIME_SIGNATURES, STAGE_ZERO_TIME_SIGNATURES } from '../../curriculum/config/timeSignatures'
-import { Question, StageNumber } from '../../curriculum/types'
 import { getRandomItem, shuffleArray } from './question'
 
 

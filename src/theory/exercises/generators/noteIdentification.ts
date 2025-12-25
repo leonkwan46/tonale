@@ -1,12 +1,13 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
 import { extractNotePrefix } from '../utils/interval'
 import { getNewNotesForStage } from '../../curriculum/config/noteRange'
-import { Question, StageNumber } from '../../curriculum/types'
+import type { Question, StageNumber } from '@types'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import {
   generateQuestionId,
   generateWrongChoices
 } from '../utils/question'
+import { generateExplanation } from '../utils/explanation'
 
 interface Note {
   pitch: string
@@ -53,26 +54,32 @@ export const createNoteIdentificationQuestion = (
     ? extractNotePrefix(correctNoteData.pitch)
     : correctNoteData.letterName
 
+  const visualComponent = {
+    clef: clef,
+    size: 'xs' as const,
+    elements: [
+      {
+        pitch: correctNoteData.pitch,
+        type: NOTES.CROTCHET,
+        accidental: correctNoteData.accidental,
+        stem: correctNoteData.stem,
+        ledgerLines: correctNoteData.ledgerLines
+      }
+    ]
+  }
+
   return {
     id: generateQuestionId('note-id'),
     question: questionText,
     correctAnswer,
     choices: questionType === 'keyPress' ? [] : generateWrongChoices(noteLetterNames, correctNoteData.letterName),
-    explanation: `This note is ${correctNoteData.letterName} on the ${clef} clef.`,
+    explanation: generateExplanation('noteIdentification', {
+      correctAnswer,
+      letterName: correctNoteData.letterName,
+      clef
+    }, visualComponent),
     type: questionType,
-    visualComponent: {
-      clef: clef,
-      size: 'xs',
-      elements: [
-        {
-          pitch: correctNoteData.pitch,
-          type: NOTES.CROTCHET,
-          accidental: correctNoteData.accidental,
-          stem: correctNoteData.stem,
-          ledgerLines: correctNoteData.ledgerLines
-        }
-      ]
-    }
+    visualComponent
   }
 }
 

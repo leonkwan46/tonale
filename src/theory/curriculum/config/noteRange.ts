@@ -8,7 +8,7 @@ import {
   PRE_GRADE_BASS_PITCH_RANGE,
   PRE_GRADE_TREBLE_PITCH_RANGE
 } from '../../../config/gradeSyllabus/pitchRange'
-import { StageNumber } from '../../curriculum/types'
+import type { StageNumber } from '@types'
 
 const getPitchDefinitions = (clef: ClefType) => {
   switch (clef) {

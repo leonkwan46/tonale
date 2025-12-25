@@ -22,7 +22,7 @@ export const TIE_QUESTIONS = createTieRecognitionQuestions([
         { pitch: 'C3', type: NOTES.SEMIBREVE, stem: 'up', tieStart: true },
         { pitch: 'C3', type: NOTES.SEMIBREVE, stem: 'up', tieEnd: true }
     ],
-    size: 'sml'
+    size: 'xs'
   },
   {
     type: 'musicStaff',

@@ -1,6 +1,6 @@
 import { useProgress } from '@/hooks'
 import { stagesArray } from '@/theory/curriculum/stages/helpers'
-import { Stage, StageLesson } from '@/theory/curriculum/types'
+import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import * as React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
