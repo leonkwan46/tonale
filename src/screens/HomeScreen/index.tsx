@@ -8,7 +8,7 @@ import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
 export function HomeScreen() {
-  const { user, profile, loading, fetchProfile } = useUser()
+  const { user, profile, loading, fetchProfile: refreshProfile } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
   const { refreshProgress, refreshRevisionQuestions } = useProgress()
   const [refreshing, setRefreshing] = useState(false)
@@ -17,7 +17,7 @@ export function HomeScreen() {
     setRefreshing(true)
     try {
       await Promise.all([
-        fetchProfile(),
+        refreshProfile(),
         refreshProgress(),
         refreshRevisionQuestions(),
         refreshLesson()
@@ -27,11 +27,11 @@ export function HomeScreen() {
     } finally {
       setRefreshing(false)
     }
-  }, [fetchProfile, refreshLesson, refreshProgress, refreshRevisionQuestions])
+  }, [refreshProfile, refreshLesson, refreshProgress, refreshRevisionQuestions])
 
   return (
     <ScreenContainer>
-      <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh}>
+      <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh} gender={profile?.gender}>
         <GreetingBanner user={user} profile={profile} loading={loading} />
         <StrikeBar />
         <LessonCard />

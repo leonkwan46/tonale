@@ -1,15 +1,18 @@
+import type { UserGender } from '@types'
 import * as React from 'react'
+import type { ImageSourcePropType } from 'react-native'
 import { RefreshControl, ScrollView, useColorScheme } from 'react-native'
-import { BackgroundGradient, CharacterImage, HomepageImage, ImageContainer } from './HomeScreenBackground.styles'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
+import { BackgroundGradient, CharacterImage, HomepageImage, ImageContainer } from './HomeScreenBackground.styles'
 
 interface HomeScreenBackgroundProps {
   children: React.ReactNode
   refreshing: boolean
   onRefresh: () => void
+  gender?: UserGender
 }
 
-export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh }) => {
+export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender }) => {
   const colorScheme = useColorScheme() ?? 'light'
 
   const homepageImage =
@@ -17,10 +20,20 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
       ? require('../../../../../assets/images/dark-homepage.png')
       : require('../../../../../assets/images/light-homepage.png')
 
-  const CharacterImageSource =
-    colorScheme === 'dark'
+  const getCharacterImageSource = (): ImageSourcePropType => {
+    if (gender === 'female') {
+      return require('../../../../../assets/images/girl.png')
+    }
+    if (gender === 'male') {
+      return require('../../../../../assets/images/boy.png')
+    }
+    // Fallback to colorScheme for undefined
+    return colorScheme === 'dark'
       ? require('../../../../../assets/images/girl.png')
       : require('../../../../../assets/images/boy.png')
+  }
+
+  const CharacterImageSource = getCharacterImageSource()
 
   const gradientColors =
     colorScheme === 'dark'
