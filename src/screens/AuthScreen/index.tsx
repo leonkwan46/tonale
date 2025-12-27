@@ -5,31 +5,25 @@ import { useTheme } from '@emotion/react'
 import { createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { Platform, useColorScheme } from 'react-native'
-import {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-    withTiming
-} from 'react-native-reanimated'
 
 import { useDevice } from '../../hooks/useDevice'
 import {
-    Container,
-    KeyboardContainer,
-    ScrollContainer,
-    ScrollContentContainer
+  Container,
+  KeyboardContainer,
+  ScrollContainer,
+  ScrollContentContainer
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
 import { LogoSectionComponent } from './components/LogoSection'
 import { ModeToggle } from './components/ModeToggle'
+import { useAuthScreenAnimations } from './hooks/useAuthScreenAnimations'
 import type { AuthFormData, AuthMode, AuthState } from './types'
 
 export function AuthScreen() {
   const colorScheme = useColorScheme() ?? 'light'
   const theme = useTheme()
-  const { fetchProfile } = useUser()
+  const { setProfile, setIsRegistering } = useUser()
   
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
@@ -46,23 +40,12 @@ export function AuthScreen() {
     showConfirmPassword: false
   })
   
-  // Animation values
-  const logoScale = useSharedValue(0.8)
-  const modeTransition = useSharedValue(0)
+  const { logoAnimatedStyle, formAnimatedStyle } = useAuthScreenAnimations(authState.mode)
   
   useEffect(() => {
-    logoScale.value = withTiming(1.0, { duration: 1000, easing: Easing.out(Easing.ease) })
-    modeTransition.value = authState.mode === 'login' ? 0 : 1
-  }, [authState.mode, logoScale, modeTransition])
-  
-  useEffect(() => {
-    modeTransition.value = withSpring(authState.mode === 'login' ? 0 : 1, {
-      damping: 20,
-      stiffness: 100
-    })
     setAuthState(prev => ({ ...prev, error: '' }))
     setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }))
-  }, [authState.mode, modeTransition])
+  }, [authState.mode])
   
   const updateFormData = (field: keyof AuthFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -76,30 +59,53 @@ export function AuthScreen() {
     updateAuthState({ mode })
   }
   
-  const handleAuth = async () => {
+  const validateForm = (): boolean => {
     if (!formData.email || !formData.password) {
       updateAuthState({ error: 'Email and password are required' })
-      return
+      return false
     }
     if (authState.mode === 'register') {
       if (formData.password !== formData.confirmPassword) {
         updateAuthState({ error: 'Passwords do not match' })
-        return
+        return false
       }
       if (formData.password.length < 6) {
         updateAuthState({ error: 'Password must be at least 6 characters' })
-        return
+        return false
       }
     }
+    return true
+  }
+
+  const handleLogin = async () => {
+    await signInWithEmailAndPassword(auth, formData.email, formData.password)
+  }
+
+  const handleRegister = async () => {
+    setIsRegistering(true)
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, formData.email, formData.password)
+      await user.getIdToken(true)
+      const result = await createUserData({ email: user.email || formData.email })
+      // Use profile data from createUserData response to avoid extra getUserData call
+      if (result.data.success && result.data.data) {
+        setProfile(result.data.data)
+      }
+    } finally {
+      setIsRegistering(false)
+    }
+  }
+
+  const handleAuth = async () => {
+    if (!validateForm()) return
+
     try {
       updateAuthState({ loading: true, error: '' })
+      
       if (authState.mode === 'login') {
-        await signInWithEmailAndPassword(auth, formData.email, formData.password)
+        await handleLogin()
       } else {
-        const { user } = await createUserWithEmailAndPassword(auth, formData.email, formData.password)
-        await user.getIdToken(true)
-        await createUserData({ email: formData.email })
-        await fetchProfile()
+        await handleRegister()
       }
     } catch (err) {
       updateAuthState({ error: (err as Error).message || `Failed to ${authState.mode}` })
@@ -118,15 +124,6 @@ export function AuthScreen() {
       updateAuthState({ loading: false })
     }
   }
-  
-  // Animation styles
-  const logoAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: logoScale.value }]
-  }))
-  
-  const formAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: 1
-  }))
   
   // Theme colors
   const backgroundColor = theme.colors.background
@@ -190,5 +187,4 @@ export function AuthScreen() {
     </Container>
   )
 }
-
 
