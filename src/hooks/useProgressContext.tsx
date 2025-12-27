@@ -3,9 +3,9 @@ import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQues
 import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
 import { calculateStageUnlockStatus, getLessonWithProgress, stagesArray } from '@/theory/curriculum/stages/helpers'
-import type { Lesson, Stage, StageLesson } from '@types'
 import { clearProgressCache, loadProgressCache, saveProgressCache } from '@/utils/progressCache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import type { Lesson, Stage, StageLesson } from '@types'
 import { RevisionQuestion } from '@types'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
@@ -256,7 +256,7 @@ const getNextLockedStage = (): Stage | undefined => {
 // ============================================================================
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useUser()
+  const { user, profile, loading: userLoading } = useUser()
   const [progressData, setProgressDataState] = useState<Record<string, ProgressData>>({})
   const [revisionQuestions, setRevisionQuestions] = useState<RevisionQuestion[]>([])
   const [loading, setLoading] = useState(true)
@@ -334,7 +334,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
   }, [setProgressData, initializeEmptyProgress])
 
-  // Initialize progress when user is available
+  // Initialize progress when user is available AND profile exists
+  // During registration, profile is null until createUserData completes
+  // This prevents wasted API calls before the user document exists
   useEffect(() => {
     if (!user) {
       setProgressDataState({})
@@ -342,6 +344,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       setInitialized(false)
       setLoading(false)
       currentUserIdRef.current = ''
+      return
+    }
+
+    // Wait for user loading to complete and profile to exist
+    // If profile is null after loading, it means user document doesn't exist yet (new registration)
+    // In that case, wait for createUserData to complete before initializing
+    if (userLoading || profile === null) {
       return
     }
 
@@ -359,7 +368,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
 
     initialize()
-  }, [user, initializeUserProgress])
+  }, [user, profile, userLoading, initializeUserProgress])
 
   // ============================================================================
   // REVISION QUESTIONS MANAGEMENT
