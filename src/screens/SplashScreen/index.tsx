@@ -1,16 +1,19 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
-import { useUser } from '@/hooks'
-import styled from '@emotion/native'
+import { useDevice, useUser } from '@/hooks'
 import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
-import Animated, {
+import {
   Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming
 } from 'react-native-reanimated'
 import { AppText, LogoAnimation, Wave } from './components'
+import {
+  Container,
+  MusicLogoContainer,
+  WavesContainer
+} from './SplashScreen.styles'
 
 // Constants
 const MIN_SPLASH_TIME_MS = 2000
@@ -53,6 +56,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   const [fontsLoaded] = useFonts(FONTS)
   const colorScheme = useColorScheme() ?? 'light'
   const { loading: authLoading } = useUser()
+  const { isTablet } = useDevice()
   const [isTransitioning, setIsTransitioning] = useState(false)
   const containerOpacity = useSharedValue(1)
 
@@ -108,7 +112,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           isTransitioning={isTransitioning}
         />
       </MusicLogoContainer>
-      <WavesContainer>
+      <WavesContainer isTablet={isTablet}>
             {Array.from({ length: WAVE_COUNT }, (_, index) => (
           <Wave
             key={index}
@@ -123,27 +127,3 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     </Container>
   )
 }
-
-// Styled Components
-const Container = styled(Animated.View)<{ colorScheme: ColorScheme }>`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: ${props => Colors[props.colorScheme].background};
-`
-
-const MusicLogoContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  padding-horizontal: 20px;
-`
-
-const WavesContainer = styled.View`
-  position: absolute;
-  bottom: 30%;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 8px;
-`
