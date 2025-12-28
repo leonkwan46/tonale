@@ -1,16 +1,19 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
-import styled from '@emotion/native'
+import { ColorScheme } from '@/constants/Colors'
 import * as React from 'react'
 import { useEffect } from 'react'
-import Animated, {
+import {
     Easing,
     useAnimatedStyle,
     useSharedValue,
     withDelay,
     withTiming
 } from 'react-native-reanimated'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import {
+    AppNameContainer,
+    AppNameText,
+    TaglineContainer,
+    TaglineText
+} from './AppText.styles'
 
 interface AppTextProps {
   appName: string
@@ -92,26 +95,3 @@ export function AppText({ appName, tagline, colorScheme, isTransitioning }: AppT
   )
 }
 
-// Styled Components
-const AppNameContainer = styled(Animated.View)``
-
-const AppNameText = styled.Text<{ colorScheme: ColorScheme }>`
-  font-size: 36px;
-  text-align: center;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-  color: ${props => Colors[props.colorScheme].text};
-  font-family: ${getSourGummyFontFamily('700')};
-`
-
-const TaglineContainer = styled(Animated.View)``
-
-const TaglineText = styled.Text<{ colorScheme: ColorScheme }>`
-  font-size: 16px;
-  text-align: center;
-  margin-bottom: 40px;
-  line-height: 22px;
-  opacity: 0.8;
-  color: ${props => Colors[props.colorScheme].icon};
-  font-family: ${getSourGummyFontFamily('400')};
-`

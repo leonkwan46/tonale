@@ -1,16 +1,22 @@
 import { Colors, ColorScheme } from '@/constants/Colors'
-import { Ionicons } from '@expo/vector-icons'
-import styled from '@emotion/native'
 import * as React from 'react'
 import { useEffect } from 'react'
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSpring,
-  withTiming
+import {
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withRepeat,
+    withSpring,
+    withTiming
 } from 'react-native-reanimated'
+import { scale as scaleSize } from 'react-native-size-matters'
+import {
+    Container,
+    InnerCircle,
+    LogoContainer,
+    MusicIcon,
+    OuterCircle
+} from './LogoAnimation.styles'
 
 interface LogoAnimationProps {
   colorScheme: ColorScheme
@@ -68,7 +74,7 @@ export function LogoAnimation({ colorScheme, isTransitioning }: LogoAnimationPro
         {/* Music note icon */}
         <MusicIcon
           name="musical-notes"
-          size={48}
+          size={scaleSize(48)}
           color={colors.primary}
           colorScheme={colorScheme}
         />
@@ -77,48 +83,3 @@ export function LogoAnimation({ colorScheme, isTransitioning }: LogoAnimationPro
   )
 }
 
-// Styled Components
-const Container = styled.View`
-  align-items: center;
-  margin-bottom: 32px;
-`
-
-const LogoContainer = styled(Animated.View)`
-  width: 120px;
-  height: 120px;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`
-
-const OuterCircle = styled.View<{ colorScheme: ColorScheme }>`
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 60px;
-  background-color: ${props => Colors[props.colorScheme].primary};
-  shadow-color: ${props => Colors[props.colorScheme].primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.3;
-  shadow-radius: 16px;
-  elevation: 12;
-`
-
-const InnerCircle = styled.View<{ colorScheme: ColorScheme }>`
-  position: absolute;
-  width: 96px;
-  height: 96px;
-  border-radius: 48px;
-  background-color: ${props => Colors[props.colorScheme].surface};
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.1;
-  shadow-radius: 4px;
-  elevation: 2;
-`
-
-const MusicIcon = styled(Ionicons)<{ colorScheme: ColorScheme }>`
-  z-index: 10;
-  text-shadow-offset: 0px 1px;
-  text-shadow-radius: 2px;
-  text-shadow-color: rgba(0, 0, 0, 0.2);
-`

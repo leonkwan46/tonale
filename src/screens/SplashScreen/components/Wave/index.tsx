@@ -1,12 +1,12 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
-import styled from '@emotion/native'
+import { ColorScheme } from '@/constants/Colors'
 import { useEffect } from 'react'
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
+import {
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming
 } from 'react-native-reanimated'
+import { Bar } from './Wave.styles'
 
 interface WaveProps {
   delay: number
@@ -60,19 +60,4 @@ export function Wave({ delay, colorScheme, isTransitioning }: WaveProps) {
     />
   )
 }
-
-const Bar = styled(Animated.View)<{ colorScheme: ColorScheme }>`
-  width: 4px;
-  border-radius: 2px;
-  background-color: ${props => Colors[props.colorScheme].primary};
-  shadow-color: ${props => Colors[props.colorScheme].primary};
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.3;
-  shadow-radius: 4px;
-  elevation: 3;
-`
-
-
-
-
 
