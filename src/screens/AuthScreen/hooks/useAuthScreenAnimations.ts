@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import type { ViewStyle } from 'react-native'
 import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withTiming
 } from 'react-native-reanimated'
 
-import type { AuthMode } from '../types'
+import type { AuthMode } from '../index'
 
 export const useAuthScreenAnimations = (mode: AuthMode) => {
   const logoScale = useSharedValue(0.8)
