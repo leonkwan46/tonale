@@ -5,21 +5,18 @@ import { scale } from 'react-native-size-matters'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const ScrollContainer = styled(ScrollView)`
-  flex: 1;
 `
 
-export const ContentContainer = styled.View`
-  padding-horizontal: ${scale(32)};
-  padding-vertical: ${scale(40)};
-  align-items: center;
-`
+export const ContentContainer = styled.View(({ theme }) => ({
+  padding: scale(10),
+  alignItems: 'center'
+}))
 
 export const Title = styled.Text(({ theme }) => ({
   fontSize: scale(24),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
-  textAlign: 'center',
-  marginBottom: scale(8)
+  textAlign: 'center'
 }))
 
 export const Subtitle = styled.Text(({ theme }) => ({
@@ -78,7 +75,7 @@ export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number; disable
 }))
 
 export const PrimaryButtonText = styled.Text`
-  color: #000;
+  color: #fff;
   font-size: ${scale(16)};
   margin-right: ${scale(8)};
   font-family: "${getSourGummyFontFamily('600')}";
