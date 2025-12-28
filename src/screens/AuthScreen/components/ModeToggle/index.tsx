@@ -1,32 +1,33 @@
 import * as React from 'react'
+import type { AuthState } from '../../index'
 import {
   ToggleBackground,
   ToggleButton,
   ToggleContainer,
   ToggleText
-} from '../AuthScreen.styles'
+} from './ModeToggle.styles'
 
 interface ModeToggleProps {
-  authState: { mode: string }
-  setMode: (mode: 'login' | 'register') => void
-  textColor: string
-  inputBackgroundColor: string
+  authState: AuthState
+  setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
 }
 
 export const ModeToggle: React.FC<ModeToggleProps> = ({
   authState,
-  setMode,
-  textColor,
-  inputBackgroundColor
-}) => {  
+  setAuthState
+}) => {
+  const setMode = (mode: 'login' | 'register') => {
+    setAuthState(prev => ({ ...prev, mode, error: '' }))
+  }
+  
   return (
   <ToggleContainer>
-    <ToggleBackground backgroundColor={inputBackgroundColor}>
+    <ToggleBackground>
       <ToggleButton
         isActive={authState.mode === 'login'}
         onPress={() => setMode('login')}
       >
-        <ToggleText color={authState.mode === 'login' ? '#000' : textColor}>
+        <ToggleText isActive={authState.mode === 'login'}>
           Sign In
         </ToggleText>
       </ToggleButton>
@@ -34,7 +35,7 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({
         isActive={authState.mode === 'register'}
         onPress={() => setMode('register')}
       >
-        <ToggleText color={authState.mode === 'register' ? '#000' : textColor}>
+        <ToggleText isActive={authState.mode === 'register'}>
           Create Account
         </ToggleText>
       </ToggleButton>

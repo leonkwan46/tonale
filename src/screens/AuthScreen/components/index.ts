@@ -1,7 +1,6 @@
+export { AppLogo } from './AppLogo'
 export { AuthForm } from './AuthForm'
 export { GuestLogin } from './GuestLogin'
-export { LogoSectionComponent } from './LogoSection'
+export { Header } from './Header'
 export { ModeToggle } from './ModeToggle'
-
-
 
