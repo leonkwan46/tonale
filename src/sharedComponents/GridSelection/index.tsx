@@ -14,6 +14,7 @@ interface GridSelectionProps<T extends string> {
   onSelect: (option: T) => void
   testID?: string
   getDisplayLabel?: (option: T) => string
+  renderIcon?: (option: T, isSelected: boolean) => React.ReactElement | null
 }
 
 export const GridSelection = <T extends string>({
@@ -21,7 +22,8 @@ export const GridSelection = <T extends string>({
   selectedOption,
   onSelect,
   testID,
-  getDisplayLabel
+  getDisplayLabel,
+  renderIcon
 }: GridSelectionProps<T>): React.ReactElement => {
   const [pressedIndex, setPressedIndex] = useState<number | null>(null)
 
@@ -45,7 +47,12 @@ export const GridSelection = <T extends string>({
         const displayLabel = getDisplayLabel ? getDisplayLabel(option) : option
 
         return (
-          <GridSelectionCardContainer key={option}>
+          <GridSelectionCardContainer 
+            key={option}
+            style={{
+              transform: [{ scale: isPressed ? 0.9 : 1 }]
+            }}
+          >
             <GridSelectionCardDepth isSelected={isSelected} />
             <GridSelectionCard
               isSelected={isSelected}
@@ -54,10 +61,8 @@ export const GridSelection = <T extends string>({
               onPressOut={handlePressOut}
               activeOpacity={1}
               testID={isSelected ? `selected-${option}` : `option-${option}`}
-              style={{
-                transform: [{ scale: isPressed ? 0.9 : 1 }]
-              }}
             >
+              {renderIcon && renderIcon(option, isSelected)}
               <GridSelectionText>{displayLabel}</GridSelectionText>
             </GridSelectionCard>
           </GridSelectionCardContainer>

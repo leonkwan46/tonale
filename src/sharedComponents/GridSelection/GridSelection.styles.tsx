@@ -74,12 +74,12 @@ export const GridSelectionCard = styled(TouchableOpacity)<{
   width: getCardWidth(),
   height: CARD_HEIGHT,
   borderRadius: CARD_BORDER_RADIUS,
-  backgroundColor: theme.colors.surface,
-  borderWidth: isSelected ? scale(2) : 0,
-  borderColor: isSelected ? theme.colors.primary : 'transparent',
+  backgroundColor: isSelected ? theme.colors.primary : theme.colors.surface,
   padding: scale(8),
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  gap: scale(8),
   position: 'relative',
   zIndex: 1
 }))
