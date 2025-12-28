@@ -3,7 +3,7 @@ import type { LessonProgress } from './lessons'
 
 export type UserGender = 'male' | 'female'
 
-export type UserInstrument = 'piano' | 'guitar' | 'violin' | 'drums' | 'flute' | 'saxophone' | 'trumpet' | 'cello' | 'other'
+export type UserInstrument = 'piano' | 'guitar' | 'violin' | 'drums' | 'flute' | 'saxophone' | 'trumpet' | 'cello' | 'vocal' | 'other'
 
 export interface StageProgress {
   isUnlocked: boolean
@@ -20,7 +20,7 @@ export interface UserProfile {
   email: string
   onboardingCompleted?: boolean
   gender?: UserGender
-  instrument?: UserInstrument
+  instrument?: UserInstrument | string // Allow custom instrument strings
   progress?: ProgressData
   streakDay?: number
   lastLoginDate?: string

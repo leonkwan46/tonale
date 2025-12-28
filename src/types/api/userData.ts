@@ -3,13 +3,20 @@ import type { LessonProgress } from './lessons'
 
 export type UserGender = 'male' | 'female'
 
-export type UserInstrument = 'piano' | 'guitar' | 'violin' | 'drums' | 'flute' | 'saxophone' | 'trumpet' | 'cello' | 'other'
+export const INSTRUMENT = {
+  PIANO: 'piano',
+  GUITAR: 'guitar',
+  VIOLIN: 'violin',
+  VOCAL: 'vocal',
+  OTHER: 'other'
+} as const
+export type UserInstrument = typeof INSTRUMENT[keyof typeof INSTRUMENT]
 
 export interface UserProfile {
   email: string
   onboardingCompleted?: boolean
   gender?: UserGender
-  instrument?: UserInstrument
+  instrument?: UserInstrument | string // Allow custom instrument strings
   progress?: {
     lessons: Record<string, LessonProgress>
     stages?: Record<string, {
