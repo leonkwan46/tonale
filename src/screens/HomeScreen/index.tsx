@@ -31,7 +31,12 @@ export function HomeScreen() {
 
   return (
     <ScreenContainer>
-      <HomeScreenBackground refreshing={refreshing} onRefresh={handleRefresh} gender={profile?.gender}>
+      <HomeScreenBackground 
+        refreshing={refreshing} 
+        onRefresh={handleRefresh} 
+        gender={profile?.gender}
+        instrument={profile?.instrument}
+      >
         <GreetingBanner user={user} profile={profile} loading={loading} />
         <StrikeBar />
         <LessonCard />

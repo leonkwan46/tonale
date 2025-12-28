@@ -2,10 +2,10 @@ import type { UserProfile } from '@types'
 import type { User } from 'firebase/auth'
 import * as React from 'react'
 import {
-    AvatarContainer,
-    CharacterAvatar,
-    GreetingBannerContainer,
-    GreetingText
+  AvatarContainer,
+  CharacterAvatar,
+  GreetingBannerContainer,
+  GreetingText
 } from './GreetingBanner.styles'
 
 interface GreetingBannerProps {
@@ -26,7 +26,9 @@ const getUsername = (user: User | null, profile: UserProfile | null, loading: bo
 
 export const GreetingBanner: React.FC<GreetingBannerProps> = ({ user, profile, loading }) => {
   const username = getUsername(user, profile, loading)
-  const characterImageSource = require('../../../../../assets/images/girl_head.png')
+  const characterImageSource = profile?.gender === 'female'
+    ? require('../../../../../assets/images/girl/girl_head.png')
+    : require('../../../../../assets/images/boy/boy_head.png')
 
   return (
     <GreetingBannerContainer>

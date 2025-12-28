@@ -1,6 +1,6 @@
-import type { UserGender } from '@types'
+import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import * as React from 'react'
-import type { ImageSourcePropType } from 'react-native'
+import { useMemo } from 'react'
 import { RefreshControl, ScrollView, useColorScheme } from 'react-native'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
 import { BackgroundGradient, CharacterImage, HomepageImage, ImageContainer } from './HomeScreenBackground.styles'
@@ -10,30 +10,49 @@ interface HomeScreenBackgroundProps {
   refreshing: boolean
   onRefresh: () => void
   gender?: UserGender
+  instrument?: UserInstrument | string
 }
 
-export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender }) => {
+export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender, instrument }) => {
   const colorScheme = useColorScheme() ?? 'light'
 
-  const homepageImage =
+  const homepageStageImage =
     colorScheme === 'dark'
       ? require('../../../../../assets/images/dark-homepage.png')
       : require('../../../../../assets/images/light-homepage.png')
 
-  const getCharacterImageSource = (): ImageSourcePropType => {
-    if (gender === 'female') {
-      return require('../../../../../assets/images/girl.png')
-    }
-    if (gender === 'male') {
-      return require('../../../../../assets/images/boy.png')
-    }
-    // Fallback to colorScheme for undefined
-    return colorScheme === 'dark'
-      ? require('../../../../../assets/images/girl.png')
-      : require('../../../../../assets/images/boy.png')
-  }
+  const characterImageSource = useMemo(() => {
+    const isFemale = gender === 'female'
 
-  const CharacterImageSource = getCharacterImageSource()
+    if (instrument === INSTRUMENT.PIANO) {
+      return isFemale
+        ? require('../../../../../assets/images/girl/girl_piano.png')
+        : require('../../../../../assets/images/boy/boy_piano.png')
+    }
+
+    if (instrument === INSTRUMENT.GUITAR) {
+      return isFemale
+        ? require('../../../../../assets/images/girl/girl_guitar.png')
+        : require('../../../../../assets/images/boy/boy_guitar.png')
+    }
+
+    if (instrument === INSTRUMENT.VIOLIN) {
+      return isFemale
+        ? require('../../../../../assets/images/girl/girl_violin.png')
+        : require('../../../../../assets/images/boy/boy_violin.png')
+    }
+
+    if (instrument === INSTRUMENT.VOCAL) {
+      return isFemale
+        ? require('../../../../../assets/images/girl/girl_vocal.png')
+        : require('../../../../../assets/images/boy/boy_vocal.png')
+    }
+
+    // Fall back to full body images for OTHER instrument, custom instruments, or no instrument selected
+    return isFemale
+      ? require('../../../../../assets/images/girl/girl_full.png')
+      : require('../../../../../assets/images/boy/boy_full.png')
+  }, [gender, instrument])
 
   const gradientColors =
     colorScheme === 'dark'
@@ -49,8 +68,7 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        bounces={true}
-        alwaysBounceVertical={true}
+        bounces={false}
         showsVerticalScrollIndicator={false}
       >
         <BackgroundGradient 
@@ -64,9 +82,9 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
             </ContentContainer>
         </BackgroundGradient>
         <ImageContainer>
-          <HomepageImage source={homepageImage} />
+          <HomepageImage source={homepageStageImage} />
           {/* TODO: Character will be animation in the future, using Lottie. This is currently a placeholder */}
-          <CharacterImage source={CharacterImageSource} />
+          <CharacterImage source={characterImageSource} />
         </ImageContainer>
       </ScrollView>
     </>
