@@ -4,7 +4,7 @@ jsEngine: graaljs
 ---
 - evalScript: ${output.testEmail = "TEST@test.com"}
 - evalScript: ${output.testPassword = "test123"}
-- assertVisible: "Tonale"
+- assertVisible: "Tonalè"
 - assertVisible: "Email"
 - assertVisible: "Password"
 - tapOn: "Email"
