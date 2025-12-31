@@ -25,13 +25,15 @@ interface AuthFormProps {
   formData: AuthFormData
   setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
+  isTablet: boolean
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({
   authState,
   formData,
   setFormData,
-  setAuthState
+  setAuthState,
+  isTablet
 }: AuthFormProps) => {
   const theme = useTheme()
   const { setProfile, setIsRegistering } = useUser()
@@ -99,18 +101,19 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   }
   
   return (
-  <FormSection>
+  <FormSection isTablet={isTablet}>
     {authState.error ? (
-      <ErrorContainer>
-        <Ionicons name="alert-circle" size={scale(20)} color={theme.colors.error} />
-        <ErrorText>{authState.error}</ErrorText>
+      <ErrorContainer isTablet={isTablet}>
+        <Ionicons name="alert-circle" size={isTablet ? scale(16) : scale(20)} color={theme.colors.error} />
+        <ErrorText isTablet={isTablet}>{authState.error}</ErrorText>
       </ErrorContainer>
     ) : null}
 
-    <InputsContainer>
-      <InputField>
+    <InputsContainer isTablet={isTablet}>
+      <InputField isTablet={isTablet}>
         <Ionicons name="mail-outline" size={scale(20)} color={theme.colors.primary} />
         <Input
+          isTablet={isTablet}
           placeholder="Email"
           placeholderTextColor={theme.colors.secondary}
           onChangeText={(text: string) => updateFormData('email', text)}
@@ -123,16 +126,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         />
       </InputField>
 
-      <InputField>
+      <InputField isTablet={isTablet}>
         <Ionicons name="lock-closed-outline" size={scale(20)} color={theme.colors.primary} />
         <Input
+          isTablet={isTablet}
           placeholder="Password"
           placeholderTextColor={theme.colors.secondary}
           onChangeText={(text: string) => updateFormData('password', text)}
           value={formData.password}
           secureTextEntry={!authState.showPassword}
           textContentType={authState.mode === 'login' ? 'password' : 'newPassword'}
-          autoComplete={authState.mode === 'login' ? 'password' : 'password-new'}
+          autoComplete={authState.mode === 'login' ? 'current-password' : 'new-password'}
         />
         <EyeIcon
           onPress={() => updateAuthState({ showPassword: !authState.showPassword })}
@@ -146,16 +150,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       </InputField>
 
       {authState.mode === 'register' && (
-        <InputField>
+        <InputField isTablet={isTablet}>
           <Ionicons name="lock-closed-outline" size={scale(20)} color={theme.colors.primary} />
           <Input
+            isTablet={isTablet}
             placeholder="Confirm Password"
             placeholderTextColor={theme.colors.secondary}
             onChangeText={(text: string) => updateFormData('confirmPassword', text)}
             value={formData.confirmPassword}
             secureTextEntry={!authState.showConfirmPassword}
             textContentType="newPassword"
-            autoComplete="password-new"
+            autoComplete="new-password"
           />
           <EyeIcon
             onPress={() => updateAuthState({ showConfirmPassword: !authState.showConfirmPassword })}
@@ -170,7 +175,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       )}
 
       {authState.mode === 'register' && (
-        <RequirementsText>
+        <RequirementsText isTablet={isTablet}>
           Password must be at least 6 characters
         </RequirementsText>
       )}
@@ -180,8 +185,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       testID="auth-submit-button"
       onPress={handleAuth}
       disabled={authState.loading}
+      isTablet={isTablet}
     >
-      <PrimaryButtonText>
+      <PrimaryButtonText isTablet={isTablet}>
         {authState.loading 
           ? (authState.mode === 'login' ? 'Signing In...' : 'Creating Account...')
           : (authState.mode === 'login' ? 'Sign In' : 'Create Account')
