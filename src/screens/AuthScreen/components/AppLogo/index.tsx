@@ -23,7 +23,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         <LogoInner isTablet={isTablet}>
           <Ionicons 
             name="musical-notes" 
-            size={isTablet ? scale(50) : scale(40)} 
+            size={isTablet ? scale(25) : scale(40)} 
             color={theme.colors.text}
             style={{ opacity: 0.9 }}
           />
