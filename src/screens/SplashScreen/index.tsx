@@ -16,7 +16,7 @@ import {
 } from './SplashScreen.styles'
 
 // Constants
-const MIN_SPLASH_TIME_MS = 2000
+const MIN_SPLASH_TIME_MS = 3000
 const POLL_INTERVAL_MS = 100
 const FADE_OUT_DURATION_MS = 500
 const WAVE_COUNT = 5
@@ -106,7 +106,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
       <MusicLogoContainer>
         <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
         <AppText
-          appName="tonale"
+          appName="Tonalè"
           tagline="Master music through focused practice"
           colorScheme={colorScheme}
           isTransitioning={isTransitioning}
