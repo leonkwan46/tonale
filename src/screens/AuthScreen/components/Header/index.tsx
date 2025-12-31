@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
     <AppLogo isTablet={isTablet} />
     <TitlesContainer>
       <Title isTablet={isTablet}>
-        tonale
+        Tonalè
       </Title>
       <Subtitle>
         {authState.mode === 'login' 

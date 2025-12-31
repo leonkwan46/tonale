@@ -4,7 +4,7 @@ import { Subtitle, Title } from './OnboardingHeader.styles'
 const OnboardingHeaderComponent: React.FC = () => {
   return (
     <>
-      <Title>Welcome to Tonale!</Title>
+      <Title>Welcome to Tonalè!</Title>
       <Subtitle>Tell us a bit about yourself to get started</Subtitle>
     </>
   )
