@@ -17,12 +17,14 @@ interface GuestLoginProps {
   loading: boolean
   onGuestLogin: () => void
   isVisible: boolean
+  isTablet: boolean
 }
 
 export const GuestLogin: React.FC<GuestLoginProps> = ({
   loading,
   onGuestLogin,
-  isVisible
+  isVisible,
+  isTablet
 }) => {
   const theme = useTheme()
   
@@ -33,20 +35,21 @@ export const GuestLogin: React.FC<GuestLoginProps> = ({
     overflow: 'hidden',
     width: '100%'
   }}>
-    <GuestLoginContainer>
+    <GuestLoginContainer isTablet={isTablet}>
       <DividerContainer>
         <Divider />
-        <DividerText>or</DividerText>
+        <DividerText isTablet={isTablet}>or</DividerText>
         <Divider />
       </DividerContainer>
       <SecondaryButton
         onPress={onGuestLogin}
         disabled={loading}
+        isTablet={isTablet}
       >
         <ButtonIcon>
           <Ionicons name="person-outline" size={scale(20)} color={theme.colors.primary} />
         </ButtonIcon>
-        <SecondaryButtonText>
+        <SecondaryButtonText isTablet={isTablet}>
           Continue as Guest
         </SecondaryButtonText>
       </SecondaryButton>

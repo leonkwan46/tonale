@@ -4,9 +4,9 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const GuestLoginContainer = styled.View(() => ({
+export const GuestLoginContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
   flexDirection: 'column',
-  gap: scale(16),
+  gap: isTablet ? scale(8) : scale(16),
   width: '100%'
 }))
 
@@ -22,27 +22,27 @@ export const Divider = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.border
 }))
 
-export const DividerText = styled.Text(({ theme }) => ({
+export const DividerText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
   paddingHorizontal: scale(16),
-  fontSize: scale(14),
+  fontSize: isTablet ? scale(12) : scale(14),
   opacity: 0.6,
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
+export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean; isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: scale(16),
+  paddingVertical: isTablet ? scale(10) : scale(16),
   borderRadius: scale(12),
   borderWidth: 2,
   borderColor: theme.colors.primary,
   opacity: disabled ? 0.7 : 1
 }))
 
-export const SecondaryButtonText = styled.Text(({ theme }) => ({
-  fontSize: scale(16),
+export const SecondaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+  fontSize: isTablet ? scale(14) : scale(16),
   color: theme.colors.primary,
   fontFamily: getSourGummyFontFamily('500')
 }))

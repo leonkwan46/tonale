@@ -15,16 +15,16 @@ export const ToggleBackground = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface
 }))
 
-export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean }>(({ theme, isActive }) => ({
+export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean; isTablet?: boolean }>(({ theme, isActive, isTablet }) => ({
   flex: 1,
-  paddingVertical: scale(12),
+  paddingVertical: isTablet ? scale(6) : scale(12),
   borderRadius: scale(8),
   alignItems: 'center',
   backgroundColor: isActive ? theme.colors.primary : 'transparent'
 }))
 
-export const ToggleText = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
-  fontSize: scale(16),
+export const ToggleText = styled.Text<{ isActive: boolean; isTablet?: boolean }>(({ theme, isActive, isTablet }) => ({
+  fontSize: isTablet ? scale(14) : scale(16),
   color: theme.colors.text,
   opacity: isActive ? 1 : 0.7,
   fontFamily: getSourGummyFontFamily('600')

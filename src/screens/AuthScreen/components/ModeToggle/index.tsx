@@ -10,11 +10,13 @@ import {
 interface ModeToggleProps {
   authState: AuthState
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
+  isTablet: boolean
 }
 
 export const ModeToggle: React.FC<ModeToggleProps> = ({
   authState,
-  setAuthState
+  setAuthState,
+  isTablet
 }) => {
   const setMode = (mode: 'login' | 'register') => {
     setAuthState(prev => ({ ...prev, mode, error: '' }))
@@ -26,16 +28,18 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({
       <ToggleButton
         isActive={authState.mode === 'login'}
         onPress={() => setMode('login')}
+        isTablet={isTablet}
       >
-        <ToggleText isActive={authState.mode === 'login'}>
+        <ToggleText isActive={authState.mode === 'login'} isTablet={isTablet}>
           Sign In
         </ToggleText>
       </ToggleButton>
       <ToggleButton
         isActive={authState.mode === 'register'}
         onPress={() => setMode('register')}
+        isTablet={isTablet}
       >
-        <ToggleText isActive={authState.mode === 'register'}>
+        <ToggleText isActive={authState.mode === 'register'} isTablet={isTablet}>
           Create Account
         </ToggleText>
       </ToggleButton>
