@@ -14,14 +14,16 @@ export const ContentWrapper = styled(View)<{ isTablet: boolean }>(({ isTablet })
   width: '100%',
   alignSelf: 'center' as const,
   flexDirection: 'column' as const,
-  gap: scale(30),
+  gap: isTablet ? scale(10) : scale(30),
   alignItems: 'center' as const,
   paddingHorizontal: scale(32),
-  paddingVertical: scale(40)
+  paddingVertical: isTablet ? scale(12) : scale(40),
+  justifyContent: 'center' as const,
+  flex: 1
 }))
 
-export const AuthActionsContainer = styled(View)(() => ({
+export const AuthActionsContainer = styled(View)<{ isTablet: boolean }>(({ isTablet }) => ({
   flexDirection: 'column' as const,
-  gap: scale(16),
+  gap: isTablet ? scale(8) : scale(16),
   width: '100%'
 }))
