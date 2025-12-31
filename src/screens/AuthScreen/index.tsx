@@ -81,24 +81,26 @@ export function AuthScreen() {
               authState={authState}
               isTablet={isTablet}
             />
-                        <AuthActionsContainer>
-
-            <ModeToggle
-              authState={authState}
-              setAuthState={setAuthState}
-            />
-            
+            <AuthActionsContainer isTablet={isTablet}>
+              <ModeToggle
+                authState={authState}
+                setAuthState={setAuthState}
+                isTablet={isTablet}
+              />
+              
               <AuthForm
                 authState={authState}
                 formData={formData}
                 setFormData={setFormData}
                 setAuthState={setAuthState}
+                isTablet={isTablet}
               />
               
               <GuestLogin
                 loading={authState.loading}
                 onGuestLogin={handleGuestLogin}
                 isVisible={authState.mode === 'login'}
+                isTablet={isTablet}
               />
             </AuthActionsContainer>
           </ContentWrapper>
