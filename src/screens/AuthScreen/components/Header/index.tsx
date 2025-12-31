@@ -17,13 +17,13 @@ export const Header: React.FC<HeaderProps> = ({
   isTablet
 }) => {
   return (
-  <HeaderContainer>
+  <HeaderContainer isTablet={isTablet}>
     <AppLogo isTablet={isTablet} />
     <TitlesContainer>
       <Title isTablet={isTablet}>
         Tonalè
       </Title>
-      <Subtitle>
+      <Subtitle isTablet={isTablet}>
         {authState.mode === 'login' 
           ? 'Welcome back to your musical journey'
           : 'Begin your musical journey today'}
