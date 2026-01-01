@@ -1,20 +1,26 @@
-import styled from '@emotion/native'
-import { scale } from 'react-native-size-matters'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import styled from '@emotion/native'
+import { View } from 'react-native'
+import { scale } from 'react-native-size-matters'
 
-export const Title = styled.Text(({ theme }) => ({
-  fontSize: scale(24),
+export const HeaderContainer = styled(View)<{ isTablet: boolean }>(({ isTablet }) => ({
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%'
+}))
+
+export const Title = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
+  fontSize: isTablet ? scale(20) : scale(24),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
   textAlign: 'center'
 }))
 
-export const Subtitle = styled.Text(({ theme }) => ({
-  fontSize: scale(16),
+export const Subtitle = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
+  fontSize: isTablet ? scale(12) : scale(16),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.normal),
   textAlign: 'center',
-  opacity: 0.7,
-  marginBottom: scale(32)
+  opacity: 0.7
 }))
 

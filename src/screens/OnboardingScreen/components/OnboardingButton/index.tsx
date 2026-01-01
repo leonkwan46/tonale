@@ -7,12 +7,14 @@ interface OnboardingButtonProps {
   isEnabled: boolean
   isCompleting: boolean
   onPress: () => void
+  isTablet: boolean
 }
 
 const OnboardingButtonComponent: React.FC<OnboardingButtonProps> = ({
   isEnabled,
   isCompleting,
-  onPress
+  onPress,
+  isTablet
 }) => {
   return (
     <PrimaryButton
@@ -20,16 +22,17 @@ const OnboardingButtonComponent: React.FC<OnboardingButtonProps> = ({
       disabled={!isEnabled}
       onPress={onPress}
       testID="complete-onboarding-button"
+      isTablet={isTablet}
     >
       {isCompleting ? (
         <>
           <ActivityIndicator size="small" color="#000" />
-          <PrimaryButtonText style={{ marginLeft: scale(8) }}>
+          <PrimaryButtonText isTablet={isTablet} style={{ marginLeft: scale(8) }}>
             Completing...
           </PrimaryButtonText>
         </>
       ) : (
-        <PrimaryButtonText>Start!</PrimaryButtonText>
+        <PrimaryButtonText isTablet={isTablet}>Start!</PrimaryButtonText>
       )}
     </PrimaryButton>
   )

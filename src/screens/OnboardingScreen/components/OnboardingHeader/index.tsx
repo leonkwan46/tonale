@@ -1,12 +1,16 @@
 import * as React from 'react'
-import { Subtitle, Title } from './OnboardingHeader.styles'
+import { HeaderContainer, Subtitle, Title } from './OnboardingHeader.styles'
 
-const OnboardingHeaderComponent: React.FC = () => {
+interface OnboardingHeaderProps {
+  isTablet: boolean
+}
+
+const OnboardingHeaderComponent: React.FC<OnboardingHeaderProps> = ({ isTablet }) => {
   return (
-    <>
-      <Title>Welcome to Tonalè!</Title>
-      <Subtitle>Tell us a bit about yourself to get started</Subtitle>
-    </>
+    <HeaderContainer isTablet={isTablet}>
+      <Title isTablet={isTablet}>Welcome to Tonalè!</Title>
+      <Subtitle isTablet={isTablet}>Tell us a bit about yourself to get started</Subtitle>
+    </HeaderContainer>
   )
 }
 

@@ -14,17 +14,19 @@ const getDisplayLabel = (value: string): string => {
 interface GenderSelectionProps {
   selectedGender: UserGender | null
   onSelect: (gender: UserGender) => void
+  isTablet: boolean
 }
 
 const GenderSelectionComponent: React.FC<GenderSelectionProps> = ({
   selectedGender,
-  onSelect
+  onSelect,
+  isTablet
 }) => {
   const theme = useTheme()
 
   return (
-    <SectionContainer>
-      <SectionTitle>Gender</SectionTitle>
+    <SectionContainer isTablet={isTablet}>
+      <SectionTitle isTablet={isTablet}>Gender</SectionTitle>
       <GridSelection
         options={GENDER_OPTIONS}
         selectedOption={selectedGender}

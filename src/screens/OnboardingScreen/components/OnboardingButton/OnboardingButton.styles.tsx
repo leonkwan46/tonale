@@ -3,14 +3,13 @@ import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number; disabled: boolean }>(({ theme, opacity, disabled }) => ({
+export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number; disabled: boolean; isTablet?: boolean }>(({ theme, opacity, disabled, isTablet }) => ({
   backgroundColor: theme.colors.primary,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: scale(16),
+  paddingVertical: isTablet ? scale(10) : scale(16),
   borderRadius: scale(12),
-  marginTop: scale(8),
   shadowColor: theme.colors.primary,
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.3,
@@ -20,10 +19,10 @@ export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number; disable
   width: '100%'
 }))
 
-export const PrimaryButtonText = styled.Text`
-  color: #fff;
-  font-size: ${scale(16)};
-  margin-right: ${scale(8)};
-  font-family: "${getSourGummyFontFamily('600')}";
-`
+export const PrimaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+  color: '#fff',
+  fontSize: isTablet ? scale(14) : scale(16),
+  marginRight: scale(8),
+  fontFamily: getSourGummyFontFamily('600')
+}))
 
