@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "tonale.app"
-               BlueprintName = "tonale"
-               ReferencedContainer = "container:tonale.xcodeproj">
+               BuildableName = "Tonal.app"
+               BlueprintName = "Tonal"
+               ReferencedContainer = "container:Tonal.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "tonaleTests.xctest"
-               BlueprintName = "tonaleTests"
-               ReferencedContainer = "container:tonale.xcodeproj">
+               BuildableName = "TonalTests.xctest"
+               BlueprintName = "TonalTests"
+               ReferencedContainer = "container:Tonal.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "tonale.app"
-            BlueprintName = "tonale"
-            ReferencedContainer = "container:tonale.xcodeproj">
+            BuildableName = "Tonal.app"
+            BlueprintName = "Tonal"
+            ReferencedContainer = "container:Tonal.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "tonale.app"
-            BlueprintName = "tonale"
-            ReferencedContainer = "container:tonale.xcodeproj">
+            BuildableName = "Tonal.app"
+            BlueprintName = "Tonal"
+            ReferencedContainer = "container:Tonal.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
