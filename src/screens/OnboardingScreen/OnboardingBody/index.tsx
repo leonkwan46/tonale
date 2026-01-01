@@ -2,10 +2,11 @@ import { updateUserData } from '@/config/firebase/functions'
 import { INSTRUMENT, type UserGender, type UserInstrument, type UserProfile } from '@types'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
+import { useDevice } from '../../../hooks/useDevice'
 import { AvatarPreview } from '../components/AvatarPreview'
-import { CustomInstrumentInput } from '../components/CustomInstrumentInput'
 import { GenderSelection } from '../components/GenderSelection'
 import { InstrumentSelection } from '../components/InstrumentSelection'
 import { OnboardingButton } from '../components/OnboardingButton'
@@ -22,10 +23,18 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
   setProfile
 }) => {
   const router = useRouter()
+  const { isTablet } = useDevice()
+  const scrollViewRef = useRef<ScrollView>(null)
   const [selectedGender, setSelectedGender] = useState<UserGender | null>('male')
   const [selectedInstrument, setSelectedInstrument] = useState<UserInstrument | null>(null)
   const [customInstrument, setCustomInstrument] = useState<string>('')
   const [isCompleting, setIsCompleting] = useState(false)
+
+  const handleScrollToBottom = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true })
+    }, 100)
+  }
 
   const canCompleteOnboarding = selectedGender !== null && 
     selectedInstrument !== null && 
@@ -62,44 +71,44 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
 
   return (
     <ContentContainer 
+      ref={scrollViewRef}
+      isTablet={isTablet}
+      showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[1]}
       contentContainerStyle={{ 
         alignItems: 'center',
-        paddingBottom: scale(20)
+        padding: isTablet ? scale(8) : scale(10),
+        gap: isTablet ? scale(16) : scale(32)
       }}
     >
-      <OnboardingHeader />
+      <OnboardingHeader isTablet={isTablet} />
 
       <AvatarPreview 
         selectedGender={selectedGender} 
         selectedInstrument={selectedInstrument}
+        isTablet={isTablet}
       />
 
       <GenderSelection
         selectedGender={selectedGender}
         onSelect={setSelectedGender}
+        isTablet={isTablet}
       />
 
       <InstrumentSelection
         selectedInstrument={selectedInstrument}
-        onSelect={(instrument) => {
-          setSelectedInstrument(instrument)
-          if (instrument !== INSTRUMENT.OTHER) {
-            setCustomInstrument('')
-          }
-        }}
+        onSelect={setSelectedInstrument}
+        customInstrument={customInstrument}
+        onCustomInstrumentChange={setCustomInstrument}
+        onScrollToBottom={handleScrollToBottom}
+        isTablet={isTablet}
       />
-
-      {selectedInstrument === INSTRUMENT.OTHER && (
-        <CustomInstrumentInput
-          value={customInstrument}
-          onChangeText={setCustomInstrument}
-        />
-      )}
 
       <OnboardingButton
         isEnabled={canCompleteOnboarding}
         isCompleting={isCompleting}
         onPress={handleCompleteOnboarding}
+        isTablet={isTablet}
       />
     </ContentContainer>
   )
