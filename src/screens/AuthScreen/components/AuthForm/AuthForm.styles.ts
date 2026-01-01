@@ -33,7 +33,7 @@ export const ErrorText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet 
 
 export const InputsContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
   flexDirection: 'column',
-  gap: isTablet ? scale(4) : scale(8),
+  gap: isTablet ? scale(6) : scale(8),
   width: '100%'
 }))
 

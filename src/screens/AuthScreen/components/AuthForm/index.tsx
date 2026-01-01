@@ -8,16 +8,16 @@ import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import type { AuthFormData, AuthState } from '../../index'
 import {
-  ErrorContainer,
-  ErrorText,
-  EyeIcon,
-  FormSection,
-  Input,
-  InputField,
-  InputsContainer,
-  PrimaryButton,
-  PrimaryButtonText,
-  RequirementsText
+    ErrorContainer,
+    ErrorText,
+    EyeIcon,
+    FormSection,
+    Input,
+    InputField,
+    InputsContainer,
+    PrimaryButton,
+    PrimaryButtonText,
+    RequirementsText
 } from './AuthForm.styles'
 
 interface AuthFormProps {
