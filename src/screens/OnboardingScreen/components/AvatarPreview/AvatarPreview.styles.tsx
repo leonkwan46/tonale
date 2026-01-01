@@ -1,17 +1,27 @@
 import styled from '@emotion/native'
-import { Image } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
+import { Dimensions, Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export const AvatarContainer = styled.View`
-  width: 100%;
-  min-height: ${scale(120)};
-  align-items: center;
-  justify-content: center;
-`
+const screenWidth = Dimensions.get('window').width
 
-export const AvatarImage = styled(Image)({
-  width: scale(120),
-  height: scale(120),
+export const StickerWrapper = styled(View)<{ isTablet?: boolean }>(({ isTablet }) => ({
+  width: screenWidth,
+  alignItems: 'center',
+  padding: scale(6)
+}))
+
+export const LinearGradientView = styled(LinearGradient)<{ isTablet?: boolean }>(({ isTablet }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  height: isTablet ? scale(140) : scale(160),
+  pointerEvents: 'none'
+}))
+
+export const AvatarImage = styled(Image)<{ isTablet?: boolean }>(({ isTablet }) => ({
+  width: isTablet ? scale(100) : scale(160),
+  height: isTablet ? scale(100) : scale(120),
   resizeMode: 'contain'
-})
-
+}))
