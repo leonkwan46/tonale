@@ -1,15 +1,12 @@
 import { auth } from '@/config/firebase/firebase'
-import { ScreenContainer } from '@/sharedComponents'
+import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
-import { Platform } from 'react-native'
 
 import { useDevice } from '../../hooks/useDevice'
 import {
   AuthActionsContainer,
-  ContentWrapper,
-  KeyboardContainer,
-  ScrollContainer
+  ContentWrapper
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
@@ -69,43 +66,39 @@ export function AuthScreen() {
   
   return (
     <ScreenContainer>
-      <KeyboardContainer 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      <KeyboardAwareScrollView 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <ScrollContainer 
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-        >
-          <ContentWrapper isTablet={isTablet}>
-            <Header
+        <ContentWrapper isTablet={isTablet}>
+          <Header
+            authState={authState}
+            isTablet={isTablet}
+          />
+          <AuthActionsContainer isTablet={isTablet}>
+            <ModeToggle
               authState={authState}
+              setAuthState={setAuthState}
               isTablet={isTablet}
             />
-            <AuthActionsContainer isTablet={isTablet}>
-              <ModeToggle
-                authState={authState}
-                setAuthState={setAuthState}
-                isTablet={isTablet}
-              />
-              
-              <AuthForm
-                authState={authState}
-                formData={formData}
-                setFormData={setFormData}
-                setAuthState={setAuthState}
-                isTablet={isTablet}
-              />
-              
-              <GuestLogin
-                loading={authState.loading}
-                onGuestLogin={handleGuestLogin}
-                isVisible={authState.mode === 'login'}
-                isTablet={isTablet}
-              />
-            </AuthActionsContainer>
-          </ContentWrapper>
-        </ScrollContainer>
-      </KeyboardContainer>
+            
+            <AuthForm
+              authState={authState}
+              formData={formData}
+              setFormData={setFormData}
+              setAuthState={setAuthState}
+              isTablet={isTablet}
+            />
+            
+            <GuestLogin
+              loading={authState.loading}
+              onGuestLogin={handleGuestLogin}
+              isVisible={authState.mode === 'login'}
+              isTablet={isTablet}
+            />
+          </AuthActionsContainer>
+        </ContentWrapper>
+      </KeyboardAwareScrollView>
     </ScreenContainer>
   )
 }
