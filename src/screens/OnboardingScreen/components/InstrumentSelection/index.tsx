@@ -56,6 +56,7 @@ const InstrumentSelectionComponent: React.FC<InstrumentSelectionProps> = ({
           isTablet={isTablet}
           placeholder="Enter your instrument"
           placeholderTextColor="#999"
+          keyboardType="default"
           value={customInstrument}
           onChangeText={onCustomInstrumentChange}
           onLayout={() => {
