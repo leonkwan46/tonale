@@ -1,4 +1,5 @@
 import { updateUserData } from '@/config/firebase/functions'
+import { KeyboardAwareScrollView } from '@/sharedComponents'
 import { INSTRUMENT, type UserGender, type UserInstrument, type UserProfile } from '@types'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
@@ -11,7 +12,6 @@ import { GenderSelection } from '../components/GenderSelection'
 import { InstrumentSelection } from '../components/InstrumentSelection'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
-import { ContentContainer } from './OnboardingBody.styles'
 
 interface OnboardingBodyProps {
   user: { uid: string } | null
@@ -70,9 +70,8 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
   }
 
   return (
-    <ContentContainer 
+    <KeyboardAwareScrollView
       ref={scrollViewRef}
-      isTablet={isTablet}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[1]}
       contentContainerStyle={{ 
@@ -110,7 +109,7 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
         onPress={handleCompleteOnboarding}
         isTablet={isTablet}
       />
-    </ContentContainer>
+    </KeyboardAwareScrollView>
   )
 }
 
