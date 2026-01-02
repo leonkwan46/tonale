@@ -6,7 +6,7 @@ import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const GuestLoginContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
   flexDirection: 'column',
-  gap: isTablet ? scale(8) : scale(16),
+  gap: isTablet ? scale(6) : scale(16),
   width: '100%'
 }))
 
@@ -23,8 +23,8 @@ export const Divider = styled.View(({ theme }) => ({
 }))
 
 export const DividerText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  paddingHorizontal: scale(16),
-  fontSize: isTablet ? scale(12) : scale(14),
+  paddingHorizontal: isTablet ? scale(12) : scale(16),
+  fontSize: isTablet ? scale(10) : scale(14),
   opacity: 0.6,
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400')
@@ -34,7 +34,7 @@ export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean; is
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: isTablet ? scale(10) : scale(16),
+  paddingVertical: isTablet ? scale(8) : scale(16),
   borderRadius: scale(12),
   borderWidth: 2,
   borderColor: theme.colors.primary,
@@ -42,12 +42,12 @@ export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean; is
 }))
 
 export const SecondaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(14) : scale(16),
+  fontSize: isTablet ? scale(12) : scale(16),
   color: theme.colors.primary,
   fontFamily: getSourGummyFontFamily('500')
 }))
 
-export const ButtonIcon = styled.View({
-  marginLeft: scale(4)
-})
+export const ButtonIcon = styled.View<{ isTablet?: boolean }>(({ isTablet }) => ({
+  marginLeft: isTablet ? scale(3) : scale(4)
+}))
 

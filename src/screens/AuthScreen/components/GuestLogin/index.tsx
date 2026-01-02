@@ -46,8 +46,8 @@ export const GuestLogin: React.FC<GuestLoginProps> = ({
         disabled={loading}
         isTablet={isTablet}
       >
-        <ButtonIcon>
-          <Ionicons name="person-outline" size={scale(20)} color={theme.colors.primary} />
+        <ButtonIcon isTablet={isTablet}>
+          <Ionicons name="person-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
         </ButtonIcon>
         <SecondaryButtonText isTablet={isTablet}>
           Continue as Guest
