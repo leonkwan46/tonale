@@ -5,19 +5,21 @@ import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import * as React from 'react'
+import { useRef } from 'react'
+import { Keyboard, TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import type { AuthFormData, AuthState } from '../../index'
 import {
-    ErrorContainer,
-    ErrorText,
-    EyeIcon,
-    FormSection,
-    Input,
-    InputField,
-    InputsContainer,
-    PrimaryButton,
-    PrimaryButtonText,
-    RequirementsText
+  ErrorContainer,
+  ErrorText,
+  EyeIcon,
+  FormSection,
+  Input,
+  InputField,
+  InputsContainer,
+  PrimaryButton,
+  PrimaryButtonText,
+  RequirementsText
 } from './AuthForm.styles'
 
 interface AuthFormProps {
@@ -37,6 +39,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({
 }: AuthFormProps) => {
   const theme = useTheme()
   const { setProfile, setIsRegistering } = useUser()
+
+  // Refs for TextInputs to manage focus
+  const emailInputRef = useRef<TextInput>(null)
+  const passwordInputRef = useRef<TextInput>(null)
+  const confirmPasswordInputRef = useRef<TextInput>(null)
 
   const updateFormData = (field: keyof AuthFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -83,6 +90,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   }
 
   const handleAuth = async () => {
+    Keyboard.dismiss()
+    emailInputRef.current?.blur()
+    passwordInputRef.current?.blur()
+    confirmPasswordInputRef.current?.blur()
+    
     if (!validateForm()) return
 
     try {
@@ -99,20 +111,41 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       updateAuthState({ loading: false })
     }
   }
+
+  // Handle submit from email field - move to password
+  const handleEmailSubmit = () => {
+    passwordInputRef.current?.focus()
+  }
+
+  // Handle submit from password field
+  const handlePasswordSubmit = () => {
+    if (authState.mode === 'register') {
+      confirmPasswordInputRef.current?.focus()
+    } else {
+      // In login mode, submit the form
+      handleAuth()
+    }
+  }
+
+  // Handle submit from confirm password field
+  const handleConfirmPasswordSubmit = () => {
+    handleAuth()
+  }
   
   return (
   <FormSection isTablet={isTablet}>
     {authState.error ? (
       <ErrorContainer isTablet={isTablet}>
-        <Ionicons name="alert-circle" size={isTablet ? scale(16) : scale(20)} color={theme.colors.error} />
+        <Ionicons name="alert-circle" size={isTablet ? scale(14) : scale(20)} color={theme.colors.error} />
         <ErrorText isTablet={isTablet}>{authState.error}</ErrorText>
       </ErrorContainer>
     ) : null}
 
     <InputsContainer isTablet={isTablet}>
       <InputField isTablet={isTablet}>
-        <Ionicons name="mail-outline" size={scale(20)} color={theme.colors.primary} />
+        <Ionicons name="mail-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
         <Input
+          ref={emailInputRef}
           isTablet={isTablet}
           placeholder="Email"
           placeholderTextColor={theme.colors.secondary}
@@ -123,12 +156,15 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           autoCorrect={false}
           textContentType={authState.mode === 'login' ? 'username' : 'emailAddress'}
           autoComplete={authState.mode === 'login' ? 'username' : 'email'}
+          returnKeyType="next"
+          onSubmitEditing={handleEmailSubmit}
         />
       </InputField>
 
       <InputField isTablet={isTablet}>
-        <Ionicons name="lock-closed-outline" size={scale(20)} color={theme.colors.primary} />
+        <Ionicons name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
         <Input
+          ref={passwordInputRef}
           isTablet={isTablet}
           placeholder="Password"
           placeholderTextColor={theme.colors.secondary}
@@ -137,13 +173,16 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           secureTextEntry={!authState.showPassword}
           textContentType={authState.mode === 'login' ? 'password' : 'newPassword'}
           autoComplete={authState.mode === 'login' ? 'current-password' : 'new-password'}
+          returnKeyType={authState.mode === 'register' ? 'next' : 'done'}
+          onSubmitEditing={handlePasswordSubmit}
         />
         <EyeIcon
+          isTablet={isTablet}
           onPress={() => updateAuthState({ showPassword: !authState.showPassword })}
         >
           <Ionicons 
             name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'} 
-            size={scale(18)} 
+            size={isTablet ? scale(16) : scale(18)} 
             color={theme.colors.primary} 
           />
         </EyeIcon>
@@ -151,8 +190,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({
 
       {authState.mode === 'register' && (
         <InputField isTablet={isTablet}>
-          <Ionicons name="lock-closed-outline" size={scale(20)} color={theme.colors.primary} />
+          <Ionicons name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
           <Input
+            ref={confirmPasswordInputRef}
             isTablet={isTablet}
             placeholder="Confirm Password"
             placeholderTextColor={theme.colors.secondary}
@@ -161,13 +201,16 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             secureTextEntry={!authState.showConfirmPassword}
             textContentType="newPassword"
             autoComplete="new-password"
+            returnKeyType="done"
+            onSubmitEditing={handleConfirmPasswordSubmit}
           />
           <EyeIcon
+            isTablet={isTablet}
             onPress={() => updateAuthState({ showConfirmPassword: !authState.showConfirmPassword })}
           >
             <Ionicons 
               name={authState.showConfirmPassword ? 'eye-outline' : 'eye-off-outline'} 
-              size={scale(20)} 
+              size={isTablet ? scale(16) : scale(20)} 
               color={theme.colors.primary} 
             />
           </EyeIcon>
@@ -195,7 +238,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       </PrimaryButtonText>
       <Ionicons 
         name={authState.mode === 'login' ? 'arrow-forward' : 'person-add'} 
-        size={scale(20)} 
+        size={isTablet ? scale(16) : scale(20)} 
         color={theme.colors.text} 
       />
     </PrimaryButton>
