@@ -1,6 +1,7 @@
 export { ProgressProvider } from '@/hooks/useProgressContext'
 export { UserProvider } from '@/hooks/useUserContext'
 export { ErrorBoundary } from './containers/ErrorBoundary'
+export { KeyboardAwareScrollView } from './containers/KeyboardAwareScrollView'
 export { ScreenContainer } from './containers/ScreenContainer'
 export { UnifiedThemeProvider } from './containers/UnifiedThemeProvider'
 export { DisplayCard } from './DisplayCard'
