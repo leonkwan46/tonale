@@ -4,4 +4,5 @@ export { usePlayer } from './usePlayer'
 export { usePreventDoubleTap } from './usePreventDoubleTap'
 export { useProgress } from './useProgressContext'
 export { useUser } from './useUserContext'
+export { useWindowDimensions } from './useWindowDimensions'
 

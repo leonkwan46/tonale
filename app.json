@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tonale",
+    "name": "Tonalè",
     "slug": "tonale",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -45,7 +45,8 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-audio"
+      "expo-audio",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

@@ -2,9 +2,9 @@ appId: com.leonkwan46.tonale
 jsEngine: graaljs
 
 ---
-- evalScript: ${output.testEmail = "TEST@test.com"}
-- evalScript: ${output.testPassword = "test123"}
-- assertVisible: "Tonale"
+- evalScript: ${output.testEmail = "e2e@test.com"}
+- evalScript: ${output.testPassword = "e2etest"}
+- assertVisible: "Tonalè"
 - assertVisible: "Email"
 - assertVisible: "Password"
 - tapOn: "Email"

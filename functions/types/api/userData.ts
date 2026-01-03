@@ -1,6 +1,10 @@
 import type { Timestamp } from 'firebase/firestore'
 import type { LessonProgress } from './lessons'
 
+export type UserGender = 'male' | 'female'
+
+export type UserInstrument = 'piano' | 'guitar' | 'violin' | 'drums' | 'flute' | 'saxophone' | 'trumpet' | 'cello' | 'vocal' | 'other'
+
 export interface StageProgress {
   isUnlocked: boolean
   isCleared: boolean
@@ -14,6 +18,10 @@ export interface ProgressData {
 
 export interface UserProfile {
   email: string
+  onboardingCompleted?: boolean
+  gender?: UserGender
+  name?: string
+  instrument?: UserInstrument | string // Allow custom instrument strings
   progress?: ProgressData
   streakDay?: number
   lastLoginDate?: string
@@ -24,6 +32,18 @@ export interface UserProfile {
 export interface UserDataSuccessResponse {
   success: boolean
   message: string
+}
+
+export interface CreateUserDataResponse {
+  success: boolean
+  message: string
+  data: UserProfile
+}
+
+export interface UpdateUserDataResponse {
+  success: boolean
+  message: string
+  data: UserProfile
 }
 
 export interface GetUserDataResponse {
