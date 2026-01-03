@@ -1,4 +1,4 @@
-import type { GetUserDataResponse, UserDataSuccessResponse } from '@types'
+import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserDataSuccessResponse } from '@types'
 import * as functions from 'firebase-functions/v1'
 import {
     createUserDataService,
@@ -25,7 +25,7 @@ export const createUserData = functions.https.onCall(async (data: any, context) 
 
   try {
     // Delegate to service layer
-    return await createUserDataService(userId, userData) as UserDataSuccessResponse
+    return await createUserDataService(userId, userData) as CreateUserDataResponse
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     
@@ -81,7 +81,7 @@ export const updateUserData = functions.https.onCall(async (data: any, context) 
 
   try {
     // Delegate to service layer
-    return await updateUserDataService(userId, updates) as UserDataSuccessResponse
+    return await updateUserDataService(userId, updates) as UpdateUserDataResponse
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     

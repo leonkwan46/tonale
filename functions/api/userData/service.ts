@@ -1,4 +1,4 @@
-import type { GetUserDataResponse, UserDataSuccessResponse, UserProfile } from '@types'
+import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserDataSuccessResponse, UserProfile } from '@types'
 import { createUserDocument, deleteUserDocument, getUserDocument, updateUserDocument } from './firestore'
 
 // ============================================================================
@@ -37,13 +37,14 @@ export function validateUserUpdates(updates: any): void {
 export async function createUserDataService(
   userId: string,
   userData: Partial<UserProfile>
-): Promise<UserDataSuccessResponse> {
+): Promise<CreateUserDataResponse> {
   validateUserData(userData)
 
   await createUserDocument(userId, userData)
 
   // Read back the document to ensure it's consistent and readable
   // This ensures Firestore eventual consistency doesn't cause issues
+  // Also return the data to avoid an extra getUserData call
   const doc = await getUserDocument(userId)
   
   if (!doc.exists) {
@@ -52,7 +53,8 @@ export async function createUserDataService(
   }
   return {
     success: true,
-    message: 'User data created successfully'
+    message: 'User data created successfully',
+    data: doc.data()!
   }
 }
 
@@ -82,7 +84,7 @@ export async function getUserDataService(
 export async function updateUserDataService(
   userId: string,
   updates: Partial<UserProfile>
-): Promise<UserDataSuccessResponse> {
+): Promise<UpdateUserDataResponse> {
   validateUserUpdates(updates)
 
   // Check if document exists (handles race condition where streak sync happens before createUserData completes)
@@ -95,9 +97,19 @@ export async function updateUserDataService(
     await updateUserDocument(userId, updates)
   }
 
+  // Read back the updated document to return the latest data
+  // This avoids an extra getUserData call after update
+  const updatedDoc = await getUserDocument(userId)
+  
+  if (!updatedDoc.exists) {
+    console.error('[updateUserDataService] ERROR: Document not found after update!')
+    throw new Error('Failed to update user data - document not found after update')
+  }
+
   return {
     success: true,
-    message: 'User data updated successfully'
+    message: 'User data updated successfully',
+    data: updatedDoc.data()!
   }
 }
 
