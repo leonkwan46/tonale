@@ -1,9 +1,7 @@
 import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Dimensions, Image, View } from 'react-native'
+import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
-
-const screenWidth = Dimensions.get('window').width
 
 export const HomeScreenBackgroundContainer = styled(View)({
   flex: 1
@@ -15,13 +13,13 @@ export const ImageContainer = styled(View)({
   position: 'relative'
 })
 
-export const HomepageImage = styled(Image)({
+export const StageImage = styled(Image)<{ screenWidth: number }>(({ screenWidth }) => ({
   width: screenWidth,
   height: screenWidth * 1.5,
   resizeMode: 'cover'
-})
+}))
 
-export const CharacterImage = styled(Image)({
+export const AvatarImage = styled(Image)<{ screenWidth: number }>(({ screenWidth }) => ({
   position: 'absolute',
   bottom: scale(100),
   left: screenWidth / 2 - scale(65),
@@ -29,7 +27,7 @@ export const CharacterImage = styled(Image)({
   width: screenWidth / 2.5,
   height: screenWidth / 2.5,
   resizeMode: 'contain'
-})
+}))
 
 export const BackgroundGradient = styled(LinearGradient)({
   paddingBottom: scale(100)

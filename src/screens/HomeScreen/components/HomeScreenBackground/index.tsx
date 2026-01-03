@@ -1,9 +1,10 @@
+import { useWindowDimensions } from '@/hooks'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import * as React from 'react'
 import { useMemo } from 'react'
 import { RefreshControl, ScrollView, useColorScheme } from 'react-native'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
-import { BackgroundGradient, CharacterImage, HomepageImage, ImageContainer } from './HomeScreenBackground.styles'
+import { AvatarImage, BackgroundGradient, ImageContainer, StageImage } from './HomeScreenBackground.styles'
 
 interface HomeScreenBackgroundProps {
   children: React.ReactNode
@@ -15,13 +16,14 @@ interface HomeScreenBackgroundProps {
 
 export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender, instrument }) => {
   const colorScheme = useColorScheme() ?? 'light'
+  const { width: screenWidth } = useWindowDimensions()
 
-  const homepageStageImage =
+  const stageImage =
     colorScheme === 'dark'
       ? require('../../../../../assets/images/dark-homepage.png')
       : require('../../../../../assets/images/light-homepage.png')
 
-  const characterImageSource = useMemo(() => {
+  const avatarImage = useMemo(() => {
     const isFemale = gender === 'female'
 
     if (instrument === INSTRUMENT.PIANO) {
@@ -68,7 +70,8 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        bounces={false}
+        alwaysBounceVertical={false}
+        overScrollMode="never"
         showsVerticalScrollIndicator={false}
       >
         <BackgroundGradient 
@@ -82,9 +85,9 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
             </ContentContainer>
         </BackgroundGradient>
         <ImageContainer>
-          <HomepageImage source={homepageStageImage} />
-          {/* TODO: Character will be animation in the future, using Lottie. This is currently a placeholder */}
-          <CharacterImage source={characterImageSource} />
+          <StageImage source={stageImage} screenWidth={screenWidth} />
+          {/* TODO: Avatar will be animation in the future, using Lottie. This is currently a placeholder */}
+          <AvatarImage source={avatarImage} screenWidth={screenWidth} />
         </ImageContainer>
       </ScrollView>
     </>
