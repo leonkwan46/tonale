@@ -1,10 +1,13 @@
 import { useWindowDimensions } from '@/hooks'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
-import * as React from 'react'
-import { useMemo } from 'react'
-import { RefreshControl, ScrollView, useColorScheme } from 'react-native'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView, View, useColorScheme } from 'react-native'
+import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
+import { ClapCelebration } from './ClapCelebration'
 import { AvatarImage, BackgroundGradient, ImageContainer, StageImage } from './HomeScreenBackground.styles'
+import { PullIndicator } from './PullIndicator'
+import { PULL_THRESHOLD } from './PullIndicator/PullIndicator.constants'
 
 interface HomeScreenBackgroundProps {
   children: React.ReactNode
@@ -17,6 +20,11 @@ interface HomeScreenBackgroundProps {
 export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender, instrument }) => {
   const colorScheme = useColorScheme() ?? 'light'
   const { width: screenWidth } = useWindowDimensions()
+  const [celebrationTrigger, setCelebrationTrigger] = useState(false)
+  const [messageIndex, setMessageIndex] = useState(0)
+  const scrollViewRef = useRef<ScrollView>(null)
+  const hasTriggeredRef = useRef(false)
+  const pullDistance = useSharedValue(0)
 
   const stageImage =
     colorScheme === 'dark'
@@ -50,7 +58,6 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
         : require('../../../../../assets/images/boy/boy_vocal.png')
     }
 
-    // Fall back to full body images for OTHER instrument, custom instruments, or no instrument selected
     return isFemale
       ? require('../../../../../assets/images/girl/girl_full.png')
       : require('../../../../../assets/images/boy/boy_full.png')
@@ -61,18 +68,54 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
         ? ['#2E3237', '#1E252B', '#1A1E22', '#331009'] as const
         : ['#EEEEEE', '#A3C3CA', '#68A9B7', '#BF3713'] as const
 
+  // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
+  // Need to implement gesture-based solution for Android if cross-platform support is required.
+  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (Platform.OS !== 'ios') return
+    
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent
+    const maxScrollY = contentSize.height - layoutMeasurement.height
+    const scrollY = contentOffset.y
+    
+    if (scrollY > maxScrollY) {
+      const overscroll = scrollY - maxScrollY
+      pullDistance.value = withTiming(Math.min(overscroll, PULL_THRESHOLD * 1.5), { duration: 100 })
+    } else {
+      pullDistance.value = withTiming(0, { duration: 150 })
+    }
+  }, [pullDistance])
+
+  const handleScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (Platform.OS !== 'ios' || hasTriggeredRef.current) return
+    
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent
+    const maxScrollY = contentSize.height - layoutMeasurement.height
+    const scrollY = contentOffset.y
+    
+    if (scrollY > maxScrollY + PULL_THRESHOLD) {
+      hasTriggeredRef.current = true
+      setCelebrationTrigger(true)
+      setMessageIndex(prev => prev + 1)
+      setTimeout(() => {
+        setCelebrationTrigger(false)
+        hasTriggeredRef.current = false
+      }, 1600)
+    }
+  }, [])
+
   return (
-    <>
+    <View style={{ flex: 1, position: 'relative' }}>
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1
-        }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        alwaysBounceVertical={false}
-        overScrollMode="never"
+        ref={scrollViewRef}
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        bounces={Platform.OS === 'ios'}
+        alwaysBounceVertical={Platform.OS === 'ios'}
+        overScrollMode={Platform.OS === 'android' ? 'never' : undefined}
         showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        onScrollEndDrag={handleScrollEndDrag}
       >
         <BackgroundGradient 
           colors={gradientColors} 
@@ -80,17 +123,18 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
           start={{ x: 0, y: 0 }} 
           end={{ x: 0, y: 1 }}
         >
-            <ContentContainer>
-                {children as React.ReactElement[]}
-            </ContentContainer>
+          <ContentContainer>
+            {children as React.ReactElement[]}
+          </ContentContainer>
         </BackgroundGradient>
         <ImageContainer>
           <StageImage source={stageImage} screenWidth={screenWidth} />
           {/* TODO: Avatar will be animation in the future, using Lottie. This is currently a placeholder */}
           <AvatarImage source={avatarImage} screenWidth={screenWidth} />
         </ImageContainer>
+        <PullIndicator pullDistance={pullDistance} messageIndex={messageIndex} />
       </ScrollView>
-    </>
+      <ClapCelebration trigger={celebrationTrigger} />
+    </View>
   )
 }
-
