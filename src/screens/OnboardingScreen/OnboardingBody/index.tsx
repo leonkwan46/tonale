@@ -10,6 +10,7 @@ import { useDevice } from '../../../hooks/useDevice'
 import { AvatarPreview } from '../components/AvatarPreview'
 import { GenderSelection } from '../components/GenderSelection'
 import { InstrumentSelection } from '../components/InstrumentSelection'
+import { NameInput } from '../components/NameInput'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
 
@@ -26,6 +27,7 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
   const { isTablet } = useDevice()
   const scrollViewRef = useRef<ScrollView>(null)
   const [selectedGender, setSelectedGender] = useState<UserGender | null>('male')
+  const [name, setName] = useState<string>('')
   const [selectedInstrument, setSelectedInstrument] = useState<UserInstrument | null>(null)
   const [customInstrument, setCustomInstrument] = useState<string>('')
   const [isCompleting, setIsCompleting] = useState(false)
@@ -37,12 +39,13 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
   }
 
   const canCompleteOnboarding = selectedGender !== null && 
+    name.trim().length > 0 &&
     selectedInstrument !== null && 
     (selectedInstrument !== INSTRUMENT.OTHER || customInstrument.trim().length > 0) &&
     !isCompleting
 
   const handleCompleteOnboarding = async () => {
-    if (!selectedGender || !selectedInstrument || !user) {
+    if (!selectedGender || !name.trim() || !selectedInstrument || !user) {
       return
     }
 
@@ -56,6 +59,7 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
       const result = await updateUserData({
         onboardingCompleted: true,
         gender: selectedGender,
+        name: name.trim(),
         instrument: instrumentValue
       })
 
@@ -91,6 +95,12 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
       <GenderSelection
         selectedGender={selectedGender}
         onSelect={setSelectedGender}
+        isTablet={isTablet}
+      />
+
+      <NameInput
+        name={name}
+        onNameChange={setName}
         isTablet={isTablet}
       />
 

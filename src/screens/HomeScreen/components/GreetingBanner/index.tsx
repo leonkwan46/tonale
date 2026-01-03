@@ -18,7 +18,8 @@ const getUsername = (user: User | null, profile: UserProfile | null, loading: bo
   if (loading) return '...'
   if (!user) return 'Guest'
   
-  return user.displayName || 
+  return profile?.name ||
+         user.displayName || 
          user.email?.split('@')[0] || 
          profile?.email?.split('@')[0] || 
          'Guest'

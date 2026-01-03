@@ -20,6 +20,7 @@ export interface UserProfile {
   email: string
   onboardingCompleted?: boolean
   gender?: UserGender
+  name?: string
   instrument?: UserInstrument | string // Allow custom instrument strings
   progress?: ProgressData
   streakDay?: number
