@@ -119,6 +119,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
                 delay={index * WAVE_DELAY_INCREMENT + WAVE_DELAY_BASE}
             colorScheme={colorScheme}
             isTransitioning={isTransitioning}
+            isTablet={isTablet}
           />
         ))}
       </WavesContainer>
