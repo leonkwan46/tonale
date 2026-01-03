@@ -59,7 +59,6 @@ export function Wave({ delay, colorScheme, isTransitioning, isTablet }: WaveProp
   return (
     <Bar
       colorScheme={colorScheme}
-      isTablet={isTablet}
       style={barStyle}
     />
   )
