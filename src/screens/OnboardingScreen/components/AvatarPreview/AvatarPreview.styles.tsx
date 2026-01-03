@@ -1,11 +1,9 @@
 import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Dimensions, Image, View } from 'react-native'
+import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-const screenWidth = Dimensions.get('window').width
-
-export const StickerWrapper = styled(View)<{ isTablet?: boolean }>(({ isTablet }) => ({
+export const StickerWrapper = styled(View)<{ isTablet?: boolean; screenWidth: number }>(({ isTablet, screenWidth }) => ({
   width: screenWidth,
   alignItems: 'center',
   padding: scale(6)

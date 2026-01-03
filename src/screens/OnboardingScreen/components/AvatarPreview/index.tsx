@@ -1,3 +1,4 @@
+import { useWindowDimensions } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import * as React from 'react'
@@ -16,6 +17,7 @@ const AvatarPreviewComponent: React.FC<AvatarPreviewProps> = ({
   isTablet
 }) => {
   const theme = useTheme()
+  const { width: screenWidth } = useWindowDimensions()
   const imageSource = useMemo(() => {
     const isFemale = selectedGender === 'female'
 
@@ -50,6 +52,7 @@ const AvatarPreviewComponent: React.FC<AvatarPreviewProps> = ({
   return (
     <StickerWrapper
       isTablet={isTablet}
+      screenWidth={screenWidth}
     >
       <LinearGradientView
         isTablet={isTablet}
