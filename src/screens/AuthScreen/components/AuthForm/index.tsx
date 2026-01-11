@@ -38,7 +38,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   isTablet
 }: AuthFormProps) => {
   const theme = useTheme()
-  const { setProfile, setIsRegistering } = useUser()
+  const { setUserData, setIsRegistering } = useUser()
 
   // Refs for TextInputs to manage focus
   const emailInputRef = useRef<TextInput>(null)
@@ -82,7 +82,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       await user.getIdToken(true)
       const result = await createUserData({ email: user.email || formData.email })
       if (result.data.success && result.data.data) {
-        setProfile(result.data.data)
+        setUserData(result.data.data)
       }
     } finally {
       setIsRegistering(false)

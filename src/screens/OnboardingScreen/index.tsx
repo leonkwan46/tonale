@@ -8,18 +8,18 @@ import { ContentContainer } from './OnboardingScreen.styles'
 
 export function OnboardingScreen() {
   const router = useRouter()
-  const { user, profile, loading: userLoading, setProfile } = useUser()
+  const { authUser, userData, loading: userLoading, setUserData } = useUser()
 
   useEffect(() => {
     if (userLoading) return
-    if (!user) {
+    if (!authUser) {
       router.replace('/(auth)')
       return
     }
-    if (profile?.onboardingCompleted === true) {
+    if (userData?.onboardingCompleted === true) {
       router.replace('/(tabs)')
     }
-  }, [user, profile, userLoading, router])
+  }, [authUser, userData, userLoading, router])
 
   if (userLoading) {
     return (
@@ -31,11 +31,11 @@ export function OnboardingScreen() {
     )
   }
 
-  if (!user || profile?.onboardingCompleted === true) return null
+  if (!authUser || userData?.onboardingCompleted === true) return null
 
   return (
     <ScreenContainer includeBottomPadding>
-      <OnboardingBody user={user} setProfile={setProfile} />
+      <OnboardingBody authUser={authUser} setUserData={setUserData} />
     </ScreenContainer>
   )
 }

@@ -1,4 +1,4 @@
-import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserDataSuccessResponse, UserProfile } from '@types'
+import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserData, UserDataSuccessResponse } from '@types'
 import { createUserDocument, deleteUserDocument, getUserDocument, updateUserDocument } from './firestore'
 
 // ============================================================================
@@ -36,7 +36,7 @@ export function validateUserUpdates(updates: any): void {
  */
 export async function createUserDataService(
   userId: string,
-  userData: Partial<UserProfile>
+  userData: Partial<UserData>
 ): Promise<CreateUserDataResponse> {
   validateUserData(userData)
 
@@ -83,7 +83,7 @@ export async function getUserDataService(
  */
 export async function updateUserDataService(
   userId: string,
-  updates: Partial<UserProfile>
+  updates: Partial<UserData>
 ): Promise<UpdateUserDataResponse> {
   validateUserUpdates(updates)
 

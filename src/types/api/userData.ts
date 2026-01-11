@@ -12,7 +12,7 @@ export const INSTRUMENT = {
 } as const
 export type UserInstrument = typeof INSTRUMENT[keyof typeof INSTRUMENT]
 
-export interface UserProfile {
+export interface UserData {
   email: string
   onboardingCompleted?: boolean
   gender?: UserGender
@@ -40,17 +40,17 @@ export interface UserDataSuccessResponse {
 export interface CreateUserDataResponse {
   success: boolean
   message: string
-  data: UserProfile
+  data: UserData
 }
 
 export interface UpdateUserDataResponse {
   success: boolean
   message: string
-  data: UserProfile
+  data: UserData
 }
 
 export interface GetUserDataResponse {
   success: boolean
-  data: UserProfile
+  data: UserData
 }
 

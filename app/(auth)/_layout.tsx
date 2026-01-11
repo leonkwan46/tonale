@@ -3,21 +3,21 @@ import { Stack, useRouter } from 'expo-router'
 import { useEffect } from 'react'
 
 export default function AuthLayout() {
-  const { user, profile, loading } = useUser()
+  const { authUser, userData, loading } = useUser()
   const router = useRouter()
   
   // Use an effect for navigation
   useEffect(() => {
-    if (user && !loading) {
+    if (authUser && !loading) {
       // Check onboarding status before redirecting
-      if (profile?.onboardingCompleted === true) {
+      if (userData?.onboardingCompleted === true) {
         router.replace('../(tabs)')
       } else {
-        // Profile doesn't exist or onboarding not completed
+        // userData doesn't exist or onboarding not completed
         router.replace('../onboarding')
       }
     }
-  }, [user, profile, loading, router])
+  }, [authUser, userData, loading, router])
   
   // While loading, return nothing
   if (loading) return null

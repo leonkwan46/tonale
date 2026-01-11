@@ -1,4 +1,4 @@
-import type { UserProfile } from '@types'
+import type { UserData } from '@types'
 import * as admin from 'firebase-admin'
 import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore'
 
@@ -9,8 +9,8 @@ import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore'
 /**
  * Get user document from Firestore
  */
-export async function getUserDocument(userId: string): Promise<DocumentSnapshot<UserProfile>> {
-  return await admin.firestore().collection('users').doc(userId).get() as DocumentSnapshot<UserProfile>
+export async function getUserDocument(userId: string): Promise<DocumentSnapshot<UserData>> {
+  return await admin.firestore().collection('users').doc(userId).get() as DocumentSnapshot<UserData>
 }
 
 /**
@@ -19,7 +19,7 @@ export async function getUserDocument(userId: string): Promise<DocumentSnapshot<
  */
 export async function createUserDocument(
   userId: string,
-  userData: Partial<UserProfile>
+  userData: Partial<UserData>
 ): Promise<void> {
   const userRef = admin.firestore().collection('users').doc(userId)
   const doc = await userRef.get()
@@ -46,7 +46,7 @@ export async function createUserDocument(
  */
 export async function updateUserDocument(
   userId: string,
-  updates: Partial<UserProfile>
+  updates: Partial<UserData>
 ): Promise<void> {
   await admin.firestore().collection('users').doc(userId).update({
     ...updates,
