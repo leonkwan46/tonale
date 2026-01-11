@@ -1,18 +1,18 @@
 import type {
-    RevisionQuestionsResponse,
-    StoreRevisionQuestionPayload,
-    StoreRevisionQuestionResponse,
-    StoreRevisionQuestionsPayload,
-    VisualComponent
+  RevisionQuestionsResponse,
+  StoreRevisionQuestionPayload,
+  StoreRevisionQuestionResponse,
+  StoreRevisionQuestionsPayload,
+  VisualComponent
 } from '@types'
 import {
-    deleteRevisionQuestionFromFirestore,
-    deleteRevisionQuestionsByLessonFromFirestore,
-    deleteRevisionQuestionsFromFirestore,
-    getRevisionQuestionsFromFirestore,
-    storeRevisionQuestionInFirestore,
-    storeRevisionQuestionsInFirestore,
-    type RevisionQuestionInput
+  deleteRevisionQuestionFromFirestore,
+  deleteRevisionQuestionsByLessonFromFirestore,
+  deleteRevisionQuestionsFromFirestore,
+  getRevisionQuestionsFromFirestore,
+  storeRevisionQuestionInFirestore,
+  storeRevisionQuestionsInFirestore,
+  type RevisionQuestionInput
 } from './firestore'
 
 /**

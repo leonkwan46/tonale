@@ -13,7 +13,8 @@ import {
     STAGE_ZERO_MUSICAL_TERMS,
     STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
 } from '../../curriculum/config/musicalTerms'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import {
     generateQuestionId,

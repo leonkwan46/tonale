@@ -1,4 +1,4 @@
-import type { UserProfile } from '@types'
+import type { UserData } from '@types'
 import type { User } from 'firebase/auth'
 import * as React from 'react'
 import {
@@ -9,25 +9,25 @@ import {
 } from './GreetingBanner.styles'
 
 interface GreetingBannerProps {
-  user: User | null
-  profile: UserProfile | null
+  authUser: User | null
+  userData: UserData | null
   loading: boolean
 }
 
-const getUsername = (user: User | null, profile: UserProfile | null, loading: boolean): string => {
+const getUsername = (authUser: User | null, userData: UserData | null, loading: boolean): string => {
   if (loading) return '...'
-  if (!user) return 'Guest'
+  if (!authUser) return 'Guest'
   
-  return profile?.name ||
-         user.displayName || 
-         user.email?.split('@')[0] || 
-         profile?.email?.split('@')[0] || 
+  return userData?.name ||
+         authUser.displayName || 
+         authUser.email?.split('@')[0] || 
+         userData?.email?.split('@')[0] || 
          'Guest'
 }
 
-export const GreetingBanner: React.FC<GreetingBannerProps> = ({ user, profile, loading }) => {
-  const username = getUsername(user, profile, loading)
-  const characterImageSource = profile?.gender === 'female'
+export const GreetingBanner: React.FC<GreetingBannerProps> = ({ authUser, userData, loading }) => {
+  const username = getUsername(authUser, userData, loading)
+  const characterImageSource = userData?.gender === 'female'
     ? require('../../../../../assets/images/girl/girl_head.png')
     : require('../../../../../assets/images/boy/boy_head.png')
 

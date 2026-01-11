@@ -34,7 +34,7 @@ const ErrorSubtext = styled.Text`
 
 export default function TabLayout() {
   const colorScheme = useColorScheme()
-  const { user, loading } = useUser()
+  const { authUser, loading } = useUser()
   
   // Show loading state
   if (loading) {
@@ -48,7 +48,7 @@ export default function TabLayout() {
   }
   
   // Show error for unauthenticated access
-  if (!user) {
+  if (!authUser) {
     return (
       <ErrorContainer backgroundColor={Colors[colorScheme ?? 'light'].background}>
         <ErrorText textColor={Colors[colorScheme ?? 'light'].text}>

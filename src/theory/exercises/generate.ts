@@ -1,5 +1,6 @@
 import { CLEFS } from '@leonkwan46/music-notation'
-import type { ExerciseConfig, Question, StageNumber } from '@types'
+import type { ExerciseConfig, Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import {
   createAccidentalQuestions,
   createDottedValueQuestions,

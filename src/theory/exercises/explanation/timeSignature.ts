@@ -1,6 +1,6 @@
 // Used in: Stage 0
 import type { TimeSignatureType } from '@leonkwan46/music-notation'
-import type { VisualComponent } from '@types'
+import type { VisualComponent } from '@/types/visual'
 import { formatAsNotation, getNonnumberedTimeSignature, getNoteValueName } from '../utils/timeSignature'
 import type { ExplanationContext } from './types'
 

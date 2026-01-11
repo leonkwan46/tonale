@@ -1,4 +1,4 @@
-import type { Explanation } from '@types'
+import type { Explanation } from '@/types/lesson'
 import { NOTES, TimeSignatureType, type MusicElementData } from '@leonkwan46/music-notation'
 
 export type GroupingQuestion = {

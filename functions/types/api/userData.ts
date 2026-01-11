@@ -16,7 +16,7 @@ export interface ProgressData {
   stages?: Record<string, StageProgress>
 }
 
-export interface UserProfile {
+export interface UserData {
   email: string
   onboardingCompleted?: boolean
   gender?: UserGender
@@ -37,17 +37,17 @@ export interface UserDataSuccessResponse {
 export interface CreateUserDataResponse {
   success: boolean
   message: string
-  data: UserProfile
+  data: UserData
 }
 
 export interface UpdateUserDataResponse {
   success: boolean
   message: string
-  data: UserProfile
+  data: UserData
 }
 
 export interface GetUserDataResponse {
   success: boolean
-  data: UserProfile
+  data: UserData
 }
 

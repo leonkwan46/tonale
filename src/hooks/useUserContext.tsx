@@ -1,5 +1,5 @@
 import { getUserData } from '@/config/firebase/functions'
-import { isFirebaseError, type UserProfile } from '@types'
+import { isFirebaseError, type UserData } from '@types'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native'
@@ -10,11 +10,11 @@ import { auth } from '../config/firebase/firebase'
 // ============================================================================
 
 export interface UserContextType {
-  user: User | null
-  profile: UserProfile | null
+  authUser: User | null
+  userData: UserData | null
   loading: boolean
-  fetchProfile: () => Promise<UserProfile | null>
-  setProfile: (profile: UserProfile | null) => void
+  fetchUserData: () => Promise<UserData | null>
+  setUserData: (userData: UserData | null) => void
   setIsRegistering: (isRegistering: boolean) => void
 }
 
@@ -25,46 +25,46 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 // ============================================================================
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [authUser, setAuthUser] = useState<User | null>(null)
+  const [userData, setUserData] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
   // Track if this is the first auth state change (app start/restore)
   // This helps distinguish between app restart vs active session registration
   const isFirstAuthStateChange = useRef(true)
-  // Track if registration is in progress to prevent wasted fetchProfile calls
+  // Track if registration is in progress to prevent wasted fetchUserData calls
   const isRegisteringRef = useRef(false)
 
-  const fetchProfile = async (): Promise<UserProfile | null> => {
+  const fetchUserData = async (): Promise<UserData | null> => {
     try {
       const result = await getUserData()
       const profileData = result.data.data
-      setProfile(profileData)
+      setUserData(profileData)
       return profileData
     } catch (error) {
       if (isFirebaseError(error) && error.code === 'not-found') {
         // "not-found" is expected for new users who haven't completed onboarding yet
-        // Set profile to null, which will trigger onboarding flow
-        setProfile(null)
+        // Set userData to null, which will trigger onboarding flow
+        setUserData(null)
         return null
       } else {
         // Log actual errors (network issues, permissions, etc.)
-        console.error('[fetchProfile] Error fetching user profile:', error)
-        setProfile(null)
+        console.error('[fetchUserData] Error fetching user data:', error)
+        setUserData(null)
         return null
       }
     }
   }
 
   const handleOnboardingCheck = async (
-    profileData: UserProfile | null,
+    userData: UserData | null,
     isFirstAuthStateChange: React.MutableRefObject<boolean>
   ): Promise<boolean> => {
     if (!isFirstAuthStateChange.current) return true
 
-    // If profile exists but onboarding is incomplete, this means they started onboarding
+    // If userData exists but onboarding is incomplete, this means they started onboarding
     // before but didn't finish. On app restart, sign them out to prevent auto-login.
-    // If profile doesn't exist, this is a new registration - allow onboarding flow.
-    if (profileData && profileData.onboardingCompleted !== true) {
+    // If userData doesn't exist, this is a new registration - allow onboarding flow.
+    if (userData && userData.onboardingCompleted !== true) {
       await signOut(auth)
       isFirstAuthStateChange.current = false
       return false
@@ -82,26 +82,26 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     const unsubscribe = onAuthStateChanged(
       auth,
-      async (authUser) => {
-        if (authUser) {
-          await authUser.getIdToken(true)
-          // Skip fetchProfile during registration to avoid wasted call before user document exists
-          // handleRegister sets profile directly from createUserData response
-          let profileData = profile
-          if (profileData === null && !isRegisteringRef.current) {
-            profileData = await fetchProfile()
+      async (firebaseUser) => {
+        if (firebaseUser) {
+          await firebaseUser.getIdToken(true)
+          // Skip fetchUserData during registration to avoid wasted call before user document exists
+          // handleRegister sets userData directly from createUserData response
+          let fetchedUserData = userData
+          if (fetchedUserData === null && !isRegisteringRef.current) {
+            fetchedUserData = await fetchUserData()
           }
-          const shouldAllowAuth = await handleOnboardingCheck(profileData, isFirstAuthStateChange)
+          const shouldAllowAuth = await handleOnboardingCheck(fetchedUserData, isFirstAuthStateChange)
           if (!shouldAllowAuth) return
           isFirstAuthStateChange.current = false
-          setUser(authUser)
+          setAuthUser(firebaseUser)
           
           clearTimeout(authTimeout)
           setLoading(false)
         } else {
           isFirstAuthStateChange.current = true
-          setUser(null)
-          setProfile(null)
+          setAuthUser(null)
+          setUserData(null)
           clearTimeout(authTimeout)
           setLoading(false)
         }
@@ -109,8 +109,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       (error) => {
         console.error(`❌ Authentication error on ${Platform.OS}:`, error)
         clearTimeout(authTimeout)
-        setUser(null)
-        setProfile(null)
+        setAuthUser(null)
+        setUserData(null)
         setLoading(false)
       }
     )
@@ -127,7 +127,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <UserContext.Provider value={{ user, profile, loading, fetchProfile, setProfile, setIsRegistering }}>
+    <UserContext.Provider value={{ authUser, userData, loading, fetchUserData, setUserData, setIsRegistering }}>
       {children}
     </UserContext.Provider>
   )

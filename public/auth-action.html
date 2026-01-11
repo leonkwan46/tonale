@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opening Tonalè...</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+      background: #ffffff;
+      color: #1f2937;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #111827;
+        color: #f9fafb;
+      }
+    }
+
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #e5e7eb;
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .loader {
+        border-color: #374151;
+        border-top-color: #6366f1;
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    p {
+      color: #6b7280;
+      margin-bottom: 2rem;
+      max-width: 400px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      p {
+        color: #9ca3af;
+      }
+    }
+
+    .button {
+      background: #6366f1;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+
+    .button:hover {
+      background: #4f46e5;
+    }
+
+    .error {
+      color: #ef4444;
+      margin-bottom: 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .error {
+        color: #f87171;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader"></div>
+  <h1>Opening Tonalè App...</h1>
+  <p id="message">If the app doesn't open automatically, please tap the button below or open Tonalè manually.</p>
+  <a href="#" id="deepLinkButton" class="button" style="display: none;">Open App</a>
+
+  <script>
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const mode = urlParams.get('mode');
+      const oobCode = urlParams.get('oobCode');
+      const apiKey = urlParams.get('apiKey');
+      const continueUrl = urlParams.get('continueUrl');
+      const lang = urlParams.get('lang');
+      const error = urlParams.get('error');
+      const success = urlParams.get('success');
+
+
+      // Show error if present
+      if (error) {
+        document.body.innerHTML = `
+          <h1 style="color: #ef4444; margin-bottom: 1rem;">Error</h1>
+          <p class="error">${decodeURIComponent(error)}</p>
+          <p>Please request a new link or contact support if the problem persists.</p>
+        `;
+        return;
+      }
+
+      // Check if we have the oobCode (intercepted before Firebase processed it)
+      if (mode && oobCode) {
+        // We intercepted the action before Firebase processed it - redirect to app with params
+        const appParams = new URLSearchParams();
+        appParams.set('mode', mode);
+        appParams.set('oobCode', oobCode);
+        if (apiKey) appParams.set('apiKey', apiKey);
+        if (continueUrl) appParams.set('continueUrl', continueUrl);
+        if (lang) appParams.set('lang', lang);
+
+        const deepLink = `tonale://auth-action?${appParams.toString()}`;
+        const deepLinkButton = document.getElementById('deepLinkButton');
+        
+        if (deepLinkButton) {
+          deepLinkButton.href = deepLink;
+        }
+        
+        // Try to open the app immediately
+        window.location.href = deepLink;
+      } else if (mode || success) {
+        // Firebase already processed the action or we only have mode
+        // Redirect to app even without oobCode - app will check verification status
+        const appParams = new URLSearchParams();
+        if (mode) appParams.set('mode', mode);
+        if (success) appParams.set('success', success);
+        
+        const deepLink = `tonale://auth-action?${appParams.toString()}`;
+        const deepLinkButton = document.getElementById('deepLinkButton');
+        
+        if (deepLinkButton) {
+          deepLinkButton.href = deepLink;
+        }
+        
+        // Try to open the app immediately
+        window.location.href = deepLink;
+      } else {
+        // Missing parameters - redirect to app anyway (app will handle gracefully)
+        window.location.href = 'tonale://auth-action';
+      }
+      
+      // Show button if app doesn't open within 1 second (optimized for faster UX)
+      setTimeout(function() {
+        if (document.hasFocus() && deepLinkButton) {
+          document.getElementById('message').innerText = 'The app did not open automatically.';
+          deepLinkButton.style.display = 'inline-block';
+        }
+      }, 1000);
+    })();
+  </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import { KEY_NAMES, NOTES, type ClefType } from '@leonkwan46/music-notation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool, getKeys, getPitchDefinitionsForClef } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { getNoteAtScaleDegree, getScaleDegreeName } from '../utils/scaleDegree'

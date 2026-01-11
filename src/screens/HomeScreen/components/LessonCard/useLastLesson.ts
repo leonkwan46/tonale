@@ -14,7 +14,7 @@ interface LessonResult {
 type LastAccess = { lessonId: string; timestamp: number } | null
 
 export const useLastLesson = (): LessonResult => {
-  const { loading: userLoading, user } = useUser()
+  const { loading: userLoading, authUser } = useUser()
   const {
     progressData,
     initialized,
@@ -26,7 +26,7 @@ export const useLastLesson = (): LessonResult => {
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [allCompleted, setAllCompleted] = useState(false)
 
-  const loading = userLoading || !initialized || !user
+  const loading = userLoading || !initialized || !authUser
 
   const fetchLesson = useCallback(async () => {
     if (loading) return
