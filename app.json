@@ -26,11 +26,6 @@
       ],
       "package": "com.leonkwan46.tonale"
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
     "assetBundlePatterns": [
       "assets/fonts/*"
     ],
