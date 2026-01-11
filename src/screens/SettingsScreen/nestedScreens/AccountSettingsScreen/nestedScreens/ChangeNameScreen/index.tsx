@@ -29,6 +29,16 @@ export const ChangeNameScreen = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const validateName = (text: string): string => {
+    // Remove all spaces and special characters, keep only letters (a-z, A-Z) and hyphens (-)
+    return text.replace(/[^a-zA-Z-]/g, '')
+  }
+
+  const handleNameChange = (text: string) => {
+    const cleanedText = validateName(text)
+    setName(cleanedText)
+  }
+
   const handleSave = async () => {
     Keyboard.dismiss()
     setError('')
@@ -89,7 +99,7 @@ export const ChangeNameScreen = () => {
             <Input
               isTablet={isTablet}
               placeholder="Enter your name"
-              onChangeText={setName}
+              onChangeText={handleNameChange}
               value={name}
               autoCapitalize="words"
               autoCorrect={false}
