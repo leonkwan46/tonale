@@ -1,6 +1,6 @@
 // Used in: Stage 1
 import type { ExplanationContext } from './types'
-import type { VisualComponent } from '@types'
+import type { VisualComponent } from '@/types/visual'
 
 export const explanationText = (context: ExplanationContext): string => {
   return `The correct answer is ${context.correctAnswer}.`

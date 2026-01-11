@@ -1,5 +1,6 @@
 import { type MusicElementData } from '@leonkwan46/music-notation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { STAGE_ONE_TIE_SLUR_QUESTIONS } from '../../curriculum/config/tieSlur'
 import { createSlurMeaningQuestions, createTieMeaningQuestions, SLUR_MEANING_VISUAL, TIE_MEANING_VISUAL, type TieSlurQuestion } from '../custom/tieSlur/helpers'
 import { generateQuestionsFromPool } from '../utils/exercise'

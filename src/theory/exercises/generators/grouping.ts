@@ -1,5 +1,6 @@
 import { type MusicElementData, type TimeSignatureType } from '@leonkwan46/music-notation'
-import type { Explanation, Question, StageNumber } from '@types'
+import type { Explanation, Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { STAGE_TWO_GROUPING_QUESTIONS } from '../../curriculum/config/grouping'
 import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 import { generateQuestionsFromPool } from '../utils/exercise'

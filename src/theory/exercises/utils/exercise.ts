@@ -1,5 +1,6 @@
 import { ACCIDENTALS, ALTO_PITCH_DEFINITIONS, BASS_PITCH_DEFINITIONS, TENOR_PITCH_DEFINITIONS, TREBLE_PITCH_DEFINITIONS, type AccidentalType, type ClefType, type Note } from '@leonkwan46/music-notation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { STAGE_ONE_KEYS, STAGE_THREE_KEYS, STAGE_TWO_KEYS } from '../../curriculum/config/keySignatures'
 import {
     STAGE_ONE_ALL_NOTE_TYPES,
