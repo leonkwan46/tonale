@@ -31,6 +31,24 @@ export function AccountSettingsScreen() {
     router.push('/(tabs)/settings/account/change-password')
   }
 
+  const handleChangeInstrument = () => {
+    router.push('/(tabs)/settings/account/change-instrument')
+  }
+
+  const handleChangeGender = () => {
+    router.push('/(tabs)/settings/account/change-gender')
+  }
+
+  const formatInstrument = (instrument: string | undefined): string => {
+    if (!instrument) return 'Not set'
+    return instrument.charAt(0).toUpperCase() + instrument.slice(1)
+  }
+
+  const formatGender = (gender: string | undefined): string => {
+    if (!gender) return 'Not set'
+    return gender.charAt(0).toUpperCase() + gender.slice(1)
+  }
+
   const formatDate = (timestamp: string | undefined) => {
     if (!timestamp) return 'N/A'
     try {
@@ -102,6 +120,18 @@ export function AccountSettingsScreen() {
             icon="person-outline"
             label={userData?.name || 'Not set'}
             onPress={handleDisplayNamePress}
+            showSeparator={true}
+          />
+          <SettingsItem
+            icon="people-outline"
+            label={formatGender(userData?.gender)}
+            onPress={handleChangeGender}
+            showSeparator={true}
+          />
+          <SettingsItem
+            icon="musical-notes-outline"
+            label={formatInstrument(userData?.instrument)}
+            onPress={handleChangeInstrument}
             showSeparator={true}
           />
           <SettingsItem
