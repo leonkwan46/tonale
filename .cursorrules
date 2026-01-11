@@ -1,0 +1,59 @@
+# Cursor AI Coding Standards for Tonalè
+
+## Code Style
+- Use arrow functions for all component definitions: `const ComponentName = () => {}`
+- Use arrow functions for all function definitions: `const functionName = () => {}`
+- Use single quotes for strings
+- No semicolons
+- No trailing commas
+- Use TypeScript strictly - avoid `any` types
+- Import React hooks directly: `import { useState, useEffect } from 'react'` (not `React.useState`)
+
+## React/React Native Patterns
+- Use functional components only
+- Use hooks for state management
+- Use `KeyboardAwareScrollView` from `@/sharedComponents` for screens with input fields
+- Use `ScreenContainer` from `@/sharedComponents` for screen wrappers
+- Prefer `expo-router` for navigation: `useRouter()` and `router.push()` / `router.replace()`
+
+## File Structure
+- Components in `src/screens/` have their own directory with `index.tsx` and `.styles.tsx` files
+- Shared components in `src/sharedComponents/`
+- Use path aliases: `@/` for `src/`, `@types` for `src/types/`, `@sharedComponents` for `src/sharedComponents/`
+
+## Styling
+- Use `@emotion/native` with styled components
+- Use `scale()` from `react-native-size-matters` for responsive sizing
+- Use theme from emotion: `({ theme }) => ({ ... })`
+- Use `getSourGummyFontFamily()` utility for fonts
+
+## State Management
+- Use Context API via custom hooks: `useUser()`, `useProgress()`, `useDevice()`
+- Use `AsyncStorage` for caching (via `src/utils/cache.ts`)
+
+## Firebase
+- Auth operations in `src/config/firebase/auth.ts`
+- Cloud Functions wrappers in `src/config/firebase/functions/`
+- Use typed callable functions with proper TypeScript interfaces
+
+## Naming Conventions
+- Components: PascalCase (`ChangeNameScreen`)
+- Functions/variables: camelCase (`handleSave`, `userData`)
+- Constants: UPPER_SNAKE_CASE (`INSTRUMENT.PIANO`)
+- Files: match component name (`ChangeNameScreen/index.tsx`)
+
+## Error Handling
+- Always use try/catch for async operations that can fail
+- Show user-friendly error messages via Alert for user-facing errors
+- Use console.error for debugging
+- Handle loading states appropriately
+- Don't be overly defensive - throw errors when appropriate (e.g., validation failures, invalid states)
+- Let errors bubble up when they should (don't catch and swallow errors unnecessarily)
+
+## Best Practices
+- Extract reusable logic into utility functions
+- Keep components focused and single-purpose
+- Use proper TypeScript types from `@types`
+- Validate user input (e.g., `validateName` function)
+- Use confirmation dialogs for destructive actions (Alert.alert)
+- Clean up unused imports and code

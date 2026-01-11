@@ -1,0 +1,48 @@
+# Cursor ignore file - files/folders to exclude from indexing
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.vercel
+
+# iOS/Android
+ios/
+android/
+.gradle/
+*.gradle
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Logs
+*.log
+logs/
+.cursor/debug.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# Functions (separate codebase)
+functions/node_modules/
