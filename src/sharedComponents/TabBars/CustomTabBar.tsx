@@ -89,6 +89,7 @@ const getTabIcon = (routeName: string) => {
     case 'aural':
       return 'musical-notes'
     case 'settings':
+    case 'settings/index':
       return 'settings'
     default:
       return 'home'
@@ -104,6 +105,7 @@ const getTabLabel = (routeName: string) => {
     case 'aural':
       return 'Aural'
     case 'settings':
+    case 'settings/index':
       return 'Settings'
     default:
       return 'Home'
