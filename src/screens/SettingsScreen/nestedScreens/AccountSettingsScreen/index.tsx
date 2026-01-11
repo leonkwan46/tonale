@@ -1,11 +1,14 @@
+import { deleteUserAccount } from '@/config/firebase/auth'
+import { deleteUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
+import { Alert } from 'react-native'
 
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { SettingsItem } from '../../components/SettingsItem'
 import { ContentContainer } from '../../SettingsScreen.styles'
-import { Card, FullScreenScrollView } from './AccountSettingsScreen.styles'
+import { Card, DeleteAccountCard, Divider, FullScreenScrollView } from './AccountSettingsScreen.styles'
 
 export const AccountSettingsScreen = () => {
   const { userData, authUser } = useUser()
@@ -29,6 +32,38 @@ export const AccountSettingsScreen = () => {
 
   const handleChangeGender = () => {
     router.push('/(tabs)/settings/account/change-gender')
+  }
+
+  const handleDeleteAccountPress = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: handleDeleteAccount
+        }
+      ]
+    )
+  }
+
+  const handleDeleteAccount = async () => {
+    try {
+      // Delete user data from Firestore
+      await deleteUserData()
+      // Delete Firebase Auth account
+      await deleteUserAccount()
+      // Redirect to auth screen
+      router.replace('/(auth)')
+    } catch (error) {
+      console.error('Error deleting account:', error)
+      Alert.alert('Error', 'Failed to delete account. Please try again.')
+    }
   }
 
   const formatInstrument = (instrument: string | undefined): string => {
@@ -83,6 +118,16 @@ export const AccountSettingsScreen = () => {
               showSeparator={false}
             />
           </Card>
+          <Divider />
+          <DeleteAccountCard>
+            <SettingsItem
+              icon="trash-outline"
+              label="Delete Account"
+              onPress={handleDeleteAccountPress}
+              showSeparator={false}
+              variant="red"
+            />
+          </DeleteAccountCard>
         </ContentContainer>
       </FullScreenScrollView>
     </ScreenContainer>

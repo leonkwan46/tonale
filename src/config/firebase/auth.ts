@@ -1,6 +1,7 @@
 import {
   applyActionCode,
   confirmPasswordReset,
+  deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
   sendEmailVerification,
@@ -117,4 +118,12 @@ export async function updateUserDisplayName(displayName: string) {
 
 export async function signOutUser() {
   await signOut(auth)
+}
+
+export async function deleteUserAccount() {
+  const user = auth.currentUser
+  if (!user) {
+    throw new Error('No user is currently signed in')
+  }
+  await deleteUser(user)
 }

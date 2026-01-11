@@ -2,7 +2,7 @@ import { updateUserData } from '@/config/firebase/functions'
 import { useDevice, useUser } from '@/hooks'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
-import { ScreenContainer } from '@/sharedComponents'
+import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
@@ -104,7 +104,7 @@ export const ChangeInstrumentScreen = () => {
   return (
     <ScreenContainer>
       <SettingItemHeader title="Change Instrument" />
-      <ScrollView
+      <KeyboardAwareScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ 
@@ -145,7 +145,7 @@ export const ChangeInstrumentScreen = () => {
             <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </ScreenContainer>
   )
 }

@@ -1,5 +1,5 @@
 import styled from '@emotion/native'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 export const FullScreenScrollView = styled(ScrollView)({
@@ -9,5 +9,18 @@ export const FullScreenScrollView = styled(ScrollView)({
 export const Card = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderRadius: scale(12),
+  paddingHorizontal: scale(10)
+}))
+
+export const Divider = styled(View)(({ theme }) => ({
+  height: scale(1),
+  backgroundColor: theme.colors.border
+}))
+
+export const DeleteAccountCard = styled.View(({ theme }) => ({
+  backgroundColor: 'transparent',
+  borderRadius: scale(12),
+  borderWidth: scale(1),
+  borderColor: theme.colors.error,
   paddingHorizontal: scale(10)
 }))

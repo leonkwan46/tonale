@@ -1,10 +1,10 @@
 import { updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
 import { useDevice, useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { Keyboard, ScrollView } from 'react-native'
+import { Keyboard } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { ScreenIntroHeader } from '../../../../components/ScreenIntroHeader'
@@ -77,7 +77,7 @@ export const ChangeNameScreen = () => {
   return (
     <ScreenContainer>
       <SettingItemHeader title="Change Name" />
-      <ScrollView
+      <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1, padding: scale(20), gap: scale(20) }}
       >
@@ -118,7 +118,7 @@ export const ChangeNameScreen = () => {
             <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </ScreenContainer>
   )
 }
