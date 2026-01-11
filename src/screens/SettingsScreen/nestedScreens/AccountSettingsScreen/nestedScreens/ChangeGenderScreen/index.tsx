@@ -33,7 +33,7 @@ const getInstrumentFromValue = (value: string | undefined): UserInstrument | nul
   return INSTRUMENT.OTHER
 }
 
-export function ChangeGenderScreen() {
+export const ChangeGenderScreen = () => {
   const { userData, setUserData } = useUser()
   const router = useRouter()
   const { isTablet } = useDevice()

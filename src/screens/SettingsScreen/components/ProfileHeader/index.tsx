@@ -7,7 +7,7 @@ interface UserDataHeaderProps {
   gender?: UserGender
 }
 
-export function ProfileHeader({ name, gender }: UserDataHeaderProps) {
+export const ProfileHeader = ({ name, gender }: UserDataHeaderProps) => {
   const characterImageSource = gender === 'female'
     ? require('../../../../../assets/images/girl/girl_head.png')
     : require('../../../../../assets/images/boy/boy_head.png')

@@ -1,6 +1,6 @@
-import { EditNameScreen } from '@/screens/SettingsScreen/nestedScreens/AccountSettingsScreen/nestedScreens/EditNameScreen'
+import { ChangeNameScreen } from '@/screens/SettingsScreen/nestedScreens/AccountSettingsScreen/nestedScreens/ChangeNameScreen'
 
 export default function EditNameRoute() {
-  return <EditNameScreen />
+  return <ChangeNameScreen />
 }
 

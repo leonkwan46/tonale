@@ -21,7 +21,7 @@ import {
   SuccessText
 } from './ChangePasswordScreen.styles'
 
-export function ChangePasswordScreen() {
+export const ChangePasswordScreen = () => {
   const { authUser } = useUser()
   const { isTablet } = useDevice()
   const [error, setError] = useState('')

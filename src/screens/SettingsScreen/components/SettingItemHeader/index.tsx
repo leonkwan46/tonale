@@ -6,7 +6,7 @@ interface SettingItemHeaderProps {
   title: string
 }
 
-export function SettingItemHeader({ title }: SettingItemHeaderProps) {
+export const SettingItemHeader = ({ title }: SettingItemHeaderProps) => {
   const router = useRouter()
 
   return (

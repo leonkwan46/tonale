@@ -5,16 +5,6 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const Container = styled.View(({ theme }) => ({
-  flex: 1,
-  backgroundColor: theme.colors.background
-}))
-
-export const ContentContainer = styled.View(({ theme }) => ({
-  padding: scale(20),
-  gap: scale(20)
-}))
-
 export const Card = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderRadius: scale(12),
@@ -84,53 +74,6 @@ export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
 }))
 
 export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
-}))
-
-export const MessageText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(12) : scale(14),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
-  lineHeight: isTablet ? scale(18) : scale(20)
-}))
-
-export const SuccessContainer = styled.View<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: theme.colors.surface,
-  borderWidth: 1,
-  borderColor: theme.colors.primary,
-  paddingHorizontal: isTablet ? scale(10) : scale(16),
-  paddingVertical: isTablet ? scale(6) : scale(12),
-  borderRadius: scale(8),
-  gap: isTablet ? scale(5) : scale(8)
-}))
-
-export const SuccessText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  color: theme.colors.primary,
-  fontSize: isTablet ? scale(10) : scale(12),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
-}))
-
-export const RefreshButton = styled(TouchableOpacity)<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: isTablet ? scale(8) : scale(12),
-  borderRadius: scale(12),
-  borderWidth: 1,
-  borderColor: theme.colors.primary,
-  backgroundColor: 'transparent'
-}))
-
-export const RefreshButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  color: theme.colors.primary,
-  fontSize: isTablet ? scale(12) : scale(14),
-  fontFamily: getSourGummyFontFamily('600')
-}))
-
-export const SuccessIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.primary
 }))
 

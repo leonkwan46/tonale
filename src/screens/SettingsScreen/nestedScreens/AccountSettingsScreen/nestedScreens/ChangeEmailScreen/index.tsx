@@ -27,7 +27,7 @@ import {
 } from './ChangeEmailScreen.styles'
 import { scale } from 'react-native-size-matters'
 
-export function ChangeEmailScreen() {
+export const ChangeEmailScreen = () => {
   const { authUser } = useUser()
   const { isTablet } = useDevice()
   

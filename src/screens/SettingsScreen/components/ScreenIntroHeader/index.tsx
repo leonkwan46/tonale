@@ -10,7 +10,7 @@ interface ScreenIntroHeaderProps {
   description: string
 }
 
-export function ScreenIntroHeader({ icon, description }: ScreenIntroHeaderProps) {
+export const ScreenIntroHeader = ({ icon, description }: ScreenIntroHeaderProps) => {
   const { isTablet } = useDevice()
   const theme = useTheme()
 

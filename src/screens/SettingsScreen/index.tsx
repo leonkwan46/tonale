@@ -8,7 +8,7 @@ import { ProfileHeader } from './components/ProfileHeader'
 import { SettingsItem } from './components/SettingsItem'
 import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent } from './SettingsScreen.styles'
 
-export function SettingsScreen() {
+export const SettingsScreen = () => {
   const { userData } = useUser()
   const router = useRouter()
   const [loggingOut, setLoggingOut] = useState(false)

@@ -21,7 +21,7 @@ interface SettingsItemProps {
   isVerified?: boolean
 }
 
-export function SettingsItem({
+export const SettingsItem = ({
   icon,
   label,
   onPress,
@@ -30,7 +30,7 @@ export function SettingsItem({
   variant = 'default',
   showVerifyIcon = false,
   isVerified = false
-}: SettingsItemProps) {
+}: SettingsItemProps) => {
   return (
     <>
       <SettingsItemContainer onPress={onPress} activeOpacity={0.7}>
