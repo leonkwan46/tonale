@@ -1,7 +1,7 @@
 PODS:
-  - EXConstants (18.0.12):
+  - EXConstants (18.0.13):
     - ExpoModulesCore
-  - Expo (54.0.30):
+  - Expo (54.0.31):
     - ExpoModulesCore
     - hermes-engine
     - RCTRequired
@@ -2426,8 +2426,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  EXConstants: 805f35b1b295c542ca6acce836f21a1f9ee104d5
-  Expo: 60c21ba34593688a2a6e8445c1f8b44abb0e3fae
+  EXConstants: fce59a631a06c4151602843667f7cfe35f81e271
+  Expo: 04993fbd7b06dc98ffac58da8847298470dc3db1
   ExpoAsset: f867e55ceb428aab99e1e8c082b5aee7c159ea18
   ExpoAudio: e4cfe3a2f3317b8487460685385a9867a07fb4fb
   ExpoBlur: b90747a3f22a8b6ceffd9cb0dc41a4184efdc656
@@ -2529,6 +2529,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   Yoga: 5934998fbeaef7845dbf698f698518695ab4cd1a
 
-PODFILE CHECKSUM: 3573c0041080b205eebb3127093f90837bac3ac8
+PODFILE CHECKSUM: c26a2b9899b14836c718217cf31385d0fc8ad522
 
 COCOAPODS: 1.16.2
