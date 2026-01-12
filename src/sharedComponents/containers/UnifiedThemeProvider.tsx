@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme, navigationDarkTheme, navigationLightTheme } from '@/constants/theme'
+import { darkTheme, lightTheme, navigationDarkTheme, navigationLightTheme } from '@/config/theme/theme'
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react'
 import { ThemeProvider } from '@react-navigation/native'
 import * as React from 'react'

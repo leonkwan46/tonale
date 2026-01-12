@@ -52,13 +52,3 @@ export const Colors = {
 }
 
 export type ColorScheme = keyof typeof Colors
-
-// AppTheme system (migrated from SoundSphere)
-export const AppTheme = {
-  gold: '#FFD700',
-  error: '#ff6b6b',
-  textColor: (colorScheme: ColorScheme) => Colors[colorScheme].text,
-  backgroundColor: (colorScheme: ColorScheme) => Colors[colorScheme].background,
-  inputBackgroundColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#1a1a1a' : '#f8f9fa',
-  borderColor: (colorScheme: ColorScheme) => colorScheme === 'dark' ? '#333333' : '#e9ecef'
-}
