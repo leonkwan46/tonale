@@ -1,9 +1,10 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
 import styled from '@emotion/native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
-export const Container = styled(Animated.View)<{ colorScheme: ColorScheme }>(({ colorScheme }) => ({
+import { Colors } from '@/config/theme/Colors'
+
+export const Container = styled(Animated.View)<{ colorScheme: 'light' | 'dark' }>(({ colorScheme }) => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',

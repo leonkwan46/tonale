@@ -99,16 +99,15 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     <Container colorScheme={colorScheme} style={containerStyle}>
       {!fontsLoaded ? (
         <MusicLogoContainer>
-          <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
+          <LogoAnimation isTransitioning={isTransitioning} />
         </MusicLogoContainer>
       ) : (
         <>
       <MusicLogoContainer>
-        <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
+        <LogoAnimation isTransitioning={isTransitioning} />
         <AppText
           appName="Tonalè"
           tagline="Master music through focused practice"
-          colorScheme={colorScheme}
           isTransitioning={isTransitioning}
         />
       </MusicLogoContainer>
@@ -117,7 +116,6 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           <Wave
             key={index}
                 delay={index * WAVE_DELAY_INCREMENT + WAVE_DELAY_BASE}
-            colorScheme={colorScheme}
             isTransitioning={isTransitioning}
             isTablet={isTablet}
           />

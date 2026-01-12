@@ -1,8 +1,9 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
+
+import { Colors } from '@/config/theme/Colors'
 
 export const Container = styled.View(() => ({
   alignItems: 'center',
@@ -17,7 +18,7 @@ export const LogoContainer = styled(Animated.View)(() => ({
   position: 'relative'
 }))
 
-export const OuterCircle = styled.View<{ colorScheme: ColorScheme }>(({ colorScheme }) => ({
+export const OuterCircle = styled.View<{ colorScheme: 'light' | 'dark' }>(({ colorScheme }) => ({
   position: 'absolute',
   width: scale(120),
   height: scale(120),
@@ -30,7 +31,7 @@ export const OuterCircle = styled.View<{ colorScheme: ColorScheme }>(({ colorSch
   elevation: 12
 }))
 
-export const InnerCircle = styled.View<{ colorScheme: ColorScheme }>(({ colorScheme }) => ({
+export const InnerCircle = styled.View<{ colorScheme: 'light' | 'dark' }>(({ colorScheme }) => ({
   position: 'absolute',
   width: scale(96),
   height: scale(96),
@@ -42,7 +43,7 @@ export const InnerCircle = styled.View<{ colorScheme: ColorScheme }>(({ colorSch
   elevation: 2
 }))
 
-export const MusicIcon = styled(Ionicons)<{ colorScheme: ColorScheme }>(() => ({
+export const MusicIcon = styled(Ionicons)(() => ({
   zIndex: 10,
   textShadowOffset: { width: 0, height: scale(1) },
   textShadowRadius: scale(2),

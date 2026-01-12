@@ -1,6 +1,6 @@
-import { ColorScheme } from '@/constants/Colors'
 import * as React from 'react'
 import { useEffect } from 'react'
+import { useColorScheme } from 'react-native'
 import {
     Easing,
     useAnimatedStyle,
@@ -18,11 +18,11 @@ import {
 interface AppTextProps {
   appName: string
   tagline: string
-  colorScheme: ColorScheme
   isTransitioning: boolean
 }
 
-export function AppText({ appName, tagline, colorScheme, isTransitioning }: AppTextProps) {
+export function AppText({ appName, tagline, isTransitioning }: AppTextProps) {
+  const colorScheme = useColorScheme() ?? 'light'
   
   // Animation values
   const appNameOpacity = useSharedValue(0)
@@ -78,14 +78,12 @@ export function AppText({ appName, tagline, colorScheme, isTransitioning }: AppT
 
   return (
     <>
-      {/* App Name */}
       <AppNameContainer style={appNameStyle}>
         <AppNameText colorScheme={colorScheme}>
           {appName}
         </AppNameText>
       </AppNameContainer>
 
-      {/* Tagline */}
       <TaglineContainer style={taglineStyle}>
         <TaglineText colorScheme={colorScheme}>
           {tagline}

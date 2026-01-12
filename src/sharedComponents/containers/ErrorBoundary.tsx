@@ -1,8 +1,8 @@
-import { Colors } from '@/constants/Colors'
 import styled from '@emotion/native'
 import { Component, ReactNode } from 'react'
 import { useColorScheme } from 'react-native'
 
+import { Colors } from '@/config/theme/Colors'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 interface ErrorInfo {
@@ -48,25 +48,26 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 
 function ErrorFallback({ error, errorInfo }: { error?: Error, errorInfo?: ErrorInfo }) {
   const colorScheme = useColorScheme() ?? 'light'
+  const colors = Colors[colorScheme]
   
   return (
-    <ScrollContainer colorScheme={colorScheme}>
-      <Title colorScheme={colorScheme}>🚨 Error Caught</Title>
-      <Message colorScheme={colorScheme}>
+    <ScrollContainer colorScheme={colorScheme} colors={colors}>
+      <Title colorScheme={colorScheme} colors={colors}>🚨 Error Caught</Title>
+      <Message colorScheme={colorScheme} colors={colors}>
         The app encountered an error. Check the details below:
       </Message>
       
       {error && (
         <>
-          <SectionTitle colorScheme={colorScheme}>Error Message:</SectionTitle>
-          <ErrorText colorScheme={colorScheme}>
+          <SectionTitle colorScheme={colorScheme} colors={colors}>Error Message:</SectionTitle>
+          <ErrorText colorScheme={colorScheme} colors={colors}>
             {error.message}
           </ErrorText>
           
           {error.stack && (
             <>
-              <SectionTitle colorScheme={colorScheme}>Stack Trace:</SectionTitle>
-              <StackText colorScheme={colorScheme}>
+              <SectionTitle colorScheme={colorScheme} colors={colors}>Stack Trace:</SectionTitle>
+              <StackText colorScheme={colorScheme} colors={colors}>
                 {error.stack}
               </StackText>
             </>
@@ -76,15 +77,15 @@ function ErrorFallback({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
       
       {errorInfo && errorInfo.componentStack && (
         <>
-          <SectionTitle colorScheme={colorScheme}>Component Stack:</SectionTitle>
-          <StackText colorScheme={colorScheme}>
+          <SectionTitle colorScheme={colorScheme} colors={colors}>Component Stack:</SectionTitle>
+          <StackText colorScheme={colorScheme} colors={colors}>
             {errorInfo.componentStack}
           </StackText>
         </>
       )}
       
-      <ReloadButton colorScheme={colorScheme}>
-        <ReloadText colorScheme={colorScheme}>
+      <ReloadButton colorScheme={colorScheme} colors={colors}>
+        <ReloadText colorScheme={colorScheme} colors={colors}>
           Check Metro terminal for more details
         </ReloadText>
       </ReloadButton>
@@ -96,68 +97,68 @@ export function ErrorBoundary({ children }: ErrorBoundaryProps) {
   return <ErrorBoundaryClass>{children}</ErrorBoundaryClass>
 }
 
-const ScrollContainer = styled.ScrollView<{ colorScheme: 'light' | 'dark' }>`
-  flex: 1
-  background-color: ${props => Colors[props.colorScheme].background}
-  padding: 20px
-`
+const ScrollContainer = styled.ScrollView<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  flex: 1,
+  backgroundColor: colors.background,
+  padding: 20
+}))
 
-const Title = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 24px
-  color: ${props => Colors[props.colorScheme].error}
-  margin-bottom: 16px
-  text-align: center
-  font-family: "${getSourGummyFontFamily('bold')}"
-`
+const Title = styled.Text<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  fontSize: 24,
+  color: colors.error,
+  marginBottom: 16,
+  textAlign: 'center',
+  fontFamily: getSourGummyFontFamily('bold')
+}))
 
-const Message = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 16px
-  color: ${props => Colors[props.colorScheme].text}
-  text-align: center
-  margin-bottom: 24px
+const Message = styled.Text<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  fontSize: 16,
+  color: colors.text,
+  textAlign: 'center',
+  marginBottom: 24,
+  opacity: 0.8,
+  fontFamily: getSourGummyFontFamily('400')
+}))
+
+const SectionTitle = styled.Text<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  fontSize: 18,
+  color: colors.text,
+  marginTop: 16,
+  marginBottom: 8,
+  fontFamily: getSourGummyFontFamily('600')
+}))
+
+const ErrorText = styled.Text<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  fontSize: 14,
+  color: colors.error,
+  fontFamily: getSourGummyFontFamily('400'),
+  backgroundColor: colors.surface,
+  padding: 12,
+  borderRadius: 8,
+  marginBottom: 16
+}))
+
+const StackText = styled.Text<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  fontSize: 12,
+  color: colors.text,
+  fontFamily: getSourGummyFontFamily('400'),
+  backgroundColor: colors.surface,
+  padding: 12,
+  borderRadius: 8,
+  marginBottom: 16,
   opacity: 0.8
-  font-family: "${getSourGummyFontFamily('400')}"
-`
+}))
 
-const SectionTitle = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 18px
-  color: ${props => Colors[props.colorScheme].text}
-  margin-top: 16px
-  margin-bottom: 8px
-  font-family: "${getSourGummyFontFamily('600')}"
-`
+const ReloadButton = styled.View<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  backgroundColor: colors.primary,
+  padding: 16,
+  borderRadius: 8,
+  marginTop: 24,
+  alignItems: 'center'
+}))
 
-const ErrorText = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 14px
-  color: ${props => Colors[props.colorScheme].error}
-  font-family: "${getSourGummyFontFamily('400')}"
-  background-color: ${props => Colors[props.colorScheme].surface}
-  padding: 12px
-  border-radius: 8px
-  margin-bottom: 16px
-`
-
-const StackText = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 12px
-  color: ${props => Colors[props.colorScheme].text}
-  font-family: "${getSourGummyFontFamily('400')}"
-  background-color: ${props => Colors[props.colorScheme].surface}
-  padding: 12px
-  border-radius: 8px
-  margin-bottom: 16px
-  opacity: 0.8
-`
-
-const ReloadButton = styled.View<{ colorScheme: 'light' | 'dark' }>`
-  background-color: ${props => Colors[props.colorScheme].primary}
-  padding: 16px
-  border-radius: 8px
-  margin-top: 24px
-  align-items: center
-`
-
-const ReloadText = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  color: ${props => props.colorScheme === 'light' ? '#ffffff' : '#000000'}
-  font-size: 16px
-  font-family: "${getSourGummyFontFamily('600')}"
-`
+const ReloadText = styled.Text<{ colorScheme: 'light' | 'dark', colors: typeof Colors.light }>(({ colors }) => ({
+  color: colors.background,
+  fontSize: 16,
+  fontFamily: getSourGummyFontFamily('600')
+}))

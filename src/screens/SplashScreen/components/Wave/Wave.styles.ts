@@ -1,9 +1,10 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
 import styled from '@emotion/native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
-export const Bar = styled(Animated.View)<{ colorScheme: ColorScheme }>(({ colorScheme }) => ({
+import { Colors } from '@/config/theme/Colors'
+
+export const Bar = styled(Animated.View)<{ colorScheme: 'light' | 'dark' }>(({ colorScheme }) => ({
   width: scale(4),
   borderRadius: scale(2),
   backgroundColor: Colors[colorScheme].primary,
