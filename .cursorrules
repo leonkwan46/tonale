@@ -57,3 +57,6 @@
 - Validate user input (e.g., `validateName` function)
 - Use confirmation dialogs for destructive actions (Alert.alert)
 - Clean up unused imports and code
+- Avoid unnecessary comments - code should be self-documenting
+- Never use re-exports - import directly from source files
+- Always check TypeScript compilation (`tsc --noEmit`) and linting after making changes
