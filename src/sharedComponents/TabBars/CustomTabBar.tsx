@@ -1,12 +1,12 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import * as React from 'react'
-import { Platform, TouchableOpacity, useColorScheme } from 'react-native'
+import { Platform, TouchableOpacity } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scale, verticalScale } from 'react-native-size-matters'
 
-import { Colors } from '@/constants/Colors'
 import { useDevice } from '@/hooks'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
@@ -31,14 +31,13 @@ const TAB_CONFIG = {
 
 const TabBarContainer = styled.View<{ 
   bottomInset: number
-  colorScheme: string
   isTablet: boolean
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
-}>(({ theme, bottomInset, colorScheme, isTablet, config }) => ({
+}>(({ theme, bottomInset, isTablet, config }) => ({
   flexDirection: 'row',
-  backgroundColor: Colors[colorScheme as keyof typeof Colors].surface,
+  backgroundColor: theme.colors.surface,
   borderTopWidth: 1,
-  borderTopColor: Colors[colorScheme as keyof typeof Colors].border,
+  borderTopColor: theme.colors.border,
   paddingBottom: bottomInset,
   paddingHorizontal: isTablet ? config.paddingHorizontal : scale(config.paddingHorizontal),
   height: Platform.select({
@@ -67,14 +66,11 @@ const TabButton = styled(TouchableOpacity)<{
 
 const TabLabel = styled.Text<{ 
   focused: boolean
-  colorScheme: string
   isTablet: boolean
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
-}>(({ focused, colorScheme, isTablet, config }) => ({
+}>(({ focused, theme, isTablet, config }) => ({
   fontSize: isTablet ? config.fontSize : scale(config.fontSize),
-  color: focused 
-    ? Colors[colorScheme as keyof typeof Colors].tint 
-    : Colors[colorScheme as keyof typeof Colors].tabIconDefault,
+  color: focused ? theme.colors.tint : theme.colors.tabIconDefault,
   marginTop: 4,
   fontFamily: getSourGummyFontFamily('500')
 }))
@@ -114,14 +110,13 @@ const getTabLabel = (routeName: string) => {
 
 export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets()
-  const colorScheme = useColorScheme() ?? 'light'
+  const theme = useTheme()
   const { isTablet } = useDevice()
   const config = isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
 
   return (
     <TabBarContainer 
       bottomInset={insets.bottom} 
-      colorScheme={colorScheme}
       isTablet={isTablet}
       config={config}
     >
@@ -141,13 +136,9 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
           }
         }
 
-        // Use options from descriptors with fallbacks
         const label = options.title || getTabLabel(route.name)
-        const iconColor = isFocused 
-          ? Colors[colorScheme as keyof typeof Colors].tint 
-          : Colors[colorScheme as keyof typeof Colors].tabIconDefault
+        const iconColor = isFocused ? theme.colors.tint : theme.colors.tabIconDefault
 
-        // Get icon from options or fallback
         const iconName: IoniconsName = getTabIcon(route.name) as IoniconsName
 
         return (
@@ -166,7 +157,6 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
             />
             <TabLabel 
               focused={isFocused} 
-              colorScheme={colorScheme}
               isTablet={isTablet}
               config={config}
             >

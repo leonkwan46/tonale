@@ -1,7 +1,6 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { useEffect } from 'react'
-import { useColorScheme } from 'react-native'
 import Animated, {
     Easing,
     useAnimatedStyle,
@@ -13,7 +12,6 @@ import Animated, {
 interface LoadingProps {
   size?: 'small' | 'medium' | 'large'
   color?: string
-  colorScheme?: ColorScheme
 }
 
 const SIZE_MAP = {
@@ -30,12 +28,10 @@ const STROKE_WIDTH_MAP = {
 
 export function Loading({ 
   size = 'medium', 
-  color,
-  colorScheme 
+  color
 }: LoadingProps) {
-  const systemColorScheme = useColorScheme() ?? 'light'
-  const activeColorScheme = colorScheme ?? systemColorScheme
-  const spinnerColor = color ?? Colors[activeColorScheme].primary
+  const theme = useTheme()
+  const spinnerColor = color ?? theme.colors.primary
 
   const rotation = useSharedValue(0)
 

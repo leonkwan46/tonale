@@ -1,60 +1,57 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { useColorScheme } from 'react-native'
 
-import { Colors } from '@/constants/Colors'
 import { useUser } from '@/hooks'
 import { CustomTabBar } from '@/sharedComponents'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-const ErrorContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
-  padding: 20px;
-`
+const ErrorContainer = styled.View(({ theme }) => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: theme.colors.background,
+  padding: 20
+}))
 
-const ErrorText = styled.Text`
-  color: ${(props: { textColor: string }) => props.textColor};
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 10px;
-  font-family: "${getSourGummyFontFamily('400')}";
-`
+const ErrorText = styled.Text(({ theme }) => ({
+  color: theme.colors.text,
+  fontSize: 18,
+  textAlign: 'center',
+  marginBottom: 10,
+  fontFamily: getSourGummyFontFamily('400')
+}))
 
-const ErrorSubtext = styled.Text`
-  color: ${(props: { textColor: string }) => props.textColor};
-  font-size: 14px;
-  text-align: center;
-  opacity: 0.7;
-  font-family: "${getSourGummyFontFamily('400')}";
-`
+const ErrorSubtext = styled.Text(({ theme }) => ({
+  color: theme.colors.text,
+  fontSize: 14,
+  textAlign: 'center',
+  opacity: 0.7,
+  fontFamily: getSourGummyFontFamily('400')
+}))
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
+  const theme = useTheme()
   const { authUser, loading } = useUser()
   
-  // Show loading state
   if (loading) {
     return (
-      <ErrorContainer backgroundColor={Colors[colorScheme ?? 'light'].background}>
-        <ErrorText textColor={Colors[colorScheme ?? 'light'].text}>
+      <ErrorContainer>
+        <ErrorText>
           Loading...
         </ErrorText>
       </ErrorContainer>
     )
   }
   
-  // Show error for unauthenticated access
   if (!authUser) {
     return (
-      <ErrorContainer backgroundColor={Colors[colorScheme ?? 'light'].background}>
-        <ErrorText textColor={Colors[colorScheme ?? 'light'].text}>
+      <ErrorContainer>
+        <ErrorText>
           Access Denied
         </ErrorText>
-        <ErrorSubtext textColor={Colors[colorScheme ?? 'light'].text}>
+        <ErrorSubtext>
           You must be authenticated to access this area
         </ErrorSubtext>
       </ErrorContainer>
