@@ -17,8 +17,12 @@
 - Prefer `expo-router` for navigation: `useRouter()` and `router.push()` / `router.replace()`
 
 ## File Structure
-- Components in `src/screens/` have their own directory with `index.tsx` and `.styles.tsx` files
-- Shared components in `src/sharedComponents/`
+- **ALL components MUST have their own directory with exactly two files: `index.tsx` (or `index.ts`) and `.styles.tsx`**
+  - Component logic goes in `index.tsx` (or `index.ts` if no JSX)
+  - All styled components go in `.styles.tsx`
+  - Example: `ComponentName/index.tsx` and `ComponentName/.styles.tsx`
+- Components in `src/screens/` follow this structure
+- Shared components in `src/sharedComponents/` follow this structure
 - Use path aliases: `@/` for `src/`, `@types` for `src/types/`, `@sharedComponents` for `src/sharedComponents/`
 
 ## Styling
