@@ -1,7 +1,7 @@
 // Used in: Stage 2
 import { ALL_MAJOR_SCALES } from '@/config/gradeSyllabus/scales'
 import type { KeyName } from '@leonkwan46/music-notation'
-import type { VisualComponent } from '@types'
+import type { VisualComponent } from '@/types/visual'
 import type { ExplanationContext } from './types'
 
 const keyToString = (key: KeyName | string): string => {

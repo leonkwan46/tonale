@@ -1,7 +1,8 @@
 import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
 import { extractNotePrefix } from '../utils/interval'
 import { getNewNotesForStage } from '../../curriculum/config/noteRange'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import {
   generateQuestionId,

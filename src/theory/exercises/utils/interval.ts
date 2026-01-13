@@ -2,7 +2,7 @@ import { type ClefType, type Note } from '@leonkwan46/music-notation'
 import { LESS_COMMON_ACCIDENTALS } from '@/config/gradeSyllabus/pitchRange'
 import { STAGE_ONE_INTERVALS, STAGE_THREE_INTERVALS, STAGE_TWO_INTERVALS } from '../../curriculum/config/intervals'
 import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
-import type { StageNumber } from '@types'
+import type { StageNumber } from '@/types/stage'
 import { getPitchDefinitionsForClef } from './exercise'
 
 const NOTE_LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']

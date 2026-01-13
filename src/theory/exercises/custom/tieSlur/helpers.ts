@@ -1,5 +1,6 @@
 import { NOTES } from '@leonkwan46/music-notation'
-import type { Explanation, VisualComponent } from '@types'
+import type { Explanation } from '@/types/lesson'
+import type { VisualComponent } from '@/types/visual'
 import { ARTICULATION_SIGNS_DEFINITIONS } from '../../../../config/gradeSyllabus/musicalTerms'
 import { generateExplanation } from '../../utils/explanation'
 import { generateWrongChoices } from '../../utils/question'

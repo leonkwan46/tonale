@@ -1,6 +1,7 @@
+import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/sharedComponents'
-import { INSTRUMENT, type UserGender, type UserInstrument, type UserProfile } from '@types'
+import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
 import { useRef, useState } from 'react'
@@ -15,13 +16,13 @@ import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
 
 interface OnboardingBodyProps {
-  user: { uid: string } | null
-  setProfile: (profile: UserProfile) => void
+  authUser: { uid: string } | null
+  setUserData: (userData: UserData) => void
 }
 
 export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
-  user,
-  setProfile
+  authUser,
+  setUserData
 }) => {
   const router = useRouter()
   const { isTablet } = useDevice()
@@ -45,27 +46,32 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
     !isCompleting
 
   const handleCompleteOnboarding = async () => {
-    if (!selectedGender || !name.trim() || !selectedInstrument || !user) {
+    if (!selectedGender || !name.trim() || !selectedInstrument || !authUser) {
       return
     }
 
     setIsCompleting(true)
 
     try {
+      const trimmedName = name.trim()
       const instrumentValue = selectedInstrument === INSTRUMENT.OTHER 
         ? customInstrument.trim().toLowerCase() 
         : selectedInstrument
 
-      const result = await updateUserData({
-        onboardingCompleted: true,
-        gender: selectedGender,
-        name: name.trim(),
-        instrument: instrumentValue
-      })
+      const [result] = await Promise.all([
+        updateUserData({
+          onboardingCompleted: true,
+          gender: selectedGender,
+          name: trimmedName,
+          instrument: instrumentValue
+        }),
+        updateUserDisplayName(trimmedName),
+        sendEmailVerificationToUser()
+      ])
 
-      // Use profile data from updateUserData response to avoid extra getUserData call
+      // Use userData from updateUserData response to avoid extra getUserData call
       if (result.data.success && result.data.data) {
-        setProfile(result.data.data)
+        setUserData(result.data.data)
       }
       router.replace('/(tabs)')
     } catch {

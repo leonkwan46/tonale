@@ -1,6 +1,11 @@
-import { LESSON_PROGRESS_CACHE_KEY } from '@/constants/cache'
+import { LAST_LESSON_ACCESS_KEY, LESSON_PROGRESS_CACHE_KEY } from '@/constants/cache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { LessonProgressCache } from '@types'
+
+type LessonProgressCache = {
+  userId: string
+  timestamp: number
+  data: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
+}
 
 // Cache is considered stale after 24 hours (in milliseconds)
 const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000
@@ -61,4 +66,16 @@ export const clearProgressCache = async (): Promise<void> => {
   }
 }
 
-
+/**
+ * Clear all user cache (progress cache and last lesson access)
+ * This should be called when user needs to sign in again (e.g., after password reset, logout)
+ */
+export const clearAllUserCache = async (): Promise<void> => {
+  try {
+    await clearProgressCache()
+    await AsyncStorage.removeItem(LAST_LESSON_ACCESS_KEY)
+  } catch (error) {
+    console.error('Failed to clear user cache:', error)
+    // Don't throw - cache clearing failures shouldn't break the flow
+  }
+}

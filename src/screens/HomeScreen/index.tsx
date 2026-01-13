@@ -8,7 +8,7 @@ import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
 export function HomeScreen() {
-  const { user, profile, loading, fetchProfile: refreshProfile } = useUser()
+  const { authUser, userData, loading, fetchUserData: refreshProfile } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
   const { refreshProgress, refreshRevisionQuestions } = useProgress()
   const [refreshing, setRefreshing] = useState(false)
@@ -34,10 +34,10 @@ export function HomeScreen() {
       <HomeScreenBackground 
         refreshing={refreshing} 
         onRefresh={handleRefresh} 
-        gender={profile?.gender}
-        instrument={profile?.instrument}
+        gender={userData?.gender}
+        instrument={userData?.instrument}
       >
-        <GreetingBanner user={user} profile={profile} loading={loading} />
+        <GreetingBanner authUser={authUser} userData={userData} loading={loading} />
         <StrikeBar />
         <LessonCard />
         <RevisionCard />

@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		409558862FA53F87AF37D5C5 /* libPods-Tonal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B7C2DD0697269860B68BAE8 /* libPods-Tonal.a */; };
-		5AA16A54AB62FF9048C90200 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 165E29F1C66A925E971CAAEE /* PrivacyInfo.xcprivacy */; };
+		4B0144296994C8F26F937E72 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1588F4550211F3BFF2EF2A9 /* ExpoModulesProvider.swift */; };
+		60513D50B8EF26F9E885B4AD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EFDB2F41353670AA68CD4E98 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		CB42EEA939E0063424E012CF /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FED0E9CBE70DFCE89701A5 /* ExpoModulesProvider.swift */; };
+		E4B7C10F863269F37F2AA202 /* libPods-Tonal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78CCC9FAEE11263C25445759 /* libPods-Tonal.a */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,16 +20,16 @@
 		13B07F961A680F5B00A75B9A /* Tonal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tonal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Tonal/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tonal/Info.plist; sourceTree = "<group>"; };
-		165E29F1C66A925E971CAAEE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Tonal/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		225C063B3CC01870F594D8AF /* Pods-Tonal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.debug.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.debug.xcconfig"; sourceTree = "<group>"; };
-		7B7C2DD0697269860B68BAE8 /* libPods-Tonal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tonal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		80FED0E9CBE70DFCE89701A5 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Tonal/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		4355FFC2426959DD75483874 /* Pods-Tonal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.release.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.release.xcconfig"; sourceTree = "<group>"; };
+		78CCC9FAEE11263C25445759 /* libPods-Tonal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tonal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Tonal/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B1588F4550211F3BFF2EF2A9 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Tonal/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EDC2E97168F38DE9B14A7B8A /* Pods-Tonal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.release.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.release.xcconfig"; sourceTree = "<group>"; };
+		EFDB2F41353670AA68CD4E98 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Tonal/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Tonal/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* Tonal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Tonal-Bridging-Header.h"; path = "Tonal/Tonal-Bridging-Header.h"; sourceTree = "<group>"; };
+		F51A2D25EEA21C1439A982B3 /* Pods-Tonal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.debug.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,20 +37,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				409558862FA53F87AF37D5C5 /* libPods-Tonal.a in Frameworks */,
+				E4B7C10F863269F37F2AA202 /* libPods-Tonal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0194707593391D7C9DF9BEB2 /* Pods */ = {
+		0317D687AD9F1740592CF11D /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				225C063B3CC01870F594D8AF /* Pods-Tonal.debug.xcconfig */,
-				EDC2E97168F38DE9B14A7B8A /* Pods-Tonal.release.xcconfig */,
+				263271EA0BCDB63B3C698E30 /* Tonal */,
 			);
-			path = Pods;
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* Tonal */ = {
@@ -62,7 +61,15 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				165E29F1C66A925E971CAAEE /* PrivacyInfo.xcprivacy */,
+				EFDB2F41353670AA68CD4E98 /* PrivacyInfo.xcprivacy */,
+			);
+			name = Tonal;
+			sourceTree = "<group>";
+		};
+		263271EA0BCDB63B3C698E30 /* Tonal */ = {
+			isa = PBXGroup;
+			children = (
+				B1588F4550211F3BFF2EF2A9 /* ExpoModulesProvider.swift */,
 			);
 			name = Tonal;
 			sourceTree = "<group>";
@@ -71,9 +78,18 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				7B7C2DD0697269860B68BAE8 /* libPods-Tonal.a */,
+				78CCC9FAEE11263C25445759 /* libPods-Tonal.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		358320DA8E1AF2C699A2B7C4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F51A2D25EEA21C1439A982B3 /* Pods-Tonal.debug.xcconfig */,
+				4355FFC2426959DD75483874 /* Pods-Tonal.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -90,8 +106,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				0194707593391D7C9DF9BEB2 /* Pods */,
-				91DAFAAF0B6651A931A8382E /* ExpoModulesProviders */,
+				358320DA8E1AF2C699A2B7C4 /* Pods */,
+				0317D687AD9F1740592CF11D /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -104,22 +120,6 @@
 				13B07F961A680F5B00A75B9A /* Tonal.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		91DAFAAF0B6651A931A8382E /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				A0292D4D1A58F6C662B21E10 /* Tonal */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
-		A0292D4D1A58F6C662B21E10 /* Tonal */ = {
-			isa = PBXGroup;
-			children = (
-				80FED0E9CBE70DFCE89701A5 /* ExpoModulesProvider.swift */,
-			);
-			name = Tonal;
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -139,13 +139,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Tonal" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				E9BBA4CCC86310F8E6958A65 /* [Expo] Configure project */,
+				CA550B5512157B7388776435 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				7128277A51EFEAF9BBED97C0 /* [CP] Embed Pods Frameworks */,
+				B02020C9CB10484BDBDE5ABD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -195,7 +195,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				5AA16A54AB62FF9048C90200 /* PrivacyInfo.xcprivacy in Resources */,
+				60513D50B8EF26F9E885B4AD /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,28 +241,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7128277A51EFEAF9BBED97C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tonal/Pods-Tonal-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tonal/Pods-Tonal-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -297,7 +275,29 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tonal/Pods-Tonal-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E9BBA4CCC86310F8E6958A65 /* [Expo] Configure project */ = {
+		B02020C9CB10484BDBDE5ABD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tonal/Pods-Tonal-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tonal/Pods-Tonal-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA550B5512157B7388776435 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -329,7 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				CB42EEA939E0063424E012CF /* ExpoModulesProvider.swift in Sources */,
+				4B0144296994C8F26F937E72 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +338,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 225C063B3CC01870F594D8AF /* Pods-Tonal.debug.xcconfig */;
+			baseConfigurationReference = F51A2D25EEA21C1439A982B3 /* Pods-Tonal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -351,8 +351,6 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = Tonal/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Tonalè";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -377,7 +375,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EDC2E97168F38DE9B14A7B8A /* Pods-Tonal.release.xcconfig */;
+			baseConfigurationReference = 4355FFC2426959DD75483874 /* Pods-Tonal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -385,8 +383,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UVMNSS95QS;
 				INFOPLIST_FILE = Tonal/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Tonalè";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

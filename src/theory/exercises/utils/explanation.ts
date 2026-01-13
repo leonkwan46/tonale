@@ -1,4 +1,5 @@
-import type { Explanation, LessonContentType, VisualComponent } from '@types'
+import type { Explanation, LessonContentType } from '@/types/lesson'
+import type { VisualComponent } from '@/types/visual'
 import type { ExplanationContext } from '../explanation/types'
 
 import * as accidentals from '../explanation/accidentals'

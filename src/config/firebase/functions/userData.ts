@@ -1,11 +1,11 @@
-import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserDataSuccessResponse, UserProfile } from '@types'
+import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserDataSuccessResponse, UserData } from '@types'
 import { httpsCallable } from 'firebase/functions'
 import { functions } from '../firebase'
 
-export type { UserProfile } from '@types'
+export type { UserData } from '@types'
 
 // CRUD operations for userData
-export const createUserData = httpsCallable<Partial<UserProfile>, CreateUserDataResponse>(
+export const createUserData = httpsCallable<Partial<UserData>, CreateUserDataResponse>(
   functions,
   'createUserData'
 )
@@ -15,7 +15,7 @@ export const getUserData = httpsCallable<void, GetUserDataResponse>(
   'getUserData'
 )
 
-export const updateUserData = httpsCallable<Partial<UserProfile>, UpdateUserDataResponse>(
+export const updateUserData = httpsCallable<Partial<UserData>, UpdateUserDataResponse>(
   functions,
   'updateUserData'
 )

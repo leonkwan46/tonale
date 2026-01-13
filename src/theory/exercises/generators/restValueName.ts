@@ -1,4 +1,5 @@
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import {
   generateQuestionsFromPool,
   getAllRestTypes,

@@ -1,5 +1,6 @@
 import { NOTES, type ClefType, type MusicElementData, type Note } from '@leonkwan46/music-notation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
 import { addRegisterToChord, getChordsByStage } from '../utils/triad'

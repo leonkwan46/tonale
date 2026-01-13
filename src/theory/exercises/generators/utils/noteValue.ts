@@ -5,7 +5,8 @@ import {
 } from '../../utils/question'
 import { ensureFourChoicesForStage2, noteTypeToString } from '../../utils/timeValue'
 import { generateExplanation } from '../../utils/explanation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 
 export const createNoteValueQuestion = (
   stage: StageNumber,

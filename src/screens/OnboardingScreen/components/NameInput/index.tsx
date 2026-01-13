@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SectionContainer, SectionTitle, NameInputField } from './NameInput.styles'
+import { NameInputField, SectionContainer, SectionTitle } from './NameInput.styles'
 
 interface NameInputProps {
   name: string
@@ -12,6 +12,16 @@ const NameInputComponent: React.FC<NameInputProps> = ({
   onNameChange,
   isTablet
 }) => {
+  const validateName = (text: string): string => {
+    // Remove all spaces and special characters, keep only letters (a-z, A-Z) and hyphens (-)
+    return text.replace(/[^a-zA-Z-]/g, '')
+  }
+
+  const handleNameChange = (text: string) => {
+    const cleanedText = validateName(text)
+    onNameChange(cleanedText)
+  }
+
   return (
     <SectionContainer isTablet={isTablet}>
       <SectionTitle isTablet={isTablet}>Name</SectionTitle>
@@ -21,7 +31,7 @@ const NameInputComponent: React.FC<NameInputProps> = ({
         placeholderTextColor="#999"
         keyboardType="default"
         value={name}
-        onChangeText={onNameChange}
+        onChangeText={handleNameChange}
         autoCapitalize="words"
         testID="name-input"
       />

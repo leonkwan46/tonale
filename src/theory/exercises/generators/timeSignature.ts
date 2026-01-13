@@ -3,7 +3,8 @@ import { generateQuestionsFromPool, getTimeSignatures } from '../utils/exercise'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'
 import { formatAsNotation, formatAsText, generateWrongAnswers } from '../utils/timeSignature'
 import { generateExplanation } from '../utils/explanation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 
 
 export const createTimeSignatureQuestion = (

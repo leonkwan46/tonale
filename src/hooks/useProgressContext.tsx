@@ -3,7 +3,7 @@ import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQues
 import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
 import { calculateStageUnlockStatus, getLessonWithProgress, stagesArray } from '@/theory/curriculum/stages/helpers'
-import { clearProgressCache, loadProgressCache, saveProgressCache } from '@/utils/progressCache'
+import { clearAllUserCache, loadProgressCache, saveProgressCache } from '@/utils/cache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { Lesson, Stage, StageLesson } from '@types'
 import { RevisionQuestion } from '@types'
@@ -54,20 +54,6 @@ export const ProgressContext = createContext<ProgressContextType | undefined>(un
 // ============================================================================
 // STORAGE HELPERS
 // ============================================================================
-
-const clearUserDataOnSwitch = async (): Promise<void> => {
-  await clearProgressCache()
-  await AsyncStorage.removeItem(LAST_LESSON_ACCESS_KEY)
-}
-
-const clearUserDataStorage = async (): Promise<void> => {
-  try {
-    await clearProgressCache()
-    await AsyncStorage.removeItem(LAST_LESSON_ACCESS_KEY)
-  } catch (error) {
-    console.error('Failed to clear user data storage:', error)
-  }
-}
 
 const trackLessonAccessLocal = async (lessonId: string): Promise<void> => {
   try {
@@ -256,7 +242,7 @@ const getNextLockedStage = (): Stage | undefined => {
 // ============================================================================
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
-  const { user, profile, loading: userLoading } = useUser()
+  const { authUser, userData, loading: userLoading } = useUser()
   const [progressData, setProgressDataState] = useState<Record<string, ProgressData>>({})
   const [revisionQuestions, setRevisionQuestions] = useState<RevisionQuestion[]>([])
   const [loading, setLoading] = useState(true)
@@ -283,7 +269,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     try {
       if (currentUserIdRef.current && currentUserIdRef.current !== userId) {
         currentUserIdRef.current = ''
-        await clearUserDataOnSwitch()
+        await clearAllUserCache()
       }
       
       currentUserIdRef.current = userId
@@ -334,11 +320,11 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
   }, [setProgressData, initializeEmptyProgress])
 
-  // Initialize progress when user is available AND profile exists
-  // During registration, profile is null until createUserData completes
+  // Initialize progress when authUser is available AND userData exists
+  // During registration, userData is null until createUserData completes
   // This prevents wasted API calls before the user document exists
   useEffect(() => {
-    if (!user) {
+    if (!authUser) {
       setProgressDataState({})
       setRevisionQuestions([])
       setInitialized(false)
@@ -347,17 +333,17 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       return
     }
 
-    // Wait for user loading to complete and profile to exist
-    // If profile is null after loading, it means user document doesn't exist yet (new registration)
+    // Wait for user loading to complete and userData to exist
+    // If userData is null after loading, it means user document doesn't exist yet (new registration)
     // In that case, wait for createUserData to complete before initializing
-    if (userLoading || profile === null) {
+    if (userLoading || userData === null) {
       return
     }
 
     const initialize = async () => {
       setLoading(true)
       try {
-        await initializeUserProgress(user.uid)
+        await initializeUserProgress(authUser.uid)
         setInitialized(true)
       } catch (error) {
         console.error('Failed to initialize progress:', error)
@@ -368,7 +354,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
 
     initialize()
-  }, [user, profile, userLoading, initializeUserProgress])
+  }, [authUser, userData, userLoading, initializeUserProgress])
 
   // ============================================================================
   // REVISION QUESTIONS MANAGEMENT
@@ -386,33 +372,33 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (user && initialized) {
+    if (authUser && initialized) {
       loadRevisionQuestions()
     }
-  }, [user, initialized, loadRevisionQuestions])
+  }, [authUser, initialized, loadRevisionQuestions])
 
   // ============================================================================
   // PROGRESS ACTIONS
   // ============================================================================
 
   const refreshProgress = useCallback(async () => {
-    if (!user) return
+    if (!authUser) return
     
     setLoading(true)
     try {
-      await initializeUserProgress(user.uid)
+      await initializeUserProgress(authUser.uid)
       setInitialized(true)
     } catch (error) {
       console.error('Failed to refresh progress:', error)
     } finally {
       setLoading(false)
     }
-  }, [user, initializeUserProgress])
+  }, [authUser, initializeUserProgress])
 
   const refreshRevisionQuestions = useCallback(async () => {
-    if (!user) return
+    if (!authUser) return
     await loadRevisionQuestions()
-  }, [loadRevisionQuestions, user])
+  }, [loadRevisionQuestions, authUser])
 
   const updateProgress = useCallback((lessonId: string, data: Partial<ProgressData>) => {
     const updatedData = {
@@ -503,7 +489,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       currentUserIdRef.current = ''
       setProgressDataState({})
       resetStageProgressData()
-      await clearUserDataStorage()
+      await clearAllUserCache()
     } catch (error) {
       console.error('Failed to clear user data:', error)
     }

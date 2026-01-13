@@ -1,93 +1,80 @@
-import { auth } from '@/config/firebase/firebase'
-import { useProgress } from '@/hooks'
+import { signOutUser } from '@/config/firebase/auth'
+import { useUser } from '@/hooks'
 import { useRouter } from 'expo-router'
-import { signOut } from 'firebase/auth'
-import { Alert, useColorScheme } from 'react-native'
+import { useState } from 'react'
+import { Alert } from 'react-native'
 
-import { AccountInfo } from './components/AccountInfo'
-import { SettingItem } from './components/SettingItem'
-import {
-    Card,
-    Container,
-    SectionTitle,
-    Title,
-    TitleContainer
-} from './SettingsScreen.styles'
+import { ProfileHeader } from './components/ProfileHeader'
+import { SettingsItem } from './components/SettingsItem'
+import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent } from './SettingsScreen.styles'
 
-export function SettingsScreen() {
-  const colorScheme = useColorScheme() ?? 'light'
+export const SettingsScreen = () => {
+  const { userData } = useUser()
   const router = useRouter()
-  const { clearAllUserData } = useProgress()
-  const currentUser = auth.currentUser
+  const [loggingOut, setLoggingOut] = useState(false)
 
-  const handleLogout = () => {
+  const handleAccountPress = () => {
+    router.push('/(tabs)/settings/account')
+  }
+
+  const handleLogoutPress = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      'Log Out',
+      'Are you sure you want to log out?',
       [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Logout', 
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Log Out',
           style: 'destructive',
-          onPress: async () => {
-            try {
-              // Sign out from Firebase first (before clearing data)
-              // This ensures we can recover if signOut fails
-              await signOut(auth)
-              
-              // Only clear data after successful sign out
-              try {
-                // Clear all user-specific data from AsyncStorage
-                await clearAllUserData()
-              } catch (clearError) {
-                // Log but don't block logout if data clearing fails
-                // User is already signed out, so they can't access the data anyway
-                console.error('Failed to clear some user data:', clearError)
-              }
-              
-              // Note: Streak data is stored in user profile, not AsyncStorage
-              // It persists with the user account
-              
-              router.replace('/(auth)')
-            } catch (error) {
-              console.error('Failed to logout:', error)
-              Alert.alert('Error', 'Failed to logout. Please try again.')
-            }
-          }
+          onPress: handleLogout
         }
       ]
     )
   }
 
-  const accountInfo = {
-    displayName: currentUser?.displayName || null,
-    email: currentUser?.email || null
+  const handleLogout = async () => {
+    setLoggingOut(true)
+    try {
+      await signOutUser()
+      // Navigate to auth screen after logout
+      router.replace('/(auth)')
+    } catch (error) {
+      console.error('Error signing out:', error)
+      setLoggingOut(false)
+      Alert.alert('Error', 'Failed to log out. Please try again.')
+    }
   }
 
   return (
-    <Container colorScheme={colorScheme}>
-      <TitleContainer>
-        <Title colorScheme={colorScheme}>Settings</Title>
-      </TitleContainer>
-
-      {/* Account Card */}
-      <Card colorScheme={colorScheme}>
-        <SectionTitle colorScheme={colorScheme}>Account</SectionTitle>
-        <AccountInfo accountInfo={accountInfo} colorScheme={colorScheme} />
-      </Card>
-
-      {/* Account Actions Card */}
-      <Card colorScheme={colorScheme}>
-        <SectionTitle colorScheme={colorScheme}>Account Actions</SectionTitle>
-        <SettingItem
-          icon="log-out-outline"
-          label="Logout"
-          type="button"
-          destructive
-          colorScheme={colorScheme}
-          onPress={handleLogout}
-        />
-      </Card>
+    <Container>
+      <FullScreenScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <ScrollContent>
+          <ProfileHeader name={userData?.name || null} gender={userData?.gender} />
+          <Card>
+            <SettingsItem
+              icon="person-outline"
+              label="Account"
+              onPress={handleAccountPress}
+              showSeparator={false}
+            />
+          </Card>
+          <LogoutCard>
+            <SettingsItem
+              icon="log-out-outline"
+              label={loggingOut ? 'Logging out...' : 'Log Out'}
+              onPress={handleLogoutPress}
+              showSeparator={false}
+              variant="red"
+            />
+          </LogoutCard>
+        </ScrollContent>
+      </FullScreenScrollView>
     </Container>
   )
 }

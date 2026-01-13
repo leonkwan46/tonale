@@ -1,5 +1,6 @@
 import { ACCIDENTALS, type AccidentalType } from '@leonkwan46/music-notation'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool, getAccidentals } from '../utils/exercise'
 import { generateExplanation } from '../utils/explanation'
 import { generateQuestionId, generateWrongChoices } from '../utils/question'

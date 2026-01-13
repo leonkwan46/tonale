@@ -7,7 +7,8 @@ import {
   getValueKindFromId
 } from '../utils/exercise'
 import { createValueBeatQuestion } from '../utils/timeValueQuestion'
-import type { Question, StageNumber } from '@types'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
 import { createNoteValueQuestion } from './utils/noteValue'
 import { createRestValueQuestion } from './utils/restValue'
 

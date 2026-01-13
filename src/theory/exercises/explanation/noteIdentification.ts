@@ -1,5 +1,5 @@
 // Used in: Stage 0, Stage 1
-import type { VisualComponent } from '@types'
+import type { VisualComponent } from '@/types/visual'
 import type { ExplanationContext } from './types'
 
 export const explanationText = (context: ExplanationContext): string => {
