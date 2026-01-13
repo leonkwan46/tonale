@@ -2,7 +2,8 @@ import { useDevice } from '@/hooks'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { QuestionExplanation } from '../QuestionExplanation'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
@@ -27,7 +28,7 @@ const EXPLANATION_MODAL_DELAY = 1000
 const CORRECT_ANSWER_DELAY = 1500
 const FINAL_TEST_FAILURE_THRESHOLD = 3
 
-export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({ 
+export const AnswerInterface = ({ 
   questionType,
   questionData,
   onAnswerSubmit,
@@ -37,7 +38,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
   wrongAnswersCount = 0,
   isFinalTest = false,
   isLastQuestion = false
-}) => {
+}: AnswerInterfaceProps) => {
   const { isTablet } = useDevice()
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
@@ -119,7 +120,6 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
       case QUESTION_TYPE.MULTIPLE_CHOICE:
         return (
           <MultipleChoice
-            key={questionData.id}
             testID={`correct-answer-${questionData.correctAnswer}`}
             choices={questionData.choices}
             correctAnswer={questionData.correctAnswer}
@@ -146,7 +146,6 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
       case QUESTION_TYPE.KEY_PRESS:
         return (
           <KeyPress
-            key={questionData.id}
             correctKey={questionData.correctAnswer}
             onKeyPress={handleKeyPress}
           />
