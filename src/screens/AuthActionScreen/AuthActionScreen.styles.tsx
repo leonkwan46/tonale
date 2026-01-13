@@ -1,6 +1,6 @@
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
-import { TextInput, TouchableOpacity, View } from 'react-native'
+import { TextInput, TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'

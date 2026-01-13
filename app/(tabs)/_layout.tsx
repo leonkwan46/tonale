@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { useTheme } from '@emotion/react'
 import { Tabs } from 'expo-router'
 import React from 'react'
 
@@ -32,7 +31,6 @@ const ErrorSubtext = styled.Text(({ theme }) => ({
 }))
 
 export default function TabLayout() {
-  const theme = useTheme()
   const { authUser, loading } = useUser()
   
   if (loading) {
