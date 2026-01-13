@@ -1,6 +1,8 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { useProgress } from '@/hooks'
-import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents'
+import { FinalTestFailureModal } from './components/FinalTestFailureModal'
+import { StarRatingModal } from './components/StarRatingModal'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
@@ -192,22 +194,20 @@ export function LessonScreen() {
         isFinalTest={lesson?.isFinalTest || false}
       />
       
-      {showStarModal && (
-        <StarRatingModal
-          stars={calculateStars(questions.length, wrongAnswers.length)}
-          totalQuestions={questions.length}
-          wrongAnswers={wrongAnswers.length}
-          onContinue={closeModalAndExit}
-          onRetry={closeModalAndRetry}
-        />
-      )}
+      <StarRatingModal
+        visible={showStarModal}
+        stars={calculateStars(questions.length, wrongAnswers.length)}
+        totalQuestions={questions.length}
+        wrongAnswers={wrongAnswers.length}
+        onContinue={closeModalAndExit}
+        onRetry={closeModalAndRetry}
+      />
       
-      {showFailureModal && (
-        <FinalTestFailureModal
-          onRetry={closeFailureModalAndRetry}
-          onExit={closeFailureModalAndExit}
-        />
-      )}
+      <FinalTestFailureModal
+        visible={showFailureModal}
+        onRetry={closeFailureModalAndRetry}
+        onExit={closeFailureModalAndExit}
+      />
     </ScreenContainer>
   )
 }

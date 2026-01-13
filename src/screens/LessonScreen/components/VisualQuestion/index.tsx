@@ -16,7 +16,7 @@ import {
 import type { VisualComponent } from '@types'
 import * as React from 'react'
 import { scale } from 'react-native-size-matters'
-import { SMuFLCard } from '../../../../sharedComponents/SMuFLCard'
+import { SMuFLCard } from '../SMuFLCard'
 import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
 import { generateTripletElements, renderNoteComponent } from './visualRenderHelper'
 

@@ -1,5 +1,5 @@
 import { usePreventDoubleTap } from '@/hooks'
-import { WarningModal } from '@/sharedComponents'
+import { WarningModal } from './components/WarningModal'
 import type { Lesson } from '@types'
 import { useRouter } from 'expo-router'
 import * as React from 'react'

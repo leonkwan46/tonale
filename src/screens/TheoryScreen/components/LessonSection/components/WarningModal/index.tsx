@@ -1,32 +1,36 @@
-import * as React from 'react'
-import { Modal } from 'react-native'
-import { useDevice } from '../../hooks'
+import { useDevice } from '@/hooks'
+import { Modal } from '@/sharedComponents/Modal'
 import {
-    ButtonContainer,
-    DescriptionText,
-    ModalButton,
-    ModalButtonText,
-    ModalContainer,
-    ModalOverlay,
-    TitleText,
-    WarningIcon
-} from './WarningModal.styles'
-import { WarningModalProps } from './types'
+  ButtonContainer,
+  DescriptionText,
+  ModalButton,
+  ModalButtonText,
+  ModalContainer,
+  ModalOverlay,
+  TitleText
+} from '@/sharedComponents/Modal/Modal.styles'
+import { WarningIcon } from './WarningModal.styles'
 
-export const WarningModal: React.FC<WarningModalProps> = ({
+interface WarningModalProps {
+  isVisible: boolean
+  onContinue: () => void
+  onCancel: () => void
+  title?: string
+  description?: string
+}
+
+export const WarningModal = ({
   isVisible,
   onContinue,
   onCancel,
   title = 'Warning',
   description = 'Some lessons don\'t have any stars yet. Are you sure you want to continue?'
-}) => {
+}: WarningModalProps) => {
   const { isTablet } = useDevice()
 
   return (
     <Modal
       visible={isVisible}
-      transparent={true}
-      animationType="fade"
       onRequestClose={onCancel}
     >
       <ModalOverlay>

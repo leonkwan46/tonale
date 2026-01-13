@@ -1,5 +1,5 @@
 import styled from '@emotion/native'
-import { Animated } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -24,23 +24,8 @@ export const ModalContainer = styled.View<{ isTablet: boolean }>(({ theme, isTab
   minWidth: isTablet ? scale(200) : scale(300),
   maxWidth: isTablet ? scale(300) : scale(400),
   alignItems: 'center',
-  shadowColor: theme.colors.text,
-  shadowOffset: { width: 0, height: scale(4) },
-  shadowOpacity: 0.25,
-  shadowRadius: scale(8),
-  elevation: 8
-}))
-
-export const StarContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginVertical: isTablet ? scale(10) : scale(16)
-}))
-
-export const StarIcon = styled.Text<{ filled: boolean; isTablet: boolean }>(({ theme, filled, isTablet }) => ({
-  fontSize: isTablet ? scale(24) : scale(32),
-  color: filled ? '#FFD700' : theme.colors.secondary
+  flexDirection: 'column',
+  gap: isTablet ? scale(16) : scale(24)
 }))
 
 export const TitleText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
@@ -54,38 +39,33 @@ export const DescriptionText = styled.Text<{ isTablet: boolean }>(({ theme, isTa
   fontSize: isTablet ? scale(14) : scale(16),
   color: theme.colors.text,
   textAlign: 'center',
-  marginBottom: isTablet ? scale(16) : scale(24),
   opacity: 0.8,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const ButtonContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
+export const ButtonContainer = styled.View<{ isTablet: boolean; singleButton?: boolean }>(({ isTablet, singleButton }) => ({
   flexDirection: 'row',
-  justifyContent: 'space-between',
-  width: '100%',
+  justifyContent: singleButton ? 'center' : 'space-between',
+  alignItems: 'center',
+  width: singleButton ? 'auto' : '100%',
+  alignSelf: singleButton ? 'center' : 'stretch',
   gap: isTablet ? scale(8) : scale(12)
 }))
 
-export const ModalButton = styled.TouchableOpacity<{ variant: 'filled' | 'outlined'; isTablet: boolean }>(({ theme, variant, isTablet }) => ({
-  flex: 1,
+export const ModalButton = styled(TouchableOpacity)<{ variant: 'filled' | 'outlined'; isTablet: boolean; singleButton?: boolean }>(({ theme, variant, isTablet, singleButton }) => ({
+  flex: singleButton ? 0 : 1,
   paddingVertical: isTablet ? scale(8) : scale(12),
-  paddingHorizontal: isTablet ? scale(16) : scale(20),
   borderRadius: scale(8),
   backgroundColor: variant === 'filled' ? theme.colors.primary : 'transparent',
   borderWidth: variant === 'outlined' ? 1 : 0,
   borderColor: theme.colors.primary,
-  alignItems: 'center'
+  alignItems: 'center',
+  justifyContent: 'center',
+  alignSelf: singleButton ? 'center' : 'stretch'
 }))
 
 export const ModalButtonText = styled.Text<{ variant: 'filled' | 'outlined'; isTablet: boolean }>(({ theme, variant, isTablet }) => ({
   fontSize: isTablet ? scale(13) : scale(16),
   color: variant === 'filled' ? theme.colors.background : theme.colors.primary,
   fontFamily: getSourGummyFontFamily('600')
-}))
-
-export const AnimatedStarContainer = styled(Animated.View)(() => ({
-  width: scale(50),
-  height: scale(50),
-  justifyContent: 'center',
-  alignItems: 'center'
 }))
