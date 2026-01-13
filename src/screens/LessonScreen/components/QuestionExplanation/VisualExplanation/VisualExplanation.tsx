@@ -56,9 +56,9 @@ const formatMusicStaffElements = (
     : elements.map((element: MusicElementData) => [element])
 }
 
-export const VisualExplanation: React.FC<VisualExplanationProps> = ({ 
+export const VisualExplanation = ({ 
   visualComponent
-}) => {
+}: VisualExplanationProps) => {
   const { isTablet } = useDevice()
 
   const shouldRenderMusicStaff = Boolean(

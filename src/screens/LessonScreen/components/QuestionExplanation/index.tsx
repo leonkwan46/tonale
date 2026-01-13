@@ -1,16 +1,16 @@
 import { useDevice } from '@/hooks'
+import { ModalOverlay } from '@/sharedComponents/Modal/Modal.styles'
 import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/theory/exercises/utils/explanation'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
-import React from 'react'
+import * as React from 'react'
 import { Modal, Text } from 'react-native'
 import {
   ButtonContainer,
   ContinueButton,
   ContinueButtonText,
   ExplanationText,
-  ModalContainer,
-  ModalOverlay
+  ModalContainer
 } from './QuestionExplanation.styles'
 import { VisualExplanation } from './VisualExplanation/VisualExplanation'
 
@@ -59,9 +59,7 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
     
     // Add the bolded text with the same font family
     parts.push(
-      <Text key={match.index} style={{ fontFamily: getSourGummyFontFamily('700') }}>
-        {match[0]}
-      </Text>
+      React.createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily('700') } }, match[0])
     )
     
     lastIndex = regex.lastIndex
@@ -75,12 +73,12 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
   return parts.length > 0 ? <>{parts}</> : text
 }
 
-export const QuestionExplanation: React.FC<QuestionExplanationProps> = ({
+export const QuestionExplanation = ({
   explanation,
   correctAnswer,
   visualComponent,
   onContinue
-}) => {
+}: QuestionExplanationProps) => {
   const { isTablet } = useDevice()
   
   // Extract text and visualComponent from explanation

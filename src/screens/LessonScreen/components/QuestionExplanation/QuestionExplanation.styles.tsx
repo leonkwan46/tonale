@@ -3,18 +3,6 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const ModalOverlay = styled.View(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 1000
-}))
-
 export const ModalContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
   backgroundColor: theme.colors.background,
   borderRadius: scale(20),

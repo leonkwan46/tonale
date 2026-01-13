@@ -1,11 +1,11 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-export const ExplanationCard = styled.View<{ isTablet: boolean; isTextTerm?: boolean }>(({ theme, isTablet, isTextTerm }) => ({
-  backgroundColor: theme.colors.background,
+export const ExplanationCard = styled.View<{ isTablet: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
+  backgroundColor: '#ffffff',
   borderRadius: scale(16),
   borderWidth: scale(1),
-  borderColor: theme.colors.border,
+  borderColor: '#000000',
   width: '100%',
   maxWidth: '100%',
   minHeight: isTextTerm ? (isTablet ? scale(115) : scale(135)) : (isTablet ? scale(115) : scale(135)),
@@ -30,14 +30,14 @@ export const ExplanationSymbolContainer = styled.View<{ isTablet?: boolean; isTe
     : undefined
 }))
 
-export const ExplanationSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean; isWideDynamic?: boolean }>(({ theme, isTablet, isTextTerm, isWideDynamic }) => ({
+export const ExplanationSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean; isWideDynamic?: boolean }>(({ isTablet, isTextTerm, isWideDynamic }) => ({
   fontFamily: isTextTerm ? 'Times New Roman' : 'Bravura',
   fontSize: isTextTerm 
     ? (isTablet ? scale(18) : scale(24)) 
     : (isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
-  color: theme.colors.text,
+  color: '#000000',
   textAlign: 'center',
   textAlignVertical: 'center',
   paddingHorizontal: scale(15),
