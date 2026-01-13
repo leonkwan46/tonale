@@ -9,10 +9,10 @@ interface BeamedQuaverLogoProps {
   color?: string
 }
 
-export const BeamedQuaverLogo: React.FC<BeamedQuaverLogoProps> = ({ 
+export const BeamedQuaverLogo = ({ 
   size = 25, 
   color 
-}) => {
+}: BeamedQuaverLogoProps) => {
   const theme = useTheme()
   const { isTablet } = useDevice()
   const newSize = isTablet ? size * 0.8 : size

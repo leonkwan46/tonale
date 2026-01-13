@@ -12,7 +12,7 @@ interface TrueFalseProps {
   testID?: string
 }
 
-export const TrueFalse: React.FC<TrueFalseProps> = ({
+export const TrueFalse = ({
   choices,
   correctAnswer,
   selectedAnswer,
@@ -20,7 +20,7 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({
   showCorrectAnswer,
   onChoiceSelect,
   testID
-}) => {
+}: TrueFalseProps) => {
   // True/False should always have exactly 2 choices
   const trueFalseChoices = choices.slice(0, 2) as ('True' | 'False')[]
 

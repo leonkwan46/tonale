@@ -46,7 +46,7 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
   }
 }
 
-function ErrorFallback({ error, errorInfo }: { error?: Error, errorInfo?: ErrorInfo }) {
+const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorInfo }) => {
   const colorScheme = useColorScheme() ?? 'light'
   const colors = Colors[colorScheme]
   
@@ -93,7 +93,7 @@ function ErrorFallback({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
   )
 }
 
-export function ErrorBoundary({ children }: ErrorBoundaryProps) {
+export const ErrorBoundary = ({ children }: ErrorBoundaryProps) => {
   return <ErrorBoundaryClass>{children}</ErrorBoundaryClass>
 }
 

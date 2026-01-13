@@ -11,7 +11,7 @@ import { PasswordResetForm } from './components/PasswordResetForm'
 import { SuccessState } from './components/SuccessState'
 import { getHandler } from './handlers/AuthActionHandlerRegistry'
 
-export function AuthActionScreen() {
+export const AuthActionScreen = () => {
   const router = useRouter()
   const { authUser } = useUser()
   const params = useGlobalSearchParams<{ 

@@ -11,10 +11,10 @@ interface KeyPressProps {
 
 const ALL_PIANO_KEYS: string[] = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C#', 'D#', 'F#', 'G#', 'A#']
 
-export const KeyPress: React.FC<KeyPressProps> = ({ 
+export const KeyPress = ({ 
   onKeyPress,
   correctKey 
-}) => {
+}: KeyPressProps) => {
   const [pressedKey, setPressedKey] = useState<string | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 

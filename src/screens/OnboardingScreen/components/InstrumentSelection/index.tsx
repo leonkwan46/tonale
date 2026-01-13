@@ -26,14 +26,14 @@ interface InstrumentSelectionProps {
   isTablet: boolean
 }
 
-const InstrumentSelectionComponent: React.FC<InstrumentSelectionProps> = ({
+const InstrumentSelectionComponent = ({
   selectedInstrument,
   onSelect,
   customInstrument,
   onCustomInstrumentChange,
   onScrollToBottom,
   isTablet
-}) => {
+}: InstrumentSelectionProps) => {
   const theme = useTheme()
 
   const handleSelect = (instrument: UserInstrument) => {

@@ -13,7 +13,7 @@ import { useCallback, useState } from 'react'
 import { LessonHeader } from './components'
 import { LessonScreenBody } from './LessonScreenBody'
 
-export function LessonScreen() {
+export const LessonScreen = () => {
   const router = useRouter()
   const { lessonId, from } = useLocalSearchParams<{ lessonId: string, from: string }>()
   const { progressData, updateFinalTestProgress, updateLessonProgress, getLessonById, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()

@@ -7,7 +7,7 @@ interface SMuFLCardProps {
   isTextTerm?: boolean
 }
 
-export const SMuFLCard: React.FC<SMuFLCardProps> = ({ children, isTablet, isTextTerm }) => {
+export const SMuFLCard = ({ children, isTablet, isTextTerm }: SMuFLCardProps) => {
   return (
     <SMuFLCardContainer isTablet={isTablet} isTextTerm={isTextTerm}>
         {children}

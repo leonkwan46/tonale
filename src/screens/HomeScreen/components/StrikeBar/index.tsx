@@ -6,7 +6,7 @@ import { useStreak } from './useStreak'
 const DAYS_TO_DISPLAY = 5
 const CENTER_OFFSET = 2
 
-export const StrikeBar: React.FC = () => {
+export const StrikeBar = () => {
   const currentDay = useStreak()
 
   const getDisplayDays = (): number[] => {

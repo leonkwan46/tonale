@@ -16,7 +16,7 @@ interface AnimatedFlameProps {
   isActive: boolean
 }
 
-export const AnimatedFlame: React.FC<AnimatedFlameProps> = ({ color, size, isActive }) => {
+export const AnimatedFlame = ({ color, size, isActive }: AnimatedFlameProps) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
   const rotation = useSharedValue(0)

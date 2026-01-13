@@ -16,7 +16,7 @@ interface TrueFalseButtonProps {
   testID?: string
 }
 
-export const TrueFalseButton: React.FC<TrueFalseButtonProps> = ({
+export const TrueFalseButton = ({
   choice,
   isSelected,
   isCorrect,
@@ -27,7 +27,7 @@ export const TrueFalseButton: React.FC<TrueFalseButtonProps> = ({
   disabled = false,
   isLastInRow,
   testID
-}) => {
+}: TrueFalseButtonProps) => {
   const { isTablet } = useDevice()
   const [isPressed, setIsPressed] = useState(false)
 

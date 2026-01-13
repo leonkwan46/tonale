@@ -15,7 +15,7 @@ import {
   StartButtonText
 } from './RevisionCard.styles'
 
-export const RevisionCard: React.FC = () => {
+export const RevisionCard = () => {
   const { revisionQuestions } = useProgress()
   const router = useRouter()
   const [isPressed, setIsPressed] = useState(false)

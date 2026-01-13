@@ -14,7 +14,7 @@ interface WaveProps {
   isTablet: boolean
 }
 
-export function Wave({ delay, isTransitioning, isTablet }: WaveProps) {
+export const Wave = ({ delay, isTransitioning, isTablet }: WaveProps) => {
   const colorScheme = useColorScheme() ?? 'light'
   const height = useSharedValue(4)
   const opacity = useSharedValue(0)

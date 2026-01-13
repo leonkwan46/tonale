@@ -9,7 +9,7 @@ export interface DeviceInfo {
   deviceType: 'phone' | 'tablet'
 }
 
-export function useDevice(): DeviceInfo {
+export const useDevice = (): DeviceInfo => {
   const dimensions = Dimensions.get('window')
   
   const deviceInfo = useMemo(() => {
@@ -29,7 +29,7 @@ export function useDevice(): DeviceInfo {
 }
 
 // Helper hook specifically for responsive values
-export function useResponsiveValue<T>(phoneValue: T, tabletValue: T): T {
+export const useResponsiveValue = <T,>(phoneValue: T, tabletValue: T): T => {
   const { isTablet } = useDevice()
   return isTablet ? tabletValue : phoneValue
 }

@@ -30,7 +30,7 @@ interface AuthFormProps {
   isTablet: boolean
 }
 
-export const AuthForm: React.FC<AuthFormProps> = ({
+export const AuthForm = ({
   authState,
   formData,
   setFormData,

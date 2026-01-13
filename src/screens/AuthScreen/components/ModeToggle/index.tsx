@@ -13,11 +13,11 @@ interface ModeToggleProps {
   isTablet: boolean
 }
 
-export const ModeToggle: React.FC<ModeToggleProps> = ({
+export const ModeToggle = ({
   authState,
   setAuthState,
   isTablet
-}) => {
+}: ModeToggleProps) => {
   const setMode = (mode: 'login' | 'register') => {
     setAuthState(prev => ({ ...prev, mode, error: '' }))
   }

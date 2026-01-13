@@ -17,11 +17,11 @@ interface GenderSelectionProps {
   isTablet: boolean
 }
 
-const GenderSelectionComponent: React.FC<GenderSelectionProps> = ({
+const GenderSelectionComponent = ({
   selectedGender,
   onSelect,
   isTablet
-}) => {
+}: GenderSelectionProps) => {
   const theme = useTheme()
 
   return (

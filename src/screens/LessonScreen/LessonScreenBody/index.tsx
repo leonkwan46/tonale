@@ -16,7 +16,7 @@ interface LessonScreenBodyProps {
   isFinalTest?: boolean
 }
 
-export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
+export const LessonScreenBody = ({
   questions,
   currentQuestionIndex,
   onAnswerSubmit,
@@ -24,7 +24,7 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
   onLessonComplete,
   wrongAnswersCount = 0,
   isFinalTest = false
-}) => {
+}: LessonScreenBodyProps) => {
   const { isTablet } = useDevice()
   const currentQuestion = questions[currentQuestionIndex]
   const { question, visualComponent, type } = currentQuestion

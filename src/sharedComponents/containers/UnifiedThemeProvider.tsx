@@ -8,7 +8,7 @@ interface UnifiedThemeProviderProps {
   children: React.ReactNode
 }
 
-export function UnifiedThemeProvider({ children }: UnifiedThemeProviderProps) {
+export const UnifiedThemeProvider = ({ children }: UnifiedThemeProviderProps) => {
   const colorScheme = useColorScheme()
   
   const isDark = colorScheme === 'dark'

@@ -6,7 +6,7 @@ interface CrownIconProps {
   size?: number
 }
 
-export const CrownIcon: React.FC<CrownIconProps> = ({ size = 24 }) => {
+export const CrownIcon = ({ size = 24 }: CrownIconProps) => {
   const scaledSize = scale(size)
   
   return (

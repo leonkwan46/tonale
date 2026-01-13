@@ -12,9 +12,9 @@ interface TimeSignatureProps {
   timeSignature: TimeSignatureType | string
 }
 
-export const TimeSignature: React.FC<TimeSignatureProps> = ({ 
+export const TimeSignature = ({ 
   timeSignature
-}) => {
+}: TimeSignatureProps) => {
   const timeSignatureString = typeof timeSignature === 'string' ? timeSignature : formatAsNotation(timeSignature)
   const parsedTimeSignature = parseTimeSignature(timeSignatureString)
   

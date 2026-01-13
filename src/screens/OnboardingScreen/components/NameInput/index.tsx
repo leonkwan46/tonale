@@ -7,11 +7,11 @@ interface NameInputProps {
   isTablet: boolean
 }
 
-const NameInputComponent: React.FC<NameInputProps> = ({
+const NameInputComponent = ({
   name,
   onNameChange,
   isTablet
-}) => {
+}: NameInputProps) => {
   const validateName = (text: string): string => {
     // Remove all spaces and special characters, keep only letters (a-z, A-Z) and hyphens (-)
     return text.replace(/[^a-zA-Z-]/g, '')

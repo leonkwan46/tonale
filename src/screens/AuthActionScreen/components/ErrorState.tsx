@@ -11,7 +11,7 @@ interface ErrorStateProps {
   error: string
 }
 
-export function ErrorState({ error }: ErrorStateProps) {
+export const ErrorState = ({ error }: ErrorStateProps) => {
   const { isTablet } = useDevice()
 
   return (

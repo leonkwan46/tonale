@@ -24,7 +24,7 @@ interface VisualQuestionProps {
   visualComponent: VisualComponent
 }
 
-export const VisualQuestion: React.FC<VisualQuestionProps> = ({ visualComponent }: VisualQuestionProps) => {
+export const VisualQuestion = ({ visualComponent }: VisualQuestionProps) => {
   const { isTablet } = useDevice()
   const theme = useTheme()
 

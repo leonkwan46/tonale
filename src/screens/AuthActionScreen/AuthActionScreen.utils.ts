@@ -3,7 +3,7 @@ import { FirebaseError } from '@/types/api/errors'
 /**
  * Get user-friendly error message from Firebase error
  */
-export function getFirebaseErrorMessage(error: FirebaseError): string {
+export const getFirebaseErrorMessage = (error: FirebaseError): string => {
   switch (error.code) {
     case 'auth/expired-action-code':
       return 'This link has expired. Please request a new one.'

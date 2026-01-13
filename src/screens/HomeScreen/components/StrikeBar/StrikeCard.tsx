@@ -50,7 +50,7 @@ const getFlameIconColor = (day: number, currentDay: number): string => {
   return hexToRgba(FLAME_COLOR_UPCOMING, 0.4)
 }
 
-export const StrikeCard: React.FC<StrikeCardProps> = ({ day, currentDay, index }) => {
+export const StrikeCard = ({ day, currentDay, index }: StrikeCardProps) => {
   const { isCompleted, isActive, isEmpty } = getCardState(day, currentDay)
   const iconColor = getFlameIconColor(day, currentDay)
 

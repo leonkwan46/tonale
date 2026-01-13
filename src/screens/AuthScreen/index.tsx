@@ -29,7 +29,7 @@ export interface AuthState {
   showConfirmPassword: boolean
 }
 
-export function AuthScreen() {
+export const AuthScreen = () => {
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
     email: '',

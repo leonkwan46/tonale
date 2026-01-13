@@ -11,11 +11,11 @@ interface AvatarPreviewProps {
   isTablet: boolean
 }
 
-const AvatarPreviewComponent: React.FC<AvatarPreviewProps> = ({
+const AvatarPreviewComponent = ({
   selectedGender,
   selectedInstrument,
   isTablet
-}) => {
+}: AvatarPreviewProps) => {
   const theme = useTheme()
   const { width: screenWidth } = useWindowDimensions()
   const imageSource = useMemo(() => {

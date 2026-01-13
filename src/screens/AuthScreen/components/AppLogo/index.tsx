@@ -20,9 +20,9 @@ interface AppLogoProps {
   isTablet: boolean
 }
 
-export const AppLogo: React.FC<AppLogoProps> = ({
+export const AppLogo = ({
   isTablet
-}) => {
+}: AppLogoProps) => {
   const theme = useTheme()
   
   const scaleValue = useSharedValue(0.3)

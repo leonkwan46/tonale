@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Dimensions } from 'react-native'
 
-export function useWindowDimensions() {
+export const useWindowDimensions = () => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'))
 
   useEffect(() => {

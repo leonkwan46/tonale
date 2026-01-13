@@ -19,7 +19,7 @@ interface ChoiceButtonProps {
   testID?: string
 }
 
-export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
+export const ChoiceButton = ({
   choice,
   isSelected,
   isCorrect,
@@ -31,7 +31,7 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
   layoutType,
   isNoteIdentification = false,
   testID
-}) => {
+}: ChoiceButtonProps) => {
   const { isTablet } = useDevice()
   const [isPressed, setIsPressed] = useState(false)
 

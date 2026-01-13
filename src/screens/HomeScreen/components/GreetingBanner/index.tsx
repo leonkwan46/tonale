@@ -25,7 +25,7 @@ const getUsername = (authUser: User | null, userData: UserData | null, loading: 
          'Guest'
 }
 
-export const GreetingBanner: React.FC<GreetingBannerProps> = ({ authUser, userData, loading }) => {
+export const GreetingBanner = ({ authUser, userData, loading }: GreetingBannerProps) => {
   const username = getUsername(authUser, userData, loading)
   const characterImageSource = userData?.gender === 'female'
     ? require('../../../../../assets/images/girl/girl_head.png')

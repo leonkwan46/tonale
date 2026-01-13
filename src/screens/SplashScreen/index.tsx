@@ -52,7 +52,7 @@ interface SplashScreenProps {
   onComplete: () => void
 }
 
-export function SplashScreen({ onComplete }: SplashScreenProps) {
+export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [fontsLoaded] = useFonts(FONTS)
   const colorScheme = useColorScheme() ?? 'light'
   const { loading: authLoading } = useUser()

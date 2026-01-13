@@ -18,7 +18,7 @@ interface FinalTestProps {
   testID?: string
 }
 
-export const FinalTest: React.FC<FinalTestProps> = ({ 
+export const FinalTest = ({ 
   isPressed = false, 
   title,
   description,

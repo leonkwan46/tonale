@@ -7,7 +7,7 @@ interface ScrollIconProps {
   size?: number
 }
 
-export const ScrollIcon: React.FC<ScrollIconProps> = ({ size = 24 }) => {
+export const ScrollIcon = ({ size = 24 }: ScrollIconProps) => {
   const scaledSize = scale(size)
   
   return (

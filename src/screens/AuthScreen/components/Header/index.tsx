@@ -12,10 +12,10 @@ interface HeaderProps {
   isTablet: boolean
 }
 
-export const Header: React.FC<HeaderProps> = ({
+export const Header = ({
   authState,
   isTablet
-}) => {
+}: HeaderProps) => {
   return (
   <HeaderContainer isTablet={isTablet}>
     <AppLogo isTablet={isTablet} />

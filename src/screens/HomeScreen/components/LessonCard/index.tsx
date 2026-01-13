@@ -6,7 +6,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
 
-export const LessonCard: React.FC = () => {
+export const LessonCard = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
   const router = useRouter()
   const [isPressed, setIsPressed] = useState(false)

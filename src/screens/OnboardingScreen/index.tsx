@@ -6,7 +6,7 @@ import { ActivityIndicator } from 'react-native'
 import { OnboardingBody } from './OnboardingBody'
 import { ContentContainer } from './OnboardingScreen.styles'
 
-export function OnboardingScreen() {
+export const OnboardingScreen = () => {
   const router = useRouter()
   const { authUser, userData, loading: userLoading, setUserData } = useUser()
 

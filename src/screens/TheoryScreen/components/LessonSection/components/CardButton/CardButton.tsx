@@ -10,7 +10,7 @@ interface CardButtonProps {
   isCompleted?: boolean
 }
 
-export const CardButton: React.FC<CardButtonProps> = ({ isLocked = false, isPressed = false, stars = 0, isCompleted = false }) => {
+export const CardButton = ({ isLocked = false, isPressed = false, stars = 0, isCompleted = false }: CardButtonProps) => {
 
   const { isTablet } = useDevice()
 

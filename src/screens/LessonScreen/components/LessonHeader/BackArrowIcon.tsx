@@ -13,9 +13,9 @@ const IconContainer = styled.View(({ theme }) => ({
   alignItems: 'center'
 }))
 
-export const BackArrowIcon: React.FC<BackArrowIconProps> = ({ 
+export const BackArrowIcon = ({ 
   size = 16
-}) => {
+}: BackArrowIconProps) => {
   const theme = useTheme()
   const scaledSize = scale(size)
   

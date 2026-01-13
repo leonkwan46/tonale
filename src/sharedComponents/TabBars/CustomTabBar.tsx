@@ -108,7 +108,7 @@ const getTabLabel = (routeName: string) => {
   }
 }
 
-export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets()
   const theme = useTheme()
   const { isTablet } = useDevice()

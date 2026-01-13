@@ -19,13 +19,13 @@ interface LessonHeaderProps {
   onBackPress: () => void
 }
 
-export const LessonHeader: React.FC<LessonHeaderProps> = ({
+export const LessonHeader = ({
   lesson,
   currentQuestionIndex,
   totalQuestions,
   wrongAnswersCount,
   onBackPress
-}) => {
+}: LessonHeaderProps) => {
   const { isTablet } = useDevice()
   
   return (

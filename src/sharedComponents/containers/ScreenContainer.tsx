@@ -16,10 +16,10 @@ const StyledContainer = styled(View)<{ paddingTop: number; paddingBottom: number
   paddingBottom: paddingBottom
 }))
 
-export function ScreenContainer({ 
+export const ScreenContainer = ({ 
   children,
   includeBottomPadding = false
-}: ScreenContainerProps) {    
+}: ScreenContainerProps) => {    
   const insets = useSafeAreaInsets()
   
   return (

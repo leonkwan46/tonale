@@ -10,12 +10,12 @@ interface OnboardingButtonProps {
   isTablet: boolean
 }
 
-const OnboardingButtonComponent: React.FC<OnboardingButtonProps> = ({
+const OnboardingButtonComponent = ({
   isEnabled,
   isCompleting,
   onPress,
   isTablet
-}) => {
+}: OnboardingButtonProps) => {
   return (
     <PrimaryButton
       opacity={isEnabled ? 1 : 0.7}

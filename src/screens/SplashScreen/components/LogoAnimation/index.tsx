@@ -24,7 +24,7 @@ interface LogoAnimationProps {
   isTransitioning: boolean
 }
 
-export function LogoAnimation({ isTransitioning }: LogoAnimationProps) {
+export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
   const colorScheme = useColorScheme() ?? 'light'
   
   // Animation values

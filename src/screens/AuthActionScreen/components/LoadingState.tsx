@@ -2,7 +2,7 @@ import { useDevice } from '@/hooks'
 
 import { MessageText } from '../AuthActionScreen.styles'
 
-export function LoadingState() {
+export const LoadingState = () => {
   const { isTablet } = useDevice()
 
   return <MessageText isTablet={isTablet}>Processing...</MessageText>

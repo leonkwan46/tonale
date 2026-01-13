@@ -14,7 +14,7 @@ interface MultipleChoiceProps {
   testID?: string
 }
 
-export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
+export const MultipleChoice = ({
   choices,
   correctAnswer,
   selectedAnswer,
@@ -24,7 +24,7 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   type = 'grid',
   isNoteIdentification = false,
   testID
-}) => {
+}: MultipleChoiceProps) => {
   // Group choices into rows based on type
   const createRows = () => {
     if (type === 'row') {

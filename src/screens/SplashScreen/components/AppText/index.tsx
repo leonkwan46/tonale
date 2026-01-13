@@ -21,7 +21,7 @@ interface AppTextProps {
   isTransitioning: boolean
 }
 
-export function AppText({ appName, tagline, isTransitioning }: AppTextProps) {
+export const AppText = ({ appName, tagline, isTransitioning }: AppTextProps) => {
   const colorScheme = useColorScheme() ?? 'light'
   
   // Animation values

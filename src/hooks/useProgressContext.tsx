@@ -241,7 +241,7 @@ const getNextLockedStage = (): Stage | undefined => {
 // PROGRESS PROVIDER COMPONENT
 // ============================================================================
 
-export function ProgressProvider({ children }: { children: React.ReactNode }) {
+export const ProgressProvider = ({ children }: { children: React.ReactNode }) => {
   const { authUser, userData, loading: userLoading } = useUser()
   const [progressData, setProgressDataState] = useState<Record<string, ProgressData>>({})
   const [revisionQuestions, setRevisionQuestions] = useState<RevisionQuestion[]>([])
@@ -535,6 +535,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 // HOOK
 // ============================================================================
 
-export function useProgress() {
+export const useProgress = () => {
   return useContext(ProgressContext)!
 }

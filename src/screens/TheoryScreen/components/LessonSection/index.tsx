@@ -13,7 +13,7 @@ interface LessonSectionProps {
   allStageLessons?: Lesson[]
 }
 
-export const LessonSection: React.FC<LessonSectionProps> = ({ index, lesson, allStageLessons = [] }: LessonSectionProps) => {
+export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSectionProps) => {
   const router = useRouter()
   const [showWarningModal, setShowWarningModal] = useState(false)
   

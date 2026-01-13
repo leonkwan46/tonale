@@ -5,7 +5,7 @@ interface OnboardingHeaderProps {
   isTablet: boolean
 }
 
-const OnboardingHeaderComponent: React.FC<OnboardingHeaderProps> = ({ isTablet }) => {
+const OnboardingHeaderComponent = ({ isTablet }: OnboardingHeaderProps) => {
   return (
     <HeaderContainer isTablet={isTablet}>
       <Title isTablet={isTablet}>Welcome to Tonalè!</Title>

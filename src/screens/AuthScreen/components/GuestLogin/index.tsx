@@ -20,12 +20,12 @@ interface GuestLoginProps {
   isTablet: boolean
 }
 
-export const GuestLogin: React.FC<GuestLoginProps> = ({
+export const GuestLogin = ({
   loading,
   onGuestLogin,
   isVisible,
   isTablet
-}) => {
+}: GuestLoginProps) => {
   const theme = useTheme()
   
   return (

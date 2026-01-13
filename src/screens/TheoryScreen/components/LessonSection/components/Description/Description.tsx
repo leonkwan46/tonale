@@ -7,7 +7,7 @@ interface DescriptionProps {
   testID?: string
 }
 
-export const Description: React.FC<DescriptionProps> = ({ title, description, testID }) => {
+export const Description = ({ title, description, testID }: DescriptionProps) => {
 
   const { isTablet } = useDevice()
     

@@ -26,10 +26,10 @@ const STROKE_WIDTH_MAP = {
   large: 4
 } as const
 
-export function Loading({ 
+export const Loading = ({ 
   size = 'medium', 
   color
-}: LoadingProps) {
+}: LoadingProps) => {
   const theme = useTheme()
   const spinnerColor = color ?? theme.colors.primary
 

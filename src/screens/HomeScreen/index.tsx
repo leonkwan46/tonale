@@ -7,7 +7,7 @@ import { LessonCard } from './components/LessonCard'
 import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
-export function HomeScreen() {
+export const HomeScreen = () => {
   const { authUser, userData, loading, fetchUserData: refreshProfile } = useUser()
   const { refresh: refreshLesson } = useLastLesson()
   const { refreshProgress, refreshRevisionQuestions } = useProgress()

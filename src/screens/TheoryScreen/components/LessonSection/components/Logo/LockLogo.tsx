@@ -9,10 +9,10 @@ interface LockLogoProps {
   color?: string
 }
 
-export const LockLogo: React.FC<LockLogoProps> = ({ 
+export const LockLogo = ({ 
   size = 25, 
   color 
-}) => {
+}: LockLogoProps) => {
   const theme = useTheme()
   const { isTablet } = useDevice()
   const newSize = isTablet ? size * 0.8 : size

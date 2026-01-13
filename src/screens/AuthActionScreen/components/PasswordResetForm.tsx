@@ -24,13 +24,13 @@ interface PasswordResetFormProps {
   error?: string
 }
 
-export function PasswordResetForm({
+export const PasswordResetForm = ({
   email,
   code,
   onReset,
   isLoading = false,
   error
-}: PasswordResetFormProps) {
+}: PasswordResetFormProps) => {
   const { isTablet } = useDevice()
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')

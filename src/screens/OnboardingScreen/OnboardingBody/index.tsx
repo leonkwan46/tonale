@@ -20,10 +20,10 @@ interface OnboardingBodyProps {
   setUserData: (userData: UserData) => void
 }
 
-export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
+export const OnboardingBody = ({
   authUser,
   setUserData
-}) => {
+}: OnboardingBodyProps) => {
   const router = useRouter()
   const { isTablet } = useDevice()
   const scrollViewRef = useRef<ScrollView>(null)

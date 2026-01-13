@@ -91,12 +91,12 @@ export const useLastLesson = (): LessonResult => {
 }
 
 // Helper Functions
-function findIncompleteLessonFromIndex(
+const findIncompleteLessonFromIndex = (
   startIndex: number,
   progressData: Record<string, ProgressData>,
   allStageLessons: { id: string }[],
   getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
-): Lesson | null {
+): Lesson | null => {
   for (let i = startIndex; i < allStageLessons.length; i++) {
     const stageLesson = allStageLessons[i]
     const lesson = getLessonById(stageLesson.id, progressData) ?? null
@@ -111,12 +111,12 @@ function findIncompleteLessonFromIndex(
   return null
 }
 
-function findLessonToDisplay(
+const findLessonToDisplay = (
   lastAccess: LastAccess,
   progressData: Record<string, ProgressData>,
   allStageLessons: { id: string }[],
   getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
-): Lesson | null {
+): Lesson | null => {
   if (lastAccess) {
     const lesson = getLessonById(lastAccess.lessonId, progressData) ?? null
     if (!lesson) return null
@@ -134,20 +134,20 @@ function findLessonToDisplay(
   return findIncompleteLessonFromIndex(0, progressData, allStageLessons, getLessonById)
 }
 
-function isLessonComplete(
+const isLessonComplete = (
   lesson: Lesson,
   progress: ProgressData | undefined
-): boolean {
+): boolean => {
   if (lesson.isFinalTest) {
     return progress?.isPassed === true
   }
   return (progress?.stars ?? 0) >= 3
 }
 
-function mergeProgressData(
+const mergeProgressData = (
   lesson: Lesson,
   progressData: Record<string, ProgressData>
-): Lesson {
+): Lesson => {
   const progress: ProgressData | undefined = progressData[lesson.id]
   return {
     ...lesson,

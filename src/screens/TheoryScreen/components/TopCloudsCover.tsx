@@ -73,9 +73,9 @@ const cloudShapes = [
   { width: screenWidth * 0.4, left: screenWidth * 0.8, top: 130, color: '#f5faff' }
 ]
 
-export const TopCloudsCover: React.FC<TopCloudsCoverProps> = ({
+export const TopCloudsCover = ({
   coverHeight = scale(180) 
-}) => {
+}: TopCloudsCoverProps) => {
   // Create all Animated.Values at once
   const cloudAnimations = useRef(
     cloudShapes.map(() => new Animated.Value(Math.random()))

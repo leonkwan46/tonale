@@ -16,7 +16,7 @@ interface SuccessStateProps {
   mode: AuthActionMode
 }
 
-export function SuccessState({ mode }: SuccessStateProps) {
+export const SuccessState = ({ mode }: SuccessStateProps) => {
   const router = useRouter()
   const { isTablet } = useDevice()
 

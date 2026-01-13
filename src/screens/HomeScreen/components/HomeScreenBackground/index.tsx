@@ -17,7 +17,7 @@ interface HomeScreenBackgroundProps {
   instrument?: UserInstrument | string
 }
 
-export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender, instrument }) => {
+export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, instrument }: HomeScreenBackgroundProps) => {
   const colorScheme = useColorScheme() ?? 'light'
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
