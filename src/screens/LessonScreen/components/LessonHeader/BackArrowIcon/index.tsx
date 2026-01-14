@@ -1,17 +1,11 @@
-import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
-import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import Svg, { Path } from 'react-native-svg'
+import { IconContainer } from './.styles'
 
 interface BackArrowIconProps {
   size?: number
 }
-
-const IconContainer = styled.View(({ theme }) => ({
-  justifyContent: 'center',
-  alignItems: 'center'
-}))
 
 export const BackArrowIcon = ({ 
   size = 16
@@ -20,10 +14,7 @@ export const BackArrowIcon = ({
   const scaledSize = scale(size)
   
   return (
-    <IconContainer style={{
-      width: scaledSize,
-      height: scaledSize
-    }}>
+    <IconContainer scaledSize={scaledSize}>
       <Svg
         width={scaledSize}
         height={scaledSize}

@@ -8,7 +8,9 @@ export const sharedConstants = {
     sm: 8,
     md: 16,
     lg: 24,
-    xl: 32
+    xl: 32,
+    xxl: 40,
+    xxxl: 48
   },
   typography: {
     xs: 10,
@@ -65,9 +67,22 @@ export const lightTheme = {
     choiceButtonDepth: {
       default: '#156382',
       selected: '#0a5a7a',
+      'selection-true': '#2a8a3a',
+      'selection-false': '#b52a2a',
       correct: '#2a8a3a',
       incorrect: '#b52a2a',
       neutral: '#666666'
+    },
+    
+    // ChoiceButton background colors
+    choiceButton: {
+      default: Colors.light.primary,
+      selected: Colors.light.accent,
+      'selection-true': Colors.light.success,
+      'selection-false': Colors.light.error,
+      correct: Colors.light.success,
+      incorrect: Colors.light.error,
+      neutral: '#999'
     }
     
   },
@@ -104,9 +119,22 @@ export const darkTheme = {
     choiceButtonDepth: {
       default: '#156382',
       selected: '#0a5a7a',
+      'selection-true': '#2a8a3a',
+      'selection-false': '#b52a2a',
       correct: '#2a8a3a',
       incorrect: '#b52a2a',
       neutral: '#333333'
+    },
+    
+    // ChoiceButton background colors
+    choiceButton: {
+      default: Colors.dark.primary,
+      selected: Colors.dark.accent,
+      'selection-true': Colors.dark.success,
+      'selection-false': Colors.dark.error,
+      correct: Colors.dark.success,
+      incorrect: Colors.dark.error,
+      neutral: '#444'
     }
     
   },

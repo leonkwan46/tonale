@@ -7,9 +7,9 @@ export const Header = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingHorizontal: theme.spacing.lg,
-  paddingVertical: theme.spacing.md,
-  borderBottomWidth: 1,
+  paddingHorizontal: scale(theme.spacing.lg),
+  paddingVertical: scale(theme.spacing.md),
+  borderBottomWidth: scale(1),
   borderBottomColor: theme.colors.border,
   position: 'relative'
 }))
@@ -17,9 +17,9 @@ export const Header = styled.View(({ theme }) => ({
 export const BackButton = styled.TouchableOpacity(({ theme }) => ({
   position: 'absolute',
   left: scale(theme.spacing.lg),
-  width: scale(30),
-  height: scale(30),
-  borderRadius: scale(20),
+  width: scale(theme.spacing.xl),
+  height: scale(theme.spacing.xl),
+  borderRadius: scale(theme.spacing.lg),
   backgroundColor: theme.colors.primary,
   alignItems: 'center',
   justifyContent: 'center'
@@ -34,7 +34,7 @@ export const ProgressTracker = styled.View(({ theme }) => ({
 
 export const ProgressText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: theme.typography.xl,
+  fontSize: scale(theme.typography.base),
   fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 

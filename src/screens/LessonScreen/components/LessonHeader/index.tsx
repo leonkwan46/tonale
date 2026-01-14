@@ -1,5 +1,4 @@
 import type { Lesson } from '@types'
-import * as React from 'react'
 import { useDevice } from '../../../../hooks'
 import { BackArrowIcon } from './BackArrowIcon'
 import {

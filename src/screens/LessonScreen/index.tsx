@@ -8,9 +8,8 @@ import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUti
 import { calculateStars } from '@/utils/starCalculation'
 import type { Question } from '@types'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import * as React from 'react'
 import { useCallback, useState } from 'react'
-import { LessonHeader } from './components'
+import { LessonHeader } from './components/LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
 
 export const LessonScreen = () => {
