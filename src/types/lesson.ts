@@ -25,12 +25,14 @@ export interface Question {
   explanation?: Explanation
   type: QuestionAnswerType
   visualComponent?: VisualComponent
+  layoutType?: 'grid' | 'row'
 }
 
 export interface ExerciseConfig {
   generatorType: string
   questionsCount: number
   stage: StageNumber
+  answerLayoutType: 'grid' | 'row'
 }
 
 export interface Lesson {
