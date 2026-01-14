@@ -1,6 +1,7 @@
-import * as React from 'react'
-import { ChoiceRow, ChoicesContainer } from './TrueFalse.styles'
-import { TrueFalseButton } from './TrueFalseButton'
+import { useDevice } from '@/hooks'
+import { Button3D } from '@/sharedComponents/Button3D'
+import type { ButtonState } from '@/sharedComponents/Button3D/Button3D.styles'
+import { ChoiceRow, ChoicesContainer, ChoiceText, TrueFalseButtonContainer } from './TrueFalse.styles'
 
 interface TrueFalseProps {
   choices: string[]
@@ -17,38 +18,53 @@ export const TrueFalse = ({
   correctAnswer,
   selectedAnswer,
   showResult,
-  showCorrectAnswer,
   onChoiceSelect,
   testID
 }: TrueFalseProps) => {
-  // True/False should always have exactly 2 choices
+  const { isTablet } = useDevice()
   const trueFalseChoices = choices.slice(0, 2) as ('True' | 'False')[]
+
+  const getButtonState = (choice: 'True' | 'False', isSelected: boolean, isCorrect: boolean, isIncorrect: boolean, shouldShowNeutral: boolean): ButtonState => {
+    if (showResult) {
+      if (isCorrect) return 'correct'
+      if (shouldShowNeutral) return 'neutral'
+      if (isIncorrect) return 'incorrect'
+      return 'neutral'
+    }
+    return isSelected ? 'selected' : choice === 'True' ? 'selection-true' : 'selection-false'
+  }
 
   return (
     <ChoicesContainer testID={testID}>
       <ChoiceRow isLastRow={true}>
-        {trueFalseChoices.map((choice, index) => {
+        {trueFalseChoices.map((choice) => {
           const isSelected = selectedAnswer === choice
           const isCorrect = choice === correctAnswer
           const isIncorrect = isSelected && choice !== correctAnswer && showResult
-          const isLastInRow = index === trueFalseChoices.length - 1
-          // When showing result, gray out wrong choice (only correct answer shows color)
           const shouldShowNeutral = showResult && !isCorrect
+          const buttonState = getButtonState(choice, isSelected, isCorrect, isIncorrect, shouldShowNeutral)
           
           return (
-            <TrueFalseButton
+            <Button3D
               key={choice}
-              choice={choice}
-              isSelected={isSelected}
-              isCorrect={isCorrect}
-              isIncorrect={isIncorrect}
-              showResult={showResult}
-              shouldShowNeutral={shouldShowNeutral}
               onPress={() => onChoiceSelect(choice)}
               disabled={selectedAnswer !== null}
-              isLastInRow={isLastInRow}
               testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
-            />
+              buttonState={buttonState}
+              isTablet={isTablet}
+            >
+              {({ isTablet }) => (
+                <TrueFalseButtonContainer
+                  isTablet={isTablet}
+                >
+                  <ChoiceText 
+                    isTablet={isTablet}
+                  >
+                    {choice}
+                  </ChoiceText>
+                </TrueFalseButtonContainer>
+              )}
+            </Button3D>
           )
         })}
       </ChoiceRow>
