@@ -10,7 +10,8 @@ import type { StageNumber } from '@/types/stage'
 
 export const createRestValueQuestion = (
   stage: StageNumber,
-  restType?: string | { type: string; dots?: number }
+  restType?: string | { type: string; dots?: number },
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const stageRestTypes = getAllRestTypes(stage)
   const correctRestType = restType || stageRestTypes[0]
@@ -31,7 +32,8 @@ export const createRestValueQuestion = (
     choices: generateWrongChoices(choiceStrings, correctAnswerString),
     explanation: generateExplanation('restValue', { correctAnswer: correctAnswerString }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 

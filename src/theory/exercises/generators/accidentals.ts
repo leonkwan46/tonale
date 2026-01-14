@@ -21,7 +21,8 @@ const ACCIDENTAL_ORDER = ['Sharp', 'Flat', 'Natural'] as const
 
 export const createAccidentalQuestion = (
   stage: StageNumber,
-  correctAccidental?: AccidentalType
+  correctAccidental?: AccidentalType,
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const stageAccidentals = getAccidentals(stage)
   const selectedAccidental = correctAccidental || stageAccidentals[0]
@@ -49,7 +50,8 @@ export const createAccidentalQuestion = (
     choices: generateWrongChoices(availableChoices, correctAnswer, 3, true),
     explanation: generateExplanation('accidentals', { correctAnswer }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -61,11 +63,12 @@ const getDuplicateIdentifier = (question: Question): string | null => {
 
 export const createAccidentalQuestions = (
   questionsCount: number,
-  stage: StageNumber
+  stage: StageNumber,
+  layoutType?: 'grid' | 'row'
 ): Question[] => {
   const stageAccidentals = getAccidentals(stage)
   const uniquePool = stageAccidentals.map(accidental => 
-    createAccidentalQuestion(stage, accidental)
+    createAccidentalQuestion(stage, accidental, layoutType)
   )
   return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

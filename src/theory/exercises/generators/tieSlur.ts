@@ -6,7 +6,7 @@ import { createSlurMeaningQuestions, createTieMeaningQuestions, SLUR_MEANING_VIS
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateQuestionId } from '../utils/question'
 
-const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage: StageNumber): Question => {
+const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage: StageNumber, layoutType?: 'grid' | 'row'): Question => {
   const symbolType = customQuestion.visualComponent?.symbolType || 'tie'
   return {
     id: generateQuestionId(`${symbolType}-${customQuestion.questionType}`),
@@ -15,7 +15,8 @@ const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage
     choices: customQuestion.choices,
     explanation: customQuestion.explanation,
     type: 'multipleChoice',
-    visualComponent: customQuestion.visualComponent
+    visualComponent: customQuestion.visualComponent,
+    layoutType
   }
 }
 
@@ -57,21 +58,21 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return question.correctAnswer ?? null
 }
 
-export const createTieSlurQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createTieSlurQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const customQuestions = getTieSlurQuestionsForStage(stage)
   
   const uniquePool: Question[] = []
   
   if (customQuestions.length > 0) {
-    uniquePool.push(...customQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage)))
+    uniquePool.push(...customQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage, layoutType)))
   }
   
   // Add meaning questions using helpers
   const tieMeaningQuestions = createTieMeaningQuestions([TIE_MEANING_VISUAL, TIE_MEANING_VISUAL])
   const slurMeaningQuestions = createSlurMeaningQuestions([SLUR_MEANING_VISUAL, SLUR_MEANING_VISUAL])
   uniquePool.push(
-    ...tieMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage)),
-    ...slurMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage))
+    ...tieMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage, layoutType)),
+    ...slurMeaningQuestions.map(q => convertTieSlurQuestionToQuestion(q, stage, layoutType))
   )
   
   return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)

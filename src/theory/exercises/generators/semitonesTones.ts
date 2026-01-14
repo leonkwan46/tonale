@@ -11,7 +11,8 @@ const INTERVAL_ORDER = ['Semitone', 'Tone'] as const
 export const createSemitoneToneQuestion = (
   stage: StageNumber,
   clef: ClefType,
-  intervalPair?: { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' }
+  intervalPair?: { pitch1: string; pitch2: string; intervalType: 'semitone' | 'tone' },
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const intervalPairs = getIntervalPairs(stage, clef)
   
@@ -58,7 +59,8 @@ export const createSemitoneToneQuestion = (
       type: intervalType === 'semitone' ? 'semitone' : 'semitones'
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -72,7 +74,8 @@ const getDuplicateIdentifier = (question: Question): string | null => {
 
 export const createSemitoneToneQuestions = (
   questionsCount: number,
-  stage: StageNumber
+  stage: StageNumber,
+  layoutType?: 'grid' | 'row'
 ): Question[] => {
   const bassCount = Math.max(5, Math.floor(questionsCount / 2))
   const trebleCount = questionsCount - bassCount
@@ -81,7 +84,7 @@ export const createSemitoneToneQuestions = (
     if (count <= 0) return []
     const intervalPairs = getIntervalPairs(stage, clef)
     const uniquePool = intervalPairs.map(pair => 
-      createSemitoneToneQuestion(stage, clef, pair)
+      createSemitoneToneQuestion(stage, clef, pair, layoutType)
     )
     return generateQuestionsFromPool(uniquePool, count, getDuplicateIdentifier)
   }

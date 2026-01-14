@@ -33,7 +33,8 @@ export const createNoteIdentificationQuestion = (
   stage: StageNumber,
   clef: ClefType,
   noteData?: Note,
-  questionType: 'multipleChoice' | 'keyPress' = 'multipleChoice'
+  questionType: 'multipleChoice' | 'keyPress' = 'multipleChoice',
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const stagePitches = getNewNotesForStage(stage, clef)
   const correctNoteData = noteData || stagePitches[0]
@@ -80,7 +81,8 @@ export const createNoteIdentificationQuestion = (
       clef
     }, visualComponent),
     type: questionType,
-    visualComponent
+    visualComponent,
+    layoutType: layoutType ?? 'grid'
   }
 }
 
@@ -94,7 +96,8 @@ export const createNoteIdentificationQuestions = (
   questionsCount: number,
   stage: StageNumber,
   clef: ClefType,
-  answerTypeDistribution?: AnswerTypeDistribution
+  answerTypeDistribution?: AnswerTypeDistribution,
+  layoutType?: 'grid' | 'row'
 ): Question[] => {
   const stagePitches = getNewNotesForStage(stage, clef)
   const distribution = answerTypeDistribution || DEFAULT_DISTRIBUTION
@@ -103,8 +106,8 @@ export const createNoteIdentificationQuestions = (
   const keyPressCount = Math.floor((questionsCount * distribution.keyPress) / totalPercentage)
   const multipleChoiceCount = questionsCount - keyPressCount
 
-  const keyPressPool = stagePitches.map((note) => createNoteIdentificationQuestion(stage, clef, note, 'keyPress'))
-  const multipleChoicePool = stagePitches.map((note) => createNoteIdentificationQuestion(stage, clef, note, 'multipleChoice'))
+  const keyPressPool = stagePitches.map((note) => createNoteIdentificationQuestion(stage, clef, note, 'keyPress', layoutType))
+  const multipleChoicePool = stagePitches.map((note) => createNoteIdentificationQuestion(stage, clef, note, 'multipleChoice', layoutType))
 
   const keyPressQuestions = generateQuestionsFromPool(keyPressPool, keyPressCount, getDuplicateIdentifier)
   const multipleChoiceQuestions = generateQuestionsFromPool(multipleChoicePool, multipleChoiceCount, getDuplicateIdentifier)

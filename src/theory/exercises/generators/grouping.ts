@@ -187,7 +187,7 @@ export const createNoteGroupingQuestion = (stage: StageNumber): Question => {
  * Generate questions from stage-specific pool with balanced time signature distribution
  * and deduplication to avoid repeating similar questions
  */
-export const createNoteGroupingQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createNoteGroupingQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const stageQuestions = getGroupingQuestionsForStage(stage)
   
   if (stageQuestions.length === 0) {

@@ -20,11 +20,11 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return `${typeKey}|${questionType}|${valueKind}`
 }
 
-export const createRestValueNameQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createRestValueNameQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const stageRestTypes = getAllRestTypes(stage)
 
   const restNameQuestions = stageRestTypes.map(restType =>
-    createRestValueQuestion(stage, restType)
+    createRestValueQuestion(stage, restType, layoutType)
   )
 
   const restValueQuestions = stageRestTypes.map(restType =>
@@ -32,7 +32,8 @@ export const createRestValueNameQuestions = (questionsCount: number, stage: Stag
         stage,
         timeValue: restType,
         isRest: true,
-        choiceStages: [0]
+        choiceStages: [0],
+        layoutType
     })
   )
 

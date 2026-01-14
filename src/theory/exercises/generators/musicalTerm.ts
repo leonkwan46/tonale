@@ -22,7 +22,7 @@ import {
 } from '../utils/question'
 import { generateExplanation } from '../utils/explanation'
 
-export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string): Question => {
+export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string, layoutType?: 'grid' | 'row'): Question => {
   let stageMusicalTerms: Record<string, string>
   let stageDefinitions: Record<string, string>
   
@@ -100,7 +100,8 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string):
       definition: correctDefinition
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -113,7 +114,8 @@ const getDuplicateIdentifier = (question: Question): string | null => {
 
 export const createMusicalTermQuestions = (
   questionsCount: number, 
-  stage: StageNumber
+  stage: StageNumber,
+  layoutType?: 'grid' | 'row'
 ): Question[] => {
   let stageMusicalTerms: Record<string, string>
   
@@ -136,7 +138,7 @@ export const createMusicalTermQuestions = (
   
   const termKeys = Object.keys(stageMusicalTerms)
   const uniquePool = termKeys.map(termKey => 
-    createMusicalTermQuestion(stage, termKey)
+    createMusicalTermQuestion(stage, termKey, layoutType)
   )
   return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

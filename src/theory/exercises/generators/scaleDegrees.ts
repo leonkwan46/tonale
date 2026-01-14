@@ -13,7 +13,8 @@ export const createScaleDegreeQuestion = (
   stage: StageNumber,
   clef: ClefType,
   key?: MusicNotationKey,
-  degree?: 1 | 2 | 3 | 4 | 5 | 6 | 7
+  degree?: 1 | 2 | 3 | 4 | 5 | 6 | 7,
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const availableKeys = getKeys(stage)
   const selectedKey = key || availableKeys[0]
@@ -65,7 +66,8 @@ export const createScaleDegreeQuestion = (
       degree: correctAnswer
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -91,15 +93,16 @@ const getDuplicateIdentifier = (question: Question): string | null => {
 
 export const createScaleDegreeQuestions = (
   questionsCount: number,
-  stage: StageNumber
+  stage: StageNumber,
+  layoutType?: 'grid' | 'row'
 ): Question[] => {
   const availableKeys = getKeys(stage)
   const treblePool: Question[] = []
   const bassPool: Question[] = []
   for (const key of availableKeys) {
     for (const degree of SCALE_DEGREES) {
-      treblePool.push(createScaleDegreeQuestion(stage, 'treble', key, degree))
-      bassPool.push(createScaleDegreeQuestion(stage, 'bass', key, degree))
+      treblePool.push(createScaleDegreeQuestion(stage, 'treble', key, degree, layoutType))
+      bassPool.push(createScaleDegreeQuestion(stage, 'bass', key, degree, layoutType))
     }
   }
 

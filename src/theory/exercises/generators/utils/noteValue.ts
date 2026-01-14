@@ -10,7 +10,8 @@ import type { StageNumber } from '@/types/stage'
 
 export const createNoteValueQuestion = (
   stage: StageNumber,
-  noteType?: string | { type: string; dots?: number }
+  noteType?: string | { type: string; dots?: number },
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const stageNoteTypes = getAllNoteTypes(stage)
   const correctNoteType = noteType || stageNoteTypes[0]
@@ -31,7 +32,8 @@ export const createNoteValueQuestion = (
     choices: generateWrongChoices(choiceStrings, correctAnswerString),
     explanation: generateExplanation('noteValue', { correctAnswer: correctAnswerString }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
