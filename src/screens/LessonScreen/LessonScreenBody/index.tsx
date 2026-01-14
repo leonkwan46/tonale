@@ -1,5 +1,4 @@
 import type { Question } from '@types'
-import * as React from 'react'
 import { useCallback } from 'react'
 import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
@@ -30,11 +29,6 @@ export const LessonScreenBody = ({
   const { question, visualComponent, type } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
 
-  const isNoteIdentification = visualComponent?.clef && 
-    visualComponent?.elements && 
-    visualComponent.elements.length > 0 &&
-    visualComponent.elements.some(element => element.pitch)
-
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
   }, [onAnswerSubmit])
@@ -50,27 +44,19 @@ export const LessonScreenBody = ({
   if (questions.length === 0) return null
 
   return (
-    <BodyContainer>
-      <QuestionText 
-        testID="question-text"
-        isTablet={isTablet}
-      >
-        {question}
-      </QuestionText>
-
-      {/* Music Element */}
+    <BodyContainer isTablet={isTablet}>
       {visualComponent && (
         <VisualQuestion visualComponent={visualComponent} />
       )}
-      
-      {/* Answer Interface */}
+
+      <QuestionText testID="question-text" isTablet={isTablet}>{question}</QuestionText>
+
       <AnswerInterface 
         questionType={type}
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmitInternal}
         onNextQuestion={handleNextQuestionInternal}
         onLessonComplete={onLessonComplete}
-        isNoteIdentification={isNoteIdentification}
         wrongAnswersCount={wrongAnswersCount}
         isFinalTest={isFinalTest}
         isLastQuestion={isLastQuestion}
