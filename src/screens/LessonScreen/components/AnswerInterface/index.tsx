@@ -2,7 +2,6 @@ import { useDevice } from '@/hooks'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
-import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { QuestionExplanation } from '../QuestionExplanation'
@@ -18,7 +17,6 @@ interface AnswerInterfaceProps {
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
   onLessonComplete?: () => void
-  isNoteIdentification?: boolean
   wrongAnswersCount?: number
   isFinalTest?: boolean
   isLastQuestion?: boolean
@@ -34,7 +32,6 @@ export const AnswerInterface = ({
   onAnswerSubmit,
   onNextQuestion,
   onLessonComplete,
-  isNoteIdentification = false,
   wrongAnswersCount = 0,
   isFinalTest = false,
   isLastQuestion = false
@@ -125,10 +122,8 @@ export const AnswerInterface = ({
             correctAnswer={questionData.correctAnswer}
             selectedAnswer={selectedAnswer}
             showResult={showResult}
-            showCorrectAnswer={showCorrectAnswer}
             onChoiceSelect={handleChoiceSelect}
-            type={questionData.choices.length <= 4 ? 'row' : 'grid'}
-            isNoteIdentification={isNoteIdentification}
+            type={questionData.layoutType ?? 'row'}
           />
         )
       case QUESTION_TYPE.TRUE_FALSE:
