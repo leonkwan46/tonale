@@ -4,7 +4,7 @@
 - Use arrow functions for all component definitions: `const ComponentName = () => {}`
 - Use arrow functions for all function definitions: `const functionName = () => {}`
 - Use single quotes for strings
-- No semicolons
+- No semicolons (including in imports)
 - No trailing commas
 - Use TypeScript strictly - avoid `any` types
 - Import React hooks directly: `import { useState, useEffect } from 'react'` (not `React.useState`)
@@ -17,10 +17,10 @@
 - Prefer `expo-router` for navigation: `useRouter()` and `router.push()` / `router.replace()`
 
 ## File Structure
-- **ALL components MUST have their own directory with exactly two files: `index.tsx` (or `index.ts`) and `.styles.tsx`**
+- **ALL components MUST have their own directory with exactly two files: `index.tsx` (or `index.ts`) and `ComponentName.styles.tsx`**
   - Component logic goes in `index.tsx` (or `index.ts` if no JSX)
-  - All styled components go in `.styles.tsx`
-  - Example: `ComponentName/index.tsx` and `ComponentName/.styles.tsx`
+  - All styled components go in `ComponentName.styles.tsx` (with the component name as prefix)
+  - Example: `ComponentName/index.tsx` and `ComponentName/ComponentName.styles.tsx`
 - Components in `src/screens/` follow this structure
 - Shared components in `src/sharedComponents/` follow this structure
 - Use path aliases: `@/` for `src/`, `@types` for `src/types/`, `@sharedComponents` for `src/sharedComponents/`
@@ -30,6 +30,9 @@
 - Use `scale()` from `react-native-size-matters` for responsive sizing
 - Use theme from emotion: `({ theme }) => ({ ... })`
 - Use `getSourGummyFontFamily()` utility for fonts
+- Never use hardcoded color hex numbers - all colors must come from `@/config/theme`
+- If a color doesn't exist in the theme, create it in `src/config/theme/Colors.ts` and add it to the theme in `src/config/theme/theme.ts`
+- **Exception: Cards must use hardcoded colors - white background (`#ffffff`) and black text (`#000000`)**
 
 ## State Management
 - Use Context API via custom hooks: `useUser()`, `useProgress()`, `useDevice()`
