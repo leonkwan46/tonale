@@ -1,18 +1,18 @@
 import { useDevice } from '@/hooks'
+import { Button3D } from '@/sharedComponents/Button3D'
 import { ModalOverlay } from '@/sharedComponents/Modal/Modal.styles'
 import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/theory/exercises/utils/explanation'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
-import * as React from 'react'
+import type { ReactNode } from 'react'
+import { createElement } from 'react'
 import { Modal, Text } from 'react-native'
 import {
-  ButtonContainer,
-  ContinueButton,
   ContinueButtonText,
   ExplanationText,
   ModalContainer
 } from './QuestionExplanation.styles'
-import { VisualExplanation } from './VisualExplanation/VisualExplanation'
+import { VisualExplanation } from './VisualExplanation'
 
 interface QuestionExplanationProps {
   explanation?: Explanation
@@ -21,7 +21,7 @@ interface QuestionExplanationProps {
   onContinue: () => void
 }
 
-const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): React.ReactNode => {
+const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): ReactNode => {
   if (!text) return null
   
   const formattingConfig = getExplanationFormattingConfig()
@@ -47,7 +47,7 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
   const pattern = `(${escapedStrings.join('|')})`
   const regex = new RegExp(pattern, 'gi')
   
-  const parts: React.ReactNode[] = []
+  const parts: ReactNode[] = []
   let lastIndex = 0
   let match
   
@@ -59,7 +59,7 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
     
     // Add the bolded text with the same font family
     parts.push(
-      React.createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily('700') } }, match[0])
+      createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily('700') } }, match[0])
     )
     
     lastIndex = regex.lastIndex
@@ -121,16 +121,20 @@ export const QuestionExplanation = ({
             </ExplanationText>
           )}
           
-          <ButtonContainer isTablet={isTablet}>
-            <ContinueButton isTablet={isTablet} onPress={onContinue}>
+          <Button3D
+            onPress={onContinue}
+            buttonState="default"
+            isTablet={isTablet}
+            fullWidth={true}
+          >
+            {({ isTablet }) => (
               <ContinueButtonText isTablet={isTablet}>
                 Continue
               </ContinueButtonText>
-            </ContinueButton>
-          </ButtonContainer>
+            )}
+          </Button3D>
         </ModalContainer>
       </ModalOverlay>
     </Modal>
   )
 }
-

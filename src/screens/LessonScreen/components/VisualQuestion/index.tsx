@@ -14,7 +14,6 @@ import {
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import type { VisualComponent } from '@types'
-import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import { SMuFLCard } from '../SMuFLCard'
 import { SMuFLSymbolContainer, SMuFLSymbolText, TTSButton, VisualQuestionContainer } from './VisualQuestion.styles'
@@ -83,7 +82,7 @@ export const VisualQuestion = ({ visualComponent }: VisualQuestionProps) => {
   }
 
   return (
-    <VisualQuestionContainer isTablet={isTablet} isSMuFLSymbol={visualComponent.type === 'termAndSign'} needsExtraSpacing={needsExtraHeight || false}>
+    <VisualQuestionContainer isTablet={isTablet}>
       {visualComponent.type === 'timeSignature' && (
         <DisplayCard>
           <TimeSignature timeSignature={visualComponent.timeSignatureValue || ''} />

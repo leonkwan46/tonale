@@ -8,7 +8,6 @@ import {
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import type { VisualComponent } from '@types'
-import React from 'react'
 import { renderNoteComponent } from '../../VisualQuestion/visualRenderHelper'
 import { ExplanationCard, ExplanationSymbolContainer, ExplanationSymbolText, TabletNoteScaleContainer } from './VisualExplanation.styles'
 
@@ -64,7 +63,7 @@ export const VisualExplanation = ({
   const shouldRenderMusicStaff = Boolean(
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
-    (visualComponent.clef || visualComponent.timeSignature) // Allow rendering without clef if timeSignature is present (for grouping)
+    (visualComponent.clef || visualComponent.timeSignature)
   )
 
   const shouldRenderTimeSignature = visualComponent.type === 'timeSignature' && visualComponent.timeSignatureValue
