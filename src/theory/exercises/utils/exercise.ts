@@ -133,7 +133,10 @@ export const getPitchDefinitionsForClef = (clef: ClefType): Note[] => {
 export const getTimeValueKeyFromComponent = (question: Question): string | null => {
   const noteType = question.visualComponent?.noteType
   if (noteType === undefined) return null
-  return typeof noteType === 'string' ? noteType : JSON.stringify(noteType)
+  if (typeof noteType !== 'object' || !noteType.type) {
+    throw new Error(`Invalid noteType: ${JSON.stringify(noteType)}`)
+  }
+  return JSON.stringify(noteType)
 }
 
 export const getQuestionTypeFromId = (questionId: string): 'name' | 'beats' => {

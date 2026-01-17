@@ -10,7 +10,7 @@ import type { StageNumber } from '@/types/stage'
 
 export const createRestValueQuestion = (
   stage: StageNumber,
-  restType?: string | { type: string; dots?: number },
+  restType?: { type: string; dots?: number },
   layoutType?: 'grid' | 'row'
 ): Question => {
   const stageRestTypes = getAllRestTypes(stage)

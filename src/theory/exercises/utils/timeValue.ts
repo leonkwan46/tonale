@@ -3,7 +3,7 @@ import type { StageNumber } from '@/types/stage'
 import { getBasicNoteTypes, getBasicRestTypes } from './exercise'
 import { getRandomItem } from './question'
 
-export type TimeValueType = string | { type: string; dots?: number }
+export type TimeValueType = { type: string; dots?: number }
 
 export const formatFractions = (text: string): string => {
   if (!text) return text
@@ -49,23 +49,23 @@ export const getBaseRestName = (restType: string): string => {
 }
 
 export const noteTypeToString = (noteType: TimeValueType): string => {
-  if (typeof noteType === 'object' && noteType.type) {
-    const { type, dots = 0 } = noteType
-    const baseName = getBaseNoteName(type)
-    return dots > 0 ? `Dotted ${baseName}` : baseName
+  if (!noteType || typeof noteType !== 'object' || !noteType.type) {
+    throw new Error(`Invalid noteType: ${JSON.stringify(noteType)}`)
   }
   
-  return getBaseNoteName(noteType as string)
+  const { type, dots = 0 } = noteType
+  const baseName = getBaseNoteName(type)
+  return dots > 0 ? `Dotted ${baseName}` : baseName
 }
 
 export const restTypeToString = (restType: TimeValueType): string => {
-  if (typeof restType === 'object' && restType.type) {
-    const { type, dots = 0 } = restType
-    const baseName = getBaseRestName(type)
-    return dots > 0 ? `Dotted ${baseName}` : baseName
+  if (!restType || typeof restType !== 'object' || !restType.type) {
+    throw new Error(`Invalid restType: ${JSON.stringify(restType)}`)
   }
   
-  return getBaseRestName(restType as string)
+  const { type, dots = 0 } = restType
+  const baseName = getBaseRestName(type)
+  return dots > 0 ? `Dotted ${baseName}` : baseName
 }
 
 const NOTE_BASE_BEATS: Record<string, number> = {
@@ -95,25 +95,23 @@ const calculateDottedBeats = (base: number, dots: number): number => {
 }
 
 export const noteTypeToBeats = (noteType: TimeValueType): number => {
-  if (typeof noteType === 'object' && noteType.type) {
-    const base = NOTE_BASE_BEATS[noteType.type]
-    if (!base) return 0
-    return calculateDottedBeats(base, noteType.dots ?? 0)
+  if (!noteType || typeof noteType !== 'object' || !noteType.type) {
+    throw new Error(`Invalid noteType: ${JSON.stringify(noteType)}`)
   }
 
-  const base = NOTE_BASE_BEATS[noteType as string]
-  return base ?? 0
+  const base = NOTE_BASE_BEATS[noteType.type]
+  if (!base) return 0
+  return calculateDottedBeats(base, noteType.dots ?? 0)
 }
 
 export const restTypeToBeats = (restType: TimeValueType): number => {
-  if (typeof restType === 'object' && restType.type) {
-    const base = REST_BASE_BEATS[restType.type]
-    if (!base) return 0
-    return calculateDottedBeats(base, restType.dots ?? 0)
+  if (!restType || typeof restType !== 'object' || !restType.type) {
+    throw new Error(`Invalid restType: ${JSON.stringify(restType)}`)
   }
 
-  const base = REST_BASE_BEATS[restType as string]
-  return base ?? 0
+  const base = REST_BASE_BEATS[restType.type]
+  if (!base) return 0
+  return calculateDottedBeats(base, restType.dots ?? 0)
 }
 
 export const formatDottedBeatsDecomposed = (
@@ -166,7 +164,7 @@ export const ensureFourChoicesForStage2 = (
   if (stage === 2 && choiceStrings.length < 4) {
     const basicTypes = isRest ? getBasicRestTypes(1) : getBasicNoteTypes(1)
     const toStringFn = isRest ? restTypeToString : noteTypeToString
-    const basicStrings = basicTypes.map(type => toStringFn(type as string))
+    const basicStrings = basicTypes.map(type => toStringFn(type))
     const availableBasic = basicStrings.filter(choice => 
       !choiceStrings.includes(choice) && choice !== correctAnswerString
     )
