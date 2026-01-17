@@ -126,7 +126,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
           { generator: createMusicalTermQuestions, layoutType: 'row' }
         ],
         config.stage
-      )
+      ).map(q => ({ ...q, stage: config.stage }))
 
     case 'stage-1-final':
       return distributeQuestionsWithLayouts(
@@ -140,7 +140,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
           { generator: createMusicalTermQuestions, layoutType: 'row' }
         ],
         config.stage
-      )
+      ).map(q => ({ ...q, stage: config.stage }))
     
     case 'stage-2-final':
       return distributeQuestionsWithLayouts(
@@ -155,11 +155,11 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
           { generator: createMusicalTermQuestions, layoutType: 'row' }
         ],
         config.stage
-      )
+      ).map(q => ({ ...q, stage: config.stage }))
     
     default:
       console.warn(`Unknown generator type: ${config.generatorType}`)
   }
   
-  return questions
+  return questions.map(q => ({ ...q, stage: config.stage }))
 }
