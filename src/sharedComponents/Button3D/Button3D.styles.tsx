@@ -13,11 +13,11 @@ export const Button3DContainer = styled.TouchableOpacity<{ isPressed: boolean; l
   }
 
   return {
-    position: 'relative',
+  position: 'relative',
     alignSelf: (layoutType === 'row' || fullWidth) ? 'stretch' : 'center',
     width: getWidth(),
-    transform: [{ scale: isPressed ? 0.9 : 1 }],
-    activeOpacity: 1
+  transform: [{ scale: isPressed ? 0.9 : 1 }],
+  activeOpacity: 1
   }
 })
 
