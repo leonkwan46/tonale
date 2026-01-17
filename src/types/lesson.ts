@@ -26,6 +26,7 @@ export interface Question {
   type: QuestionAnswerType
   visualComponent?: VisualComponent
   layoutType?: 'grid' | 'row'
+  stage?: StageNumber
 }
 
 export interface ExerciseConfig {
