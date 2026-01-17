@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
 export const VisualQuestionContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
@@ -45,4 +46,8 @@ export const TTSButton = styled.TouchableOpacity(({ theme }) => ({
   shadowOpacity: 0.25,
   shadowRadius: scale(3.84),
   elevation: scale(5)
+}))
+
+export const TTSIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.text
 }))
