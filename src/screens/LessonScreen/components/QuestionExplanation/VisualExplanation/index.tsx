@@ -1,10 +1,13 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
 import { useDevice } from '@/hooks'
-import { TimeSignature } from '@/sharedComponents/TimeSignature'
 import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
 import {
+  CommonTime,
+  CutTime,
   MusicStaff,
+  parseTimeSignature,
   parseTimeSignature as parseTimeSignatureFromLibrary,
+  TimeSignature as LibraryTimeSignature,
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import type { VisualComponent } from '@types'
@@ -71,14 +74,36 @@ export const VisualExplanation = ({
   const shouldRenderTermAndSign = visualComponent.type === 'termAndSign' && visualComponent.symbolType
 
   if (shouldRenderTimeSignature && visualComponent.timeSignatureValue) {
+    const timeSignatureValue = visualComponent.timeSignatureValue
+    const timeSignatureString = typeof timeSignatureValue === 'string' ? timeSignatureValue : formatAsNotation(timeSignatureValue)
+    const parsedTimeSignature = parseTimeSignature(timeSignatureString)
+    
+    const renderTimeSignature = () => {
+      if (typeof parsedTimeSignature === 'string') {
+        return parsedTimeSignature === 'common' ? (
+          <CommonTime centered={true} />
+        ) : (
+          <CutTime centered={true} />
+        )
+      }
+      
+      return (
+        <LibraryTimeSignature 
+          topNumber={parsedTimeSignature.topNumber}
+          bottomNumber={parsedTimeSignature.bottomNumber}
+          centered={true}
+        />
+      )
+    }
+    
     return (
       <ExplanationCard isTablet={isTablet}>
         {isTablet ? (
           <TabletNoteScaleContainer isTablet={isTablet}>
-            <TimeSignature timeSignature={visualComponent.timeSignatureValue} />
+            {renderTimeSignature()}
           </TabletNoteScaleContainer>
         ) : (
-          <TimeSignature timeSignature={visualComponent.timeSignatureValue} />
+          renderTimeSignature()
         )}
       </ExplanationCard>
     )
