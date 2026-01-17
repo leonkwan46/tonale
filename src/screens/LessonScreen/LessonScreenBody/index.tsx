@@ -26,7 +26,7 @@ export const LessonScreenBody = ({
 }: LessonScreenBodyProps) => {
   const { isTablet } = useDevice()
   const currentQuestion = questions[currentQuestionIndex]
-  const { question, visualComponent, type } = currentQuestion
+  const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
 
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
@@ -46,7 +46,7 @@ export const LessonScreenBody = ({
   return (
     <BodyContainer isTablet={isTablet}>
       {visualComponent && (
-        <VisualQuestion visualComponent={visualComponent} />
+        <VisualQuestion visualComponent={visualComponent} stage={stage} />
       )}
 
       <QuestionText testID="question-text" isTablet={isTablet}>{question}</QuestionText>
@@ -61,7 +61,6 @@ export const LessonScreenBody = ({
         isFinalTest={isFinalTest}
         isLastQuestion={isLastQuestion}
       />
-      
     </BodyContainer>
   )
 }
