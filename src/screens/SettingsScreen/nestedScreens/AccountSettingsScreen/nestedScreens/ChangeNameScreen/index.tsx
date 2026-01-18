@@ -18,7 +18,8 @@ import {
   InputField,
   PrimaryButton,
   PrimaryButtonText,
-  PrimaryIcon
+  PrimaryIcon,
+  ScrollContentContainer
 } from './ChangeNameScreen.styles'
 
 export const ChangeNameScreen = () => {
@@ -79,9 +80,9 @@ export const ChangeNameScreen = () => {
       <SettingItemHeader title="Change Name" />
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, padding: scale(20), gap: scale(20) }}
       >
-        <ScreenIntroHeader
+        <ScrollContentContainer>
+          <ScreenIntroHeader
           icon="person-outline"
           description="Your name helps personalize your experience in Tonalè. This name will be visible in your profile and progress tracking."
         />
@@ -118,6 +119,7 @@ export const ChangeNameScreen = () => {
             <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
+        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )

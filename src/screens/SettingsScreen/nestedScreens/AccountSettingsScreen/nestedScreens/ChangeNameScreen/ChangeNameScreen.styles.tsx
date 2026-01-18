@@ -77,3 +77,8 @@ export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.primary
 }))
 
+export const ScrollContentContainer = styled.View({
+  flexGrow: 1,
+  padding: scale(20),
+  gap: scale(20)
+})
