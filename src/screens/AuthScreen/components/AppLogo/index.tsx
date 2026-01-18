@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react'
 import * as React from 'react'
 import { useEffect } from 'react'
 import {
@@ -23,8 +22,6 @@ interface AppLogoProps {
 export const AppLogo = ({
   isTablet
 }: AppLogoProps) => {
-  const theme = useTheme()
-  
   const scaleValue = useSharedValue(0.3)
   const opacity = useSharedValue(0)
 
@@ -54,7 +51,6 @@ export const AppLogo = ({
       <MusicIcon
         name="musical-notes"
         size={isTablet ? scale(40) : scale(36)}
-        color={theme.colors.primary}
         isTablet={isTablet}
       />
     </LogoContainer>

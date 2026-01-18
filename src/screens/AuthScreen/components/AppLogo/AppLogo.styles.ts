@@ -36,7 +36,8 @@ export const InnerCircle = styled.View<{ isTablet: boolean }>(({ theme, isTablet
   elevation: 2
 }))
 
-export const MusicIcon = styled(Ionicons)<{ isTablet: boolean }>(({ isTablet }) => ({
+export const MusicIcon = styled(Ionicons)<{ isTablet: boolean }>(({ theme, isTablet }) => ({
+  color: theme.colors.primary,
   zIndex: 10,
   textShadowOffset: { width: 0, height: scale(1) },
   textShadowRadius: scale(2),
