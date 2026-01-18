@@ -12,7 +12,7 @@ import { InstrumentSelection } from '../components/InstrumentSelection'
 import { NameInput } from '../components/NameInput'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
-import { ContentContainerStyle } from './OnboardingBody.styles'
+import { ScrollContentContainer } from './OnboardingBody.styles'
 
 interface OnboardingBodyProps {
   authUser: { uid: string } | null
@@ -83,8 +83,8 @@ export const OnboardingBody = ({
       ref={scrollViewRef}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[1]}
-      contentContainerStyle={ContentContainerStyle({ isTablet })}
     >
+      <ScrollContentContainer isTablet={isTablet}>
       <OnboardingHeader isTablet={isTablet} />
 
       <AvatarPreview 
@@ -120,6 +120,7 @@ export const OnboardingBody = ({
         onPress={handleCompleteOnboarding}
         isTablet={isTablet}
       />
+      </ScrollContentContainer>
     </KeyboardAwareScrollView>
   )
 }
