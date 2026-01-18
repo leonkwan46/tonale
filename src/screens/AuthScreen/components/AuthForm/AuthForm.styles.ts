@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
@@ -54,6 +55,7 @@ export const Input = styled.TextInput<{ isTablet?: boolean }>(({ theme, isTablet
   fontSize: isTablet ? scale(12) : scale(14),
   height: '100%',
   color: theme.colors.text,
+  placeholderTextColor: theme.colors.secondary,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
@@ -86,3 +88,14 @@ export const PrimaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, i
   fontFamily: getSourGummyFontFamily('600')
 }))
 
+export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.error
+}))
+
+export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.primary
+}))
+
+export const TextIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.text
+}))
