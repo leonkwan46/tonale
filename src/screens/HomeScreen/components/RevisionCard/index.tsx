@@ -1,7 +1,9 @@
 import { useProgress } from '@/hooks'
+import { Skeleton } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
 import * as React from 'react'
 import { useState } from 'react'
+import { scale } from 'react-native-size-matters'
 import {
   ContentSection,
   IconContainer,
@@ -16,7 +18,7 @@ import {
 } from './RevisionCard.styles'
 
 export const RevisionCard = () => {
-  const { revisionQuestions } = useProgress()
+  const { revisionQuestions, revisionQuestionsLoading, progressDataLoading, progressDataInitialized } = useProgress()
   const router = useRouter()
   const [isPressed, setIsPressed] = useState(false)
 
@@ -24,7 +26,22 @@ export const RevisionCard = () => {
     router.push('/revision')
   }
 
-  const hasRevisionQuestions = revisionQuestions && revisionQuestions.length > 0
+  const isLoading = progressDataLoading || !progressDataInitialized || revisionQuestionsLoading
+  const hasRevisionQuestions = revisionQuestions.length > 0
+
+  if (isLoading) {
+    return (
+      <RevisionCardContainer hasRevisionQuestions={false} isLoading={true} testID="revision-card-skeleton">
+        <RevisionCardContent>
+          <Skeleton variant="square" />
+          <ContentSection>
+            <Skeleton variant="rectangle" width="100%" height={scale(24)} />
+            <Skeleton variant="rectangle" width="100%" height={scale(38)} />
+          </ContentSection>
+        </RevisionCardContent>
+      </RevisionCardContainer>
+    )
+  }
 
   return (
     <RevisionCardContainer hasRevisionQuestions={hasRevisionQuestions} testID="revision-card">
