@@ -10,22 +10,23 @@ export const ModalOverlay = styled.View(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: `${theme.colors.background}80`,
+  backgroundColor: theme.colors.modalMask,
   justifyContent: 'center',
   alignItems: 'center',
   zIndex: 1000
 }))
 
 export const ModalContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  backgroundColor: theme.colors.background,
+  backgroundColor: theme.colors.surface,
   borderRadius: scale(20),
   padding: isTablet ? scale(12) : scale(24),
   margin: isTablet ? scale(60) : scale(20),
   minWidth: isTablet ? scale(200) : scale(300),
   maxWidth: isTablet ? scale(300) : scale(400),
   alignItems: 'center',
-  flexDirection: 'column',
-  gap: isTablet ? scale(16) : scale(24)
+  gap: isTablet ? scale(16) : scale(24),
+  borderWidth: 1,
+  borderColor: theme.colors.border
 }))
 
 export const TitleText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
