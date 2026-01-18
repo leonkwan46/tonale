@@ -1,6 +1,5 @@
 import { useDevice } from '@/hooks'
 import { useTheme } from '@emotion/react'
-import * as React from 'react'
 import { scale } from 'react-native-size-matters'
 import { Path, Svg } from 'react-native-svg'
 

@@ -1,11 +1,10 @@
 import type { Stage } from '@types'
 import styled from '@emotion/native'
-import * as React from 'react'
 import { Animated, Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
-import { StarLogo } from './LessonSection/components/Logo'
+import { StarLogo } from './LessonSection/components/Logo/StarLogo'
 
 interface StageHeaderProps {
   stage: Stage
