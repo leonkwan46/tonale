@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useColorScheme } from 'react-native'
 import {
   Easing,
   useAnimatedStyle,
@@ -15,7 +14,6 @@ interface WaveProps {
 }
 
 export const Wave = ({ delay, isTransitioning, isTablet }: WaveProps) => {
-  const colorScheme = useColorScheme() ?? 'light'
   const height = useSharedValue(4)
   const opacity = useSharedValue(0)
 
@@ -57,7 +55,7 @@ export const Wave = ({ delay, isTransitioning, isTablet }: WaveProps) => {
   }))
 
   return (
-    <Bar colorScheme={colorScheme} style={barStyle} />
+    <Bar style={barStyle} />
   )
 }
 

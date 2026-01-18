@@ -2,13 +2,11 @@ import styled from '@emotion/native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
-import { Colors } from '@/config/theme/Colors'
-
-export const Container = styled(Animated.View)<{ colorScheme: 'light' | 'dark' }>(({ colorScheme }) => ({
+export const Container = styled(Animated.View)(({ theme }) => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: Colors[colorScheme].background
+  backgroundColor: theme.colors.background
 }))
 
 export const MusicLogoContainer = styled.View(() => ({
