@@ -70,7 +70,7 @@ export const RequirementsText = styled.Text<{ isTablet?: boolean }>(({ theme, is
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean; isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
+export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean, isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
   backgroundColor: theme.colors.primary,
   flexDirection: 'row',
   alignItems: 'center',
