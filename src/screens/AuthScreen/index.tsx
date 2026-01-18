@@ -71,7 +71,7 @@ export const AuthScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <ScrollContentContainer>
-          <ContentWrapper isTablet={isTablet}>
+        <ContentWrapper isTablet={isTablet}>
           <Header
             authState={authState}
             isTablet={isTablet}

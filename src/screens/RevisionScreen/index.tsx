@@ -1,7 +1,6 @@
 import { useProgress } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
-import * as React from 'react'
 import { LessonHeader } from '../LessonScreen/components/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'
 import { RevisionCompletionModal } from './components/RevisionCompletionModal'

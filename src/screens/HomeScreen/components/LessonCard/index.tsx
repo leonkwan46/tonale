@@ -1,8 +1,8 @@
 import { useLastLesson } from '@/hooks'
-import { CardButton, Description } from '@/screens/TheoryScreen/components/LessonSection/components'
+import { CardButton } from '@/screens/TheoryScreen/components/LessonSection/components/CardButton/CardButton'
+import { Description } from '@/screens/TheoryScreen/components/LessonSection/components/Description/Description'
 import { Loading } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
-import * as React from 'react'
 import { useState } from 'react'
 import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
 
