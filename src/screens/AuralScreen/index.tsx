@@ -1,5 +1,4 @@
 import { ScreenContainer } from '@/sharedComponents'
-import * as React from 'react'
 import { Content, Description, Subtitle, Title } from './AuralScreen.styles'
 
 export const AuralScreen = () => {

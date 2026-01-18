@@ -1,7 +1,6 @@
 import { useProgress } from '@/hooks'
 import { Skeleton } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
-import * as React from 'react'
 import { useState } from 'react'
 import { scale } from 'react-native-size-matters'
 import {

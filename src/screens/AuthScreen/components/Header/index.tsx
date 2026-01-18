@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { AppLogo } from '../AppLogo'
 import {
   HeaderContainer,

@@ -1,6 +1,5 @@
 import type { UserData } from '@types'
 import type { User } from 'firebase/auth'
-import * as React from 'react'
 import {
   AvatarContainer,
   CharacterAvatar,
