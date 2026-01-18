@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {
   FinalTestContainer,
   FinalTestContent,
@@ -28,11 +27,7 @@ export const FinalTest = ({
 <FinalTestContainer testID={testID} isPressed={isPressed} isLocked={false}>
   <FinalTestDepth />
   <FinalTestContent isLocked={false}>
-    <FinalTestGradient 
-      colors={['#ff6b6b', '#FF4500', '#ffd43b']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    />
+    <FinalTestGradient />
     <FinalTestIconContainer>
       <ScrollIcon size={24} />
     </FinalTestIconContainer>

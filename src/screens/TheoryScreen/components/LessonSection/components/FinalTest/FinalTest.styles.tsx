@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { scale } from 'react-native-size-matters'
 
@@ -25,7 +26,7 @@ export const FinalTestDepth = styled.View(({ theme }) => ({
   left: scale(6),
   right: scale(-2),
   height: scale(110),
-  backgroundColor: '#8B0000', // Dark red for dramatic shadow
+  backgroundColor: theme.colors.finalTest.shadow,
   borderRadius: scale(25),
   opacity: 0.8
 }))
@@ -46,8 +47,8 @@ export const FinalTestContent = styled.View<{ isLocked: boolean }>(({ theme, isL
   overflow: 'hidden'
 }))
 
-// Gradient background for the content
-export const FinalTestGradient = styled(LinearGradient)({
+// Gradient styled component with position styles
+const FinalTestGradientStyled = styled(LinearGradient)({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -55,6 +56,19 @@ export const FinalTestGradient = styled(LinearGradient)({
   bottom: 0,
   borderRadius: scale(23)
 })
+
+// Wrapper component that uses theme internally
+export const FinalTestGradient = () => {
+  const theme = useTheme()
+  
+  return (
+    <FinalTestGradientStyled
+      colors={theme.colors.finalTest.gradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    />
+  )
+}
 
 // Crown/Trophy icon container
 export const FinalTestIconContainer = styled.View(({ theme }) => ({

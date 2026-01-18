@@ -1,6 +1,7 @@
 import { useDevice } from '@/hooks'
-import * as React from 'react'
-import { BeamedQuaverLogo, LockLogo, StarLogo } from '../Logo'
+import { BeamedQuaverLogo } from '../Logo/BeamedQuaverLogo'
+import { LockLogo } from '../Logo/LockLogo'
+import { StarLogo } from '../Logo/StarLogo'
 import { NodeContainer, NodeContentContainer, NodeDepth, StarContainer } from './CardButton.styles'
 
 interface CardButtonProps {

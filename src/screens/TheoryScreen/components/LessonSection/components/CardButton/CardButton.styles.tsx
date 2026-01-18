@@ -14,7 +14,7 @@ export const NodeDepth = styled.View<{ isLocked: boolean, isTablet: boolean, isC
   left: scale(3),
   height: isTablet ? scale(theme.components.cardButton.size * 0.8) : scale(theme.components.cardButton.size),
   width: isTablet ? scale(theme.components.cardButton.size * 0.8) : scale(theme.components.cardButton.size),
-  backgroundColor: isCompleted ? '#2a8a3a' : (isLocked ? '#0a3a4a' : '#156382'),
+  backgroundColor: isCompleted ? theme.colors.cardButton.depth.completed : (isLocked ? theme.colors.cardButton.depth.locked : theme.colors.cardButton.depth.default),
   borderRadius: scale(15)
 }))
 
