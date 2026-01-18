@@ -62,3 +62,10 @@ export const PrimaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, i
 export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.error
 }))
+
+export const ScrollContentContainer = styled.View<{ isTablet?: boolean }>(({ isTablet }) => ({
+  alignItems: 'center',
+  flexGrow: 1,
+  padding: isTablet ? scale(8) : scale(10),
+  gap: isTablet ? scale(16) : scale(32)
+}))

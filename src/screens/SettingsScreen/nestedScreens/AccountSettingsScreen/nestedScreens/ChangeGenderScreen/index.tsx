@@ -16,7 +16,8 @@ import {
   ErrorIcon,
   ErrorText,
   PrimaryButton,
-  PrimaryButtonText
+  PrimaryButtonText,
+  ScrollContentContainer
 } from './ChangeGenderScreen.styles'
 
 const getInstrumentFromValue = (value: string | undefined): UserInstrument | null => {
@@ -85,14 +86,9 @@ export const ChangeGenderScreen = () => {
       <ScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ 
-          alignItems: 'center',
-          flexGrow: 1, 
-          padding: isTablet ? scale(8) : scale(10),
-          gap: isTablet ? scale(16) : scale(32)
-        }}
       >
-        <AvatarPreview 
+        <ScrollContentContainer isTablet={isTablet}>
+          <AvatarPreview 
           selectedGender={selectedGender || 'male'} 
           selectedInstrument={initialInstrument}
           isTablet={isTablet}
@@ -120,6 +116,7 @@ export const ChangeGenderScreen = () => {
             <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
+        </ScrollContentContainer>
       </ScrollView>
     </ScreenContainer>
   )
