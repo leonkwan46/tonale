@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -22,4 +23,8 @@ export const DescriptionText = styled.Text<{ isTablet?: boolean }>(({ theme, isT
   lineHeight: isTablet ? scale(20) : scale(24),
   textAlign: 'center',
   paddingHorizontal: scale(8)
+}))
+
+export const HeaderIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.primary
 }))
