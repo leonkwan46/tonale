@@ -1,17 +1,20 @@
 import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
 import Svg, { Path } from 'react-native-svg'
-import { IconContainer } from './.styles'
+import { IconContainer } from './BackArrowIcon.styles'
 
 interface BackArrowIconProps {
   size?: number
+  color?: string
 }
 
 export const BackArrowIcon = ({ 
-  size = 16
+  size = 16,
+  color
 }: BackArrowIconProps) => {
   const theme = useTheme()
   const scaledSize = scale(size)
+  const strokeColor = color || theme.colors.text
   
   return (
     <IconContainer scaledSize={scaledSize}>
@@ -23,7 +26,7 @@ export const BackArrowIcon = ({
       >
         <Path
           d="M19 12H5M12 19L5 12L12 5"
-          stroke={theme.colors.text}
+          stroke={strokeColor}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
