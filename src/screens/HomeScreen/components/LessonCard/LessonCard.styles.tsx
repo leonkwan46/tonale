@@ -28,7 +28,7 @@ export const ContinueButtonDepth = styled.View(({ theme }) => ({
   position: 'absolute',
   top: scale(3),
   left: scale(3),
-  backgroundColor: '#156382',
+  backgroundColor: theme.colors.homeScreen.buttonDepth,
   borderRadius: scale(15),
   width: '100%',
   height: '100%'
