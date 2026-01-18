@@ -73,7 +73,9 @@ export const MultipleChoice = ({
                     <ChoiceText 
                       isTablet={isTablet} 
                       layoutType={type}
-                      numberOfLines={type === 'grid' ? 2 : 1}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit={true}
+                      minimumFontScale={0.5}
                     >
                       {choice}
                     </ChoiceText>
