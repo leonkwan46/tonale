@@ -1,6 +1,7 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { useProgress } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents'
+import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
 import { FinalTestFailureModal } from './components/FinalTestFailureModal'
 import { StarRatingModal } from './components/StarRatingModal'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
@@ -15,8 +16,8 @@ import { LessonScreenBody } from './LessonScreenBody'
 export const LessonScreen = () => {
   const router = useRouter()
   const { lessonId, from } = useLocalSearchParams<{ lessonId: string, from: string }>()
-  const { progressData, updateFinalTestProgress, updateLessonProgress, getLessonById, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()
-  const lesson = lessonId ? getLessonById(lessonId, progressData) : null
+  const { progressData, updateFinalTestProgress, updateLessonProgress, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()
+  const lesson = lessonId ? getLessonWithProgress(lessonId, progressData) : null
   
   const generateQuestions = useCallback((lessonData: typeof lesson): Question[] => {
     if (!lessonData || !lessonData.exerciseConfig) return []

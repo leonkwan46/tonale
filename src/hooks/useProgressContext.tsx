@@ -2,10 +2,10 @@ import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebas
 import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
-import { calculateStageUnlockStatus, getLessonWithProgress, stagesArray } from '@/theory/curriculum/stages/helpers'
+import { calculateStageUnlockStatus, stagesArray } from '@/theory/curriculum/stages/helpers'
 import { clearAllUserCache, loadProgressCache, saveProgressCache } from '@/utils/cache'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import type { Lesson, Stage, StageLesson } from '@types'
+import type { Stage, StageLesson } from '@types'
 import { RevisionQuestion } from '@types'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
@@ -28,19 +28,17 @@ export interface ProgressContextType {
   // State
   progressData: Record<string, ProgressData>
   revisionQuestions: RevisionQuestion[]
-  loading: boolean
-  initialized: boolean
+  revisionQuestionsLoading: boolean
+  progressDataLoading: boolean
+  progressDataInitialized: boolean
   
   // Progress actions
   refreshProgress: () => Promise<void>
   refreshRevisionQuestions: () => Promise<void>
-  updateProgress: (lessonId: string, data: Partial<ProgressData>) => void
   updateLessonProgress: (lessonId: string, stars: number) => Promise<void>
   updateFinalTestProgress: (lessonId: string, isPassed: boolean) => Promise<void>
-  clearAllUserData: () => Promise<void>
   
   // Lesson utilities (pure functions, exposed for convenience)
-  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
   getStageById: (id: string) => Stage | undefined
   getStageRequirements: (stageId: string) => { isUnlocked: boolean; missingPrerequisites: Stage[]; progressNeeded: string[] }
   getNextLockedStage: () => Stage | undefined
@@ -179,13 +177,6 @@ const convertLessonsDataToProgressFormat = (lessonsData: Record<string, { stars?
 // LESSON UTILITIES (Pure functions - could be moved to helpers.ts if preferred)
 // ============================================================================
 
-const getLessonById = (
-  id: string,
-  progressData?: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): Lesson | undefined => {
-  return getLessonWithProgress(id, progressData)
-}
-
 const allStageLessons: StageLesson[] = [
   ...stagesArray[0].lessons,
   ...stagesArray[1].lessons,
@@ -245,8 +236,9 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
   const { authUser, userData, loading: userLoading } = useUser()
   const [progressData, setProgressDataState] = useState<Record<string, ProgressData>>({})
   const [revisionQuestions, setRevisionQuestions] = useState<RevisionQuestion[]>([])
-  const [loading, setLoading] = useState(true)
-  const [initialized, setInitialized] = useState(false)
+  const [revisionQuestionsLoading, setRevisionQuestionsLoading] = useState<boolean>(true)
+  const [progressDataLoading, setProgressDataLoading] = useState(true)
+  const [progressDataInitialized, setProgressDataInitialized] = useState(false)
   const currentUserIdRef = useRef<string>('')
 
   // ============================================================================
@@ -255,7 +247,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
 
   const setProgressData = useCallback((data: Record<string, ProgressData>) => {
     setProgressDataState(data)
-    setInitialized(true)
+    setProgressDataInitialized(true)
   }, [])
 
   const initializeEmptyProgress = useCallback(() => {
@@ -327,8 +319,9 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
     if (!authUser) {
       setProgressDataState({})
       setRevisionQuestions([])
-      setInitialized(false)
-      setLoading(false)
+      setRevisionQuestionsLoading(false)
+      setProgressDataInitialized(false)
+      setProgressDataLoading(false)
       currentUserIdRef.current = ''
       return
     }
@@ -341,15 +334,15 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
     }
 
     const initialize = async () => {
-      setLoading(true)
+      setProgressDataLoading(true)
       try {
         await initializeUserProgress(authUser.uid)
-        setInitialized(true)
+        setProgressDataInitialized(true)
       } catch (error) {
         console.error('Failed to initialize progress:', error)
-        setInitialized(false)
+        setProgressDataInitialized(false)
       } finally {
-        setLoading(false)
+        setProgressDataLoading(false)
       }
     }
 
@@ -364,18 +357,24 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
     try {
       const result = await getRevisionQuestionsFn({})
       if (result.data.success) {
-        setRevisionQuestions(result.data.data)
+        setRevisionQuestions(result.data.data || [])
+      } else {
+        setRevisionQuestions([])
       }
     } catch (error) {
       console.error('Failed to load revision questions:', error)
+      setRevisionQuestions([])
+    } finally {
+      setRevisionQuestionsLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    if (authUser && initialized) {
+    if (authUser && progressDataInitialized) {
+      setRevisionQuestionsLoading(true)
       loadRevisionQuestions()
     }
-  }, [authUser, initialized, loadRevisionQuestions])
+  }, [authUser, progressDataInitialized, loadRevisionQuestions])
 
   // ============================================================================
   // PROGRESS ACTIONS
@@ -384,14 +383,14 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
   const refreshProgress = useCallback(async () => {
     if (!authUser) return
     
-    setLoading(true)
+    setProgressDataLoading(true)
     try {
       await initializeUserProgress(authUser.uid)
-      setInitialized(true)
+      setProgressDataInitialized(true)
     } catch (error) {
       console.error('Failed to refresh progress:', error)
     } finally {
-      setLoading(false)
+      setProgressDataLoading(false)
     }
   }, [authUser, initializeUserProgress])
 
@@ -399,17 +398,6 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
     if (!authUser) return
     await loadRevisionQuestions()
   }, [loadRevisionQuestions, authUser])
-
-  const updateProgress = useCallback((lessonId: string, data: Partial<ProgressData>) => {
-    const updatedData = {
-      ...progressData,
-      [lessonId]: {
-        ...progressData[lessonId],
-        ...data
-      }
-    }
-    setProgressDataState(updatedData)
-  }, [progressData])
 
   const saveProgressAndSyncToBackend = useCallback(async (
     lessonId: string,
@@ -484,17 +472,6 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
     await saveProgressAndSyncToBackend(lessonId, { isPassed }, updatedData)
   }, [progressData, saveProgressAndSyncToBackend])
 
-  const clearAllUserData = useCallback(async () => {
-    try {
-      currentUserIdRef.current = ''
-      setProgressDataState({})
-      resetStageProgressData()
-      await clearAllUserCache()
-    } catch (error) {
-      console.error('Failed to clear user data:', error)
-    }
-  }, [])
-
   // ============================================================================
   // CONTEXT VALUE
   // ============================================================================
@@ -505,19 +482,17 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
         // State
         progressData,
         revisionQuestions,
-        loading,
-        initialized,
+        revisionQuestionsLoading,
+        progressDataLoading,
+        progressDataInitialized,
         
         // Progress actions
         refreshProgress,
         refreshRevisionQuestions,
-        updateProgress,
         updateLessonProgress,
         updateFinalTestProgress,
-        clearAllUserData,
         
         // Lesson utilities
-        getLessonById,
         getStageById,
         getStageRequirements,
         getNextLockedStage,

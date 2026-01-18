@@ -1,5 +1,6 @@
 import { useProgress, type ProgressData } from '@/hooks/useProgressContext'
 import { useUser } from '@/hooks/useUserContext'
+import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
 import type { Lesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
@@ -17,8 +18,7 @@ export const useLastLesson = (): LessonResult => {
   const { loading: userLoading, authUser } = useUser()
   const {
     progressData,
-    initialized,
-    getLessonById,
+    progressDataInitialized,
     getLastAccessedLessonLocal,
     allStageLessons
   } = useProgress()
@@ -26,7 +26,7 @@ export const useLastLesson = (): LessonResult => {
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [allCompleted, setAllCompleted] = useState(false)
 
-  const loading = userLoading || !initialized || !authUser
+  const loading = userLoading || !progressDataInitialized || !authUser
 
   const fetchLesson = useCallback(async () => {
     if (loading) return
@@ -36,16 +36,14 @@ export const useLastLesson = (): LessonResult => {
       const currentLesson = findLessonToDisplay(
         lastAccess,
         progressData,
-        allStageLessons,
-        getLessonById
+        allStageLessons
       )
       
       if (!currentLesson) {
         const allCompleted = findIncompleteLessonFromIndex(
           0,
           progressData,
-          allStageLessons,
-          getLessonById
+          allStageLessons
         ) === null
         setAllCompleted(allCompleted)
           setLesson(null)
@@ -63,8 +61,7 @@ export const useLastLesson = (): LessonResult => {
     loading,
     progressData,
     getLastAccessedLessonLocal,
-    allStageLessons,
-    getLessonById
+    allStageLessons
   ])
 
   // Reactive update: refreshes when progressData or user state changes
@@ -94,12 +91,11 @@ export const useLastLesson = (): LessonResult => {
 const findIncompleteLessonFromIndex = (
   startIndex: number,
   progressData: Record<string, ProgressData>,
-  allStageLessons: { id: string }[],
-  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
+  allStageLessons: { id: string }[]
 ): Lesson | null => {
   for (let i = startIndex; i < allStageLessons.length; i++) {
     const stageLesson = allStageLessons[i]
-    const lesson = getLessonById(stageLesson.id, progressData) ?? null
+    const lesson = getLessonWithProgress(stageLesson.id, progressData) ?? null
     if (!lesson) continue
     
     const progress = progressData[stageLesson.id]
@@ -114,24 +110,23 @@ const findIncompleteLessonFromIndex = (
 const findLessonToDisplay = (
   lastAccess: LastAccess,
   progressData: Record<string, ProgressData>,
-  allStageLessons: { id: string }[],
-  getLessonById: (id: string, progressData?: Record<string, ProgressData>) => Lesson | undefined
+  allStageLessons: { id: string }[]
 ): Lesson | null => {
   if (lastAccess) {
-    const lesson = getLessonById(lastAccess.lessonId, progressData) ?? null
+    const lesson = getLessonWithProgress(lastAccess.lessonId, progressData) ?? null
     if (!lesson) return null
 
     const progress = progressData[lastAccess.lessonId]
     if (isLessonComplete(lesson, progress)) {
       const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
       if (currentIndex === -1) return null
-      return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons, getLessonById)
+      return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons)
     }
     
     return lesson
   }
   
-  return findIncompleteLessonFromIndex(0, progressData, allStageLessons, getLessonById)
+  return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
 }
 
 const isLessonComplete = (
