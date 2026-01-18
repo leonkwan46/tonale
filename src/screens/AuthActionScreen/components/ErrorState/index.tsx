@@ -1,19 +1,16 @@
-import { useDevice } from '@/hooks'
-import { scale } from 'react-native-size-matters'
+import { Icon } from '@/sharedComponents/Icon/Icon'
 
-import { ErrorContainer, ErrorIcon, ErrorText } from './ErrorState.styles'
+import { ErrorContainer, ErrorText } from './ErrorState.styles'
 
 interface ErrorStateProps {
   error: string
 }
 
 export const ErrorState = ({ error }: ErrorStateProps) => {
-  const { isTablet } = useDevice()
-
   return (
-    <ErrorContainer isTablet={isTablet}>
-      <ErrorIcon name="alert-circle" size={isTablet ? scale(20) : scale(24)} />
-      <ErrorText isTablet={isTablet}>{error}</ErrorText>
+    <ErrorContainer>
+      <Icon name="alert-circle" sizeVariant="lg" colorVariant="error" />
+      <ErrorText>{error}</ErrorText>
     </ErrorContainer>
   )
 }

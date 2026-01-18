@@ -12,26 +12,26 @@ export const Card = styled.View(({ theme }) => ({
   gap: scale(20)
 }))
 
-export const RefreshButton = styled(TouchableOpacity)<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const RefreshButton = styled(TouchableOpacity)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: isTablet ? scale(8) : scale(12),
+  paddingVertical: theme.device.isTablet ? scale(8) : scale(12),
   borderRadius: scale(12),
   borderWidth: 1,
   borderColor: theme.colors.primary,
   backgroundColor: 'transparent',
-  marginTop: isTablet ? scale(8) : scale(12)
+  marginTop: theme.device.isTablet ? scale(8) : scale(12)
 }))
 
-export const RefreshButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const RefreshButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
-  fontSize: isTablet ? scale(12) : scale(14),
+  fontSize: theme.device.isTablet ? scale(12) : scale(14),
   fontFamily: getSourGummyFontFamily('600')
 }))
 
-export const DebugText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(10) : scale(11),
+export const DebugText = styled.Text(({ theme }) => ({
+  fontSize: theme.device.isTablet ? scale(10) : scale(11),
   color: theme.colors.secondary,
   fontFamily: getSourGummyFontFamily('400'),
   textAlign: 'center',

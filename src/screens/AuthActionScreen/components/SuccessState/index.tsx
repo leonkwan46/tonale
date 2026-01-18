@@ -1,16 +1,14 @@
-import { useDevice } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon/Icon'
 import { useRouter } from 'expo-router'
-import { scale } from 'react-native-size-matters'
 
+import { AuthActionMode } from '../../AuthActionScreen.types'
+import { getHandler } from '../../handlers/AuthActionHandlerRegistry'
 import {
   PrimaryButton,
   PrimaryButtonText,
   SuccessContainer,
-  SuccessIcon,
   SuccessText
 } from './SuccessState.styles'
-import { AuthActionMode } from '../../AuthActionScreen.types'
-import { getHandler } from '../../handlers/AuthActionHandlerRegistry'
 
 interface SuccessStateProps {
   mode: AuthActionMode
@@ -18,7 +16,6 @@ interface SuccessStateProps {
 
 export const SuccessState = ({ mode }: SuccessStateProps) => {
   const router = useRouter()
-  const { isTablet } = useDevice()
 
   const handler = getHandler(mode)
   const message = handler.getSuccessMessage()
@@ -35,12 +32,12 @@ export const SuccessState = ({ mode }: SuccessStateProps) => {
 
   return (
     <>
-      <SuccessContainer isTablet={isTablet}>
-        <SuccessIcon name="checkmark-circle" size={isTablet ? scale(20) : scale(24)} />
-        <SuccessText isTablet={isTablet}>{message}</SuccessText>
+      <SuccessContainer>
+        <Icon name="checkmark-circle" sizeVariant="lg" colorVariant="success" />
+        <SuccessText>{message}</SuccessText>
       </SuccessContainer>
-      <PrimaryButton isTablet={isTablet} onPress={handleContinue} activeOpacity={0.7}>
-        <PrimaryButtonText isTablet={isTablet}>
+      <PrimaryButton onPress={handleContinue} activeOpacity={0.7}>
+        <PrimaryButtonText>
           {mode === 'resetPassword' ? 'Go to Sign In' : 'Continue'}
         </PrimaryButtonText>
       </PrimaryButton>

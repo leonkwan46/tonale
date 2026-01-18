@@ -11,44 +11,44 @@ export const ScrollContainer = styled.View(() => ({
   gap: scale(20)
 }))
 
-export const ErrorContainer = styled.View<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: theme.colors.surface,
   borderWidth: 1,
   borderColor: theme.colors.error,
-  paddingHorizontal: isTablet ? scale(10) : scale(16),
-  paddingVertical: isTablet ? scale(6) : scale(12),
+  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
+  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
   borderRadius: scale(8),
-  gap: isTablet ? scale(5) : scale(8)
+  gap: theme.device.isTablet ? scale(5) : scale(8)
 }))
 
 export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.error
 }))
 
-export const ErrorText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
-  fontSize: isTablet ? scale(10) : scale(12),
+  fontSize: theme.device.isTablet ? scale(10) : scale(12),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const InputField = styled.View<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const InputField = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   borderWidth: 1,
   borderRadius: scale(12),
-  paddingHorizontal: isTablet ? scale(12) : scale(16),
-  height: isTablet ? scale(40) : scale(56),
+  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
+  height: theme.device.isTablet ? scale(40) : scale(56),
   backgroundColor: theme.colors.surface,
   borderColor: theme.colors.border,
-  gap: isTablet ? scale(6) : scale(8)
+  gap: theme.device.isTablet ? scale(6) : scale(8)
 }))
 
-export const Input = styled(TextInput)<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const Input = styled(TextInput)(({ theme }) => ({
   flex: 1,
-  fontSize: isTablet ? scale(12) : scale(14),
+  fontSize: theme.device.isTablet ? scale(12) : scale(14),
   height: '100%',
   color: theme.colors.text,
   placeholderTextColor: theme.colors.secondary,
@@ -59,19 +59,19 @@ export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.primary
 }))
 
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean; isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
+export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
   backgroundColor: theme.colors.primary,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: isTablet ? scale(8) : scale(16),
+  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
   borderRadius: scale(12),
   opacity: disabled ? 0.7 : 1,
-  marginTop: isTablet ? scale(10) : scale(16)
+  marginTop: theme.device.isTablet ? scale(10) : scale(16)
 }))
 
-export const PrimaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const PrimaryButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: isTablet ? scale(12) : scale(16),
+  fontSize: theme.device.isTablet ? scale(12) : scale(16),
   fontFamily: getSourGummyFontFamily('600')
 }))

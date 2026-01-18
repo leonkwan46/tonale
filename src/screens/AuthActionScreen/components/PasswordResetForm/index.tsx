@@ -1,20 +1,17 @@
 import { useRef, useState } from 'react'
 import { Keyboard, TextInput } from 'react-native'
-import { scale } from 'react-native-size-matters'
 
-import { useDevice } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon/Icon'
 import { KeyboardAwareScrollView } from '@/sharedComponents'
 import { ScreenIntroHeader } from '@/screens/SettingsScreen/components/ScreenIntroHeader'
 
 import {
   ErrorContainer,
-  ErrorIcon,
   ErrorText,
   Input,
   InputField,
   PrimaryButton,
   PrimaryButtonText,
-  PrimaryIcon,
   ScrollContainer
 } from './PasswordResetForm.styles'
 
@@ -33,7 +30,6 @@ export const PasswordResetForm = ({
   isLoading = false,
   error
 }: PasswordResetFormProps) => {
-  const { isTablet } = useDevice()
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [localError, setLocalError] = useState('')
@@ -81,17 +77,16 @@ export const PasswordResetForm = ({
         />
 
         {displayError ? (
-          <ErrorContainer isTablet={isTablet}>
-            <ErrorIcon name="alert-circle" size={isTablet ? scale(14) : scale(20)} />
-            <ErrorText isTablet={isTablet}>{displayError}</ErrorText>
+          <ErrorContainer>
+            <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+            <ErrorText>{displayError}</ErrorText>
           </ErrorContainer>
         ) : null}
 
-        <InputField isTablet={isTablet}>
-          <PrimaryIcon name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} />
+        <InputField>
+          <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
           <Input
             ref={newPasswordInputRef}
-            isTablet={isTablet}
             placeholder="Enter your new password"
             secureTextEntry
             value={newPassword}
@@ -104,11 +99,10 @@ export const PasswordResetForm = ({
           />
         </InputField>
 
-        <InputField isTablet={isTablet}>
-          <PrimaryIcon name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} />
+        <InputField>
+          <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
           <Input
             ref={confirmPasswordInputRef}
-            isTablet={isTablet}
             placeholder="Confirm your new password"
             secureTextEntry
             value={confirmPassword}
@@ -123,11 +117,10 @@ export const PasswordResetForm = ({
 
         <PrimaryButton
           disabled={isLoading || !newPassword || !confirmPassword}
-          isTablet={isTablet}
           onPress={handleSubmit}
           activeOpacity={0.7}
         >
-          <PrimaryButtonText isTablet={isTablet}>
+          <PrimaryButtonText>
             {isLoading ? 'Resetting...' : 'Reset Password'}
           </PrimaryButtonText>
         </PrimaryButton>
