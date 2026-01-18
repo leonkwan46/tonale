@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import * as React from 'react'
@@ -75,6 +74,14 @@ const TabLabel = styled.Text<{
   fontFamily: getSourGummyFontFamily('500')
 }))
 
+const TabIcon = styled(Ionicons)<{
+  focused: boolean
+  isTablet: boolean
+  config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
+}>(({ focused, theme, isTablet, config }) => ({
+  color: focused ? theme.colors.tint : theme.colors.tabIconDefault
+}))
+
 // Fallback functions for when options don't provide values
 const getTabIcon = (routeName: string) => {
   switch (routeName) {
@@ -110,7 +117,6 @@ const getTabLabel = (routeName: string) => {
 
 export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets()
-  const theme = useTheme()
   const { isTablet } = useDevice()
   const config = isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
 
@@ -137,8 +143,6 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
         }
 
         const label = options.title || getTabLabel(route.name)
-        const iconColor = isFocused ? theme.colors.tint : theme.colors.tabIconDefault
-
         const iconName: IoniconsName = getTabIcon(route.name) as IoniconsName
 
         return (
@@ -150,10 +154,12 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
             isTablet={isTablet}
             config={config}
           >
-            <Ionicons
+            <TabIcon
               name={iconName}
               size={isTablet ? config.iconSize : scale(config.iconSize)}
-              color={iconColor}
+              focused={isFocused}
+              isTablet={isTablet}
+              config={config}
             />
             <TabLabel 
               focused={isFocused} 
