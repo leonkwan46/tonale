@@ -83,7 +83,10 @@ export const lightTheme = {
       correct: Colors.light.success,
       incorrect: Colors.light.error,
       neutral: '#999'
-    }
+    },
+    
+    // RevisionCard colors
+    revisionCard: Colors.light.revisionCard
     
   },
   // Use shared constants for consistent dimensions across themes
@@ -135,7 +138,10 @@ export const darkTheme = {
       correct: Colors.dark.success,
       incorrect: Colors.dark.error,
       neutral: '#444'
-    }
+    },
+    
+    // RevisionCard colors
+    revisionCard: Colors.dark.revisionCard
     
   },
   // Use shared constants for consistent dimensions across themes

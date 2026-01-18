@@ -26,7 +26,16 @@ export const Colors = {
     textSecondary: '#687076',
     stageCleared: '#4CAF50',
     stagePerfect: '#FFD700',
-    stagePerfectBorder: '#FFA500'
+    stagePerfectBorder: '#FFA500',
+    revisionCard: {
+      border: '#FF6E52',
+      iconBackground: '#F58970',
+      shadow: '#DE6B54',
+      buttonBackground: '#F58970',
+      buttonDepth: '#DE6B54',
+      successShadow: '#2a8a3a',
+      iconText: '#000'
+    }
   },
   dark: {
     text: '#ECEDEE',
@@ -47,7 +56,16 @@ export const Colors = {
     textSecondary: '#9BA1A6',
     stageCleared: '#2E7D32',
     stagePerfect: '#B8860B',
-    stagePerfectBorder: '#DAA520'
+    stagePerfectBorder: '#DAA520',
+    revisionCard: {
+      border: '#FF6E52',
+      iconBackground: '#F58970',
+      shadow: '#DE6B54',
+      buttonBackground: '#F58970',
+      buttonDepth: '#DE6B54',
+      successShadow: '#2a8a3a',
+      iconText: '#ECEDEE'
+    }
   }
 }
 
