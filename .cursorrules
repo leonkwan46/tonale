@@ -33,6 +33,9 @@
 - Never use hardcoded color hex numbers - all colors must come from `@/config/theme`
 - If a color doesn't exist in the theme, create it in `src/config/theme/Colors.ts` and add it to the theme in `src/config/theme/theme.ts`
 - **Exception: Cards must use hardcoded colors - white background (`#ffffff`) and black text (`#000000`)**
+- For device-specific styling (tablet vs phone), always use `theme.device.isTablet` in styled components instead of `useDevice()` hook
+- Icon sizes should use the `Icon` component from `@/sharedComponents/Icon/Icon` with `sizeVariant` prop instead of calculating sizes manually
+- Icon colors should use the `colorVariant` prop (e.g., `colorVariant="primary"`, `colorVariant="error"`) instead of passing `color={theme.colors.xxx}` - this allows Icon to access theme directly without requiring `useTheme()` in consumer components
 
 ## State Management
 - Use Context API via custom hooks: `useUser()`, `useProgress()`, `useDevice()`
