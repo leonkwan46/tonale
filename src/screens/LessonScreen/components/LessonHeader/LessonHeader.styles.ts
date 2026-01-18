@@ -45,8 +45,8 @@ export const XMarksContainer = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.sm)
 }))
 
-export const XMark = styled.Text<{ isActive: boolean; isTablet: boolean }>(({ theme, isActive, isTablet }) => ({
-  fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
+export const XMark = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
+  fontSize: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
   color: isActive ? theme.colors.error : theme.colors.secondary,
   opacity: isActive ? 1 : 0.3,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)

@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { DisplayCard } from '@/sharedComponents/DisplayCard'
 import { NoteType } from '@leonkwan46/music-notation'
 import type { StageNumber, VisualComponent } from '@types'
@@ -18,8 +17,6 @@ interface VisualQuestionProps {
 }
 
 export const VisualQuestion = ({ visualComponent, stage }: VisualQuestionProps) => {
-  const { isTablet } = useDevice()
-
   const shouldRenderIndividualNotes = visualComponent.type !== 'timeSignature' && 
     visualComponent.type !== 'noteValue' && 
     visualComponent.type !== 'termAndSign' && 
@@ -34,7 +31,7 @@ export const VisualQuestion = ({ visualComponent, stage }: VisualQuestionProps) 
     !shouldRenderIndividualNotes
 
   return (
-    <VisualQuestionContainer isTablet={isTablet}>
+    <VisualQuestionContainer>
       {visualComponent.type === 'timeSignature' && visualComponent.timeSignatureValue && (
         <DisplayCard>
           {renderTimeSignature(visualComponent.timeSignatureValue)}
@@ -60,8 +57,7 @@ export const VisualQuestion = ({ visualComponent, stage }: VisualQuestionProps) 
         renderTermAndSign(
           visualComponent.symbolType,
           visualComponent.renderAsSymbol,
-          visualComponent.enableTTS,
-          isTablet
+          visualComponent.enableTTS
         )
       }
       

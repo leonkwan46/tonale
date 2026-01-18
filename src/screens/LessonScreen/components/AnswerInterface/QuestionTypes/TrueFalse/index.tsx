@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
 import type { ButtonState } from '@/sharedComponents/Button3D/Button3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, TrueFalseButtonContainer } from './TrueFalse.styles'
@@ -21,7 +20,6 @@ export const TrueFalse = ({
   onChoiceSelect,
   testID
 }: TrueFalseProps) => {
-  const { isTablet } = useDevice()
   const trueFalseChoices = choices.slice(0, 2) as ('True' | 'False')[]
 
   const getButtonState = (choice: 'True' | 'False', isSelected: boolean, isCorrect: boolean, isIncorrect: boolean, shouldShowNeutral: boolean): ButtonState => {
@@ -51,15 +49,10 @@ export const TrueFalse = ({
               disabled={selectedAnswer !== null}
               testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
               buttonState={buttonState}
-              isTablet={isTablet}
             >
-              {({ isTablet }) => (
-                <TrueFalseButtonContainer
-                  isTablet={isTablet}
-                >
-                  <ChoiceText 
-                    isTablet={isTablet}
-                  >
+              {() => (
+                <TrueFalseButtonContainer>
+                  <ChoiceText>
                     {choice}
                   </ChoiceText>
                 </TrueFalseButtonContainer>

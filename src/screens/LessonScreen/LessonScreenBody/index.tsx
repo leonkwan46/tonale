@@ -1,6 +1,5 @@
 import type { Question } from '@types'
 import { useCallback } from 'react'
-import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
@@ -24,7 +23,6 @@ export const LessonScreenBody = ({
   wrongAnswersCount = 0,
   isFinalTest = false
 }: LessonScreenBodyProps) => {
-  const { isTablet } = useDevice()
   const currentQuestion = questions[currentQuestionIndex]
   const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
@@ -44,12 +42,12 @@ export const LessonScreenBody = ({
   if (questions.length === 0) return null
 
   return (
-    <BodyContainer isTablet={isTablet}>
+    <BodyContainer>
       {visualComponent && (
         <VisualQuestion visualComponent={visualComponent} stage={stage} />
       )}
 
-      <QuestionText testID="question-text" isTablet={isTablet}>{question}</QuestionText>
+      <QuestionText testID="question-text">{question}</QuestionText>
 
       <AnswerInterface 
         questionType={type}

@@ -112,8 +112,7 @@ export const renderTimeSignature = (timeSignatureValue: string | TimeSignatureTy
 export const renderTermAndSign = (
   symbolType: string,
   renderAsSymbol: boolean | undefined,
-  enableTTS: boolean | undefined,
-  isTablet: boolean
+  enableTTS: boolean | undefined
 ) => {
   const WIDE_DYNAMIC_SYMBOLS = ['crescendo', 'decrescendo', 'diminuendo', 'cresc.', 'decresc.', 'dim.'] as const
   
@@ -139,9 +138,9 @@ export const renderTermAndSign = (
   )
 
   return (
-    <SMuFLCard isTablet={isTablet} isTextTerm={isTextTermValue}>
-      <SMuFLSymbolContainer isTablet={isTablet} isTextTerm={isTextTermValue}>
-        <SMuFLSymbolText isTablet={isTablet} isTextTerm={isTextTermValue} isWideDynamic={isWideDynamicValue}>
+    <SMuFLCard isTextTerm={isTextTermValue}>
+      <SMuFLSymbolContainer isTextTerm={isTextTermValue}>
+        <SMuFLSymbolText isTextTerm={isTextTermValue} isWideDynamic={isWideDynamicValue}>
           {isTextTermValue ? displayText : symbolText}
         </SMuFLSymbolText>
       </SMuFLSymbolContainer>

@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { useMemo, type FC } from 'react'
 import Animated, { interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
 import {
@@ -16,7 +15,6 @@ interface PullIndicatorProps {
 }
 
 export const PullIndicator: FC<PullIndicatorProps> = ({ pullDistance, messageIndex }) => {
-  const { isTablet } = useDevice()
   const message = useMemo(() => {
     const index = messageIndex % ENCOURAGEMENT_MESSAGES.length
     return ENCOURAGEMENT_MESSAGES[index]
@@ -34,9 +32,9 @@ export const PullIndicator: FC<PullIndicatorProps> = ({ pullDistance, messageInd
 
   return (
     <Animated.View style={animatedStyle}>
-      <PullIndicatorContainer isTablet={isTablet}>
-        <PullIndicatorEmoji isTablet={isTablet}>👏</PullIndicatorEmoji>
-        <PullIndicatorMessage isTablet={isTablet}>{message}</PullIndicatorMessage>
+      <PullIndicatorContainer>
+        <PullIndicatorEmoji>👏</PullIndicatorEmoji>
+        <PullIndicatorMessage>{message}</PullIndicatorMessage>
       </PullIndicatorContainer>
     </Animated.View>
   )

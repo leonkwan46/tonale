@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
 import { ModalOverlay } from '@/sharedComponents/Modal/Modal.styles'
 import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/theory/exercises/utils/explanation'
@@ -79,8 +78,6 @@ export const QuestionExplanation = ({
   visualComponent,
   onContinue
 }: QuestionExplanationProps) => {
-  const { isTablet } = useDevice()
-  
   // Extract text and visualComponent from explanation
   const explanationText = explanation?.text
   // Merge visual components: start with question's visualComponent, override with explanation's visualComponent
@@ -108,7 +105,7 @@ export const QuestionExplanation = ({
       onRequestClose={onContinue}
     >
       <ModalOverlay>
-        <ModalContainer isTablet={isTablet}>
+        <ModalContainer>
           {showVisual && displayVisualComponent && (
             <VisualExplanation 
               visualComponent={displayVisualComponent}
@@ -116,7 +113,7 @@ export const QuestionExplanation = ({
           )}
 
           {formattedText && (
-            <ExplanationText isTablet={isTablet}>
+            <ExplanationText>
               {formattedText}
             </ExplanationText>
           )}
@@ -124,11 +121,10 @@ export const QuestionExplanation = ({
           <Button3D
             onPress={onContinue}
             buttonState="default"
-            isTablet={isTablet}
             fullWidth={true}
           >
-            {({ isTablet }) => (
-              <ContinueButtonText isTablet={isTablet}>
+            {() => (
+              <ContinueButtonText>
                 Continue
               </ContinueButtonText>
             )}

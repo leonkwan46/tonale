@@ -2,23 +2,23 @@ import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
-export const VisualQuestionContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
+export const VisualQuestionContainer = styled.View(() => ({
   alignItems: 'center',
   justifyContent: 'flex-start',
   marginTop: scale(10)
 }))
 
-export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
+export const SMuFLSymbolContainer = styled.View<{ isTextTerm?: boolean }>(() => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center'
 }))
 
-export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean; isWideDynamic?: boolean }>(({ theme, isTablet, isTextTerm, isWideDynamic }) => ({
+export const SMuFLSymbolText = styled.Text<{ isTextTerm?: boolean; isWideDynamic?: boolean }>(({ theme, isTextTerm, isWideDynamic }) => ({
   fontFamily: isTextTerm ? 'Times New Roman' : 'Bravura',
   fontSize: isTextTerm 
-    ? (isTablet ? scale(18) : scale(24)) 
-    : (isTablet ? scale(24) : scale(40)),
+    ? (theme.device.isTablet ? scale(18) : scale(24)) 
+    : (theme.device.isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
   color: '#000',

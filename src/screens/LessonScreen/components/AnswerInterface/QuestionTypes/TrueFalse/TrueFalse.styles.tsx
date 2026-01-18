@@ -16,16 +16,16 @@ export const ChoiceRow = styled.View<{ isLastRow: boolean }>(() => ({
   gap: scale(24)
 }))
 
-export const TrueFalseButtonContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
-  height: isTablet ? scale(60) : scale(70),
-  width: isTablet ? scale(140) : scale(120),
+export const TrueFalseButtonContainer = styled.View(({ theme }) => ({
+  height: theme.device.isTablet ? scale(60) : scale(70),
+  width: theme.device.isTablet ? scale(140) : scale(120),
   justifyContent: 'center',
   alignItems: 'center'
 }))
 
-export const ChoiceText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => {
+export const ChoiceText = styled.Text(({ theme }) => {
   return {
-    fontSize: isTablet ? scale(16) : scale(20),
+    fontSize: theme.device.isTablet ? scale(16) : scale(20),
     color: theme.colors.text,
     textAlign: 'center',
     fontFamily: getSourGummyFontFamily('600')

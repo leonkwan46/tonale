@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
@@ -36,7 +35,6 @@ export const AnswerInterface = ({
   isFinalTest = false,
   isLastQuestion = false
 }: AnswerInterfaceProps) => {
-  const { isTablet } = useDevice()
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
@@ -165,7 +163,7 @@ export const AnswerInterface = ({
 
   return (
     <>
-      <AnswerInterfaceContainer isTablet={isTablet}>
+      <AnswerInterfaceContainer>
         {renderAnswerComponent()}
       </AnswerInterfaceContainer>
       

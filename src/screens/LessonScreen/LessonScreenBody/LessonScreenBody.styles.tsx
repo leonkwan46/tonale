@@ -3,17 +3,17 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const BodyContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
+export const BodyContainer = styled.View(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.surface,
   borderRadius: scale(theme.spacing.sm),
-  maxWidth: isTablet ? scale(600) : scale(400),
+  maxWidth: theme.device.isTablet ? scale(600) : scale(400),
   alignSelf: 'center',
   width: '100%'
 }))
 
-export const QuestionText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
+export const QuestionText = styled.Text(({ theme }) => ({
+  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
   textAlign: 'center',
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),

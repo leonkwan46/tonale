@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { Modal } from '@/sharedComponents/Modal'
 import {
   ButtonContainer,
@@ -35,7 +34,6 @@ export const StarRatingModal = ({
   onContinue,
   onRetry
 }: StarRatingModalProps) => {
-  const { isTablet } = useDevice()
   const [animatedStars, setAnimatedStars] = useState(0)
   const starAnimations = useRef([
     new Animated.Value(0),
@@ -100,7 +98,7 @@ export const StarRatingModal = ({
             }]
           }}
         >
-          <StarIcon filled={isFilled} isTablet={isTablet}>
+          <StarIcon filled={isFilled}>
             {isFilled ? '⭐' : '☆'}
           </StarIcon>
         </AnimatedStarContainer>
@@ -111,27 +109,26 @@ export const StarRatingModal = ({
   return (
     <Modal visible={visible} onRequestClose={onRetry}>
       <ModalOverlay>
-        <ModalContainer isTablet={isTablet}>
-          <TitleText isTablet={isTablet}>
+        <ModalContainer>
+          <TitleText>
             {getStarMessage(stars)}
           </TitleText>
           
-          <StarContainer isTablet={isTablet}>
+          <StarContainer>
             {renderStars()}
           </StarContainer>
           
-          <DescriptionText isTablet={isTablet}>
+          <DescriptionText>
             {getStarDescription(stars, totalQuestions, wrongAnswers)}
           </DescriptionText>
           
-          <ButtonContainer isTablet={isTablet}>
+          <ButtonContainer>
             <ModalButton
               testID="retry-button"
               variant="outlined"
-              isTablet={isTablet}
               onPress={onRetry}
             >
-              <ModalButtonText variant="outlined" isTablet={isTablet}>
+              <ModalButtonText variant="outlined">
                 Retry
               </ModalButtonText>
             </ModalButton>
@@ -139,10 +136,9 @@ export const StarRatingModal = ({
             <ModalButton
               testID="continue-button"
               variant="filled"
-              isTablet={isTablet}
               onPress={onContinue}
             >
-              <ModalButtonText variant="filled" isTablet={isTablet}>
+              <ModalButtonText variant="filled">
                 Continue
               </ModalButtonText>
             </ModalButton>

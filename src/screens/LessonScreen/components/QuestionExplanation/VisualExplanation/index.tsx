@@ -1,13 +1,12 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
-import { useDevice } from '@/hooks'
 import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
 import {
   CommonTime,
   CutTime,
+  TimeSignature as LibraryTimeSignature,
   MusicStaff,
   parseTimeSignature,
   parseTimeSignature as parseTimeSignatureFromLibrary,
-  TimeSignature as LibraryTimeSignature,
   type MusicElementData
 } from '@leonkwan46/music-notation'
 import type { VisualComponent } from '@types'
@@ -61,8 +60,6 @@ const formatMusicStaffElements = (
 export const VisualExplanation = ({ 
   visualComponent
 }: VisualExplanationProps) => {
-  const { isTablet } = useDevice()
-
   const shouldRenderMusicStaff = Boolean(
     visualComponent.elements && 
     visualComponent.elements.length > 0 &&
@@ -97,14 +94,10 @@ export const VisualExplanation = ({
     }
     
     return (
-      <ExplanationCard isTablet={isTablet}>
-        {isTablet ? (
-          <TabletNoteScaleContainer isTablet={isTablet}>
-            {renderTimeSignature()}
-          </TabletNoteScaleContainer>
-        ) : (
-          renderTimeSignature()
-        )}
+      <ExplanationCard>
+        <TabletNoteScaleContainer>
+          {renderTimeSignature()}
+        </TabletNoteScaleContainer>
       </ExplanationCard>
     )
   }
@@ -132,14 +125,10 @@ export const VisualExplanation = ({
 
   if (shouldRenderNoteValue) {
     return (
-      <ExplanationCard isTablet={isTablet}>
-        {isTablet ? (
-          <TabletNoteScaleContainer isTablet={isTablet}>
-            {renderNoteComponent(visualComponent.noteType)}
-          </TabletNoteScaleContainer>
-        ) : (
-          renderNoteComponent(visualComponent.noteType)
-        )}
+      <ExplanationCard>
+        <TabletNoteScaleContainer>
+          {renderNoteComponent(visualComponent.noteType)}
+        </TabletNoteScaleContainer>
       </ExplanationCard>
     )
   }
@@ -153,9 +142,9 @@ export const VisualExplanation = ({
     const wideDynamic = isWideDynamic(symbolType)
 
     return (
-      <ExplanationCard isTablet={isTablet} isTextTerm={textTerm}>
-        <ExplanationSymbolContainer isTablet={isTablet} isTextTerm={textTerm}>
-          <ExplanationSymbolText isTablet={isTablet} isTextTerm={textTerm} isWideDynamic={wideDynamic}>
+      <ExplanationCard isTextTerm={textTerm}>
+        <ExplanationSymbolContainer isTextTerm={textTerm}>
+          <ExplanationSymbolText isTextTerm={textTerm} isWideDynamic={wideDynamic}>
             {textTerm ? displayText : symbolText}
           </ExplanationSymbolText>
         </ExplanationSymbolContainer>

@@ -1,6 +1,6 @@
 import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Image, ScrollView, View } from 'react-native'
+import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 export const HomeScreenContainer = styled(View)({

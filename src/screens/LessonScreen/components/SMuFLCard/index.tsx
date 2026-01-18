@@ -3,13 +3,12 @@ import { SMuFLCardContainer } from './SMuFLCard.styles'
 
 interface SMuFLCardProps {
   children: React.ReactNode
-  isTablet: boolean
   isTextTerm?: boolean
 }
 
-export const SMuFLCard = ({ children, isTablet, isTextTerm }: SMuFLCardProps) => {
+export const SMuFLCard = ({ children, isTextTerm }: SMuFLCardProps) => {
   return (
-    <SMuFLCardContainer isTablet={isTablet} isTextTerm={isTextTerm}>
+    <SMuFLCardContainer isTextTerm={isTextTerm}>
         {children}
     </SMuFLCardContainer>
   )

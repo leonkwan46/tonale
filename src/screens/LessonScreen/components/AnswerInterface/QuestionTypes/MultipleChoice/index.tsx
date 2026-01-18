@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
 import type { ButtonState } from '@/sharedComponents/Button3D/Button3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, LayoutType, MultipleChoiceButtonContainer } from './MultipleChoice.styles'
@@ -22,8 +21,6 @@ export const MultipleChoice = ({
   type = 'grid',
   testID
 }: MultipleChoiceProps) => {
-  const { isTablet } = useDevice()
-
   const getButtonState = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): ButtonState => {
     if (showResult) {
       if (isCorrect) return 'correct'
@@ -48,7 +45,7 @@ export const MultipleChoice = ({
   const rows = createRows()
 
   return (
-    <ChoicesContainer testID={testID} type={type} isTablet={isTablet}>
+    <ChoicesContainer testID={testID} type={type}>
       {rows.map((row, rowIndex) => (
         <ChoiceRow key={rowIndex} type={type}>
           {row.map((choice, colIndex) => {
@@ -65,13 +62,11 @@ export const MultipleChoice = ({
                 disabled={selectedAnswer !== null}
                 testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
                 buttonState={buttonState}
-                isTablet={isTablet}
                 layoutType={type}
               >
-                {({ isTablet }) => (
-                  <MultipleChoiceButtonContainer isTablet={isTablet} layoutType={type}>
+                {() => (
+                  <MultipleChoiceButtonContainer layoutType={type}>
                     <ChoiceText 
-                      isTablet={isTablet} 
                       layoutType={type}
                       numberOfLines={1}
                       adjustsFontSizeToFit={true}

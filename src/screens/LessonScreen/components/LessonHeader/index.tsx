@@ -1,5 +1,4 @@
 import type { Lesson } from '@types'
-import { useDevice } from '../../../../hooks'
 import { BackArrowIcon } from './BackArrowIcon'
 import {
   BackButton,
@@ -25,8 +24,6 @@ export const LessonHeader = ({
   wrongAnswersCount,
   onBackPress
 }: LessonHeaderProps) => {
-  const { isTablet } = useDevice()
-  
   return (
     <Header>
       <BackButton testID="back-button" onPress={onBackPress}>
@@ -37,9 +34,9 @@ export const LessonHeader = ({
         <ProgressTracker>
           <ProgressText testID="question-counter">{currentQuestionIndex + 1}/{totalQuestions}</ProgressText>
           <XMarksContainer>
-            <XMark isActive={wrongAnswersCount >= 1} isTablet={isTablet}>✗</XMark>
-            <XMark isActive={wrongAnswersCount >= 2} isTablet={isTablet}>✗</XMark>
-            <XMark isActive={wrongAnswersCount >= 3} isTablet={isTablet}>✗</XMark>
+            <XMark isActive={wrongAnswersCount >= 1}>✗</XMark>
+            <XMark isActive={wrongAnswersCount >= 2}>✗</XMark>
+            <XMark isActive={wrongAnswersCount >= 3}>✗</XMark>
           </XMarksContainer>
         </ProgressTracker>
       ) : (
