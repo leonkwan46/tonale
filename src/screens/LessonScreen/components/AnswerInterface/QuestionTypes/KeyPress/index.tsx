@@ -1,8 +1,11 @@
 import { PianoKeyboard } from '@/sharedComponents/PianoKeyboard'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { useState } from 'react'
-import { Text, View } from 'react-native'
-import { styles } from './KeyPress.styles'
+import {
+  Container,
+  FeedbackContainer,
+  FeedbackText
+} from './KeyPress.styles'
 
 interface KeyPressProps {
   onKeyPress?: (key: string) => void
@@ -40,7 +43,7 @@ export const KeyPress = ({
   const disabledKeys = selectedKey !== null ? ALL_PIANO_KEYS : []
 
   return (
-    <View style={styles.container}>
+    <Container>
       <PianoKeyboard
         onKeyPress={handleKeyPress}
         onKeyRelease={handleKeyRelease}
@@ -52,17 +55,12 @@ export const KeyPress = ({
       />
 
       {hasFeedback && (
-        <View style={styles.feedbackContainer}>
-          <Text
-            style={[
-            styles.feedbackText,
-            isCorrect ? styles.correctFeedback : styles.incorrectFeedback
-            ]}
-          >
+        <FeedbackContainer>
+          <FeedbackText isCorrect={isCorrect}>
             {isCorrect ? '✅ Correct!' : '❌ Try again'}
-          </Text>
-        </View>
+          </FeedbackText>
+        </FeedbackContainer>
       )}
-    </View>
+    </Container>
   )
 }
