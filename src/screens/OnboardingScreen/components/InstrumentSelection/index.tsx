@@ -23,7 +23,6 @@ interface InstrumentSelectionProps {
   customInstrument: string
   onCustomInstrumentChange: (text: string) => void
   onScrollToBottom?: () => void
-  isTablet: boolean
 }
 
 const InstrumentSelectionComponent = ({
@@ -31,8 +30,7 @@ const InstrumentSelectionComponent = ({
   onSelect,
   customInstrument,
   onCustomInstrumentChange,
-  onScrollToBottom,
-  isTablet
+  onScrollToBottom
 }: InstrumentSelectionProps) => {
   const theme = useTheme()
 
@@ -41,8 +39,8 @@ const InstrumentSelectionComponent = ({
   }
 
   return (
-    <SectionContainer isTablet={isTablet}>
-      <SectionTitle isTablet={isTablet}>Instrument</SectionTitle>
+    <SectionContainer>
+      <SectionTitle>Instrument</SectionTitle>
       <GridSelection
         options={INSTRUMENT_OPTIONS}
         selectedOption={selectedInstrument}
@@ -53,7 +51,6 @@ const InstrumentSelectionComponent = ({
       />
       {selectedInstrument === INSTRUMENT.OTHER && (
         <CustomInstrumentInput
-          isTablet={isTablet}
           placeholder="Enter your instrument"
           keyboardType="default"
           value={customInstrument}

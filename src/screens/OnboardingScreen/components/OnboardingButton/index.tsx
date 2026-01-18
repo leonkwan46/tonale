@@ -7,14 +7,12 @@ interface OnboardingButtonProps {
   isEnabled: boolean
   isCompleting: boolean
   onPress: () => void
-  isTablet: boolean
 }
 
 const OnboardingButtonComponent = ({
   isEnabled,
   isCompleting,
-  onPress,
-  isTablet
+  onPress
 }: OnboardingButtonProps) => {
   const theme = useTheme()
 
@@ -24,17 +22,16 @@ const OnboardingButtonComponent = ({
       disabled={!isEnabled}
       onPress={onPress}
       testID="complete-onboarding-button"
-      isTablet={isTablet}
     >
       {isCompleting ? (
         <>
           <ActivityIndicator size="small" color={theme.colors.text} />
-          <PrimaryButtonText isTablet={isTablet} hasLeftMargin>
+          <PrimaryButtonText hasLeftMargin>
             Completing...
           </PrimaryButtonText>
         </>
       ) : (
-        <PrimaryButtonText isTablet={isTablet}>Start!</PrimaryButtonText>
+        <PrimaryButtonText>Start!</PrimaryButtonText>
       )}
     </PrimaryButton>
   )

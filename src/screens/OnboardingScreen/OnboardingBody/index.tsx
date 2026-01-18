@@ -1,6 +1,5 @@
 import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
-import { useDevice } from '@/hooks'
 import { KeyboardAwareScrollView } from '@/sharedComponents'
 import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
@@ -24,7 +23,6 @@ export const OnboardingBody = ({
   setUserData
 }: OnboardingBodyProps) => {
   const router = useRouter()
-  const { isTablet } = useDevice()
   const scrollViewRef = useRef<ScrollView>(null)
   const [selectedGender, setSelectedGender] = useState<UserGender | null>('male')
   const [name, setName] = useState<string>('')
@@ -84,25 +82,22 @@ export const OnboardingBody = ({
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[1]}
     >
-      <ScrollContentContainer isTablet={isTablet}>
-      <OnboardingHeader isTablet={isTablet} />
+      <ScrollContentContainer>
+      <OnboardingHeader />
 
       <AvatarPreview 
         selectedGender={selectedGender} 
         selectedInstrument={selectedInstrument}
-        isTablet={isTablet}
       />
 
       <GenderSelection
         selectedGender={selectedGender}
         onSelect={setSelectedGender}
-        isTablet={isTablet}
       />
 
       <NameInput
         name={name}
         onNameChange={setName}
-        isTablet={isTablet}
       />
 
       <InstrumentSelection
@@ -111,14 +106,12 @@ export const OnboardingBody = ({
         customInstrument={customInstrument}
         onCustomInstrumentChange={setCustomInstrument}
         onScrollToBottom={handleScrollToBottom}
-        isTablet={isTablet}
       />
 
       <OnboardingButton
         isEnabled={canCompleteOnboarding}
         isCompleting={isCompleting}
         onPress={handleCompleteOnboarding}
-        isTablet={isTablet}
       />
       </ScrollContentContainer>
     </KeyboardAwareScrollView>
