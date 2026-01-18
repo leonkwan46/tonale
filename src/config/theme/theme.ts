@@ -86,7 +86,10 @@ export const lightTheme = {
     },
     
     // RevisionCard colors
-    revisionCard: Colors.light.revisionCard
+    revisionCard: Colors.light.revisionCard,
+    
+    // Modal mask color (backdrop/overlay behind modal)
+    modalMask: Colors.light.modalMask
     
   },
   // Use shared constants for consistent dimensions across themes
@@ -141,7 +144,10 @@ export const darkTheme = {
     },
     
     // RevisionCard colors
-    revisionCard: Colors.dark.revisionCard
+    revisionCard: Colors.dark.revisionCard,
+    
+    // Modal mask color (backdrop/overlay behind modal)
+    modalMask: Colors.dark.modalMask
     
   },
   // Use shared constants for consistent dimensions across themes
