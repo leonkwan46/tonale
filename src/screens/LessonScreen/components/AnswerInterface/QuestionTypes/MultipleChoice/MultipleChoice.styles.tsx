@@ -23,7 +23,8 @@ export const MultipleChoiceButtonContainer = styled.View<{ isTablet: boolean; la
   padding: isTablet ? scale(15) : scale(20),
   justifyContent: 'center',
   alignItems: 'center',
-  height: layoutType === 'grid' ? (isTablet ? scale(70) : scale(100)) : undefined
+  height: layoutType === 'grid' ? (isTablet ? scale(70) : scale(100)) : undefined,
+  width: '100%'
 }))
 
 export const ChoiceText = styled.Text<{ isTablet: boolean; layoutType: LayoutType }>(({ theme, isTablet, layoutType }) => {
@@ -38,6 +39,7 @@ export const ChoiceText = styled.Text<{ isTablet: boolean; layoutType: LayoutTyp
     fontSize: getFontSize(),
     color: theme.colors.text,
     textAlign: 'center',
-    fontFamily: getSourGummyFontFamily('600')
+    fontFamily: getSourGummyFontFamily('600'),
+    width: '100%'
   }
 })
