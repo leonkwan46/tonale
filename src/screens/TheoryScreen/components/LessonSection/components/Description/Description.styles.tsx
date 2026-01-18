@@ -11,15 +11,15 @@ export const DescriptionTextContainer = styled.View(({ theme }) => ({
     flex: 1
   }))
 
-export const TitleText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? theme.typography['4xl'] : theme.typography.lg,
+export const TitleText = styled.Text(({ theme }) => ({
+  fontSize: theme.device.isTablet ? theme.typography['4xl'] : theme.typography.lg,
   color: theme.colors.text,
   flexWrap: 'wrap',
   width: '100%',
   fontFamily: getSourGummyFontFamily('bold')
 }))
-export const DescriptionText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? theme.typography['2xl'] : theme.typography.base,
+export const DescriptionText = styled.Text(({ theme }) => ({
+  fontSize: theme.device.isTablet ? theme.typography['2xl'] : theme.typography.base,
   color: theme.colors.text,
   flexWrap: 'wrap',
   width: '100%',

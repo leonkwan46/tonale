@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { Modal } from '@/sharedComponents/Modal'
 import {
   ButtonContainer,
@@ -26,42 +25,38 @@ export const WarningModal = ({
   title = 'Warning',
   description = 'Some lessons don\'t have any stars yet. Are you sure you want to continue?'
 }: WarningModalProps) => {
-  const { isTablet } = useDevice()
-
   return (
     <Modal
       visible={isVisible}
       onRequestClose={onCancel}
     >
       <ModalOverlay>
-        <ModalContainer isTablet={isTablet}>
-          <WarningIcon isTablet={isTablet}>⚠️</WarningIcon>
+        <ModalContainer>
+          <WarningIcon>⚠️</WarningIcon>
           
-          <TitleText isTablet={isTablet}>
+          <TitleText>
             {title}
           </TitleText>
           
-          <DescriptionText isTablet={isTablet}>
+          <DescriptionText>
             {description}
           </DescriptionText>
           
-          <ButtonContainer isTablet={isTablet}>
+          <ButtonContainer>
             <ModalButton
               variant="outlined"
-              isTablet={isTablet}
               onPress={onCancel}
             >
-              <ModalButtonText variant="outlined" isTablet={isTablet}>
+              <ModalButtonText variant="outlined">
                 Cancel
               </ModalButtonText>
             </ModalButton>
             
             <ModalButton
               variant="filled"
-              isTablet={isTablet}
               onPress={onContinue}
             >
-              <ModalButtonText variant="filled" isTablet={isTablet}>
+              <ModalButtonText variant="filled">
                 Continue
               </ModalButtonText>
             </ModalButton>

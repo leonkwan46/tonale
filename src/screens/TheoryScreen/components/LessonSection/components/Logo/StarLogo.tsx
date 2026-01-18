@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
 import { Path, Svg } from 'react-native-svg'
@@ -14,9 +13,8 @@ export const StarLogo = ({
   filled = false
 }: StarLogoProps) => {
   const theme = useTheme()
-  const { isTablet } = useDevice()
   const newFilledSize = filled ? size : size * 0.95
-  const newFinalSize = isTablet ? newFilledSize * 0.8 : newFilledSize
+  const newFinalSize = theme.device.isTablet ? newFilledSize * 0.8 : newFilledSize
   
   return (
     <Svg 

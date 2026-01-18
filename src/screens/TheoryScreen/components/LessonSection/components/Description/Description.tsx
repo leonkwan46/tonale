@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { DescriptionText, DescriptionTextContainer, TitleText } from './Description.styles'
 
 interface DescriptionProps {
@@ -8,13 +7,10 @@ interface DescriptionProps {
 }
 
 export const Description = ({ title, description, testID }: DescriptionProps) => {
-
-  const { isTablet } = useDevice()
-    
   return (
     <DescriptionTextContainer>
-        <TitleText testID={testID} isTablet={isTablet}>{title}</TitleText>
-        <DescriptionText isTablet={isTablet}>{description}</DescriptionText>
+        <TitleText testID={testID}>{title}</TitleText>
+        <DescriptionText>{description}</DescriptionText>
     </DescriptionTextContainer>
   )
 }

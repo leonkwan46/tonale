@@ -1,4 +1,3 @@
-import { useDevice } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
 import { Ellipse, Path, Svg } from 'react-native-svg'
@@ -13,8 +12,7 @@ export const BeamedQuaverLogo = ({
   color 
 }: BeamedQuaverLogoProps) => {
   const theme = useTheme()
-  const { isTablet } = useDevice()
-  const newSize = isTablet ? size * 0.8 : size
+  const newSize = theme.device.isTablet ? size * 0.8 : size
   
   return (
   <Svg 
