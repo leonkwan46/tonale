@@ -3,7 +3,7 @@ import styled from '@emotion/native'
 import { Pressable, Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export const RevisionCardContainer = styled(View)<{ hasRevisionQuestions: boolean; isLoading?: boolean }>(({ theme, hasRevisionQuestions, isLoading }) => ({
+export const RevisionCardContainer = styled(View)<{ hasRevisionQuestions: boolean, isLoading?: boolean }>(({ theme, hasRevisionQuestions, isLoading }) => ({
   width: '100%',
   backgroundColor: 'transparent',
   borderRadius: scale(25),
