@@ -2,8 +2,6 @@ import { auth } from '@/config/firebase/firebase'
 import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
-
-import { useDevice } from '../../hooks/useDevice'
 import {
   AuthActionsContainer,
   ContentWrapper,
@@ -63,24 +61,20 @@ export const AuthScreen = () => {
     }
   }
   
-  const { isTablet } = useDevice()
-  
   return (
     <ScreenContainer>
       <KeyboardAwareScrollView 
         showsVerticalScrollIndicator={false}
       >
         <ScrollContentContainer>
-        <ContentWrapper isTablet={isTablet}>
+        <ContentWrapper>
           <Header
             authState={authState}
-            isTablet={isTablet}
           />
-          <AuthActionsContainer isTablet={isTablet}>
+          <AuthActionsContainer>
             <ModeToggle
               authState={authState}
               setAuthState={setAuthState}
-              isTablet={isTablet}
             />
             
             <AuthForm
@@ -88,14 +82,12 @@ export const AuthScreen = () => {
               formData={formData}
               setFormData={setFormData}
               setAuthState={setAuthState}
-              isTablet={isTablet}
             />
             
             <GuestLogin
               loading={authState.loading}
               onGuestLogin={handleGuestLogin}
               isVisible={authState.mode === 'login'}
-              isTablet={isTablet}
             />
           </AuthActionsContainer>
         </ContentWrapper>

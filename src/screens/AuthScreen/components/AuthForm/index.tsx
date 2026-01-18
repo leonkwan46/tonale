@@ -1,15 +1,14 @@
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon/Icon'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import * as React from 'react'
 import { useRef } from 'react'
 import { Keyboard, TextInput } from 'react-native'
-import { scale } from 'react-native-size-matters'
 import type { AuthFormData, AuthState } from '../../index'
 import {
   ErrorContainer,
-  ErrorIcon,
   ErrorText,
   EyeIcon,
   FormSection,
@@ -18,9 +17,7 @@ import {
   InputsContainer,
   PrimaryButton,
   PrimaryButtonText,
-  PrimaryIcon,
-  RequirementsText,
-  TextIcon
+  RequirementsText
 } from './AuthForm.styles'
 
 interface AuthFormProps {
@@ -28,15 +25,13 @@ interface AuthFormProps {
   formData: AuthFormData
   setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
-  isTablet: boolean
 }
 
 export const AuthForm = ({
   authState,
   formData,
   setFormData,
-  setAuthState,
-  isTablet
+  setAuthState
 }: AuthFormProps) => {
   const { setUserData, setIsRegistering } = useUser()
 
@@ -133,20 +128,19 @@ export const AuthForm = ({
   }
   
   return (
-  <FormSection isTablet={isTablet}>
+  <FormSection>
     {authState.error ? (
-      <ErrorContainer isTablet={isTablet}>
-        <ErrorIcon name="alert-circle" size={isTablet ? scale(14) : scale(20)} />
-        <ErrorText isTablet={isTablet}>{authState.error}</ErrorText>
+      <ErrorContainer>
+        <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+        <ErrorText>{authState.error}</ErrorText>
       </ErrorContainer>
     ) : null}
 
-    <InputsContainer isTablet={isTablet}>
-      <InputField isTablet={isTablet}>
-        <PrimaryIcon name="mail-outline" size={isTablet ? scale(16) : scale(20)} />
+    <InputsContainer>
+      <InputField>
+        <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
         <Input
           ref={emailInputRef}
-          isTablet={isTablet}
           placeholder="Email"
           onChangeText={(text: string) => updateFormData('email', text)}
           value={formData.email}
@@ -160,11 +154,10 @@ export const AuthForm = ({
         />
       </InputField>
 
-      <InputField isTablet={isTablet}>
-        <PrimaryIcon name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} />
+      <InputField>
+        <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
         <Input
           ref={passwordInputRef}
-          isTablet={isTablet}
           placeholder="Password"
           onChangeText={(text: string) => updateFormData('password', text)}
           value={formData.password}
@@ -175,22 +168,21 @@ export const AuthForm = ({
           onSubmitEditing={handlePasswordSubmit}
         />
         <EyeIcon
-          isTablet={isTablet}
           onPress={() => updateAuthState({ showPassword: !authState.showPassword })}
         >
-          <PrimaryIcon 
+          <Icon 
             name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'} 
-            size={isTablet ? scale(16) : scale(18)} 
+            sizeVariant="sm"
+            colorVariant="primary"
           />
         </EyeIcon>
       </InputField>
 
       {authState.mode === 'register' && (
-        <InputField isTablet={isTablet}>
-          <PrimaryIcon name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} />
+        <InputField>
+          <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
           <Input
             ref={confirmPasswordInputRef}
-            isTablet={isTablet}
             placeholder="Confirm Password"
             onChangeText={(text: string) => updateFormData('confirmPassword', text)}
             value={formData.confirmPassword}
@@ -201,19 +193,19 @@ export const AuthForm = ({
             onSubmitEditing={handleConfirmPasswordSubmit}
           />
           <EyeIcon
-            isTablet={isTablet}
             onPress={() => updateAuthState({ showConfirmPassword: !authState.showConfirmPassword })}
           >
-            <PrimaryIcon 
+            <Icon 
               name={authState.showConfirmPassword ? 'eye-outline' : 'eye-off-outline'} 
-              size={isTablet ? scale(16) : scale(20)} 
+              sizeVariant="sm"
+              colorVariant="primary"
             />
           </EyeIcon>
         </InputField>
       )}
 
       {authState.mode === 'register' && (
-        <RequirementsText isTablet={isTablet}>
+        <RequirementsText>
           Password must be at least 6 characters
         </RequirementsText>
       )}
@@ -223,17 +215,17 @@ export const AuthForm = ({
       testID="auth-submit-button"
       onPress={handleAuth}
       disabled={authState.loading}
-      isTablet={isTablet}
     >
-      <PrimaryButtonText isTablet={isTablet}>
+      <PrimaryButtonText>
         {authState.loading 
           ? (authState.mode === 'login' ? 'Signing In...' : 'Creating Account...')
           : (authState.mode === 'login' ? 'Sign In' : 'Create Account')
         }
       </PrimaryButtonText>
-      <TextIcon 
+      <Icon 
         name={authState.mode === 'login' ? 'arrow-forward' : 'person-add'} 
-        size={isTablet ? scale(16) : scale(20)} 
+        sizeVariant="sm"
+        colorVariant="text"
       />
     </PrimaryButton>
   </FormSection>

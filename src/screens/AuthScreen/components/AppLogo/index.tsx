@@ -1,3 +1,4 @@
+import { Icon } from '@/sharedComponents/Icon/Icon'
 import { useEffect } from 'react'
 import {
   Easing,
@@ -6,21 +7,13 @@ import {
   withSpring,
   withTiming
 } from 'react-native-reanimated'
-import { scale } from 'react-native-size-matters'
 import {
   InnerCircle,
   LogoContainer,
-  MusicIcon,
   OuterCircle
 } from './AppLogo.styles'
 
-interface AppLogoProps {
-  isTablet: boolean
-}
-
-export const AppLogo = ({
-  isTablet
-}: AppLogoProps) => {
+export const AppLogo = () => {
   const scaleValue = useSharedValue(0.3)
   const opacity = useSharedValue(0)
 
@@ -44,13 +37,13 @@ export const AppLogo = ({
   }))
   
   return (
-    <LogoContainer isTablet={isTablet} style={logoStyle}>
-      <OuterCircle isTablet={isTablet} />
-      <InnerCircle isTablet={isTablet} />
-      <MusicIcon
+    <LogoContainer style={logoStyle}>
+      <OuterCircle />
+      <InnerCircle />
+      <Icon
         name="musical-notes"
-        size={isTablet ? scale(40) : scale(36)}
-        isTablet={isTablet}
+        sizeVariant="xl"
+        colorVariant="text"
       />
     </LogoContainer>
   )

@@ -1,5 +1,3 @@
-import { Ionicons } from '@expo/vector-icons'
-import { scale } from 'react-native-size-matters'
 import {
   ButtonIcon,
   Divider,
@@ -7,41 +5,38 @@ import {
   DividerText,
   GuestLoginContainer,
   GuestLoginWrapper,
-  PersonIcon,
   SecondaryButton,
   SecondaryButtonText
 } from './GuestLogin.styles'
+import { PersonIcon } from './PersonIcon'
 
 interface GuestLoginProps {
   loading: boolean
   onGuestLogin: () => void
   isVisible: boolean
-  isTablet: boolean
 }
 
 export const GuestLogin = ({
   loading,
   onGuestLogin,
-  isVisible,
-  isTablet
+  isVisible
 }: GuestLoginProps) => {
   return (
   <GuestLoginWrapper isVisible={isVisible}>
-    <GuestLoginContainer isTablet={isTablet}>
+    <GuestLoginContainer>
       <DividerContainer>
         <Divider />
-        <DividerText isTablet={isTablet}>or</DividerText>
+        <DividerText>or</DividerText>
         <Divider />
       </DividerContainer>
       <SecondaryButton
         onPress={onGuestLogin}
         disabled={loading}
-        isTablet={isTablet}
       >
-        <ButtonIcon isTablet={isTablet}>
-          <PersonIcon name="person-outline" size={isTablet ? scale(16) : scale(20)} />
+        <ButtonIcon>
+          <PersonIcon name="person-outline" sizeVariant="sm" />
         </ButtonIcon>
-        <SecondaryButtonText isTablet={isTablet}>
+        <SecondaryButtonText>
           Continue as Guest
         </SecondaryButtonText>
       </SecondaryButton>

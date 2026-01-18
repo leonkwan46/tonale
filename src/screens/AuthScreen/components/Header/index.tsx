@@ -8,21 +8,19 @@ import {
 
 interface HeaderProps {
   authState: { mode: string }
-  isTablet: boolean
 }
 
 export const Header = ({
-  authState,
-  isTablet
+  authState
 }: HeaderProps) => {
   return (
-  <HeaderContainer isTablet={isTablet}>
-    <AppLogo isTablet={isTablet} />
+  <HeaderContainer>
+    <AppLogo />
     <TitlesContainer>
-      <Title isTablet={isTablet}>
+      <Title>
         Tonalè
       </Title>
-      <Subtitle isTablet={isTablet}>
+      <Subtitle>
         {authState.mode === 'login' 
           ? 'Welcome back to your musical journey'
           : 'Begin your musical journey today'}
