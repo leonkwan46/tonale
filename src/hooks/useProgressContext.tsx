@@ -396,6 +396,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
 
   const refreshRevisionQuestions = useCallback(async () => {
     if (!authUser) return
+    setRevisionQuestionsLoading(true)
     await loadRevisionQuestions()
   }, [loadRevisionQuestions, authUser])
 
