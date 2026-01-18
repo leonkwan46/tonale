@@ -16,7 +16,8 @@ import {
   ErrorIcon,
   ErrorText,
   PrimaryButton,
-  PrimaryButtonText
+  PrimaryButtonText,
+  ScrollContentContainer
 } from './ChangeInstrumentScreen.styles'
 
 const getInstrumentFromValue = (value: string | undefined): UserInstrument | null => {
@@ -107,14 +108,9 @@ export const ChangeInstrumentScreen = () => {
       <KeyboardAwareScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ 
-          alignItems: 'center',
-          flexGrow: 1, 
-          padding: isTablet ? scale(8) : scale(10),
-          gap: isTablet ? scale(16) : scale(32)
-        }}
       >
-        <AvatarPreview 
+        <ScrollContentContainer isTablet={isTablet}>
+          <AvatarPreview 
           selectedGender={userData?.gender || 'male'} 
           selectedInstrument={selectedInstrument}
           isTablet={isTablet}
@@ -145,6 +141,7 @@ export const ChangeInstrumentScreen = () => {
             <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
+        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )
