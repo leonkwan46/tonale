@@ -8,9 +8,9 @@ import {
   SuccessContainer,
   SuccessIcon,
   SuccessText
-} from '../AuthActionScreen.styles'
-import { AuthActionMode } from '../AuthActionScreen.types'
-import { getHandler } from '../handlers/AuthActionHandlerRegistry'
+} from './SuccessState.styles'
+import { AuthActionMode } from '../../AuthActionScreen.types'
+import { getHandler } from '../../handlers/AuthActionHandlerRegistry'
 
 interface SuccessStateProps {
   mode: AuthActionMode
@@ -47,4 +47,3 @@ export const SuccessState = ({ mode }: SuccessStateProps) => {
     </>
   )
 }
-
