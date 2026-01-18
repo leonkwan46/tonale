@@ -2,6 +2,10 @@ import styled from '@emotion/native'
 import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
+export const ScrollContentContainer = styled.View(() => ({
+  flexGrow: 1
+}))
+
 export const ContentWrapper = styled(View)<{ isTablet: boolean }>(({ isTablet }) => ({
   width: '100%',
   alignSelf: 'center' as const,

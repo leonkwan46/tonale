@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react'
 import { useDevice } from '../../hooks/useDevice'
 import {
   AuthActionsContainer,
-  ContentWrapper
+  ContentWrapper,
+  ScrollContentContainer
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
@@ -68,9 +69,9 @@ export const AuthScreen = () => {
     <ScreenContainer>
       <KeyboardAwareScrollView 
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <ContentWrapper isTablet={isTablet}>
+        <ScrollContentContainer>
+          <ContentWrapper isTablet={isTablet}>
           <Header
             authState={authState}
             isTablet={isTablet}
@@ -98,6 +99,7 @@ export const AuthScreen = () => {
             />
           </AuthActionsContainer>
         </ContentWrapper>
+        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )
