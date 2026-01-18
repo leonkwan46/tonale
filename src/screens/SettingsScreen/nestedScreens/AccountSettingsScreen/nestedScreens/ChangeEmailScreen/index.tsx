@@ -1,5 +1,6 @@
 import { sendEmailVerificationToUser } from '@/config/firebase/auth'
-import { useDevice, useUser } from '@/hooks'
+import { useUser } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon/Icon'
 import { ScreenContainer } from '@/sharedComponents'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -10,7 +11,6 @@ import { ContentContainer } from '../../../../SettingsScreen.styles'
 import {
   Card,
   ErrorContainer,
-  ErrorIcon,
   ErrorText,
   Input,
   InputField,
@@ -18,18 +18,14 @@ import {
     MessageText,
   PrimaryButton,
   PrimaryButtonText,
-  PrimaryIcon,
     RefreshButton,
     RefreshButtonText,
   SuccessContainer,
-  SuccessIcon,
   SuccessText
 } from './ChangeEmailScreen.styles'
-import { scale } from 'react-native-size-matters'
 
 export const ChangeEmailScreen = () => {
   const { authUser } = useUser()
-  const { isTablet } = useDevice()
   
   const [isVerified, setIsVerified] = useState(authUser?.emailVerified || false)
   const [emailLoading, setEmailLoading] = useState(false)
@@ -79,11 +75,10 @@ export const ChangeEmailScreen = () => {
             description="Email helps us verify your account or reach you in case of security or support issues. Your email address won't be visible to others."
           />
           <Card>
-            <LabelText isTablet={isTablet}>Email Address</LabelText>
-            <InputField isTablet={isTablet} disabled={true}>
-              <PrimaryIcon name="mail-outline" size={isTablet ? scale(16) : scale(20)} />
+            <LabelText>Email Address</LabelText>
+            <InputField disabled={true}>
+              <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
               <Input
-                isTablet={isTablet}
                 value={authUser?.email || ''}
                 editable={false}
                 placeholder="Email address"
@@ -91,7 +86,7 @@ export const ChangeEmailScreen = () => {
                 autoCorrect={false}
               />
             </InputField>
-            <MessageText isTablet={isTablet}>
+            <MessageText>
               Email address cannot be changed at this time.
             </MessageText>
           </Card>
@@ -99,34 +94,34 @@ export const ChangeEmailScreen = () => {
           {/* Email Verification Section */}
           {authUser?.email && (
         <Card>
-              <LabelText isTablet={isTablet}>Email Verification</LabelText>
+              <LabelText>Email Verification</LabelText>
               {isVerified ? (
                 <>
-                  <SuccessContainer isTablet={isTablet}>
-                    <SuccessIcon name="checkmark-circle" size={isTablet ? scale(14) : scale(20)} />
-                    <SuccessText isTablet={isTablet}>Your email is verified!</SuccessText>
+                  <SuccessContainer>
+                    <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
+                    <SuccessText>Your email is verified!</SuccessText>
                   </SuccessContainer>
-                  <RefreshButton isTablet={isTablet} onPress={refreshVerificationStatus} activeOpacity={0.7}>
-                    <RefreshButtonText isTablet={isTablet}>Refresh Status</RefreshButtonText>
+                  <RefreshButton onPress={refreshVerificationStatus} activeOpacity={0.7}>
+                    <RefreshButtonText>Refresh Status</RefreshButtonText>
                   </RefreshButton>
                 </>
               ) : (
                 <>
-                  <MessageText isTablet={isTablet}>
+                  <MessageText>
                     Verify your email address to access all features. We&apos;ll send a verification email to {authUser.email}.
                   </MessageText>
 
                   {emailError ? (
-            <ErrorContainer isTablet={isTablet}>
-              <ErrorIcon name="alert-circle" size={isTablet ? scale(14) : scale(20)} />
-                      <ErrorText isTablet={isTablet}>{emailError}</ErrorText>
+            <ErrorContainer>
+              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+                      <ErrorText>{emailError}</ErrorText>
             </ErrorContainer>
           ) : null}
 
                   {emailSuccess ? (
-                    <SuccessContainer isTablet={isTablet}>
-                      <SuccessIcon name="checkmark-circle" size={isTablet ? scale(14) : scale(20)} />
-                      <SuccessText isTablet={isTablet}>
+                    <SuccessContainer>
+                      <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
+                      <SuccessText>
                         Verification email sent! Please check your inbox and click the verification link.
                       </SuccessText>
                     </SuccessContainer>
@@ -134,17 +129,16 @@ export const ChangeEmailScreen = () => {
 
           <PrimaryButton
                     // disabled={emailLoading || emailSuccess}
-            isTablet={isTablet}
                     onPress={sendVerification}
             activeOpacity={0.7}
           >
-            <PrimaryButtonText isTablet={isTablet}>
+            <PrimaryButtonText>
                       {emailLoading ? 'Sending...' : 'Send Verification Email'}
             </PrimaryButtonText>
           </PrimaryButton>
 
-                  <RefreshButton isTablet={isTablet} onPress={refreshVerificationStatus} activeOpacity={0.7}>
-                    <RefreshButtonText isTablet={isTablet}>Refresh Status</RefreshButtonText>
+                  <RefreshButton onPress={refreshVerificationStatus} activeOpacity={0.7}>
+                    <RefreshButtonText>Refresh Status</RefreshButtonText>
                   </RefreshButton>
                 </>
               )}

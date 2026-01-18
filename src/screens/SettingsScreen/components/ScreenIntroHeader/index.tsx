@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
-import { useDevice } from '@/hooks'
-import { scale } from 'react-native-size-matters'
+import { Icon } from '@/sharedComponents/Icon/Icon'
 
-import { Container, DescriptionText, HeaderIcon, IconContainer } from './ScreenIntroHeader.styles'
+import { Container, DescriptionText, IconContainer } from './ScreenIntroHeader.styles'
 
 interface ScreenIntroHeaderProps {
   icon: keyof typeof Ionicons.glyphMap
@@ -10,14 +9,12 @@ interface ScreenIntroHeaderProps {
 }
 
 export const ScreenIntroHeader = ({ icon, description }: ScreenIntroHeaderProps) => {
-  const { isTablet } = useDevice()
-
   return (
-    <Container isTablet={isTablet}>
-      <IconContainer isTablet={isTablet}>
-        <HeaderIcon name={icon} size={isTablet ? scale(48) : scale(64)} />
+    <Container>
+      <IconContainer>
+        <Icon name={icon} sizeVariant="2xl" colorVariant="text" />
       </IconContainer>
-      <DescriptionText isTablet={isTablet}>{description}</DescriptionText>
+      <DescriptionText>{description}</DescriptionText>
     </Container>
   )
 }
