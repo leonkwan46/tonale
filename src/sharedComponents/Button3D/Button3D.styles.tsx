@@ -8,7 +8,7 @@ export const Button3DContainer = styled.TouchableOpacity<{ isPressed: boolean; l
   const getWidth = () => {
     if (fullWidth) return '100%'
     if (layoutType === 'row') return '100%'
-    if (layoutType === 'grid') return '45%'
+    if (layoutType === 'grid') return '50%'
     return 'auto'
   }
 
