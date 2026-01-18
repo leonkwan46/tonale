@@ -2,7 +2,7 @@ import { useWindowDimensions } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView } from 'react-native'
+import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView, useColorScheme } from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
 import { ClapCelebration } from './ClapCelebration'
@@ -20,6 +20,7 @@ interface HomeScreenBackgroundProps {
 
 export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, instrument }: HomeScreenBackgroundProps) => {
   const theme = useTheme()
+  const colorScheme = useColorScheme()
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
@@ -28,11 +29,11 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
   const pullDistance = useSharedValue(0)
 
   const stageImage = useMemo(() => {
-    const isDark = theme.colors.background === '#151718'
+    const isDark = colorScheme === 'dark'
     return isDark
       ? require('../../../../../assets/images/dark-homepage.png')
       : require('../../../../../assets/images/light-homepage.png')
-  }, [theme.colors.background])
+  }, [colorScheme])
 
   const avatarImage = useMemo(() => {
     const isFemale = gender === 'female'
@@ -67,12 +68,12 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
   }, [gender, instrument])
 
   const gradientColors = useMemo(() => {
-    const isDark = theme.colors.background === '#151718'
+    const isDark = colorScheme === 'dark'
     const colors = isDark
       ? theme.colors.homeScreen.gradient.dark
       : theme.colors.homeScreen.gradient.light
     return colors as unknown as readonly [string, string, ...string[]]
-  }, [theme.colors.background, theme.colors.homeScreen.gradient])
+  }, [colorScheme, theme.colors.homeScreen.gradient])
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
   // Need to implement gesture-based solution for Android if cross-platform support is required.
