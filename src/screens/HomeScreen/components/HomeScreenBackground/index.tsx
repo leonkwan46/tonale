@@ -1,6 +1,6 @@
 import { useWindowDimensions } from '@/hooks'
-import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useTheme } from '@emotion/react'
+import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView } from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
@@ -68,9 +68,10 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
 
   const gradientColors = useMemo(() => {
     const isDark = theme.colors.background === '#151718'
-    return isDark
+    const colors = isDark
       ? theme.colors.homeScreen.gradient.dark
       : theme.colors.homeScreen.gradient.light
+    return colors as unknown as readonly [string, string, ...string[]]
   }, [theme.colors.background, theme.colors.homeScreen.gradient])
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
@@ -122,21 +123,21 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
         onScrollEndDrag={handleScrollEndDrag}
       >
         <ScrollContentContainer>
-          <BackgroundGradient 
-            colors={gradientColors} 
-            locations={[0, 0.3, 0.8, 1]}
-            start={{ x: 0, y: 0 }} 
-            end={{ x: 0, y: 1 }}
-          >
-            <ContentContainer>
-              {children as React.ReactElement[]}
-            </ContentContainer>
-          </BackgroundGradient>
-          <ImageContainer>
-            <StageImage source={stageImage} screenWidth={screenWidth} />
-            <AvatarImage source={avatarImage} screenWidth={screenWidth} />
-          </ImageContainer>
-          <PullIndicator pullDistance={pullDistance} messageIndex={messageIndex} />
+        <BackgroundGradient 
+          colors={gradientColors} 
+          locations={[0, 0.3, 0.8, 1]}
+          start={{ x: 0, y: 0 }} 
+          end={{ x: 0, y: 1 }}
+        >
+          <ContentContainer>
+            {children as React.ReactElement[]}
+          </ContentContainer>
+        </BackgroundGradient>
+        <ImageContainer>
+          <StageImage source={stageImage} screenWidth={screenWidth} />
+          <AvatarImage source={avatarImage} screenWidth={screenWidth} />
+        </ImageContainer>
+        <PullIndicator pullDistance={pullDistance} messageIndex={messageIndex} />
         </ScrollContentContainer>
       </ScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
