@@ -95,7 +95,16 @@ export const lightTheme = {
     homeScreen: Colors.light.homeScreen,
     
     // Modal mask color (backdrop/overlay behind modal)
-    modalMask: Colors.light.modalMask
+    modalMask: Colors.light.modalMask,
+    
+    // FinalTest specific colors
+    finalTest: Colors.light.finalTest,
+    
+    // CardButton depth colors
+    cardButton: Colors.light.cardButton,
+    
+    // Cloud colors for TopCloudsCover
+    clouds: Colors.light.clouds
     
   },
   // Use shared constants for consistent dimensions across themes
@@ -159,7 +168,16 @@ export const darkTheme = {
     homeScreen: Colors.dark.homeScreen,
     
     // Modal mask color (backdrop/overlay behind modal)
-    modalMask: Colors.dark.modalMask
+    modalMask: Colors.dark.modalMask,
+    
+    // FinalTest specific colors
+    finalTest: Colors.dark.finalTest,
+    
+    // CardButton depth colors
+    cardButton: Colors.dark.cardButton,
+    
+    // Cloud colors for TopCloudsCover
+    clouds: Colors.dark.clouds
     
   },
   // Use shared constants for consistent dimensions across themes

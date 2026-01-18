@@ -48,7 +48,28 @@ export const Colors = {
       },
       buttonDepth: '#156382'
     },
-    modalMask: 'rgba(0, 0, 0, 0.7)'
+    modalMask: 'rgba(0, 0, 0, 0.7)',
+    finalTest: {
+      gradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const,
+      shadow: '#8B0000'
+    },
+    cardButton: {
+      depth: {
+        completed: '#2a8a3a',
+        locked: '#0a3a4a',
+        default: '#156382'
+      }
+    },
+    clouds: {
+      light1: '#f0f8ff',
+      light2: '#e6f3ff',
+      light3: '#eaf4ff',
+      light4: '#ddeeff',
+      light5: '#f5faff',
+      light6: '#d5e9ff',
+      light7: '#cce6ff',
+      light8: '#f8fcff'
+    }
   },
   dark: {
     text: '#ECEDEE',
@@ -91,7 +112,28 @@ export const Colors = {
       },
       buttonDepth: '#156382'
     },
-    modalMask: 'rgba(0, 0, 0, 0.7)'
+    modalMask: 'rgba(0, 0, 0, 0.7)',
+    finalTest: {
+      gradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const,
+      shadow: '#8B0000'
+    },
+    cardButton: {
+      depth: {
+        completed: '#2a8a3a',
+        locked: '#0a3a4a',
+        default: '#156382'
+      }
+    },
+    clouds: {
+      light1: '#f0f8ff',
+      light2: '#e6f3ff',
+      light3: '#eaf4ff',
+      light4: '#ddeeff',
+      light5: '#f5faff',
+      light6: '#d5e9ff',
+      light7: '#cce6ff',
+      light8: '#f8fcff'
+    }
   }
 }
 
