@@ -7,10 +7,9 @@ interface Button3DProps {
   disabled?: boolean
   testID?: string
   buttonState: ButtonState
-  isTablet: boolean
   layoutType?: LayoutType
   fullWidth?: boolean
-  children: (props: { buttonState: ButtonState, isTablet: boolean, isPressed: boolean }) => ReactNode
+  children: (props: { buttonState: ButtonState, isPressed: boolean }) => ReactNode
 }
 
 export const Button3D = ({
@@ -18,7 +17,6 @@ export const Button3D = ({
   disabled = false,
   testID,
   buttonState,
-  isTablet,
   layoutType,
   fullWidth,
   children
@@ -54,7 +52,7 @@ export const Button3D = ({
     >
       <Button3DDepth buttonState={buttonState} />
       <Button3DContent buttonState={buttonState} layoutType={layoutType} fullWidth={fullWidth}>
-        {children({ buttonState, isTablet, isPressed })}
+        {children({ buttonState, isPressed })}
       </Button3DContent>
     </Button3DContainer>
   )

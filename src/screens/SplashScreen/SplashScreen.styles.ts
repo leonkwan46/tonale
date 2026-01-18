@@ -16,9 +16,9 @@ export const MusicLogoContainer = styled.View(() => ({
   paddingHorizontal: scale(20)
 }))
 
-export const WavesContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) => ({
+export const WavesContainer = styled.View(({ theme }) => ({
   position: 'absolute',
-  bottom: isTablet ? '20%' : '30%',
+  bottom: theme.device.isTablet ? '20%' : '30%',
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'flex-end',

@@ -1,4 +1,4 @@
-import { useDevice, useUser } from '@/hooks'
+import { useUser } from '@/hooks'
 import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
 import {
@@ -56,7 +56,6 @@ interface SplashScreenProps {
 export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [fontsLoaded] = useFonts(FONTS)
   const { loading: authLoading } = useUser()
-  const { isTablet } = useDevice()
   const [isTransitioning, setIsTransitioning] = useState(false)
   const containerOpacity = useSharedValue(1)
 
@@ -111,13 +110,12 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
           isTransitioning={isTransitioning}
         />
       </MusicLogoContainer>
-      <WavesContainer isTablet={isTablet}>
+      <WavesContainer>
             {Array.from({ length: WAVE_COUNT }, (_, index) => (
           <Wave
             key={index}
                 delay={index * WAVE_DELAY_INCREMENT + WAVE_DELAY_BASE}
             isTransitioning={isTransitioning}
-            isTablet={isTablet}
           />
         ))}
       </WavesContainer>
