@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
 import * as React from 'react'
-import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import {
   ButtonIcon,
@@ -8,6 +7,7 @@ import {
   DividerContainer,
   DividerText,
   GuestLoginContainer,
+  GuestLoginWrapper,
   PersonIcon,
   SecondaryButton,
   SecondaryButtonText
@@ -27,12 +27,7 @@ export const GuestLogin = ({
   isTablet
 }: GuestLoginProps) => {
   return (
-  <View style={{ 
-    opacity: isVisible ? 1 : 0,
-    height: isVisible ? 'auto' : 0,
-    overflow: 'hidden',
-    width: '100%'
-  }}>
+  <GuestLoginWrapper isVisible={isVisible}>
     <GuestLoginContainer isTablet={isTablet}>
       <DividerContainer>
         <Divider />
@@ -52,6 +47,6 @@ export const GuestLogin = ({
         </SecondaryButtonText>
       </SecondaryButton>
     </GuestLoginContainer>
-  </View>
+  </GuestLoginWrapper>
   )
 }

@@ -31,7 +31,7 @@ export const DividerText = styled.Text<{ isTablet?: boolean }>(({ theme, isTable
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean; isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
+export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean, isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
@@ -56,3 +56,9 @@ export const PersonIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.primary
 }))
 
+export const GuestLoginWrapper = styled.View<{ isVisible: boolean }>(({ isVisible }) => ({
+  opacity: isVisible ? 1 : 0,
+  height: isVisible ? 'auto' : 0,
+  overflow: 'hidden',
+  width: '100%'
+}))
