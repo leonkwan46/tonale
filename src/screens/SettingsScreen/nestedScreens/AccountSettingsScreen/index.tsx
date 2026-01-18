@@ -8,7 +8,7 @@ import { Alert } from 'react-native'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { SettingsItem } from '../../components/SettingsItem'
 import { ContentContainer } from '../../SettingsScreen.styles'
-import { Card, DeleteAccountCard, Divider, FullScreenScrollView } from './AccountSettingsScreen.styles'
+import { Card, DeleteAccountCard, Divider, FullScreenScrollView, ScrollContentContainer } from './AccountSettingsScreen.styles'
 
 export const AccountSettingsScreen = () => {
   const { userData, authUser } = useUser()
@@ -81,9 +81,9 @@ export const AccountSettingsScreen = () => {
       <SettingItemHeader title="Account" />
       <FullScreenScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <ContentContainer>
+        <ScrollContentContainer>
+          <ContentContainer>
           <Card>
             <SettingsItem
               icon="person-outline"
@@ -128,7 +128,8 @@ export const AccountSettingsScreen = () => {
               variant="red"
             />
           </DeleteAccountCard>
-        </ContentContainer>
+          </ContentContainer>
+        </ScrollContentContainer>
       </FullScreenScrollView>
     </ScreenContainer>
   )
