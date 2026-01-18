@@ -10,7 +10,7 @@ export const StarContainer = styled.View<{ isTablet: boolean }>(({ isTablet }) =
 
 export const StarIcon = styled.Text<{ filled: boolean; isTablet: boolean }>(({ theme, filled, isTablet }) => ({
   fontSize: isTablet ? scale(24) : scale(32),
-  color: filled ? '#FFD700' : theme.colors.secondary
+  color: filled ? theme.colors.gold : theme.colors.secondary
 }))
 
 export const AnimatedStarContainer = styled(Animated.View)(() => ({
