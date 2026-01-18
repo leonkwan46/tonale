@@ -1,7 +1,9 @@
 import '@emotion/react'
 import type { AppTheme } from './theme'
+import type { DeviceInfo } from '@/hooks/useDevice'
 
 declare module '@emotion/react' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  export interface Theme extends AppTheme {}
+  export interface Theme extends AppTheme {
+    device: DeviceInfo
+  }
 }

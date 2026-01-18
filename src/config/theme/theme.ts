@@ -33,9 +33,21 @@ export const sharedConstants = {
   components: {
     cardButton: {
       size: 100 // Base size for CardButton (used with scale())
+    },
+    iconSizes: {
+      // Icon size mapping: [phone, tablet]
+      xs: [14, 16],
+      sm: [16, 20],
+      md: [18, 20],
+      lg: [20, 24],
+      xl: [36, 40],
+      '2xl': [48, 64]
     }
   }
 }
+
+// Icon size variant type
+export type IconSizeVariant = keyof typeof sharedConstants.components.iconSizes
 
 // Unified theme that extends your existing Colors
 export const lightTheme = {
