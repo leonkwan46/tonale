@@ -1,6 +1,6 @@
+import { useTheme } from '@emotion/react'
 import * as React from 'react'
 import { ActivityIndicator } from 'react-native'
-import { scale } from 'react-native-size-matters'
 import { PrimaryButton, PrimaryButtonText } from './OnboardingButton.styles'
 
 interface OnboardingButtonProps {
@@ -16,6 +16,8 @@ const OnboardingButtonComponent = ({
   onPress,
   isTablet
 }: OnboardingButtonProps) => {
+  const theme = useTheme()
+
   return (
     <PrimaryButton
       opacity={isEnabled ? 1 : 0.7}
@@ -26,8 +28,8 @@ const OnboardingButtonComponent = ({
     >
       {isCompleting ? (
         <>
-          <ActivityIndicator size="small" color="#000" />
-          <PrimaryButtonText isTablet={isTablet} style={{ marginLeft: scale(8) }}>
+          <ActivityIndicator size="small" color={theme.colors.text} />
+          <PrimaryButtonText isTablet={isTablet} hasLeftMargin>
             Completing...
           </PrimaryButtonText>
         </>
