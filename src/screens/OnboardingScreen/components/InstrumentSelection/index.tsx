@@ -55,7 +55,6 @@ const InstrumentSelectionComponent = ({
         <CustomInstrumentInput
           isTablet={isTablet}
           placeholder="Enter your instrument"
-          placeholderTextColor="#999"
           keyboardType="default"
           value={customInstrument}
           onChangeText={onCustomInstrumentChange}
