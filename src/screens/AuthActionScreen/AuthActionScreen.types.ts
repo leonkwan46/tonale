@@ -31,7 +31,7 @@ export interface ResultHandlingInstructions {
 
 export interface AuthActionHandler {
   mode: AuthActionMode
-  validate(params: AuthActionParams, authUser: User | null): { valid: boolean; error?: string }
+  validate(params: AuthActionParams, authUser: User | null): { valid: boolean, error?: string }
   process(params: AuthActionParams, authUser: User | null): Promise<AuthActionResult>
   handleResult(result: AuthActionResult): ResultHandlingInstructions
   getSuccessMessage(): string
