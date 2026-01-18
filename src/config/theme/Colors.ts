@@ -35,7 +35,8 @@ export const Colors = {
       buttonDepth: '#DE6B54',
       successShadow: '#2a8a3a',
       iconText: '#000'
-    }
+    },
+    modalMask: 'rgba(0, 0, 0, 0.7)'
   },
   dark: {
     text: '#ECEDEE',
@@ -65,7 +66,8 @@ export const Colors = {
       buttonDepth: '#DE6B54',
       successShadow: '#2a8a3a',
       iconText: '#ECEDEE'
-    }
+    },
+    modalMask: 'rgba(0, 0, 0, 0.7)'
   }
 }
 
