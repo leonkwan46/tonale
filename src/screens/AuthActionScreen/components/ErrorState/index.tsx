@@ -1,11 +1,7 @@
 import { useDevice } from '@/hooks'
 import { scale } from 'react-native-size-matters'
 
-import {
-    ErrorContainer,
-    ErrorIcon,
-    ErrorText
-} from '../AuthActionScreen.styles'
+import { ErrorContainer, ErrorIcon, ErrorText } from './ErrorState.styles'
 
 interface ErrorStateProps {
   error: string
@@ -21,4 +17,3 @@ export const ErrorState = ({ error }: ErrorStateProps) => {
     </ErrorContainer>
   )
 }
-
