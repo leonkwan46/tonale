@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -9,6 +8,7 @@ import {
   DividerContainer,
   DividerText,
   GuestLoginContainer,
+  PersonIcon,
   SecondaryButton,
   SecondaryButtonText
 } from './GuestLogin.styles'
@@ -26,8 +26,6 @@ export const GuestLogin = ({
   isVisible,
   isTablet
 }: GuestLoginProps) => {
-  const theme = useTheme()
-  
   return (
   <View style={{ 
     opacity: isVisible ? 1 : 0,
@@ -47,7 +45,7 @@ export const GuestLogin = ({
         isTablet={isTablet}
       >
         <ButtonIcon isTablet={isTablet}>
-          <Ionicons name="person-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
+          <PersonIcon name="person-outline" size={isTablet ? scale(16) : scale(20)} />
         </ButtonIcon>
         <SecondaryButtonText isTablet={isTablet}>
           Continue as Guest

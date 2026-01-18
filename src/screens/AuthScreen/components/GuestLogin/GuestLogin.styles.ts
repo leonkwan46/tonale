@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -49,5 +50,9 @@ export const SecondaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme,
 
 export const ButtonIcon = styled.View<{ isTablet?: boolean }>(({ isTablet }) => ({
   marginLeft: isTablet ? scale(3) : scale(4)
+}))
+
+export const PersonIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.primary
 }))
 
