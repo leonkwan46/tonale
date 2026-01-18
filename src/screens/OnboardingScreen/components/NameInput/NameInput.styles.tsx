@@ -24,6 +24,7 @@ export const NameInputField = styled(TextInput)<{ isTablet?: boolean }>(({ theme
   color: theme.colors.text,
   backgroundColor: theme.colors.surface,
   borderColor: theme.colors.primary,
+  placeholderTextColor: theme.colors.secondary,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
 }))
 

@@ -28,7 +28,6 @@ const NameInputComponent = ({
       <NameInputField
         isTablet={isTablet}
         placeholder="Enter your name"
-        placeholderTextColor="#999"
         keyboardType="default"
         value={name}
         onChangeText={handleNameChange}
