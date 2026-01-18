@@ -3,8 +3,8 @@ import type { Theme } from '@emotion/react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Entypo from '@expo/vector-icons/Entypo'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
-import { Image } from 'react-native'
 import { scale } from 'react-native-size-matters'
+import { GenderIconImage } from './OnboardingIcons.styles'
 
 /**
  * Maps instrument type to MaterialCommunityIcons icon name
@@ -31,13 +31,8 @@ export const renderGenderIcon = (gender: UserGender, theme: Theme): React.ReactE
     : require('../../../../../assets/images/boy/boy_head.png')
   
   return (
-    <Image
+    <GenderIconImage
       source={imageSource}
-      style={{
-        width: scale(40),
-        height: scale(40),
-        resizeMode: 'contain'
-      }}
     />
   )
 }
