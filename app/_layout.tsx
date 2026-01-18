@@ -15,20 +15,22 @@ export default function RootLayout() {
       <ErrorBoundary>
         <UserProvider>
           <ProgressProvider>
-            {showSplash ? (
-            <SplashScreen onComplete={() => setShowSplash(false)} />
-          ) : (
             <UnifiedThemeProvider>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="(auth)" />
-                <Stack.Screen name="(tabs)" />
-                <Stack.Screen name="onboarding" />
-                <Stack.Screen name="lesson" />
-                <Stack.Screen name="+not-found" />
-              </Stack>
-              <StatusBar style="auto" />
+              {showSplash ? (
+                <SplashScreen onComplete={() => setShowSplash(false)} />
+              ) : (
+                <>
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="(auth)" />
+                    <Stack.Screen name="(tabs)" />
+                    <Stack.Screen name="onboarding" />
+                    <Stack.Screen name="lesson" />
+                    <Stack.Screen name="+not-found" />
+                  </Stack>
+                  <StatusBar style="auto" />
+                </>
+              )}
             </UnifiedThemeProvider>
-          )}
           </ProgressProvider>
         </UserProvider>
       </ErrorBoundary>
