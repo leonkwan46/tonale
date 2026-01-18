@@ -88,6 +88,12 @@ export const lightTheme = {
     // RevisionCard colors
     revisionCard: Colors.light.revisionCard,
     
+    // Flame colors for StrikeBar
+    flame: Colors.light.flame,
+    
+    // HomeScreen specific colors
+    homeScreen: Colors.light.homeScreen,
+    
     // Modal mask color (backdrop/overlay behind modal)
     modalMask: Colors.light.modalMask
     
@@ -145,6 +151,12 @@ export const darkTheme = {
     
     // RevisionCard colors
     revisionCard: Colors.dark.revisionCard,
+    
+    // Flame colors for StrikeBar
+    flame: Colors.dark.flame,
+    
+    // HomeScreen specific colors
+    homeScreen: Colors.dark.homeScreen,
     
     // Modal mask color (backdrop/overlay behind modal)
     modalMask: Colors.dark.modalMask

@@ -36,6 +36,18 @@ export const Colors = {
       successShadow: '#2a8a3a',
       iconText: '#000'
     },
+    flame: {
+      active: '#FF6B35',
+      upcoming: '#FF8C42',
+      empty: '#FFA07A'
+    },
+    homeScreen: {
+      gradient: {
+        dark: ['#2E3237', '#1E252B', '#1A1E22', '#331009'],
+        light: ['#EEEEEE', '#A3C3CA', '#68A9B7', '#BF3713']
+      },
+      buttonDepth: '#156382'
+    },
     modalMask: 'rgba(0, 0, 0, 0.7)'
   },
   dark: {
@@ -66,6 +78,18 @@ export const Colors = {
       buttonDepth: '#DE6B54',
       successShadow: '#2a8a3a',
       iconText: '#ECEDEE'
+    },
+    flame: {
+      active: '#FF6B35',
+      upcoming: '#FF8C42',
+      empty: '#FFA07A'
+    },
+    homeScreen: {
+      gradient: {
+        dark: ['#2E3237', '#1E252B', '#1A1E22', '#331009'],
+        light: ['#EEEEEE', '#A3C3CA', '#68A9B7', '#BF3713']
+      },
+      buttonDepth: '#156382'
     },
     modalMask: 'rgba(0, 0, 0, 0.7)'
   }
