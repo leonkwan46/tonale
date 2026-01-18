@@ -20,8 +20,6 @@ const getCardWidth = (): number => {
   return availableWidth / CARD_COUNT
 }
 
-const FLAME_COLOR = '#FF6B35'
-
 const darkenColor = (hex: string, factor: number = 0.3): string => {
   if (!hex.startsWith('#')) return hex
   
@@ -42,7 +40,7 @@ const getDepthColor = (
   isEmpty: boolean
 ): string => {
   if (isEmpty) return 'transparent'
-  if (isActive) return darkenColor(FLAME_COLOR, 0.2)
+  if (isActive) return darkenColor(theme.colors.flame.active, 0.2)
   return darkenColor(theme.colors.surface, 0.2)
 }
 
@@ -93,7 +91,7 @@ export const StrikeBarCard = styled(View)<{
   borderRadius: CARD_BORDER_RADIUS,
   backgroundColor: getCardColor(theme, isActive, isEmpty),
   borderWidth: isActive ? scale(2) : 0,
-  borderColor: isActive ? FLAME_COLOR : 'transparent',
+  borderColor: isActive ? theme.colors.flame.active : 'transparent',
   padding: scale(8),
   justifyContent: 'center',
   alignItems: 'center',
