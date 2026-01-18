@@ -6,7 +6,7 @@ import { Alert } from 'react-native'
 
 import { ProfileHeader } from './components/ProfileHeader'
 import { SettingsItem } from './components/SettingsItem'
-import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent } from './SettingsScreen.styles'
+import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent, ScrollContentContainer } from './SettingsScreen.styles'
 
 export const SettingsScreen = () => {
   const { userData } = useUser()
@@ -52,9 +52,9 @@ export const SettingsScreen = () => {
     <Container>
       <FullScreenScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <ScrollContent>
+        <ScrollContentContainer>
+          <ScrollContent>
           <ProfileHeader name={userData?.name || null} gender={userData?.gender} />
           <Card>
             <SettingsItem
@@ -73,7 +73,8 @@ export const SettingsScreen = () => {
               variant="red"
             />
           </LogoutCard>
-        </ScrollContent>
+          </ScrollContent>
+        </ScrollContentContainer>
       </FullScreenScrollView>
     </Container>
   )
