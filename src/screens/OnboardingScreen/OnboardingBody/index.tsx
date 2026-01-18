@@ -1,19 +1,18 @@
 import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
+import { useDevice } from '@/hooks'
 import { KeyboardAwareScrollView } from '@/sharedComponents'
 import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
-import * as React from 'react'
 import { useRef, useState } from 'react'
-import { ScrollView } from 'react-native'
-import { scale } from 'react-native-size-matters'
-import { useDevice } from '../../../hooks/useDevice'
+import type { ScrollView } from 'react-native'
 import { AvatarPreview } from '../components/AvatarPreview'
 import { GenderSelection } from '../components/GenderSelection'
 import { InstrumentSelection } from '../components/InstrumentSelection'
 import { NameInput } from '../components/NameInput'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
+import { ContentContainerStyle } from './OnboardingBody.styles'
 
 interface OnboardingBodyProps {
   authUser: { uid: string } | null
@@ -84,11 +83,7 @@ export const OnboardingBody = ({
       ref={scrollViewRef}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[1]}
-      contentContainerStyle={{ 
-        alignItems: 'center',
-        padding: isTablet ? scale(8) : scale(10),
-        gap: isTablet ? scale(16) : scale(32)
-      }}
+      contentContainerStyle={ContentContainerStyle({ isTablet })}
     >
       <OnboardingHeader isTablet={isTablet} />
 
