@@ -2,9 +2,10 @@ import { usePreventDoubleTap } from '@/hooks'
 import { WarningModal } from './components/WarningModal'
 import type { Lesson } from '@types'
 import { useRouter } from 'expo-router'
-import * as React from 'react'
 import { useState } from 'react'
-import { CardButton, Description, FinalTest } from './components'
+import { CardButton } from './components/CardButton/CardButton'
+import { Description } from './components/Description/Description'
+import { FinalTest } from './components/FinalTest/FinalTest'
 import { LessonSectionContainer } from './LessonSection.styles'
 
 interface LessonSectionProps {
