@@ -1,22 +1,29 @@
-import { useLastLesson } from '@/hooks'
+import { useDevice, useLastLesson } from '@/hooks'
 import { CardButton } from '@/screens/TheoryScreen/components/LessonSection/components/CardButton/CardButton'
 import { Description } from '@/screens/TheoryScreen/components/LessonSection/components/Description/Description'
-import { Loading } from '@/sharedComponents'
+import { Skeleton } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { CardContentContainer, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
+import { CardContentContainer, ContentSection, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
 
 export const LessonCard = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
   const router = useRouter()
+  const isTablet = useDevice().isTablet
   const [isPressed, setIsPressed] = useState(false)
 
   if (loading) {
     return (
-      <LessonCardContainer>
+      <LessonCardContainer isLoading={true} testID="lesson-card-skeleton">
         <CardContentContainer>
-          <Loading size="large" />
+          <Skeleton variant="square" width={isTablet ? 35 : 100} height={isTablet ? 35 : 100} />
+          <ContentSection>
+            <Skeleton variant="rectangle" height={isTablet ? 13 : 50} />
+            <Skeleton variant="rectangle" height={isTablet ? 5 : 20} />
+            <Skeleton variant="rectangle" height={isTablet ? 5 : 20} />
+          </ContentSection>
         </CardContentContainer>
+        <Skeleton variant="rectangle" height={isTablet ? 20 : 50} />
       </LessonCardContainer>
     )
   }

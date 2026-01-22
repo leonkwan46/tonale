@@ -3,21 +3,27 @@ import styled from '@emotion/native'
 import { Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export const LessonCardContainer = styled.View(({ theme }) => ({
+export const LessonCardContainer = styled.View<{ isLoading?: boolean }>(({ theme, isLoading }) => ({
   width: '100%',
   backgroundColor: theme.colors.surface,
   borderRadius: scale(25),
-  paddingVertical: scale(10),
-  paddingHorizontal: scale(10),
-  gap: scale(10)
+  padding: scale(10),
+  gap: scale(10),
+  borderWidth: isLoading ? scale(1) : 0,
+  borderColor: isLoading ? theme.colors.border : 'transparent'
 }))
 
-export const CardContentContainer = styled.View(({ theme }) => ({
+export const CardContentContainer = styled.View({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: scale(30)
-}))
+  gap: scale(10)
+})
+
+export const ContentSection = styled.View({
+  flex: 1,
+  gap: scale(12)
+})
 
 export const ContinueButtonContainer = styled.View<{ isPressed: boolean }>(({ isPressed }) => ({
   position: 'relative',

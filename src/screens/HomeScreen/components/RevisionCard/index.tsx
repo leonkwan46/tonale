@@ -2,7 +2,6 @@ import { useProgress } from '@/hooks'
 import { Skeleton } from '@/sharedComponents'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { scale } from 'react-native-size-matters'
 import {
   ContentSection,
   IconContainer,
@@ -34,8 +33,8 @@ export const RevisionCard = () => {
         <RevisionCardContent>
           <Skeleton variant="square" />
           <ContentSection>
-            <Skeleton variant="rectangle" width="100%" height={scale(24)} />
-            <Skeleton variant="rectangle" width="100%" height={scale(38)} />
+            <Skeleton variant="rectangle" />
+            <Skeleton variant="rectangle" />
           </ContentSection>
         </RevisionCardContent>
       </RevisionCardContainer>
