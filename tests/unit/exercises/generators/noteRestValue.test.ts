@@ -41,8 +41,8 @@ describe('noteRestValue generator', () => {
         const questions = createNoteRestValueQuestions(10, stage)
         questions.forEach(question => {
           const noteType = question.visualComponent?.noteType
-          if (noteType) {
-            if (typeof noteType === 'string' && noteType.includes('rest')) {
+          if (noteType && typeof noteType === 'object' && 'type' in noteType) {
+            if (noteType.type.includes('rest')) {
               validateRestTypeForStage(noteType, stage)
             } else {
               validateNoteTypeForStage(noteType, stage)
