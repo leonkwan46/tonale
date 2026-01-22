@@ -1,20 +1,11 @@
-import styled from '@emotion/native'
-import * as React from 'react'
-import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { StyledContainer } from './ScreenContainer.styles'
 
 interface ScreenContainerProps {
   children: React.ReactNode
   style?: object
   includeBottomPadding?: boolean
 }
-
-const StyledContainer = styled(View)<{ paddingTop: number; paddingBottom: number }>(({ theme, paddingTop, paddingBottom }) => ({
-  flex: 1,
-  backgroundColor: theme?.colors?.background || 'transparent',
-  paddingTop: paddingTop,
-  paddingBottom: paddingBottom
-}))
 
 export const ScreenContainer = ({ 
   children,

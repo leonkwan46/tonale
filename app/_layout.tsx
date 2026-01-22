@@ -5,7 +5,10 @@ import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { SplashScreen } from '@/screens/SplashScreen'
-import { ErrorBoundary, ProgressProvider, UnifiedThemeProvider, UserProvider } from '@/sharedComponents'
+import { AppThemeProvider } from '@/sharedComponents/containers/AppThemeProvider'
+import { ErrorBoundary } from '@/sharedComponents/containers/ErrorBoundary'
+import { ProgressProvider } from '@/hooks/useProgressContext'
+import { UserProvider } from '@/hooks/useUserContext'
 
 export default function RootLayout() {  
   const [showSplash, setShowSplash] = useState(true)
@@ -15,7 +18,7 @@ export default function RootLayout() {
       <ErrorBoundary>
         <UserProvider>
           <ProgressProvider>
-            <UnifiedThemeProvider>
+            <AppThemeProvider>
               {showSplash ? (
                 <SplashScreen onComplete={() => setShowSplash(false)} />
               ) : (
@@ -30,7 +33,7 @@ export default function RootLayout() {
                   <StatusBar style="auto" />
                 </>
               )}
-            </UnifiedThemeProvider>
+            </AppThemeProvider>
           </ProgressProvider>
         </UserProvider>
       </ErrorBoundary>

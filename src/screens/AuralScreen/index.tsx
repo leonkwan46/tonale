@@ -1,4 +1,4 @@
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { Content, Description, Subtitle, Title } from './AuralScreen.styles'
 
 export const AuralScreen = () => {

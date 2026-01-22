@@ -52,9 +52,10 @@ export const GridSelectionContainer = styled(View)({
   alignSelf: 'center'
 })
 
-export const GridSelectionCardContainer = styled(View)({
-  position: 'relative'
-})
+export const GridSelectionCardContainer = styled(View)<{ isPressed: boolean }>(({ isPressed }) => ({
+  position: 'relative',
+  transform: [{ scale: isPressed ? 0.9 : 1 }]
+}))
 
 export const GridSelectionCardDepth = styled(View)<{ 
   isSelected: boolean

@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { Keyboard, TextInput } from 'react-native'
 
-import { Icon } from '@/sharedComponents/Icon/Icon'
-import { KeyboardAwareScrollView } from '@/sharedComponents'
+import { Icon } from '@/sharedComponents/Icon'
+import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
 import { ScreenIntroHeader } from '@/screens/SettingsScreen/components/ScreenIntroHeader'
 
 import {

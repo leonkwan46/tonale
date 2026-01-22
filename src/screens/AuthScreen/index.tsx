@@ -1,5 +1,6 @@
 import { auth } from '@/config/firebase/firebase'
-import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
+import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import {

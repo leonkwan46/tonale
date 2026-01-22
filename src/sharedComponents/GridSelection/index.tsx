@@ -49,9 +49,7 @@ export const GridSelection = <T extends string>({
         return (
           <GridSelectionCardContainer 
             key={option}
-            style={{
-              transform: [{ scale: isPressed ? 0.9 : 1 }]
-            }}
+            isPressed={isPressed}
           >
             <GridSelectionCardDepth isSelected={isSelected} />
             <GridSelectionCard

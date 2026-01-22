@@ -1,5 +1,5 @@
 import { useProgress } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useRouter } from 'expo-router'
 import { LessonHeader } from '../LessonScreen/components/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'

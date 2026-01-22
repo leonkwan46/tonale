@@ -1,8 +1,8 @@
-import type { IconSizeVariant } from '@/config/theme/theme'
+import type { IconSizeVariant, IconColorVariant } from '@/config/theme/theme'
+import { sharedConstants } from '@/config/theme/theme'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
-
-type IconColorVariant = 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'text' | 'icon'
+import { scale } from 'react-native-size-matters'
 
 export interface StyledIconProps {
   sizeVariant?: IconSizeVariant
@@ -10,10 +10,14 @@ export interface StyledIconProps {
   color?: string
 }
 
-export const StyledIcon = styled(Ionicons)<StyledIconProps>(({ theme, colorVariant, color }) => {
+export const StyledIcon = styled(Ionicons)<StyledIconProps>(({ theme, sizeVariant = 'sm', colorVariant, color }) => {
   const iconColor = color || (colorVariant ? theme.colors[colorVariant] : theme.colors.icon)
-  
+  const [phoneSize, tabletSize] = sharedConstants.components.iconSizes[sizeVariant]
+  const calculatedSize = theme.device.isTablet ? scale(tabletSize) : scale(phoneSize)
+
   return {
-    color: iconColor
+    color: iconColor,
+    fontSize: calculatedSize,
+    lineHeight: calculatedSize
   }
 })

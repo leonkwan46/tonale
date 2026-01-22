@@ -3,7 +3,7 @@ import { Tabs } from 'expo-router'
 import React from 'react'
 
 import { useUser } from '@/hooks'
-import { CustomTabBar } from '@/sharedComponents'
+import { CustomTabBar } from '@/sharedComponents/TabBars/CustomTabBar'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 const ErrorContainer = styled.View(({ theme }) => ({

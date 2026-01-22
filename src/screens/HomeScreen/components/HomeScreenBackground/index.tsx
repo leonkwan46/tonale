@@ -1,3 +1,4 @@
+import { THEME } from '@/constants/theme'
 import { useWindowDimensions } from '@/hooks'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
@@ -29,7 +30,7 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
   const pullDistance = useSharedValue(0)
 
   const stageImage = useMemo(() => {
-    const isDark = colorScheme === 'dark'
+    const isDark = colorScheme === THEME.DARK
     return isDark
       ? require('../../../../../assets/images/dark-homepage.png')
       : require('../../../../../assets/images/light-homepage.png')
@@ -68,7 +69,7 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
   }, [gender, instrument])
 
   const gradientColors = useMemo(() => {
-    const isDark = colorScheme === 'dark'
+    const isDark = colorScheme === THEME.DARK
     const colors = isDark
       ? theme.colors.homeScreen.gradient.dark
       : theme.colors.homeScreen.gradient.light

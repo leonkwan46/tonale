@@ -1,4 +1,4 @@
-import { Icon } from '@/sharedComponents/Icon/Icon'
+import { Icon } from '@/sharedComponents/Icon'
 import { useEffect } from 'react'
 import {
   Easing,

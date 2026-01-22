@@ -1,4 +1,4 @@
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { TheoryScreenBody } from './TheoryScreenBody'
 
 export const TheoryScreen = () => {

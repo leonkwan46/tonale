@@ -1,7 +1,7 @@
 import { useDevice, useLastLesson } from '@/hooks'
 import { CardButton } from '@/screens/TheoryScreen/components/LessonSection/components/CardButton/CardButton'
 import { Description } from '@/screens/TheoryScreen/components/LessonSection/components/Description/Description'
-import { Skeleton } from '@/sharedComponents'
+import { Skeleton } from '@/sharedComponents/Skeleton'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { CardContentContainer, ContentSection, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'

@@ -1,7 +1,7 @@
 import { deleteUserAccount } from '@/config/firebase/auth'
 import { deleteUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useRouter } from 'expo-router'
 import { Alert } from 'react-native'
 

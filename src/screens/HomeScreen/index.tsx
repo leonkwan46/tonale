@@ -1,5 +1,5 @@
 import { useLastLesson, useProgress, useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useCallback, useState } from 'react'
 import { GreetingBanner } from './components/GreetingBanner'
 import { HomeScreenBackground } from './components/HomeScreenBackground'

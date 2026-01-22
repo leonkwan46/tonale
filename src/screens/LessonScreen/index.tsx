@@ -1,6 +1,6 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { useProgress } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
 import { FinalTestFailureModal } from './components/FinalTestFailureModal'
 import { StarRatingModal } from './components/StarRatingModal'

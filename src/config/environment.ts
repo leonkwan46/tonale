@@ -17,7 +17,6 @@ export const getEnvironment = (): Environment => {
   const extra = Constants.expoConfig?.extra as Environment | undefined
   
   if (!extra) {
-    // Fallback to development environment
     return {
       environment: 'development',
       apiUrl: 'http://localhost:3000',

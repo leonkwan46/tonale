@@ -1,7 +1,7 @@
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon/Icon'
+import { Icon } from '@/sharedComponents/Icon'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import * as React from 'react'
 import { useRef } from 'react'

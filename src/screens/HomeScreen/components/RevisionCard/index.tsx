@@ -1,5 +1,5 @@
 import { useProgress } from '@/hooks'
-import { Skeleton } from '@/sharedComponents'
+import { Skeleton } from '@/sharedComponents/Skeleton'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import {

@@ -49,6 +49,9 @@ export const sharedConstants = {
 // Icon size variant type
 export type IconSizeVariant = keyof typeof sharedConstants.components.iconSizes
 
+// Icon color variant type
+export type IconColorVariant = 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'text' | 'icon'
+
 // Unified theme that extends your existing Colors
 export const lightTheme = {
   colors: {

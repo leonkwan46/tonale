@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Icon } from '@/sharedComponents/Icon/Icon'
+import { Icon } from '@/sharedComponents/Icon'
 
 import { Container, DescriptionText, IconContainer } from './ScreenIntroHeader.styles'
 

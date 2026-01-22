@@ -1,8 +1,6 @@
-import type { IconSizeVariant } from '@/config/theme/theme'
+import type { IconColorVariant, IconSizeVariant } from '@/config/theme/theme'
 import { Ionicons } from '@expo/vector-icons'
 import { StyledIcon } from './Icon.styles'
-
-type IconColorVariant = 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'text' | 'icon'
 
 interface IconProps {
   name: keyof typeof Ionicons.glyphMap

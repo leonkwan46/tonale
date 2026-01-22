@@ -1,7 +1,7 @@
 import { sendEmailVerificationToUser } from '@/config/firebase/auth'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon/Icon'
-import { ScreenContainer } from '@/sharedComponents'
+import { Icon } from '@/sharedComponents/Icon'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 

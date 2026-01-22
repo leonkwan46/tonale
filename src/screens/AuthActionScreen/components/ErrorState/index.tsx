@@ -1,4 +1,4 @@
-import { Icon } from '@/sharedComponents/Icon/Icon'
+import { Icon } from '@/sharedComponents/Icon'
 
 import { ErrorContainer, ErrorText } from './ErrorState.styles'
 

@@ -1,3 +1,4 @@
+import { DEVICE, type DeviceType } from '@/constants/device'
 import { useMemo } from 'react'
 import { Dimensions } from 'react-native'
 
@@ -6,7 +7,7 @@ export interface DeviceInfo {
   isPhone: boolean
   width: number
   height: number
-  deviceType: 'phone' | 'tablet'
+  deviceType: DeviceType
 }
 
 export const useDevice = (): DeviceInfo => {
@@ -21,7 +22,7 @@ export const useDevice = (): DeviceInfo => {
       isPhone: !isTablet,
       width,
       height,
-      deviceType: isTablet ? 'tablet' as const : 'phone' as const
+      deviceType: isTablet ? DEVICE.TABLET : DEVICE.PHONE
     }
   }, [dimensions])
   
