@@ -32,21 +32,12 @@ const getNewPitchRangeForStage = (stage: StageNumber, clef: ClefType): string[] 
           throw new Error(`Unsupported clef for stage 0: ${clef}`)
       }
     case 1:
+    case 2:
       switch (clef) {
         case 'bass':
           return GRADE_ONE_BASS_PITCH_RANGE.map((pitch: string) => pitch)
         case 'treble':
           return GRADE_ONE_TREBLE_PITCH_RANGE.map((pitch: string) => pitch)
-        default:
-          throw new Error(`Unsupported clef for stage ${stage}: ${clef}`)
-      }
-    case 2:
-      switch (clef) {
-        case 'bass':
-          const testArray = ['B1', 'C2', 'D2', 'E2'].map((pitch: string) => pitch)
-          return testArray
-        case 'treble':
-          return GRADE_TWO_TREBLE_PITCH_RANGE.map((pitch: string) => pitch)
         default:
           throw new Error(`Unsupported clef for stage ${stage}: ${clef}`)
       }

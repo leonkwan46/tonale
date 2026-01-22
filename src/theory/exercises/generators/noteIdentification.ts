@@ -37,6 +37,11 @@ export const createNoteIdentificationQuestion = (
   layoutType?: 'grid' | 'row'
 ): Question => {
   const stagePitches = getNewNotesForStage(stage, clef)
+  
+  if (stagePitches.length === 0) {
+    throw new Error(`No valid notes found for stage ${stage} in ${clef} clef`)
+  }
+  
   const correctNoteData = noteData || stagePitches[0]
 
   if (!correctNoteData.letterName) {

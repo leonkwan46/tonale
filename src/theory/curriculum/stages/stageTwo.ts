@@ -86,30 +86,6 @@ export const stageTwoLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-2-lesson-8-test-ledger',
-    title: 'Test: Treble Clef Ledger Lines',
-    description: 'Test ledger line height calculation (A5, B5, C6, D6)',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'trebleClef',
-      questionsCount: 10,
-      stage: 2,
-      answerLayoutType: 'grid'
-    }
-  },
-  {
-    id: 'stage-2-lesson-9-test-ledger',
-    title: 'Test: Bass Clef Ledger Lines',
-    description: 'Test ledger line height calculation (B1, C2, D2, E2)',
-    stars: 0,
-    exerciseConfig: {
-      generatorType: 'bassClef',
-      questionsCount: 10,
-      stage: 2,
-      answerLayoutType: 'grid'
-    }
-  },
-  {
     id: 'stage-2-final',
     title: 'Stage 2 Test',
     description: 'Test all Stage 2 knowledge',
