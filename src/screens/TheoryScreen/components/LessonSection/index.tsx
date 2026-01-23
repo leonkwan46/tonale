@@ -1,11 +1,15 @@
 import { useSafeNavigation } from '@/hooks'
+import { Card3DView } from '@/sharedComponents/Card3DView'
+import { useTheme } from '@emotion/react'
 import type { Lesson } from '@types'
 import { useState } from 'react'
-import { CardButton } from './components/CardButton/CardButton'
 import { Description } from './components/Description/Description'
 import { FinalTest } from './components/FinalTest/FinalTest'
+import { BeamedQuaverLogo } from './components/Logo/BeamedQuaverLogo'
+import { LockLogo } from './components/Logo/LockLogo'
+import { StarLogo } from './components/Logo/StarLogo'
 import { WarningModal } from './components/WarningModal'
-import { LessonSectionContainer } from './LessonSection.styles'
+import { LessonSectionContainer, StarContainer } from './LessonSection.styles'
 
 interface LessonSectionProps {
   index: number
@@ -16,15 +20,35 @@ interface LessonSectionProps {
 export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSectionProps) => {
   const { isNavigating, navigate } = useSafeNavigation()
   const [showWarningModal, setShowWarningModal] = useState(false)
+  const theme = useTheme()
+  const cardSize = theme.components.cardButton.size
+  const cardColor = lesson.isLocked ? 'grey' : 'blue'
+  
+  const renderCard = () => (
+    <Card3DView key="card" color={cardColor} size={cardSize}>
+      {lesson.isLocked ? (
+        <LockLogo />
+      ) : (
+        <>
+          <BeamedQuaverLogo />
+          <StarContainer>
+            <StarLogo filled={(lesson.stars ?? 0) >= 1} />
+            <StarLogo filled={(lesson.stars ?? 0) >= 2} />
+            <StarLogo filled={(lesson.stars ?? 0) >= 3} />
+          </StarContainer>
+        </>
+      )}
+    </Card3DView>
+  )
   
   const components = (isPressed: boolean) => index % 2 === 0 && !lesson.isFinalTest
     ? [
-    <CardButton key="card" isPressed={isPressed} isLocked={lesson.isLocked} stars={lesson.stars} />, 
+    renderCard(), 
     <Description key="desc" title={lesson.title} description={lesson.description} />
     ]
     : [
     <Description key="desc" title={lesson.title} description={lesson.description} />, 
-    <CardButton key="card" isPressed={isPressed} isLocked={lesson.isLocked} stars={lesson.stars} />
+    renderCard()
     ]
 
   const checkForZeroStarLessons = () => {
@@ -59,28 +83,28 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
 
   return (
     <>
-      <LessonSectionContainer 
-        onPress={handlePress}
-        testID={`lesson-title-${lesson.id}`}
-        accessible={true}
-        accessibilityRole="button"
-        accessibilityLabel={`${lesson.title} lesson`}
-        disabled={lesson.isLocked || isNavigating}
-      >
-        {({ pressed }: { pressed: boolean }) => 
-          lesson.isFinalTest ? (
-            <FinalTest 
-              key="final" 
-              isPressed={pressed} 
-              title={lesson.title} 
-              description={lesson.description}
-              testID={`lesson-title-${lesson.id}`}
-            />
-          ) : (
-            components(pressed)
-          )
-        }
-      </LessonSectionContainer>
+      {lesson.isFinalTest ? (
+        <FinalTest
+          key="final"
+          title={lesson.title}
+          description={lesson.description}
+          onPress={handlePress}
+          disabled={lesson.isLocked || isNavigating}
+          isLocked={lesson.isLocked}
+          testID={`lesson-title-${lesson.id}`}
+        />
+      ) : (
+        <LessonSectionContainer 
+          onPress={handlePress}
+          testID={`lesson-title-${lesson.id}`}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`${lesson.title} lesson`}
+          disabled={lesson.isLocked || isNavigating}
+        >
+          {({ pressed }: { pressed: boolean }) => components(pressed)}
+        </LessonSectionContainer>
+      )}
       
       <WarningModal
         isVisible={showWarningModal}

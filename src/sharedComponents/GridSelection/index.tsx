@@ -1,10 +1,8 @@
+import { Button3D } from '@/sharedComponents/Button3D'
 import * as React from 'react'
-import { useState } from 'react'
 import {
-  GridSelectionCard,
-  GridSelectionCardContainer,
-  GridSelectionCardDepth,
   GridSelectionContainer,
+  GridSelectionContent,
   GridSelectionText
 } from './GridSelection.styles'
 
@@ -25,45 +23,27 @@ export const GridSelection = <T extends string>({
   getDisplayLabel,
   renderIcon
 }: GridSelectionProps<T>): React.ReactElement => {
-  const [pressedIndex, setPressedIndex] = useState<number | null>(null)
-
-  const handlePressIn = (index: number) => {
-    setPressedIndex(index)
-  }
-
-  const handlePressOut = () => {
-    setPressedIndex(null)
-  }
-
-  const handlePress = (option: T) => {
-    onSelect(option)
-  }
-
   return (
     <GridSelectionContainer testID={testID}>
-      {options.map((option, index) => {
+      {options.map((option) => {
         const isSelected = selectedOption === option
-        const isPressed = pressedIndex === index
         const displayLabel = getDisplayLabel ? getDisplayLabel(option) : option
 
         return (
-          <GridSelectionCardContainer 
+          <Button3D
             key={option}
-            isPressed={isPressed}
+            onPress={() => onSelect(option)}
+            testID={isSelected ? `selected-${option}` : `option-${option}`}
+            color={isSelected ? 'blue' : 'grey'}
+            layoutType="grid"
           >
-            <GridSelectionCardDepth isSelected={isSelected} />
-            <GridSelectionCard
-              isSelected={isSelected}
-              onPress={() => handlePress(option)}
-              onPressIn={() => handlePressIn(index)}
-              onPressOut={handlePressOut}
-              activeOpacity={1}
-              testID={isSelected ? `selected-${option}` : `option-${option}`}
-            >
-              {renderIcon && renderIcon(option, isSelected)}
-              <GridSelectionText>{displayLabel}</GridSelectionText>
-            </GridSelectionCard>
-          </GridSelectionCardContainer>
+            {() => (
+              <GridSelectionContent>
+                {renderIcon && renderIcon(option, isSelected)}
+                <GridSelectionText>{displayLabel}</GridSelectionText>
+              </GridSelectionContent>
+            )}
+          </Button3D>
         )
       })}
     </GridSelectionContainer>

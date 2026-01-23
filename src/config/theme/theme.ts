@@ -78,26 +78,22 @@ export const lightTheme = {
     inputBackground: '#f8f9fa',
     lockedNode: '#999',
     
-    // ChoiceButton depth colors
+    // Button3D depth colors (color-based naming)
     choiceButtonDepth: {
-      default: '#156382',
-      selected: '#0a5a7a',
-      'selection-true': '#2a8a3a',
-      'selection-false': '#b52a2a',
-      correct: '#2a8a3a',
-      incorrect: '#b52a2a',
-      neutral: '#666666'
+      blue: '#156382',
+      red: Colors.light.revisionCard.buttonDepth,
+      green: '#2a8a3a',
+      yellow: '#ffd43b',
+      grey: '#666666'
     },
     
-    // ChoiceButton background colors
+    // Button3D background colors (color-based naming)
     choiceButton: {
-      default: Colors.light.primary,
-      selected: Colors.light.accent,
-      'selection-true': Colors.light.success,
-      'selection-false': Colors.light.error,
-      correct: Colors.light.success,
-      incorrect: Colors.light.error,
-      neutral: '#999'
+      blue: Colors.light.primary,
+      red: Colors.light.revisionCard.buttonBackground,
+      green: Colors.light.success,
+      yellow: Colors.light.warning,
+      grey: '#999'
     },
     
     // RevisionCard colors
@@ -151,26 +147,22 @@ export const darkTheme = {
     inputBackground: '#1a1a1a',
     lockedNode: '#444',
     
-    // ChoiceButton depth colors
+    // Button3D depth colors (color-based naming)
     choiceButtonDepth: {
-      default: '#156382',
-      selected: '#0a5a7a',
-      'selection-true': '#2a8a3a',
-      'selection-false': '#b52a2a',
-      correct: '#2a8a3a',
-      incorrect: '#b52a2a',
-      neutral: '#333333'
+      blue: '#156382',
+      red: Colors.dark.revisionCard.buttonDepth,
+      green: '#2a8a3a',
+      yellow: '#ffe066',
+      grey: '#333333'
     },
     
-    // ChoiceButton background colors
+    // Button3D background colors (color-based naming)
     choiceButton: {
-      default: Colors.dark.primary,
-      selected: Colors.dark.accent,
-      'selection-true': Colors.dark.success,
-      'selection-false': Colors.dark.error,
-      correct: Colors.dark.success,
-      incorrect: Colors.dark.error,
-      neutral: '#444'
+      blue: Colors.dark.primary,
+      red: Colors.dark.revisionCard.buttonBackground,
+      green: Colors.dark.success,
+      yellow: Colors.dark.warning,
+      grey: '#444'
     },
     
     // RevisionCard colors

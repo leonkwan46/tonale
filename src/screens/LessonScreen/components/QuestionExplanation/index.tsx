@@ -120,7 +120,6 @@ export const QuestionExplanation = ({
           
           <Button3D
             onPress={onContinue}
-            buttonState="default"
             fullWidth={true}
           >
             {() => (

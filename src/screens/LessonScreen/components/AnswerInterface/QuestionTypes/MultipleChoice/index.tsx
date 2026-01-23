@@ -1,5 +1,5 @@
 import { Button3D } from '@/sharedComponents/Button3D'
-import type { ButtonState } from '@/sharedComponents/Button3D/Button3D.styles'
+import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, LayoutType, MultipleChoiceButtonContainer } from './MultipleChoice.styles'
 
 interface MultipleChoiceProps {
@@ -21,13 +21,13 @@ export const MultipleChoice = ({
   type = 'grid',
   testID
 }: MultipleChoiceProps) => {
-  const getButtonState = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): ButtonState => {
+  const getButtonColor = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): ButtonColor => {
     if (showResult) {
-      if (isCorrect) return 'correct'
-      if (isIncorrect) return 'incorrect'
-      return 'neutral'
+      if (isCorrect) return 'green'
+      if (isIncorrect) return 'red'
+      return 'grey'
     }
-    return isSelected ? 'selected' : 'default'
+    return isSelected ? 'red' : 'blue'
   }
 
   const createRows = () => {
@@ -53,7 +53,7 @@ export const MultipleChoice = ({
             const isSelected = selectedAnswer === choice
             const isCorrect = choice === correctAnswer
             const isIncorrect = isSelected && choice !== correctAnswer && showResult
-            const buttonState = getButtonState(isSelected, isCorrect, isIncorrect)
+            const color = getButtonColor(isSelected, isCorrect, isIncorrect)
 
             return (
               <Button3D
@@ -61,7 +61,7 @@ export const MultipleChoice = ({
                 onPress={() => onChoiceSelect(choice)}
                 disabled={selectedAnswer !== null}
                 testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
-                buttonState={buttonState}
+                color={color}
                 layoutType={type}
               >
                 {() => (
