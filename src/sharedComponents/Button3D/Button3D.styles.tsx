@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { scale } from 'react-native-size-matters'
 
 export type ButtonColor = 'blue' | 'red' | 'green' | 'yellow' | 'grey'
 export type LayoutType = 'grid' | 'row'
