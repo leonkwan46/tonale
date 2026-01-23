@@ -8,14 +8,12 @@ import { AvatarImage, LinearGradientView, StickerWrapper } from './AvatarPreview
 interface AvatarPreviewProps {
   selectedGender: UserGender | null
   selectedInstrument: UserInstrument | null
-  isTablet: boolean
 }
 
-const AvatarPreviewComponent: React.FC<AvatarPreviewProps> = ({
+const AvatarPreviewComponent = ({
   selectedGender,
-  selectedInstrument,
-  isTablet
-}) => {
+  selectedInstrument
+}: AvatarPreviewProps) => {
   const theme = useTheme()
   const { width: screenWidth } = useWindowDimensions()
   const imageSource = useMemo(() => {
@@ -51,16 +49,14 @@ const AvatarPreviewComponent: React.FC<AvatarPreviewProps> = ({
 
   return (
     <StickerWrapper
-      isTablet={isTablet}
       screenWidth={screenWidth}
     >
       <LinearGradientView
-        isTablet={isTablet}
         colors={[theme.colors.background, `${theme.colors.background}00`]}
         start={{ x: 0, y: 0.8 }}
         end={{ x: 0, y: 1 }}
       />
-      <AvatarImage source={imageSource} isTablet={isTablet} />
+      <AvatarImage source={imageSource} />
     </StickerWrapper>
   )
 }

@@ -1,12 +1,12 @@
 import { useProgress } from '@/hooks'
-import { RevisionCompletionModal, ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useRouter } from 'expo-router'
-import React from 'react'
 import { LessonHeader } from '../LessonScreen/components/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'
+import { RevisionCompletionModal } from './components/RevisionCompletionModal'
 import { useRevision } from './useRevision'
 
-export const RevisionScreen: React.FC = () => {
+export const RevisionScreen = () => {
   const router = useRouter()
   const { revisionQuestions, refreshRevisionQuestions } = useProgress()
   const {
@@ -39,7 +39,6 @@ export const RevisionScreen: React.FC = () => {
 
       {hasQuestions && currentQuestion && (
         <LessonScreenBody
-          key={revision.viewResetKey}
           questions={revision.questions}
           currentQuestionIndex={revision.currentQuestionIndex}
           onAnswerSubmit={onAnswerSubmit}
@@ -48,13 +47,12 @@ export const RevisionScreen: React.FC = () => {
         />
       )}
 
-      {completion.showModal && (
-        <RevisionCompletionModal
-          remainingQuestions={completion.remainingCount}
-          onExit={handleExit}
-          onRevise={handleRevise}
-        />
-      )}
+      <RevisionCompletionModal
+        visible={completion.showModal}
+        remainingQuestions={completion.remainingCount}
+        onExit={handleExit}
+        onRevise={handleRevise}
+      />
     </ScreenContainer>
   )
 }

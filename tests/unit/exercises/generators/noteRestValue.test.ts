@@ -31,8 +31,14 @@ describe('noteRestValue generator', () => {
 
       it('should include both note and rest questions', () => {
         const questions = createNoteRestValueQuestions(10, stage)
-        const noteQuestions = questions.filter(q => q.visualComponent?.type === 'noteValue' && !q.visualComponent?.noteType?.toString().includes('rest'))
-        const restQuestions = questions.filter(q => q.visualComponent?.noteType?.toString().includes('rest'))
+        const noteQuestions = questions.filter(q => {
+          const noteType = q.visualComponent?.noteType
+          return noteType && typeof noteType === 'object' && 'type' in noteType && !noteType.type.includes('rest')
+        })
+        const restQuestions = questions.filter(q => {
+          const noteType = q.visualComponent?.noteType
+          return noteType && typeof noteType === 'object' && 'type' in noteType && noteType.type.includes('rest')
+        })
         expect(noteQuestions.length).toBeGreaterThan(0)
         expect(restQuestions.length).toBeGreaterThan(0)
       })
@@ -41,8 +47,8 @@ describe('noteRestValue generator', () => {
         const questions = createNoteRestValueQuestions(10, stage)
         questions.forEach(question => {
           const noteType = question.visualComponent?.noteType
-          if (noteType) {
-            if (typeof noteType === 'string' && noteType.includes('rest')) {
+          if (noteType && typeof noteType === 'object' && 'type' in noteType) {
+            if (noteType.type.includes('rest')) {
               validateRestTypeForStage(noteType, stage)
             } else {
               validateNoteTypeForStage(noteType, stage)

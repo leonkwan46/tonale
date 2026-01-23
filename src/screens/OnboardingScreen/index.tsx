@@ -1,12 +1,12 @@
 import { useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { ActivityIndicator } from 'react-native'
 import { OnboardingBody } from './OnboardingBody'
 import { ContentContainer } from './OnboardingScreen.styles'
 
-export function OnboardingScreen() {
+export const OnboardingScreen = () => {
   const router = useRouter()
   const { authUser, userData, loading: userLoading, setUserData } = useUser()
 

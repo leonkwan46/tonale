@@ -1,5 +1,3 @@
-import * as React from 'react'
-import { useDevice } from '../../hooks'
 import { DisplayCardContainer } from './DisplayCard.styles'
 
 interface DisplayCardProps {
@@ -7,13 +5,12 @@ interface DisplayCardProps {
   minHeight?: number
 }
 
-export const DisplayCard: React.FC<DisplayCardProps> = ({ 
+export const DisplayCard = ({ 
   children,
   minHeight = 200
-}) => {
-  const { isTablet } = useDevice()
+}: DisplayCardProps) => {
   return (
-    <DisplayCardContainer isTablet={isTablet} minHeight={minHeight}>
+    <DisplayCardContainer minHeight={minHeight}>
       {children}
     </DisplayCardContainer>
   )

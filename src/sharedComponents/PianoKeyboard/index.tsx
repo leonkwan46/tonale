@@ -26,7 +26,7 @@ const WHITE_KEYS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const
 const BLACK_KEYS = ['C#', 'D#', 'F#', 'G#', 'A#'] as const
 const CANCEL_TIMEOUT_MS = 100
 
-export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
+export const PianoKeyboard = ({
   onKeyPress,
   onKeyRelease,
   onKeyCancel,
@@ -34,7 +34,7 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   correctKey,
   disabledKeys = [],
   showFeedback = false
-}) => {
+}: PianoKeyboardProps) => {
   const pressedKeyRef = useRef<string | null>(null)
   const cancelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [internalPressedKey, setInternalPressedKey] = useState<string | null>(null)

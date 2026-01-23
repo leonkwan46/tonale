@@ -1,37 +1,39 @@
-import * as React from 'react'
-import { ChoiceButton, LayoutType } from './ChoiceButton'
-import { ChoiceRow, ChoicesContainer } from './MultipleChoice.styles'
+import { Button3D } from '@/sharedComponents/Button3D'
+import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import { ChoiceRow, ChoicesContainer, ChoiceText, LayoutType, MultipleChoiceButtonContainer } from './MultipleChoice.styles'
 
 interface MultipleChoiceProps {
   choices: string[]
   correctAnswer: string
   selectedAnswer: string | null
   showResult: boolean
-  showCorrectAnswer: boolean
   onChoiceSelect: (choice: string) => void
   type?: LayoutType
-  isNoteIdentification?: boolean
   testID?: string
 }
 
-export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
+export const MultipleChoice = ({
   choices,
   correctAnswer,
   selectedAnswer,
   showResult,
-  showCorrectAnswer,
   onChoiceSelect,
   type = 'grid',
-  isNoteIdentification = false,
   testID
-}) => {
-  // Group choices into rows based on type
+}: MultipleChoiceProps) => {
+  const getButtonColor = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): ButtonColor => {
+    if (showResult) {
+      if (isCorrect) return 'green'
+      if (isIncorrect) return 'red'
+      return 'grey'
+    }
+    return isSelected ? 'red' : 'blue'
+  }
+
   const createRows = () => {
     if (type === 'row') {
-      // For row layout, put each choice in its own row
       return choices.map(choice => [choice])
     } else {
-      // For grid layout, group choices into rows of 2
       const rows = []
       for (let i = 0; i < choices.length; i += 2) {
         rows.push(choices.slice(i, i + 2))
@@ -43,31 +45,38 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   const rows = createRows()
 
   return (
-    <ChoicesContainer testID={testID}>
+    <ChoicesContainer testID={testID} type={type}>
       {rows.map((row, rowIndex) => (
-        <ChoiceRow key={rowIndex} isLastRow={rowIndex === rows.length - 1} type={type}>
+        <ChoiceRow key={rowIndex} type={type}>
           {row.map((choice, colIndex) => {
             const index = rowIndex * (type === 'row' ? 1 : 2) + colIndex
             const isSelected = selectedAnswer === choice
             const isCorrect = choice === correctAnswer
             const isIncorrect = isSelected && choice !== correctAnswer && showResult
-            const isLastInRow = colIndex === row.length - 1
-            
+            const color = getButtonColor(isSelected, isCorrect, isIncorrect)
+
             return (
-              <ChoiceButton
+              <Button3D
                 key={index}
-                choice={choice}
-                isSelected={isSelected}
-                isCorrect={isCorrect}
-                isIncorrect={isIncorrect}
-                showResult={showResult}
                 onPress={() => onChoiceSelect(choice)}
                 disabled={selectedAnswer !== null}
-                isLastInRow={isLastInRow}
-                layoutType={type}
-                isNoteIdentification={isNoteIdentification}
                 testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
-              />
+                color={color}
+                layoutType={type}
+              >
+                {() => (
+                  <MultipleChoiceButtonContainer layoutType={type}>
+                    <ChoiceText 
+                      layoutType={type}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit={true}
+                      minimumFontScale={0.5}
+                    >
+                      {choice}
+                    </ChoiceText>
+                  </MultipleChoiceButtonContainer>
+                )}
+              </Button3D>
             )
           })}
         </ChoiceRow>
@@ -75,3 +84,5 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({
     </ChoicesContainer>
   )
 }
+
+export type { LayoutType }

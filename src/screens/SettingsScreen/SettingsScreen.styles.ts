@@ -17,6 +17,10 @@ export const ScrollContent = styled.View({
   gap: scale(20)
 })
 
+export const ScrollContentContainer = styled.View({
+  flexGrow: 1
+})
+
 export const ContentContainer = styled.View(({ theme }) => ({
   padding: scale(20),
   gap: scale(20)

@@ -1,4 +1,4 @@
-import { NOTE_NAME_TO_FREQ } from '../config/pitchFrequencies'
+import { NOTE_NAME_TO_FREQ } from '../constants/pitchFrequencies'
 
 type PianoKey = 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#' | 'A' | 'A#' | 'B'
 

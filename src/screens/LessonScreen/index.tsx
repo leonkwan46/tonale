@@ -1,21 +1,23 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
-import { useProgress } from '@/hooks'
-import { FinalTestFailureModal, ScreenContainer, StarRatingModal } from '@/sharedComponents'
+import { useProgress, useSafeNavigation } from '@/hooks'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
+import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import type { Question } from '@types'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import * as React from 'react'
+import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { LessonHeader } from './components'
+import { FinalTestFailureModal } from './components/FinalTestFailureModal'
+import { LessonHeader } from './components/LessonHeader'
+import { StarRatingModal } from './components/StarRatingModal'
 import { LessonScreenBody } from './LessonScreenBody'
 
-export function LessonScreen() {
-  const router = useRouter()
+export const LessonScreen = () => {
+  const { navigate, navigateBack } = useSafeNavigation()
   const { lessonId, from } = useLocalSearchParams<{ lessonId: string, from: string }>()
-  const { progressData, updateFinalTestProgress, updateLessonProgress, getLessonById, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()
-  const lesson = lessonId ? getLessonById(lessonId, progressData) : null
+  const { progressData, updateFinalTestProgress, updateLessonProgress, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()
+  const lesson = lessonId ? getLessonWithProgress(lessonId, progressData) : null
   
   const generateQuestions = useCallback((lessonData: typeof lesson): Question[] => {
     if (!lessonData || !lessonData.exerciseConfig) return []
@@ -105,16 +107,16 @@ export function LessonScreen() {
       await storeRevisionQuestions()
       
       if (!isPassed) {
-        router.back()
+        navigateBack()
         return
       }
       
       playLessonFinishedSound()
       const hasUnlockedNewStage = getNextLockedStage()
       if (hasUnlockedNewStage) {
-        router.push('/(tabs)/theory')
+        navigate('/(tabs)/theory')
       } else {
-        router.back()
+        navigateBack()
       }
     } else {
       // Regular lesson: stars, modal, user can retry/continue
@@ -138,7 +140,8 @@ export function LessonScreen() {
     updateFinalTestProgress,
     updateLessonProgress,
     storeRevisionQuestions,
-    router,
+    navigate,
+    navigateBack,
     getNextLockedStage
   ])
   
@@ -146,9 +149,9 @@ export function LessonScreen() {
 
   const navigateAfterModal = () => {
     if (from === 'home') {
-      router.push('/(tabs)/theory')
+      navigate('/(tabs)/theory')
     } else {
-      router.back()
+      navigateBack()
     }
   }
 
@@ -179,7 +182,7 @@ export function LessonScreen() {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
         wrongAnswersCount={wrongAnswers.length}
-        onBackPress={() => router.back()}
+        onBackPress={navigateBack}
       />
       
       <LessonScreenBody
@@ -192,22 +195,20 @@ export function LessonScreen() {
         isFinalTest={lesson?.isFinalTest || false}
       />
       
-      {showStarModal && (
-        <StarRatingModal
-          stars={calculateStars(questions.length, wrongAnswers.length)}
-          totalQuestions={questions.length}
-          wrongAnswers={wrongAnswers.length}
-          onContinue={closeModalAndExit}
-          onRetry={closeModalAndRetry}
-        />
-      )}
+      <StarRatingModal
+        visible={showStarModal}
+        stars={calculateStars(questions.length, wrongAnswers.length)}
+        totalQuestions={questions.length}
+        wrongAnswers={wrongAnswers.length}
+        onContinue={closeModalAndExit}
+        onRetry={closeModalAndRetry}
+      />
       
-      {showFailureModal && (
-        <FinalTestFailureModal
-          onRetry={closeFailureModalAndRetry}
-          onExit={closeFailureModalAndExit}
-        />
-      )}
+      <FinalTestFailureModal
+        visible={showFailureModal}
+        onRetry={closeFailureModalAndRetry}
+        onExit={closeFailureModalAndExit}
+      />
     </ScreenContainer>
   )
 }

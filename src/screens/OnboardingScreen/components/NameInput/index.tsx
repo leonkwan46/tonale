@@ -4,14 +4,12 @@ import { NameInputField, SectionContainer, SectionTitle } from './NameInput.styl
 interface NameInputProps {
   name: string
   onNameChange: (name: string) => void
-  isTablet: boolean
 }
 
-const NameInputComponent: React.FC<NameInputProps> = ({
+const NameInputComponent = ({
   name,
-  onNameChange,
-  isTablet
-}) => {
+  onNameChange
+}: NameInputProps) => {
   const validateName = (text: string): string => {
     // Remove all spaces and special characters, keep only letters (a-z, A-Z) and hyphens (-)
     return text.replace(/[^a-zA-Z-]/g, '')
@@ -23,12 +21,10 @@ const NameInputComponent: React.FC<NameInputProps> = ({
   }
 
   return (
-    <SectionContainer isTablet={isTablet}>
-      <SectionTitle isTablet={isTablet}>Name</SectionTitle>
+    <SectionContainer>
+      <SectionTitle>Name</SectionTitle>
       <NameInputField
-        isTablet={isTablet}
         placeholder="Enter your name"
-        placeholderTextColor="#999"
         keyboardType="default"
         value={name}
         onChangeText={handleNameChange}

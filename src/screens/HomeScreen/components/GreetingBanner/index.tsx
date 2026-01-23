@@ -1,6 +1,5 @@
 import type { UserData } from '@types'
 import type { User } from 'firebase/auth'
-import * as React from 'react'
 import {
   AvatarContainer,
   CharacterAvatar,
@@ -25,7 +24,7 @@ const getUsername = (authUser: User | null, userData: UserData | null, loading: 
          'Guest'
 }
 
-export const GreetingBanner: React.FC<GreetingBannerProps> = ({ authUser, userData, loading }) => {
+export const GreetingBanner = ({ authUser, userData, loading }: GreetingBannerProps) => {
   const username = getUsername(authUser, userData, loading)
   const characterImageSource = userData?.gender === 'female'
     ? require('../../../../../assets/images/girl/girl_head.png')

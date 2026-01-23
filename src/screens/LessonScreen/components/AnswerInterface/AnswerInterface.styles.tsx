@@ -1,10 +1,7 @@
 import styled from '@emotion/native'
+import { scale } from 'react-native-size-matters'
 
-export const AnswerInterfaceContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  padding: isTablet ? 0 : theme.spacing.lg,
-  backgroundColor: theme.colors.surface,
-  borderRadius: theme.spacing.sm,
-  width: isTablet ? '95%' : '100%',
-  maxWidth: isTablet ? 600 : undefined,
-  alignSelf: 'center'
+export const AnswerInterfaceContainer = styled.View(({ theme }) => ({
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.xxxl) : scale(theme.spacing.xl),
+  gap: theme.device.isTablet ? scale(theme.spacing.lg) : scale(theme.spacing.md)
 }))

@@ -2,12 +2,13 @@ import { useProgress } from '@/hooks'
 import { stagesArray } from '@/theory/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
-import * as React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Animated, ScrollView, Text, View } from 'react-native'
-import { scale } from 'react-native-size-matters'
-import { LessonDivider, LessonSection, StageHeader, TopCloudsCover } from '../components'
-import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
+import { Animated, ScrollView, View } from 'react-native'
+import { LessonDivider } from '../components/LessonDivider'
+import { LessonSection } from '../components/LessonSection'
+import { StageHeader } from '../components/StageHeader'
+import { TopCloudsCover } from '../components/TopCloudsCover'
+import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, MessageContainer, MessageOverlay, MessageText, PartialLessonContainer, SpacerView, StageContainer } from './TheoryScreenBody.styles'
 
 export const TheoryScreenBody = () => {
   const { getStageById, getStageRequirements } = useProgress()
@@ -206,38 +207,18 @@ export const TheoryScreenBody = () => {
         
         {/* Show "next stage in progress" message when no next stage exists */}
         {!hasNextStage && (
-          <View style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: scale(180), // Same height as TopCloudsCover
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 20
-          }}>
-            <View style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              padding: scale(12),
-              borderRadius: scale(8)
-            }}>
-              <Text style={{
-                color: 'white',
-                fontSize: scale(14),
-                textAlign: 'center'
-              }}>
+          <MessageOverlay>
+            <MessageContainer>
+              <MessageText>
                 Next stage still in progress...
-              </Text>
-            </View>
-          </View>
+              </MessageText>
+            </MessageContainer>
+          </MessageOverlay>
         )}
         
         {/* Spacer to maintain 1.25 space when no next stage */}
         {!hasNextStage && (
-          <View style={{
-            height: scale(180), // Same height as TopCloudsCover
-            width: '100%'
-          }} />
+          <SpacerView />
         )}
         
         {sortedStages.map((stage, stageIndex) => {
@@ -286,20 +267,18 @@ export const TheoryScreenBody = () => {
                       const isLastLesson = reversedIndex === 0 // Topmost lesson in this stage
                       const shouldBePartial = isPreviewStage && isLastLesson
                       
-                      return (
-                        <React.Fragment key={lesson.id}>
-                          <PartialLessonContainer isPartial={shouldBePartial}>
-                            <LessonContent isPartial={shouldBePartial}>
-                              <LessonSection 
-                                index={originalIndex} 
-                                lesson={lesson}
-                                allStageLessons={lessonsToShow}
-                              />
-                            </LessonContent>
-                          </PartialLessonContainer>
-                          {reversedIndex < lessonsToShow.length - 1 && !lesson.isFinalTest && <LessonDivider />}
-                        </React.Fragment>
-                      )
+                      return [
+                        <PartialLessonContainer key={lesson.id} isPartial={shouldBePartial}>
+                          <LessonContent isPartial={shouldBePartial}>
+                            <LessonSection 
+                              index={originalIndex} 
+                              lesson={lesson}
+                              allStageLessons={lessonsToShow}
+                            />
+                          </LessonContent>
+                        </PartialLessonContainer>,
+                        reversedIndex < lessonsToShow.length - 1 && !lesson.isFinalTest && <LessonDivider key={`divider-${lesson.id}`} />
+                      ]
                     })}
                 </CollapsibleLessonsContainer>
               )}

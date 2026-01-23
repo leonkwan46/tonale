@@ -3,9 +3,9 @@ import styled from '@emotion/native'
 import { Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export const PullIndicatorContainer = styled(View)<{ isTablet: boolean }>(({ isTablet }) => ({
+export const PullIndicatorContainer = styled(View)(({ theme }) => ({
   position: 'absolute',
-  bottom: isTablet ? scale(-60) : scale(-80),
+  bottom: theme.device.isTablet ? scale(-60) : scale(-80),
   left: 0,
   right: 0,
   alignItems: 'center',
@@ -13,13 +13,13 @@ export const PullIndicatorContainer = styled(View)<{ isTablet: boolean }>(({ isT
   pointerEvents: 'none'
 }))
 
-export const PullIndicatorEmoji = styled(Text)<{ isTablet: boolean }>(({ isTablet }) => ({
-  fontSize: isTablet ? scale(30) : scale(40),
+export const PullIndicatorEmoji = styled(Text)(({ theme }) => ({
+  fontSize: theme.device.isTablet ? scale(30) : scale(40),
   textAlign: 'center'
 }))
 
-export const PullIndicatorMessage = styled(Text)<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(12) : scale(14),
+export const PullIndicatorMessage = styled(Text)(({ theme }) => ({
+  fontSize: theme.device.isTablet ? scale(12) : scale(14),
   color: theme.colors.text,
   textAlign: 'center',
   marginTop: scale(8),

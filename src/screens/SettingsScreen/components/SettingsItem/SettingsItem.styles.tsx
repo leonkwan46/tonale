@@ -32,9 +32,9 @@ export const StyledIcon = styled(Ionicons)<{ variant?: 'default' | 'red' | 'veri
     return { color: theme.colors.error }
   }
   if (variant === 'verified') {
-    return { color: theme.colors.primary || '#007AFF' }
+    return { color: theme.colors.primary }
   }
-  return { color: theme.colors.icon || '#999' }
+  return { color: theme.colors.icon }
 })
 
 export const Separator = styled(View)(({ theme }) => ({

@@ -1,7 +1,5 @@
 import type { Question } from '@types'
-import * as React from 'react'
 import { useCallback } from 'react'
-import { useDevice } from '../../../hooks'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
@@ -16,7 +14,7 @@ interface LessonScreenBodyProps {
   isFinalTest?: boolean
 }
 
-export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
+export const LessonScreenBody = ({
   questions,
   currentQuestionIndex,
   onAnswerSubmit,
@@ -24,16 +22,10 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
   onLessonComplete,
   wrongAnswersCount = 0,
   isFinalTest = false
-}) => {
-  const { isTablet } = useDevice()
+}: LessonScreenBodyProps) => {
   const currentQuestion = questions[currentQuestionIndex]
-  const { question, visualComponent, type } = currentQuestion
+  const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
-
-  const isNoteIdentification = visualComponent?.clef && 
-    visualComponent?.elements && 
-    visualComponent.elements.length > 0 &&
-    visualComponent.elements.some(element => element.pitch)
 
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
@@ -51,31 +43,22 @@ export const LessonScreenBody: React.FC<LessonScreenBodyProps> = ({
 
   return (
     <BodyContainer>
-      <QuestionText 
-        testID="question-text"
-        isTablet={isTablet}
-      >
-        {question}
-      </QuestionText>
-
-      {/* Music Element */}
       {visualComponent && (
-        <VisualQuestion visualComponent={visualComponent} />
+        <VisualQuestion visualComponent={visualComponent} stage={stage} />
       )}
-      
-      {/* Answer Interface */}
+
+      <QuestionText testID="question-text">{question}</QuestionText>
+
       <AnswerInterface 
         questionType={type}
         questionData={currentQuestion}
         onAnswerSubmit={handleAnswerSubmitInternal}
         onNextQuestion={handleNextQuestionInternal}
         onLessonComplete={onLessonComplete}
-        isNoteIdentification={isNoteIdentification}
         wrongAnswersCount={wrongAnswersCount}
         isFinalTest={isFinalTest}
         isLastQuestion={isLastQuestion}
       />
-      
     </BodyContainer>
   )
 }

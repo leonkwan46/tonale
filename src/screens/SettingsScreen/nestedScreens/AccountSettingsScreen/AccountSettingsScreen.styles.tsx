@@ -24,3 +24,7 @@ export const DeleteAccountCard = styled.View(({ theme }) => ({
   borderColor: theme.colors.error,
   paddingHorizontal: scale(10)
 }))
+
+export const ScrollContentContainer = styled.View({
+  flexGrow: 1
+})

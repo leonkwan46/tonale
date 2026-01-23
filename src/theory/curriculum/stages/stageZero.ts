@@ -11,7 +11,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'noteNameValue',
       questionsCount: 10,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -22,7 +23,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'restNameValue',
       questionsCount: 10,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -33,7 +35,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'accidentals',
       questionsCount: 6,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -44,7 +47,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'trebleClef',
       questionsCount: 10,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -55,7 +59,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'bassClef',
       questionsCount: 10,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -66,7 +71,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'timeSignature',
       questionsCount: 8,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -77,7 +83,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'musicalTerm',
       questionsCount: 10,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -89,7 +96,8 @@ export const stageZeroLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'stage-0-final',
       questionsCount: 20,
-      stage: stageZero
+      stage: stageZero,
+      answerLayoutType: 'row'
     }
   }
 ]

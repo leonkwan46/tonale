@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { ChoiceRow, ChoicesContainer } from './TrueFalse.styles'
-import { TrueFalseButton } from './TrueFalseButton'
+import { Button3D } from '@/sharedComponents/Button3D'
+import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import { ChoiceRow, ChoicesContainer, ChoiceText, TrueFalseButtonContainer } from './TrueFalse.styles'
 
 interface TrueFalseProps {
   choices: string[]
@@ -12,43 +12,52 @@ interface TrueFalseProps {
   testID?: string
 }
 
-export const TrueFalse: React.FC<TrueFalseProps> = ({
+export const TrueFalse = ({
   choices,
   correctAnswer,
   selectedAnswer,
   showResult,
-  showCorrectAnswer,
   onChoiceSelect,
   testID
-}) => {
-  // True/False should always have exactly 2 choices
+}: TrueFalseProps) => {
   const trueFalseChoices = choices.slice(0, 2) as ('True' | 'False')[]
+
+  const getButtonColor = (choice: 'True' | 'False', isSelected: boolean, isCorrect: boolean, isIncorrect: boolean, shouldShowNeutral: boolean): ButtonColor => {
+    if (showResult) {
+      if (isCorrect) return 'green'
+      if (shouldShowNeutral) return 'grey'
+      if (isIncorrect) return 'red'
+      return 'grey'
+    }
+    return isSelected ? 'red' : choice === 'True' ? 'green' : 'red'
+  }
 
   return (
     <ChoicesContainer testID={testID}>
       <ChoiceRow isLastRow={true}>
-        {trueFalseChoices.map((choice, index) => {
+        {trueFalseChoices.map((choice) => {
           const isSelected = selectedAnswer === choice
           const isCorrect = choice === correctAnswer
           const isIncorrect = isSelected && choice !== correctAnswer && showResult
-          const isLastInRow = index === trueFalseChoices.length - 1
-          // When showing result, gray out wrong choice (only correct answer shows color)
           const shouldShowNeutral = showResult && !isCorrect
+          const color = getButtonColor(choice, isSelected, isCorrect, isIncorrect, shouldShowNeutral)
           
           return (
-            <TrueFalseButton
+            <Button3D
               key={choice}
-              choice={choice}
-              isSelected={isSelected}
-              isCorrect={isCorrect}
-              isIncorrect={isIncorrect}
-              showResult={showResult}
-              shouldShowNeutral={shouldShowNeutral}
               onPress={() => onChoiceSelect(choice)}
               disabled={selectedAnswer !== null}
-              isLastInRow={isLastInRow}
               testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
-            />
+              color={color}
+            >
+              {() => (
+                <TrueFalseButtonContainer>
+                  <ChoiceText>
+                    {choice}
+                  </ChoiceText>
+                </TrueFalseButtonContainer>
+              )}
+            </Button3D>
           )
         })}
       </ChoiceRow>

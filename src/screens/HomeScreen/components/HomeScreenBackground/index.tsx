@@ -1,11 +1,13 @@
+import { THEME } from '@/constants/theme'
 import { useWindowDimensions } from '@/hooks'
+import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView, View, useColorScheme } from 'react-native'
+import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView, useColorScheme } from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
 import { ClapCelebration } from './ClapCelebration'
-import { AvatarImage, BackgroundGradient, ImageContainer, StageImage } from './HomeScreenBackground.styles'
+import { AvatarImage, BackgroundGradient, HomeScreenContainer, ImageContainer, ScrollContentContainer, StageImage } from './HomeScreenBackground.styles'
 import { PullIndicator } from './PullIndicator'
 import { PULL_THRESHOLD } from './PullIndicator/PullIndicator.constants'
 
@@ -17,8 +19,9 @@ interface HomeScreenBackgroundProps {
   instrument?: UserInstrument | string
 }
 
-export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ children, refreshing, onRefresh, gender, instrument }) => {
-  const colorScheme = useColorScheme() ?? 'light'
+export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, instrument }: HomeScreenBackgroundProps) => {
+  const theme = useTheme()
+  const colorScheme = useColorScheme()
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
@@ -26,10 +29,12 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
   const hasTriggeredRef = useRef(false)
   const pullDistance = useSharedValue(0)
 
-  const stageImage =
-    colorScheme === 'dark'
+  const stageImage = useMemo(() => {
+    const isDark = colorScheme === THEME.DARK
+    return isDark
       ? require('../../../../../assets/images/dark-homepage.png')
       : require('../../../../../assets/images/light-homepage.png')
+  }, [colorScheme])
 
   const avatarImage = useMemo(() => {
     const isFemale = gender === 'female'
@@ -63,10 +68,13 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
       : require('../../../../../assets/images/boy/boy_full.png')
   }, [gender, instrument])
 
-  const gradientColors =
-    colorScheme === 'dark'
-        ? ['#2E3237', '#1E252B', '#1A1E22', '#331009'] as const
-        : ['#EEEEEE', '#A3C3CA', '#68A9B7', '#BF3713'] as const
+  const gradientColors = useMemo(() => {
+    const isDark = colorScheme === THEME.DARK
+    const colors = isDark
+      ? theme.colors.homeScreen.gradient.dark
+      : theme.colors.homeScreen.gradient.light
+    return colors as unknown as readonly [string, string, ...string[]]
+  }, [colorScheme, theme.colors.homeScreen.gradient])
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
   // Need to implement gesture-based solution for Android if cross-platform support is required.
@@ -104,10 +112,9 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
   }, [])
 
   return (
-    <View style={{ flex: 1, position: 'relative' }}>
+    <HomeScreenContainer>
       <ScrollView
         ref={scrollViewRef}
-        contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         bounces={Platform.OS === 'ios'}
         alwaysBounceVertical={Platform.OS === 'ios'}
@@ -117,6 +124,7 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
         scrollEventThrottle={16}
         onScrollEndDrag={handleScrollEndDrag}
       >
+        <ScrollContentContainer>
         <BackgroundGradient 
           colors={gradientColors} 
           locations={[0, 0.3, 0.8, 1]}
@@ -129,12 +137,12 @@ export const HomeScreenBackground: React.FC<HomeScreenBackgroundProps> = ({ chil
         </BackgroundGradient>
         <ImageContainer>
           <StageImage source={stageImage} screenWidth={screenWidth} />
-          {/* TODO: Avatar will be animation in the future, using Lottie. This is currently a placeholder */}
           <AvatarImage source={avatarImage} screenWidth={screenWidth} />
         </ImageContainer>
         <PullIndicator pullDistance={pullDistance} messageIndex={messageIndex} />
+        </ScrollContentContainer>
       </ScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
-    </View>
+    </HomeScreenContainer>
   )
 }

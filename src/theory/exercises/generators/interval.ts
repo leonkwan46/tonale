@@ -13,7 +13,8 @@ export const createIntervalQuestion = (
   stage: StageNumber, 
   clef: ClefType,
   tonicPitch: string,
-  targetPitch: string
+  targetPitch: string,
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const stageIntervals = getStageIntervals(stage)
 
@@ -56,7 +57,8 @@ export const createIntervalQuestion = (
       semitones: calculatedInterval.semitones
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -64,7 +66,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return question.correctAnswer ?? null
 }
 
-const generateQuestionsForClef = (stage: StageNumber, clef: ClefType): Question[] => {
+const generateQuestionsForClef = (stage: StageNumber, clef: ClefType, layoutType?: 'grid' | 'row'): Question[] => {
   const questions: Question[] = []
   const stageNoteDefinitions = getCumulativeNoteDefinitions(stage, clef)
   const availablePitches = stageNoteDefinitions.map(note => note.pitch)
@@ -122,13 +124,13 @@ const generateQuestionsForClef = (stage: StageNumber, clef: ClefType): Question[
         }
         
         if (selectedTargetPitch) {
-          const question = createIntervalQuestion(stage, clef, tonicPitch, selectedTargetPitch)
+          const question = createIntervalQuestion(stage, clef, tonicPitch, selectedTargetPitch, layoutType)
           questions.push(question)
         }
       } else {
         const interval = calculateInterval(tonicPitch, proposedTargetPitch)
         if (interval.number >= 2) {
-          const question = createIntervalQuestion(stage, clef, tonicPitch, proposedTargetPitch)
+          const question = createIntervalQuestion(stage, clef, tonicPitch, proposedTargetPitch, layoutType)
           questions.push(question)
         }
       }
@@ -138,11 +140,11 @@ const generateQuestionsForClef = (stage: StageNumber, clef: ClefType): Question[
   return questions
 }
 
-export const createIntervalQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createIntervalQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const questionPool: Question[] = []
 
   for (const clef of CLEFS) {
-    const clefQuestions = generateQuestionsForClef(stage, clef)
+    const clefQuestions = generateQuestionsForClef(stage, clef, layoutType)
     questionPool.push(...clefQuestions)
   }
 

@@ -1,50 +1,46 @@
-import { Colors } from '@/constants/Colors'
 import styled from '@emotion/native'
 import { Link, Stack } from 'expo-router'
-import { useColorScheme } from 'react-native'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export default function NotFoundScreen() {
-  const colorScheme = useColorScheme() ?? 'light'
-
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
-      <Container colorScheme={colorScheme}>
-        <Title colorScheme={colorScheme}>This screen does not exist.</Title>
-        <StyledLink href="/" colorScheme={colorScheme}>
-          <LinkText colorScheme={colorScheme}>Go to home screen!</LinkText>
+      <Container>
+        <Title>This screen does not exist.</Title>
+        <StyledLink href="/">
+          <LinkText>Go to home screen!</LinkText>
         </StyledLink>
       </Container>
     </>
   )
 }
 
-const Container = styled.View<{ colorScheme: 'light' | 'dark' }>`
-  flex: 1
-  align-items: center
-  justify-content: center
-  padding: 20px
-  background-color: ${props => Colors[props.colorScheme].background}
-`
+const Container = styled.View(({ theme }) => ({
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 20,
+  backgroundColor: theme.colors.background
+}))
 
-const Title = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  font-size: 24px
-  color: ${props => Colors[props.colorScheme].text}
-  text-align: center
-  margin-bottom: 16px
-  font-family: "${getSourGummyFontFamily('bold')}"
-`
+const Title = styled.Text(({ theme }) => ({
+  fontSize: 24,
+  color: theme.colors.text,
+  textAlign: 'center',
+  marginBottom: 16,
+  fontFamily: getSourGummyFontFamily('bold')
+}))
 
-const StyledLink = styled(Link)<{ colorScheme: 'light' | 'dark' }>`
-  margin-top: 15px
-  padding-vertical: 15px
-`
+const StyledLink = styled(Link)({
+  marginTop: 15,
+  paddingVertical: 15
+})
 
-const LinkText = styled.Text<{ colorScheme: 'light' | 'dark' }>`
-  color: ${props => Colors[props.colorScheme].primary}
-  font-size: 16px
-  text-decoration: underline
-  font-family: "${getSourGummyFontFamily('400')}"
-`
+const LinkText = styled.Text(({ theme }) => ({
+  color: theme.colors.primary,
+  fontSize: 16,
+  textDecorationLine: 'underline',
+  fontFamily: getSourGummyFontFamily('400')
+}))

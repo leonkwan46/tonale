@@ -1,46 +1,58 @@
-import * as React from 'react'
+import { Button3D } from '@/sharedComponents/Button3D'
+import { useTheme } from '@emotion/react'
 import {
-  FinalTestContainer,
-  FinalTestContent,
-  FinalTestDepth,
   FinalTestDescription,
   FinalTestGradient,
   FinalTestIconContainer,
   FinalTestTextContainer,
-  FinalTestTitle
+  FinalTestTitle,
+  FinalTestWrapper,
+  getFinalTestCustomStyles
 } from './FinalTest.styles'
 import { ScrollIcon } from './ScrollIcon'
 
 interface FinalTestProps {
   title: string
   description: string
-  isPressed?: boolean
+  onPress: () => void
+  disabled?: boolean
+  isLocked?: boolean
   testID?: string
 }
 
-export const FinalTest: React.FC<FinalTestProps> = ({ 
-  isPressed = false, 
+export const FinalTest = ({
   title,
   description,
+  onPress,
+  disabled = false,
+  isLocked = false,
   testID
 }: FinalTestProps) => {
+  const theme = useTheme()
+  const customStyles = getFinalTestCustomStyles(theme)
+
   return (
-<FinalTestContainer testID={testID} isPressed={isPressed} isLocked={false}>
-  <FinalTestDepth />
-  <FinalTestContent isLocked={false}>
-    <FinalTestGradient 
-      colors={['#ff6b6b', '#FF4500', '#ffd43b']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    />
-    <FinalTestIconContainer>
-      <ScrollIcon size={24} />
-    </FinalTestIconContainer>
-    <FinalTestTextContainer>
-      <FinalTestTitle>{title}</FinalTestTitle>
-      {description && <FinalTestDescription>{description}</FinalTestDescription>}
-    </FinalTestTextContainer>
-  </FinalTestContent>
-</FinalTestContainer>
+    <FinalTestWrapper isLocked={isLocked}>
+      <Button3D
+        onPress={onPress}
+        disabled={disabled}
+        testID={testID}
+        fullWidth={true}
+        customStyles={customStyles}
+      >
+        {() => (
+          <>
+            <FinalTestGradient />
+            <FinalTestIconContainer>
+              <ScrollIcon size={24} />
+            </FinalTestIconContainer>
+            <FinalTestTextContainer>
+              <FinalTestTitle>{title}</FinalTestTitle>
+              {description && <FinalTestDescription>{description}</FinalTestDescription>}
+            </FinalTestTextContainer>
+          </>
+        )}
+      </Button3D>
+    </FinalTestWrapper>
   )
 }
