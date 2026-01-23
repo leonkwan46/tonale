@@ -1,6 +1,5 @@
-import { useProgress } from '@/hooks'
+import { useProgress, useSafeNavigation } from '@/hooks'
 import { Skeleton } from '@/sharedComponents/Skeleton'
-import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import {
   ContentSection,
@@ -17,11 +16,11 @@ import {
 
 export const RevisionCard = () => {
   const { revisionQuestions, revisionQuestionsLoading, progressDataLoading, progressDataInitialized } = useProgress()
-  const router = useRouter()
+  const { isNavigating, navigate } = useSafeNavigation()
   const [isPressed, setIsPressed] = useState(false)
 
   const handleStartRevision = () => {
-    router.push('/revision')
+    navigate('/revision')
   }
 
   const isLoading = progressDataLoading || !progressDataInitialized || revisionQuestionsLoading
@@ -58,6 +57,7 @@ export const RevisionCard = () => {
                   onPress={handleStartRevision}
                   onPressIn={() => setIsPressed(true)}
                   onPressOut={() => setIsPressed(false)}
+                  disabled={isNavigating}
                 >
                   <StartButtonText>Start Revision!</StartButtonText>
                 </StartButton>

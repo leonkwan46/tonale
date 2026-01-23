@@ -1,11 +1,10 @@
-import { usePreventDoubleTap } from '@/hooks'
-import { WarningModal } from './components/WarningModal'
+import { useSafeNavigation } from '@/hooks'
 import type { Lesson } from '@types'
-import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { CardButton } from './components/CardButton/CardButton'
 import { Description } from './components/Description/Description'
 import { FinalTest } from './components/FinalTest/FinalTest'
+import { WarningModal } from './components/WarningModal'
 import { LessonSectionContainer } from './LessonSection.styles'
 
 interface LessonSectionProps {
@@ -15,7 +14,7 @@ interface LessonSectionProps {
 }
 
 export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSectionProps) => {
-  const router = useRouter()
+  const { isNavigating, navigate } = useSafeNavigation()
   const [showWarningModal, setShowWarningModal] = useState(false)
   
   const components = (isPressed: boolean) => index % 2 === 0 && !lesson.isFinalTest
@@ -34,22 +33,24 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
     )
   }
 
-  const handlePress = usePreventDoubleTap(() => {
+  const handlePress = () => {
+    if (isNavigating || lesson.isLocked) return
+    
     if (lesson.isFinalTest) {
       // Check if any lesson in the stage has 0 stars
       if (checkForZeroStarLessons()) {
         setShowWarningModal(true)
       } else {
-        router.push(`/lesson?lessonId=${lesson.id}`)
+        navigate(`/lesson?lessonId=${lesson.id}`)
       }
-    } else if (!lesson.isLocked) {
-      router.push(`/lesson?lessonId=${lesson.id}`)
+    } else {
+      navigate(`/lesson?lessonId=${lesson.id}`)
     }
-  })
+  }
 
   const handleContinueToFinalTest = () => {
     setShowWarningModal(false)
-    router.push(`/lesson?lessonId=${lesson.id}`)
+    navigate(`/lesson?lessonId=${lesson.id}`)
   }
 
   const handleCancelFinalTest = () => {
@@ -64,7 +65,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
         accessible={true}
         accessibilityRole="button"
         accessibilityLabel={`${lesson.title} lesson`}
-        disabled={lesson.isLocked}
+        disabled={lesson.isLocked || isNavigating}
       >
         {({ pressed }: { pressed: boolean }) => 
           lesson.isFinalTest ? (

@@ -1,14 +1,13 @@
-import { useDevice, useLastLesson } from '@/hooks'
+import { useDevice, useLastLesson, useSafeNavigation } from '@/hooks'
 import { CardButton } from '@/screens/TheoryScreen/components/LessonSection/components/CardButton/CardButton'
 import { Description } from '@/screens/TheoryScreen/components/LessonSection/components/Description/Description'
 import { Skeleton } from '@/sharedComponents/Skeleton'
-import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { CardContentContainer, ContentSection, ContinueButton, ContinueButtonContainer, ContinueButtonDepth, ContinueButtonText, LessonCardContainer, NoLessonText } from './LessonCard.styles'
 
 export const LessonCard = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
-  const router = useRouter()
+  const { isNavigating, navigate } = useSafeNavigation()
   const isTablet = useDevice().isTablet
   const [isPressed, setIsPressed] = useState(false)
 
@@ -50,7 +49,7 @@ export const LessonCard = () => {
   }
 
   const handleContinuePress = () => {
-    router.push(`/lesson?lessonId=${lesson.id}&from=home`)
+    navigate(`/lesson?lessonId=${lesson.id}&from=home`)
   }
 
   return (
@@ -65,6 +64,7 @@ export const LessonCard = () => {
           onPress={handleContinuePress}
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
+          disabled={isNavigating || lesson.isLocked}
         >
         <ContinueButtonText>Continue Lesson</ContinueButtonText>
       </ContinueButton>

@@ -1,6 +1,5 @@
 import { signOutUser } from '@/config/firebase/auth'
-import { useUser } from '@/hooks'
-import { useRouter } from 'expo-router'
+import { useUser, useSafeNavigation } from '@/hooks'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 
@@ -10,11 +9,11 @@ import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent, Scrol
 
 export const SettingsScreen = () => {
   const { userData } = useUser()
-  const router = useRouter()
+  const { navigate, navigateReplace } = useSafeNavigation()
   const [loggingOut, setLoggingOut] = useState(false)
 
   const handleAccountPress = () => {
-    router.push('/(tabs)/settings/account')
+    navigate('/(tabs)/settings/account')
   }
 
   const handleLogoutPress = () => {
@@ -40,7 +39,8 @@ export const SettingsScreen = () => {
     try {
       await signOutUser()
       // Navigate to auth screen after logout
-      router.replace('/(auth)')
+      // Note: Using replace here is intentional - we don't want back navigation after logout
+      navigateReplace('/(auth)')
     } catch (error) {
       console.error('Error signing out:', error)
       setLoggingOut(false)

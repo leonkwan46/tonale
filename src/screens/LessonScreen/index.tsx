@@ -1,20 +1,20 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
-import { useProgress } from '@/hooks'
+import { useProgress, useSafeNavigation } from '@/hooks'
 import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
-import { FinalTestFailureModal } from './components/FinalTestFailureModal'
-import { StarRatingModal } from './components/StarRatingModal'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import type { Question } from '@types'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
+import { FinalTestFailureModal } from './components/FinalTestFailureModal'
 import { LessonHeader } from './components/LessonHeader'
+import { StarRatingModal } from './components/StarRatingModal'
 import { LessonScreenBody } from './LessonScreenBody'
 
 export const LessonScreen = () => {
-  const router = useRouter()
+  const { navigate, navigateBack } = useSafeNavigation()
   const { lessonId, from } = useLocalSearchParams<{ lessonId: string, from: string }>()
   const { progressData, updateFinalTestProgress, updateLessonProgress, getNextLockedStage, trackLessonAccessLocal, refreshRevisionQuestions } = useProgress()
   const lesson = lessonId ? getLessonWithProgress(lessonId, progressData) : null
@@ -107,16 +107,16 @@ export const LessonScreen = () => {
       await storeRevisionQuestions()
       
       if (!isPassed) {
-        router.back()
+        navigateBack()
         return
       }
       
       playLessonFinishedSound()
       const hasUnlockedNewStage = getNextLockedStage()
       if (hasUnlockedNewStage) {
-        router.push('/(tabs)/theory')
+        navigate('/(tabs)/theory')
       } else {
-        router.back()
+        navigateBack()
       }
     } else {
       // Regular lesson: stars, modal, user can retry/continue
@@ -140,7 +140,8 @@ export const LessonScreen = () => {
     updateFinalTestProgress,
     updateLessonProgress,
     storeRevisionQuestions,
-    router,
+    navigate,
+    navigateBack,
     getNextLockedStage
   ])
   
@@ -148,9 +149,9 @@ export const LessonScreen = () => {
 
   const navigateAfterModal = () => {
     if (from === 'home') {
-      router.push('/(tabs)/theory')
+      navigate('/(tabs)/theory')
     } else {
-      router.back()
+      navigateBack()
     }
   }
 
@@ -181,7 +182,7 @@ export const LessonScreen = () => {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
         wrongAnswersCount={wrongAnswers.length}
-        onBackPress={() => router.back()}
+        onBackPress={navigateBack}
       />
       
       <LessonScreenBody
