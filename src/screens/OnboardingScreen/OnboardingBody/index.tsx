@@ -1,6 +1,6 @@
 import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
-import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
+import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'

@@ -1,5 +1,5 @@
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { ActivityIndicator } from 'react-native'

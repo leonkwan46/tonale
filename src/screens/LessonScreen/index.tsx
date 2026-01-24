@@ -1,6 +1,6 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress, useSafeNavigation } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
