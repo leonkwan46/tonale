@@ -1,0 +1,73 @@
+# Cursor AI Coding Standards for Tonalè
+
+## Code Style
+- Use arrow functions for all component definitions: `const ComponentName = () => {}`
+- Use arrow functions for all function definitions: `const functionName = () => {}`
+- Use single quotes for strings
+- No semicolons (including in imports)
+- No trailing commas
+- Use TypeScript strictly - avoid `any` types
+- Import React hooks directly: `import { useState, useEffect } from 'react'` (not `React.useState`)
+
+## React/React Native Patterns
+- Use functional components only
+- Use hooks for state management
+- Use `KeyboardAwareScrollView` from `@/sharedComponents` for screens with input fields
+- Use `ScreenContainer` from `@/sharedComponents` for screen wrappers
+- Prefer `expo-router` for navigation: `useRouter()` and `router.push()` / `router.replace()`
+
+## File Structure
+- **ALL components MUST have their own directory with exactly two files: `index.tsx` (or `index.ts`) and `ComponentName.styles.tsx`**
+  - Component logic goes in `index.tsx` (or `index.ts` if no JSX)
+  - All styled components go in `ComponentName.styles.tsx` (with the component name as prefix)
+  - Example: `ComponentName/index.tsx` and `ComponentName/ComponentName.styles.tsx`
+- Components in `src/screens/` follow this structure
+- Shared components in `src/sharedComponents/` follow this structure
+- Use path aliases: `@/` for `src/`, `@types` for `src/types/`, `@sharedComponents` for `src/sharedComponents/`
+
+## Styling
+- Use `@emotion/native` with styled components
+- Use `scale()` from `react-native-size-matters` for responsive sizing
+- Use theme from emotion: `({ theme }) => ({ ... })`
+- Use `getSourGummyFontFamily()` utility for fonts
+- Never use hardcoded color hex numbers - all colors must come from `@/config/theme`
+- If a color doesn't exist in the theme, create it in `src/config/theme/Colors.ts` and add it to the theme in `src/config/theme/theme.ts`
+- **Exception: Cards must use hardcoded colors - white background (`#ffffff`) and black text (`#000000`)**
+- For device-specific styling (tablet vs phone), always use `theme.device.isTablet` in styled components instead of `useDevice()` hook
+- Icon sizes should use the `Icon` component from `@/sharedComponents/Icon/Icon` with `sizeVariant` prop instead of calculating sizes manually
+- Icon colors should use the `colorVariant` prop (e.g., `colorVariant="primary"`, `colorVariant="error"`) instead of passing `color={theme.colors.xxx}` - this allows Icon to access theme directly without requiring `useTheme()` in consumer components
+- If you can use theme from styled components, don't use `useTheme()` hook to pass it in - access theme directly from the styled component's function parameter
+
+## State Management
+- Use Context API via custom hooks: `useUser()`, `useProgress()`, `useDevice()`
+- Use `AsyncStorage` for caching (via `src/utils/cache.ts`)
+
+## Firebase
+- Auth operations in `src/config/firebase/auth.ts`
+- Cloud Functions wrappers in `src/config/firebase/functions/`
+- Use typed callable functions with proper TypeScript interfaces
+
+## Naming Conventions
+- Components: PascalCase (`ChangeNameScreen`)
+- Functions/variables: camelCase (`handleSave`, `userData`)
+- Constants: UPPER_SNAKE_CASE (`INSTRUMENT.PIANO`)
+- Files: match component name (`ChangeNameScreen/index.tsx`)
+
+## Error Handling
+- Always use try/catch for async operations that can fail
+- Show user-friendly error messages via Alert for user-facing errors
+- Use console.error for debugging
+- Handle loading states appropriately
+- Don't be overly defensive - throw errors when appropriate (e.g., validation failures, invalid states)
+- Let errors bubble up when they should (don't catch and swallow errors unnecessarily)
+
+## Best Practices
+- Extract reusable logic into utility functions
+- Keep components focused and single-purpose
+- Use proper TypeScript types from `@types`
+- Validate user input (e.g., `validateName` function)
+- Use confirmation dialogs for destructive actions (Alert.alert)
+- Clean up unused imports and code
+- Avoid unnecessary comments - code should be self-documenting
+- Never use re-exports - import directly from source files
+- Always check TypeScript compilation (`tsc --noEmit`) and linting after making changes

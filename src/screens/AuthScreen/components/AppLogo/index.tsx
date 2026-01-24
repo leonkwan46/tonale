@@ -1,5 +1,4 @@
-import { useTheme } from '@emotion/react'
-import * as React from 'react'
+import { Icon } from '@/sharedComponents/Icon'
 import { useEffect } from 'react'
 import {
   Easing,
@@ -8,23 +7,13 @@ import {
   withSpring,
   withTiming
 } from 'react-native-reanimated'
-import { scale } from 'react-native-size-matters'
 import {
   InnerCircle,
   LogoContainer,
-  MusicIcon,
   OuterCircle
 } from './AppLogo.styles'
 
-interface AppLogoProps {
-  isTablet: boolean
-}
-
-export const AppLogo: React.FC<AppLogoProps> = ({
-  isTablet
-}) => {
-  const theme = useTheme()
-  
+export const AppLogo = () => {
   const scaleValue = useSharedValue(0.3)
   const opacity = useSharedValue(0)
 
@@ -48,14 +37,13 @@ export const AppLogo: React.FC<AppLogoProps> = ({
   }))
   
   return (
-    <LogoContainer isTablet={isTablet} style={logoStyle}>
-      <OuterCircle isTablet={isTablet} />
-      <InnerCircle isTablet={isTablet} />
-      <MusicIcon
+    <LogoContainer style={logoStyle}>
+      <OuterCircle />
+      <InnerCircle />
+      <Icon
         name="musical-notes"
-        size={isTablet ? scale(40) : scale(36)}
-        color={theme.colors.primary}
-        isTablet={isTablet}
+        sizeVariant="xl"
+        colorVariant="text"
       />
     </LogoContainer>
   )

@@ -33,13 +33,15 @@ interface CreateValueQuestionOptions {
   timeValue: TimeValueType
   isRest: boolean
   choiceStages: StageNumber[]
+  layoutType?: 'grid' | 'row'
 }
 
 export const createValueBeatQuestion = ({
   stage,
   timeValue,
   isRest,
-  choiceStages
+  choiceStages,
+  layoutType
 }: CreateValueQuestionOptions): Question => {
   const questionKind: QuestionKind = isRest ? 'rest' : 'note'
   const beatsForValue = isRest ? restTypeToBeats(timeValue) : noteTypeToBeats(timeValue)
@@ -82,7 +84,8 @@ export const createValueBeatQuestion = ({
     choices: generateWrongChoices(choiceStrings, correctAnswer),
     explanation,
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 

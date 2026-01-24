@@ -1,6 +1,8 @@
 import styled from '@emotion/native'
 
-export const DisplayCardContainer = styled.View<{ isTablet: boolean; minHeight?: number }>(({ theme, isTablet, minHeight = 200 }) => ({
+import { scale } from 'react-native-size-matters'
+
+export const DisplayCardContainer = styled.View<{ minHeight?: number }>(({ theme, minHeight = 200 }) => ({
   backgroundColor: '#ffffff',
   borderRadius: 16,
   borderWidth: 1,
@@ -8,10 +10,12 @@ export const DisplayCardContainer = styled.View<{ isTablet: boolean; minHeight?:
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',
-  maxWidth: isTablet ? 460 : 360,
+  maxWidth: theme.device.isTablet ? 460 : 360,
   minHeight,
   overflow: 'hidden',
-  ...(isTablet && {
+  ...(theme.device.isTablet && {
+    marginTop: scale(20),
+    marginBottom: scale(20),
     transform: [{ scale: 1.4 }]
   })
 }))

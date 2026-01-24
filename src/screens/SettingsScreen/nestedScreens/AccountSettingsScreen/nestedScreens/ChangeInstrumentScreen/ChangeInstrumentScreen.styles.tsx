@@ -15,50 +15,57 @@ export const ContentContainer = styled.View(({ theme }) => ({
   gap: scale(20)
 }))
 
-export const Card = styled.View<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const Card = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderRadius: scale(12),
-  padding: isTablet ? scale(16) : scale(20),
-  gap: isTablet ? scale(12) : scale(16),
+  padding: theme.device.isTablet ? scale(16) : scale(20),
+  gap: theme.device.isTablet ? scale(12) : scale(16),
   width: '100%'
 }))
 
-export const ErrorContainer = styled.View<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: theme.colors.surface,
   borderWidth: 1,
   borderColor: theme.colors.error,
-  paddingHorizontal: isTablet ? scale(10) : scale(16),
-  paddingVertical: isTablet ? scale(6) : scale(12),
+  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
+  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
   borderRadius: scale(8),
-  gap: isTablet ? scale(5) : scale(8)
+  gap: theme.device.isTablet ? scale(5) : scale(8)
 }))
 
-export const ErrorText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
-  fontSize: isTablet ? scale(10) : scale(12),
+  fontSize: theme.device.isTablet ? scale(10) : scale(12),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean; isTablet?: boolean }>(({ theme, disabled, isTablet }) => ({
+export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
   backgroundColor: theme.colors.primary,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: isTablet ? scale(8) : scale(16),
+  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
   borderRadius: scale(12),
   opacity: disabled ? 0.7 : 1,
-  marginTop: isTablet ? scale(10) : scale(16)
+  marginTop: theme.device.isTablet ? scale(10) : scale(16)
 }))
 
-export const PrimaryButtonText = styled.Text<{ isTablet?: boolean }>(({ theme, isTablet }) => ({
+export const PrimaryButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: isTablet ? scale(12) : scale(16),
+  fontSize: theme.device.isTablet ? scale(12) : scale(16),
   fontFamily: getSourGummyFontFamily('600')
 }))
 
 export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
   color: theme.colors.error
+}))
+
+export const ScrollContentContainer = styled.View(({ theme }) => ({
+  alignItems: 'center',
+  flexGrow: 1,
+  padding: theme.device.isTablet ? scale(8) : scale(10),
+  gap: theme.device.isTablet ? scale(16) : scale(32)
 }))

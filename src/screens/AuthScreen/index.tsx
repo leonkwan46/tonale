@@ -1,12 +1,12 @@
 import { auth } from '@/config/firebase/firebase'
-import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
+import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
-
-import { useDevice } from '../../hooks/useDevice'
 import {
   AuthActionsContainer,
-  ContentWrapper
+  ContentWrapper,
+  ScrollContentContainer
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
@@ -29,7 +29,7 @@ export interface AuthState {
   showConfirmPassword: boolean
 }
 
-export function AuthScreen() {
+export const AuthScreen = () => {
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
     email: '',
@@ -62,24 +62,20 @@ export function AuthScreen() {
     }
   }
   
-  const { isTablet } = useDevice()
-  
   return (
     <ScreenContainer>
       <KeyboardAwareScrollView 
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <ContentWrapper isTablet={isTablet}>
+        <ScrollContentContainer>
+        <ContentWrapper>
           <Header
             authState={authState}
-            isTablet={isTablet}
           />
-          <AuthActionsContainer isTablet={isTablet}>
+          <AuthActionsContainer>
             <ModeToggle
               authState={authState}
               setAuthState={setAuthState}
-              isTablet={isTablet}
             />
             
             <AuthForm
@@ -87,17 +83,16 @@ export function AuthScreen() {
               formData={formData}
               setFormData={setFormData}
               setAuthState={setAuthState}
-              isTablet={isTablet}
             />
             
             <GuestLogin
               loading={authState.loading}
               onGuestLogin={handleGuestLogin}
               isVisible={authState.mode === 'login'}
-              isTablet={isTablet}
             />
           </AuthActionsContainer>
         </ContentWrapper>
+        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )

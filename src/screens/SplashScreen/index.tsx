@@ -1,14 +1,15 @@
-import { useDevice, useUser } from '@/hooks'
+import { useUser } from '@/hooks'
 import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
-import { useColorScheme } from 'react-native'
 import {
   Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming
 } from 'react-native-reanimated'
-import { AppText, LogoAnimation, Wave } from './components'
+import { AppText } from './components/AppText'
+import { LogoAnimation } from './components/LogoAnimation'
+import { Wave } from './components/Wave'
 import {
   Container,
   MusicLogoContainer,
@@ -52,11 +53,9 @@ interface SplashScreenProps {
   onComplete: () => void
 }
 
-export function SplashScreen({ onComplete }: SplashScreenProps) {
+export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [fontsLoaded] = useFonts(FONTS)
-  const colorScheme = useColorScheme() ?? 'light'
   const { loading: authLoading } = useUser()
-  const { isTablet } = useDevice()
   const [isTransitioning, setIsTransitioning] = useState(false)
   const containerOpacity = useSharedValue(1)
 
@@ -96,30 +95,27 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
   }))
 
   return (
-    <Container colorScheme={colorScheme} style={containerStyle}>
+    <Container style={containerStyle}>
       {!fontsLoaded ? (
         <MusicLogoContainer>
-          <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
+          <LogoAnimation isTransitioning={isTransitioning} />
         </MusicLogoContainer>
       ) : (
         <>
       <MusicLogoContainer>
-        <LogoAnimation colorScheme={colorScheme} isTransitioning={isTransitioning} />
+        <LogoAnimation isTransitioning={isTransitioning} />
         <AppText
           appName="Tonalè"
           tagline="Master music through focused practice"
-          colorScheme={colorScheme}
           isTransitioning={isTransitioning}
         />
       </MusicLogoContainer>
-      <WavesContainer isTablet={isTablet}>
+      <WavesContainer>
             {Array.from({ length: WAVE_COUNT }, (_, index) => (
           <Wave
             key={index}
                 delay={index * WAVE_DELAY_INCREMENT + WAVE_DELAY_BASE}
-            colorScheme={colorScheme}
             isTransitioning={isTransitioning}
-            isTablet={isTablet}
           />
         ))}
       </WavesContainer>

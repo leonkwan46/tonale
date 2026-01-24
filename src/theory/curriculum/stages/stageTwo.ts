@@ -9,7 +9,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'dottedValues',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -20,7 +21,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'noteGrouping',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -31,7 +33,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'scaleDegrees',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -42,7 +45,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'interval',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -53,7 +57,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'keySignature',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -64,7 +69,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'triad',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -75,7 +81,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'musicalTerm',
       questionsCount: 10,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -87,7 +94,8 @@ export const stageTwoLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'stage-2-final',
       questionsCount: 30,
-      stage: 2
+      stage: 2,
+      answerLayoutType: 'row'
     }
   }
 ]

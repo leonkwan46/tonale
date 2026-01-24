@@ -1,15 +1,30 @@
+import type { AppTheme } from '@/config/theme/theme'
+import type { Card3DCustomStyles } from '@/sharedComponents/Card3DView'
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-// Full width container for final test with dramatic styling
-export const FinalTestContainer = styled.View<{ isPressed: boolean, isLocked: boolean }>(({ theme, isPressed, isLocked }) => ({
+// Constants
+const FINAL_TEST_HEIGHT = scale(110)
+const FINAL_TEST_BORDER_WIDTH = scale(2)
+const FINAL_TEST_WRAPPER_MARGIN_VERTICAL = scale(15)
+
+// Helper function to get custom styles for FinalTest
+export const getFinalTestCustomStyles = (theme: AppTheme): Card3DCustomStyles => ({
+  height: FINAL_TEST_HEIGHT,
+  backgroundColor: 'transparent',
+  depthColor: theme.colors.finalTest.shadow,
+  borderWidth: FINAL_TEST_BORDER_WIDTH,
+  borderColor: theme.colors.warning
+})
+
+// Wrapper for the button to add margin and shadow
+export const FinalTestWrapper = styled.View<{ isLocked: boolean }>(({ theme, isLocked }) => ({
   width: '100%',
-  position: 'relative',
-  transform: [{ scale: isPressed ? 0.97 : 1 }],
-  marginVertical: scale(15),
+  marginVertical: FINAL_TEST_WRAPPER_MARGIN_VERTICAL,
   opacity: isLocked ? 0.5 : 1,
   shadowColor: theme.colors.warning,
   shadowOffset: { width: 0, height: 6 },
@@ -18,36 +33,8 @@ export const FinalTestContainer = styled.View<{ isPressed: boolean, isLocked: bo
   elevation: 12
 }))
 
-// Dramatic depth/shadow element with gradient
-export const FinalTestDepth = styled.View(({ theme }) => ({
-  position: 'absolute',
-  top: scale(6),
-  left: scale(6),
-  right: scale(-2),
-  height: scale(110),
-  backgroundColor: '#8B0000', // Dark red for dramatic shadow
-  borderRadius: scale(25),
-  opacity: 0.8
-}))
-
-// Main content container with gradient background
-export const FinalTestContent = styled.View<{ isLocked: boolean }>(({ theme, isLocked }) => ({
-  width: '100%',
-  height: scale(110),
-  borderRadius: scale(25),
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  paddingHorizontal: scale(25),
-  position: 'relative',
-  zIndex: 1,
-  borderWidth: scale(2),
-  borderColor: theme.colors.warning,
-  overflow: 'hidden'
-}))
-
-// Gradient background for the content
-export const FinalTestGradient = styled(LinearGradient)({
+// Gradient styled component with position styles
+const FinalTestGradientStyled = styled(LinearGradient)({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -55,6 +42,19 @@ export const FinalTestGradient = styled(LinearGradient)({
   bottom: 0,
   borderRadius: scale(23)
 })
+
+// Wrapper component that uses theme internally
+export const FinalTestGradient = () => {
+  const theme = useTheme()
+  
+  return (
+    <FinalTestGradientStyled
+      colors={theme.colors.finalTest.gradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    />
+  )
+}
 
 // Crown/Trophy icon container
 export const FinalTestIconContainer = styled.View(({ theme }) => ({
@@ -100,13 +100,4 @@ export const FinalTestTextContainer = styled.View({
   alignItems: 'center',
   justifyContent: 'center',
   flex: 1
-})
-
-
-export const LockContainer = styled.View({
-  position: 'absolute',
-  zIndex: 10,
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center'
 })

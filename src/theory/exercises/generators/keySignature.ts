@@ -10,7 +10,7 @@ import { generateExplanation } from '../utils/explanation'
 
 type StageKey = ReturnType<typeof getKeys>[number]
 
-export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): Question => {
+export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey, layoutType?: 'grid' | 'row'): Question => {
   const keys = getKeys(stage)
   const correctKey = key || keys[0]
   const keyNames = keys.map(k => k.toString())
@@ -32,7 +32,8 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey): 
       key: correctKey
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -63,10 +64,10 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return null
 }
 
-export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createKeySignatureQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const keys = getKeys(stage)
   const uniquePool = keys.map(key => 
-    createKeySignatureQuestion(stage, key)
+    createKeySignatureQuestion(stage, key, layoutType)
   )
   
   const deduplicationWindow = uniquePool.length <= 4 ? 1 : undefined

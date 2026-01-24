@@ -1,8 +1,7 @@
-import { useDevice } from '@/hooks'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Text } from 'react-native'
 import { QuestionExplanation } from '../QuestionExplanation'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
@@ -17,7 +16,6 @@ interface AnswerInterfaceProps {
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
   onLessonComplete?: () => void
-  isNoteIdentification?: boolean
   wrongAnswersCount?: number
   isFinalTest?: boolean
   isLastQuestion?: boolean
@@ -27,18 +25,16 @@ const EXPLANATION_MODAL_DELAY = 1000
 const CORRECT_ANSWER_DELAY = 1500
 const FINAL_TEST_FAILURE_THRESHOLD = 3
 
-export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({ 
+export const AnswerInterface = ({ 
   questionType,
   questionData,
   onAnswerSubmit,
   onNextQuestion,
   onLessonComplete,
-  isNoteIdentification = false,
   wrongAnswersCount = 0,
   isFinalTest = false,
   isLastQuestion = false
-}) => {
-  const { isTablet } = useDevice()
+}: AnswerInterfaceProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
@@ -119,16 +115,13 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
       case QUESTION_TYPE.MULTIPLE_CHOICE:
         return (
           <MultipleChoice
-            key={questionData.id}
             testID={`correct-answer-${questionData.correctAnswer}`}
             choices={questionData.choices}
             correctAnswer={questionData.correctAnswer}
             selectedAnswer={selectedAnswer}
             showResult={showResult}
-            showCorrectAnswer={showCorrectAnswer}
             onChoiceSelect={handleChoiceSelect}
-            type={questionData.choices.length <= 4 ? 'row' : 'grid'}
-            isNoteIdentification={isNoteIdentification}
+            type={questionData.layoutType ?? 'row'}
           />
         )
       case QUESTION_TYPE.TRUE_FALSE:
@@ -146,7 +139,6 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
       case QUESTION_TYPE.KEY_PRESS:
         return (
           <KeyPress
-            key={questionData.id}
             correctKey={questionData.correctAnswer}
             onKeyPress={handleKeyPress}
           />
@@ -171,7 +163,7 @@ export const AnswerInterface: React.FC<AnswerInterfaceProps> = ({
 
   return (
     <>
-      <AnswerInterfaceContainer isTablet={isTablet}>
+      <AnswerInterfaceContainer>
         {renderAnswerComponent()}
       </AnswerInterfaceContainer>
       

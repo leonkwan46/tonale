@@ -1,22 +1,22 @@
 import { updateUserData } from '@/config/firebase/functions'
-import { useDevice, useUser } from '@/hooks'
+import { useUser } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { GenderSelection } from '@/screens/OnboardingScreen/components/GenderSelection'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
-import { scale } from 'react-native-size-matters'
 
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
   Card,
   ErrorContainer,
-  ErrorIcon,
   ErrorText,
   PrimaryButton,
-  PrimaryButtonText
+  PrimaryButtonText,
+  ScrollContentContainer
 } from './ChangeGenderScreen.styles'
 
 const getInstrumentFromValue = (value: string | undefined): UserInstrument | null => {
@@ -36,7 +36,6 @@ const getInstrumentFromValue = (value: string | undefined): UserInstrument | nul
 export const ChangeGenderScreen = () => {
   const { userData, setUserData } = useUser()
   const router = useRouter()
-  const { isTablet } = useDevice()
   const scrollViewRef = useRef<ScrollView>(null)
   
   const currentGender = userData?.gender || 'male'
@@ -85,41 +84,34 @@ export const ChangeGenderScreen = () => {
       <ScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ 
-          alignItems: 'center',
-          flexGrow: 1, 
-          padding: isTablet ? scale(8) : scale(10),
-          gap: isTablet ? scale(16) : scale(32)
-        }}
       >
-        <AvatarPreview 
+        <ScrollContentContainer>
+          <AvatarPreview 
           selectedGender={selectedGender || 'male'} 
           selectedInstrument={initialInstrument}
-          isTablet={isTablet}
         />
-        <Card isTablet={isTablet}>
+        <Card>
           {error ? (
-            <ErrorContainer isTablet={isTablet}>
-              <ErrorIcon name="alert-circle" size={isTablet ? scale(14) : scale(20)} />
-              <ErrorText isTablet={isTablet}>{error}</ErrorText>
+            <ErrorContainer>
+              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+              <ErrorText>{error}</ErrorText>
             </ErrorContainer>
           ) : null}
 
           <GenderSelection
             selectedGender={selectedGender}
             onSelect={setSelectedGender}
-            isTablet={isTablet}
           />
 
           <PrimaryButton
             disabled={!canSave}
-            isTablet={isTablet}
             onPress={handleSave}
             activeOpacity={0.7}
           >
-            <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
+            <PrimaryButtonText>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
+        </ScrollContentContainer>
       </ScrollView>
     </ScreenContainer>
   )

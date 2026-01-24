@@ -9,7 +9,8 @@ import type { StageNumber } from '@/types/stage'
 
 export const createTimeSignatureQuestion = (
   stage: StageNumber,
-  timeSignature: TimeSignatureType
+  timeSignature: TimeSignatureType,
+  layoutType?: 'grid' | 'row'
 ): Question => {
   const availableTimeSignatures = getTimeSignatures(stage)
   const isValid = availableTimeSignatures.some(ts => {
@@ -46,7 +47,8 @@ export const createTimeSignatureQuestion = (
       notation
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -55,17 +57,17 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return timeSignatureValue ?? null
 }
 
-export const createTimeSignatureQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createTimeSignatureQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const availableTimeSignatures = getTimeSignatures(stage)
   
   if (availableTimeSignatures.length === 1) {
     return Array.from({ length: questionsCount }, () => 
-      createTimeSignatureQuestion(stage, availableTimeSignatures[0])
+      createTimeSignatureQuestion(stage, availableTimeSignatures[0], layoutType)
     )
   }
   
   const uniquePool = availableTimeSignatures.map(timeSignature => 
-    createTimeSignatureQuestion(stage, timeSignature)
+    createTimeSignatureQuestion(stage, timeSignature, layoutType)
   )
   return generateQuestionsFromPool(uniquePool, questionsCount, getDuplicateIdentifier)
 }

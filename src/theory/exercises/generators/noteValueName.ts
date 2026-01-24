@@ -20,11 +20,11 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return `${typeKey}|${questionType}|${valueKind}`
 }
 
-export const createNoteValueNameQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createNoteValueNameQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const stageNoteTypes = getAllNoteTypes(stage)
 
   const noteNameQuestions = stageNoteTypes.map(noteType =>
-    createNoteValueQuestion(stage, noteType)
+    createNoteValueQuestion(stage, noteType, layoutType)
   )
 
   const noteValueQuestions = stageNoteTypes.map(noteType =>
@@ -32,7 +32,8 @@ export const createNoteValueNameQuestions = (questionsCount: number, stage: Stag
         stage,
         timeValue: noteType,
         isRest: false,
-        choiceStages: [0]
+        choiceStages: [0],
+        layoutType
     })
   )
 

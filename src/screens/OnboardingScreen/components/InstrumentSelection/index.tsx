@@ -23,17 +23,15 @@ interface InstrumentSelectionProps {
   customInstrument: string
   onCustomInstrumentChange: (text: string) => void
   onScrollToBottom?: () => void
-  isTablet: boolean
 }
 
-const InstrumentSelectionComponent: React.FC<InstrumentSelectionProps> = ({
+const InstrumentSelectionComponent = ({
   selectedInstrument,
   onSelect,
   customInstrument,
   onCustomInstrumentChange,
-  onScrollToBottom,
-  isTablet
-}) => {
+  onScrollToBottom
+}: InstrumentSelectionProps) => {
   const theme = useTheme()
 
   const handleSelect = (instrument: UserInstrument) => {
@@ -41,8 +39,8 @@ const InstrumentSelectionComponent: React.FC<InstrumentSelectionProps> = ({
   }
 
   return (
-    <SectionContainer isTablet={isTablet}>
-      <SectionTitle isTablet={isTablet}>Instrument</SectionTitle>
+    <SectionContainer>
+      <SectionTitle>Instrument</SectionTitle>
       <GridSelection
         options={INSTRUMENT_OPTIONS}
         selectedOption={selectedInstrument}
@@ -53,9 +51,7 @@ const InstrumentSelectionComponent: React.FC<InstrumentSelectionProps> = ({
       />
       {selectedInstrument === INSTRUMENT.OTHER && (
         <CustomInstrumentInput
-          isTablet={isTablet}
           placeholder="Enter your instrument"
-          placeholderTextColor="#999"
           keyboardType="default"
           value={customInstrument}
           onChangeText={onCustomInstrumentChange}

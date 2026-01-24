@@ -1,37 +1,36 @@
 import { deleteUserAccount } from '@/config/firebase/auth'
 import { deleteUserData } from '@/config/firebase/functions'
-import { useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
-import { useRouter } from 'expo-router'
+import { useUser, useSafeNavigation } from '@/hooks'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { Alert } from 'react-native'
 
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { SettingsItem } from '../../components/SettingsItem'
 import { ContentContainer } from '../../SettingsScreen.styles'
-import { Card, DeleteAccountCard, Divider, FullScreenScrollView } from './AccountSettingsScreen.styles'
+import { Card, DeleteAccountCard, Divider, FullScreenScrollView, ScrollContentContainer } from './AccountSettingsScreen.styles'
 
 export const AccountSettingsScreen = () => {
   const { userData, authUser } = useUser()
-  const router = useRouter()
+  const { navigate, navigateReplace } = useSafeNavigation()
 
   const handleDisplayNamePress = () => {
-    router.push('/(tabs)/settings/account/edit-name')
+    navigate('/(tabs)/settings/account/edit-name')
   }
 
   const handleChangeEmail = () => {
-    router.push('/(tabs)/settings/account/change-email')
+    navigate('/(tabs)/settings/account/change-email')
   }
 
   const handleChangePassword = () => {
-    router.push('/(tabs)/settings/account/change-password')
+    navigate('/(tabs)/settings/account/change-password')
   }
 
   const handleChangeInstrument = () => {
-    router.push('/(tabs)/settings/account/change-instrument')
+    navigate('/(tabs)/settings/account/change-instrument')
   }
 
   const handleChangeGender = () => {
-    router.push('/(tabs)/settings/account/change-gender')
+    navigate('/(tabs)/settings/account/change-gender')
   }
 
   const handleDeleteAccountPress = () => {
@@ -59,7 +58,8 @@ export const AccountSettingsScreen = () => {
       // Delete Firebase Auth account
       await deleteUserAccount()
       // Redirect to auth screen
-      router.replace('/(auth)')
+      // Note: Using replace here is intentional - we don't want back navigation after account deletion
+      navigateReplace('/(auth)')
     } catch (error) {
       console.error('Error deleting account:', error)
       Alert.alert('Error', 'Failed to delete account. Please try again.')
@@ -81,9 +81,9 @@ export const AccountSettingsScreen = () => {
       <SettingItemHeader title="Account" />
       <FullScreenScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <ContentContainer>
+        <ScrollContentContainer>
+          <ContentContainer>
           <Card>
             <SettingsItem
               icon="person-outline"
@@ -128,7 +128,8 @@ export const AccountSettingsScreen = () => {
               variant="red"
             />
           </DeleteAccountCard>
-        </ContentContainer>
+          </ContentContainer>
+        </ScrollContentContainer>
       </FullScreenScrollView>
     </ScreenContainer>
   )

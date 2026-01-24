@@ -24,7 +24,7 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 // USER PROVIDER COMPONENT
 // ============================================================================
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [authUser, setAuthUser] = useState<User | null>(null)
   const [userData, setUserData] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -137,7 +137,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 // HOOK
 // ============================================================================
 
-export function useUser() {
+export const useUser = () => {
   return useContext(UserContext)!
 }
 

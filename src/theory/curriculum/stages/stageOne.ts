@@ -9,7 +9,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'noteRestValue',
       questionsCount: 10,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -20,7 +21,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'trebleClef',
       questionsCount: 10,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -31,7 +33,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'bassClef',
       questionsCount: 10,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'grid'
     }
   },
   {
@@ -42,7 +45,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'tieSlur',
       questionsCount: 10,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -53,7 +57,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'semitonesTones',
       questionsCount: 10,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -64,7 +69,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'musicalTerm',
       questionsCount: 10,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'row'
     }
   },
   {
@@ -76,7 +82,8 @@ export const stageOneLessons: Lesson[] = [
     exerciseConfig: {
       generatorType: 'stage-1-final',
       questionsCount: 25,
-      stage: 1
+      stage: 1,
+      answerLayoutType: 'row'
     }
   }
 ]

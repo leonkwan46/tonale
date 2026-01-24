@@ -1,13 +1,11 @@
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
-import { useTheme } from '@emotion/react'
-import { Ionicons } from '@expo/vector-icons'
+import { Icon } from '@/sharedComponents/Icon'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import * as React from 'react'
 import { useRef } from 'react'
 import { Keyboard, TextInput } from 'react-native'
-import { scale } from 'react-native-size-matters'
 import type { AuthFormData, AuthState } from '../../index'
 import {
   ErrorContainer,
@@ -27,17 +25,14 @@ interface AuthFormProps {
   formData: AuthFormData
   setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
-  isTablet: boolean
 }
 
-export const AuthForm: React.FC<AuthFormProps> = ({
+export const AuthForm = ({
   authState,
   formData,
   setFormData,
-  setAuthState,
-  isTablet
+  setAuthState
 }: AuthFormProps) => {
-  const theme = useTheme()
   const { setUserData, setIsRegistering } = useUser()
 
   // Refs for TextInputs to manage focus
@@ -133,22 +128,20 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   }
   
   return (
-  <FormSection isTablet={isTablet}>
+  <FormSection>
     {authState.error ? (
-      <ErrorContainer isTablet={isTablet}>
-        <Ionicons name="alert-circle" size={isTablet ? scale(14) : scale(20)} color={theme.colors.error} />
-        <ErrorText isTablet={isTablet}>{authState.error}</ErrorText>
+      <ErrorContainer>
+        <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+        <ErrorText>{authState.error}</ErrorText>
       </ErrorContainer>
     ) : null}
 
-    <InputsContainer isTablet={isTablet}>
-      <InputField isTablet={isTablet}>
-        <Ionicons name="mail-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
+    <InputsContainer>
+      <InputField>
+        <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
         <Input
           ref={emailInputRef}
-          isTablet={isTablet}
           placeholder="Email"
-          placeholderTextColor={theme.colors.secondary}
           onChangeText={(text: string) => updateFormData('email', text)}
           value={formData.email}
           keyboardType="email-address"
@@ -161,13 +154,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         />
       </InputField>
 
-      <InputField isTablet={isTablet}>
-        <Ionicons name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
+      <InputField>
+        <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
         <Input
           ref={passwordInputRef}
-          isTablet={isTablet}
           placeholder="Password"
-          placeholderTextColor={theme.colors.secondary}
           onChangeText={(text: string) => updateFormData('password', text)}
           value={formData.password}
           secureTextEntry={!authState.showPassword}
@@ -177,25 +168,22 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           onSubmitEditing={handlePasswordSubmit}
         />
         <EyeIcon
-          isTablet={isTablet}
           onPress={() => updateAuthState({ showPassword: !authState.showPassword })}
         >
-          <Ionicons 
+          <Icon 
             name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'} 
-            size={isTablet ? scale(16) : scale(18)} 
-            color={theme.colors.primary} 
+            sizeVariant="sm"
+            colorVariant="primary"
           />
         </EyeIcon>
       </InputField>
 
       {authState.mode === 'register' && (
-        <InputField isTablet={isTablet}>
-          <Ionicons name="lock-closed-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
+        <InputField>
+          <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
           <Input
             ref={confirmPasswordInputRef}
-            isTablet={isTablet}
             placeholder="Confirm Password"
-            placeholderTextColor={theme.colors.secondary}
             onChangeText={(text: string) => updateFormData('confirmPassword', text)}
             value={formData.confirmPassword}
             secureTextEntry={!authState.showConfirmPassword}
@@ -205,20 +193,19 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             onSubmitEditing={handleConfirmPasswordSubmit}
           />
           <EyeIcon
-            isTablet={isTablet}
             onPress={() => updateAuthState({ showConfirmPassword: !authState.showConfirmPassword })}
           >
-            <Ionicons 
+            <Icon 
               name={authState.showConfirmPassword ? 'eye-outline' : 'eye-off-outline'} 
-              size={isTablet ? scale(16) : scale(20)} 
-              color={theme.colors.primary} 
+              sizeVariant="sm"
+              colorVariant="primary"
             />
           </EyeIcon>
         </InputField>
       )}
 
       {authState.mode === 'register' && (
-        <RequirementsText isTablet={isTablet}>
+        <RequirementsText>
           Password must be at least 6 characters
         </RequirementsText>
       )}
@@ -228,18 +215,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       testID="auth-submit-button"
       onPress={handleAuth}
       disabled={authState.loading}
-      isTablet={isTablet}
     >
-      <PrimaryButtonText isTablet={isTablet}>
+      <PrimaryButtonText>
         {authState.loading 
           ? (authState.mode === 'login' ? 'Signing In...' : 'Creating Account...')
           : (authState.mode === 'login' ? 'Sign In' : 'Create Account')
         }
       </PrimaryButtonText>
-      <Ionicons 
+      <Icon 
         name={authState.mode === 'login' ? 'arrow-forward' : 'person-add'} 
-        size={isTablet ? scale(16) : scale(20)} 
-        color={theme.colors.text} 
+        sizeVariant="sm"
+        colorVariant="text"
       />
     </PrimaryButton>
   </FormSection>

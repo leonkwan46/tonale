@@ -8,7 +8,7 @@ export type NoteTypeConfig = {
   isTuplet?: boolean
 }
 
-export type NoteType = string | NoteTypeConfig
+export type NoteType = NoteTypeConfig
 
 export type TupletConfig = {
   noteType: string

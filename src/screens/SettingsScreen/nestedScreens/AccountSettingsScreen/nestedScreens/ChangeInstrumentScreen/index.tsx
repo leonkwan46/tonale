@@ -1,22 +1,23 @@
 import { updateUserData } from '@/config/firebase/functions'
-import { useDevice, useUser } from '@/hooks'
+import { useUser } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
-import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
+import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
-import { scale } from 'react-native-size-matters'
 
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
   Card,
   ErrorContainer,
-  ErrorIcon,
   ErrorText,
   PrimaryButton,
-  PrimaryButtonText
+  PrimaryButtonText,
+  ScrollContentContainer
 } from './ChangeInstrumentScreen.styles'
 
 const getInstrumentFromValue = (value: string | undefined): UserInstrument | null => {
@@ -36,7 +37,6 @@ const getInstrumentFromValue = (value: string | undefined): UserInstrument | nul
 export const ChangeInstrumentScreen = () => {
   const { userData, setUserData } = useUser()
   const router = useRouter()
-  const { isTablet } = useDevice()
   const scrollViewRef = useRef<ScrollView>(null)
   
   const currentInstrument = userData?.instrument
@@ -107,23 +107,17 @@ export const ChangeInstrumentScreen = () => {
       <KeyboardAwareScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ 
-          alignItems: 'center',
-          flexGrow: 1, 
-          padding: isTablet ? scale(8) : scale(10),
-          gap: isTablet ? scale(16) : scale(32)
-        }}
       >
-        <AvatarPreview 
+        <ScrollContentContainer>
+          <AvatarPreview 
           selectedGender={userData?.gender || 'male'} 
           selectedInstrument={selectedInstrument}
-          isTablet={isTablet}
         />
-        <Card isTablet={isTablet}>
+        <Card>
           {error ? (
-            <ErrorContainer isTablet={isTablet}>
-              <ErrorIcon name="alert-circle" size={isTablet ? scale(14) : scale(20)} />
-              <ErrorText isTablet={isTablet}>{error}</ErrorText>
+            <ErrorContainer>
+              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+              <ErrorText>{error}</ErrorText>
             </ErrorContainer>
           ) : null}
 
@@ -133,18 +127,17 @@ export const ChangeInstrumentScreen = () => {
             customInstrument={customInstrument}
             onCustomInstrumentChange={setCustomInstrument}
             onScrollToBottom={handleScrollToBottom}
-            isTablet={isTablet}
           />
 
           <PrimaryButton
             disabled={!canSave}
-            isTablet={isTablet}
             onPress={handleSave}
             activeOpacity={0.7}
           >
-            <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
+            <PrimaryButtonText>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
+        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )

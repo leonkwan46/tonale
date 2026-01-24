@@ -1,6 +1,5 @@
-import { Colors, ColorScheme } from '@/constants/Colors'
-import * as React from 'react'
 import { useEffect } from 'react'
+import { useTheme } from '@emotion/react'
 import {
     Easing,
     useAnimatedStyle,
@@ -19,12 +18,11 @@ import {
 } from './LogoAnimation.styles'
 
 interface LogoAnimationProps {
-  colorScheme: ColorScheme
   isTransitioning: boolean
 }
 
-export function LogoAnimation({ colorScheme, isTransitioning }: LogoAnimationProps) {
-  const colors = Colors[colorScheme]
+export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
+  const theme = useTheme()
   
   // Animation values
   const scale = useSharedValue(0.3)
@@ -65,18 +63,12 @@ export function LogoAnimation({ colorScheme, isTransitioning }: LogoAnimationPro
   return (
     <Container>
       <LogoContainer style={logoStyle}>
-        {/* Outer circle with gradient-like shadow */}
-        <OuterCircle colorScheme={colorScheme} />
-        
-        {/* Inner circle for depth */}
-        <InnerCircle colorScheme={colorScheme} />
-        
-        {/* Music note icon */}
+        <OuterCircle />
+        <InnerCircle />
         <MusicIcon
           name="musical-notes"
           size={scaleSize(48)}
-          color={colors.primary}
-          colorScheme={colorScheme}
+          color={theme.colors.primary}
         />
       </LogoContainer>
     </Container>

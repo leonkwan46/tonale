@@ -3,6 +3,15 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
+export const HomeScreenContainer = styled(View)({
+  flex: 1,
+  position: 'relative'
+})
+
+export const ScrollContentContainer = styled.View(() => ({
+  flexGrow: 1
+}))
+
 export const HomeScreenBackgroundContainer = styled(View)({
   flex: 1
 })

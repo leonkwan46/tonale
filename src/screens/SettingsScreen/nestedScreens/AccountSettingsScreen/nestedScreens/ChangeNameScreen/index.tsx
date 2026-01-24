@@ -1,30 +1,29 @@
 import { updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
-import { useDevice, useUser } from '@/hooks'
-import { KeyboardAwareScrollView, ScreenContainer } from '@/sharedComponents'
+import { useUser } from '@/hooks'
+import { Icon } from '@/sharedComponents/Icon'
+import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Keyboard } from 'react-native'
-import { scale } from 'react-native-size-matters'
 
 import { ScreenIntroHeader } from '../../../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
   Card,
   ErrorContainer,
-  ErrorIcon,
   ErrorText,
   Input,
   InputField,
   PrimaryButton,
   PrimaryButtonText,
-  PrimaryIcon
+  ScrollContentContainer
 } from './ChangeNameScreen.styles'
 
 export const ChangeNameScreen = () => {
   const { userData, setUserData } = useUser()
   const router = useRouter()
-  const { isTablet } = useDevice()
   const [name, setName] = useState(userData?.name || '')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -79,25 +78,24 @@ export const ChangeNameScreen = () => {
       <SettingItemHeader title="Change Name" />
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, padding: scale(20), gap: scale(20) }}
       >
-        <ScreenIntroHeader
+        <ScrollContentContainer>
+          <ScreenIntroHeader
           icon="person-outline"
           description="Your name helps personalize your experience in Tonalè. This name will be visible in your profile and progress tracking."
         />
         {/* Display Name Section */}
         <Card>
           {error ? (
-            <ErrorContainer isTablet={isTablet}>
-              <ErrorIcon name="alert-circle" size={isTablet ? scale(14) : scale(20)} />
-              <ErrorText isTablet={isTablet}>{error}</ErrorText>
+            <ErrorContainer>
+              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+              <ErrorText>{error}</ErrorText>
             </ErrorContainer>
           ) : null}
 
-          <InputField isTablet={isTablet}>
-            <PrimaryIcon name="person-outline" size={isTablet ? scale(16) : scale(20)} />
+          <InputField>
+            <Icon name="person-outline" sizeVariant="sm" colorVariant="primary" />
             <Input
-              isTablet={isTablet}
               placeholder="Enter your name"
               onChangeText={handleNameChange}
               value={name}
@@ -111,13 +109,13 @@ export const ChangeNameScreen = () => {
 
           <PrimaryButton
             disabled={loading || !name.trim()}
-            isTablet={isTablet}
             onPress={handleSave}
             activeOpacity={0.7}
           >
-            <PrimaryButtonText isTablet={isTablet}>Save</PrimaryButtonText>
+            <PrimaryButtonText>Save</PrimaryButtonText>
           </PrimaryButton>
         </Card>
+        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )

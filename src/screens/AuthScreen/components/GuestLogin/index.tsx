@@ -1,59 +1,46 @@
-import { useTheme } from '@emotion/react'
-import { Ionicons } from '@expo/vector-icons'
-import * as React from 'react'
-import { View } from 'react-native'
-import { scale } from 'react-native-size-matters'
 import {
   ButtonIcon,
   Divider,
   DividerContainer,
   DividerText,
   GuestLoginContainer,
+  GuestLoginWrapper,
   SecondaryButton,
   SecondaryButtonText
 } from './GuestLogin.styles'
+import { PersonIcon } from './PersonIcon'
 
 interface GuestLoginProps {
   loading: boolean
   onGuestLogin: () => void
   isVisible: boolean
-  isTablet: boolean
 }
 
-export const GuestLogin: React.FC<GuestLoginProps> = ({
+export const GuestLogin = ({
   loading,
   onGuestLogin,
-  isVisible,
-  isTablet
-}) => {
-  const theme = useTheme()
-  
+  isVisible
+}: GuestLoginProps) => {
   return (
-  <View style={{ 
-    opacity: isVisible ? 1 : 0,
-    height: isVisible ? 'auto' : 0,
-    overflow: 'hidden',
-    width: '100%'
-  }}>
-    <GuestLoginContainer isTablet={isTablet}>
+  <GuestLoginWrapper isVisible={isVisible}>
+    <GuestLoginContainer>
       <DividerContainer>
         <Divider />
-        <DividerText isTablet={isTablet}>or</DividerText>
+        <DividerText>or</DividerText>
         <Divider />
       </DividerContainer>
       <SecondaryButton
         onPress={onGuestLogin}
         disabled={loading}
-        isTablet={isTablet}
       >
-        <ButtonIcon isTablet={isTablet}>
-          <Ionicons name="person-outline" size={isTablet ? scale(16) : scale(20)} color={theme.colors.primary} />
+        <ButtonIcon>
+          <PersonIcon name="person-outline" sizeVariant="sm" />
         </ButtonIcon>
-        <SecondaryButtonText isTablet={isTablet}>
+        <SecondaryButtonText>
           Continue as Guest
         </SecondaryButtonText>
       </SecondaryButton>
     </GuestLoginContainer>
-  </View>
+  </GuestLoginWrapper>
   )
 }

@@ -1,31 +1,28 @@
 import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
-import { KeyboardAwareScrollView } from '@/sharedComponents'
+import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
 import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
-import * as React from 'react'
 import { useRef, useState } from 'react'
-import { ScrollView } from 'react-native'
-import { scale } from 'react-native-size-matters'
-import { useDevice } from '../../../hooks/useDevice'
+import type { ScrollView } from 'react-native'
 import { AvatarPreview } from '../components/AvatarPreview'
 import { GenderSelection } from '../components/GenderSelection'
 import { InstrumentSelection } from '../components/InstrumentSelection'
 import { NameInput } from '../components/NameInput'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
+import { ScrollContentContainer } from './OnboardingBody.styles'
 
 interface OnboardingBodyProps {
   authUser: { uid: string } | null
   setUserData: (userData: UserData) => void
 }
 
-export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
+export const OnboardingBody = ({
   authUser,
   setUserData
-}) => {
+}: OnboardingBodyProps) => {
   const router = useRouter()
-  const { isTablet } = useDevice()
   const scrollViewRef = useRef<ScrollView>(null)
   const [selectedGender, setSelectedGender] = useState<UserGender | null>('male')
   const [name, setName] = useState<string>('')
@@ -84,30 +81,23 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
       ref={scrollViewRef}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[1]}
-      contentContainerStyle={{ 
-        alignItems: 'center',
-        padding: isTablet ? scale(8) : scale(10),
-        gap: isTablet ? scale(16) : scale(32)
-      }}
     >
-      <OnboardingHeader isTablet={isTablet} />
+      <ScrollContentContainer>
+      <OnboardingHeader />
 
       <AvatarPreview 
         selectedGender={selectedGender} 
         selectedInstrument={selectedInstrument}
-        isTablet={isTablet}
       />
 
       <GenderSelection
         selectedGender={selectedGender}
         onSelect={setSelectedGender}
-        isTablet={isTablet}
       />
 
       <NameInput
         name={name}
         onNameChange={setName}
-        isTablet={isTablet}
       />
 
       <InstrumentSelection
@@ -116,15 +106,14 @@ export const OnboardingBody: React.FC<OnboardingBodyProps> = ({
         customInstrument={customInstrument}
         onCustomInstrumentChange={setCustomInstrument}
         onScrollToBottom={handleScrollToBottom}
-        isTablet={isTablet}
       />
 
       <OnboardingButton
         isEnabled={canCompleteOnboarding}
         isCompleting={isCompleting}
         onPress={handleCompleteOnboarding}
-        isTablet={isTablet}
       />
+      </ScrollContentContainer>
     </KeyboardAwareScrollView>
   )
 }

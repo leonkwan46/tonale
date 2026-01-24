@@ -10,3 +10,10 @@ export const LessonSectionContainer = styled(Pressable)(({ theme }) => ({
   gap: scale(30),
   padding: scale(10)
 }))
+
+export const StarContainer = styled.View(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: theme.device.isTablet ? scale(4) : scale(2)
+}))

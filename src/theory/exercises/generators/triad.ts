@@ -6,7 +6,7 @@ import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils
 import { addRegisterToChord, getChordsByStage } from '../utils/triad'
 import { generateExplanation } from '../utils/explanation'
 
-export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey?: string): Question => {
+export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey?: string, layoutType?: 'grid' | 'row'): Question => {
   const availableChords = getChordsByStage(stage)
   const chordKeys = Object.keys(availableChords)
   const selectedChordKey = chordKey || chordKeys[0]
@@ -41,7 +41,8 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
       chordKey: selectedChordKey
     }, visualComponent),
     type: 'multipleChoice',
-    visualComponent
+    visualComponent,
+    layoutType
   }
 }
 
@@ -50,11 +51,11 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   return question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).join('|') ?? null
 }
 
-export const createTriadQuestions = (questionsCount: number, stage: StageNumber): Question[] => {
+export const createTriadQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {
   const chordKeys = Object.keys(getChordsByStage(stage))
 
-  const treblePool = chordKeys.map(chordKey => createTriadQuestion(stage, 'treble', chordKey))
-  const bassPool = chordKeys.map(chordKey => createTriadQuestion(stage, 'bass', chordKey))
+  const treblePool = chordKeys.map(chordKey => createTriadQuestion(stage, 'treble', chordKey, layoutType))
+  const bassPool = chordKeys.map(chordKey => createTriadQuestion(stage, 'bass', chordKey, layoutType))
 
   const trebleCount = Math.ceil(questionsCount / 2)
   const bassCount = questionsCount - trebleCount

@@ -1,18 +1,17 @@
-import { useDevice } from '@/hooks'
+import { Button3D } from '@/sharedComponents/Button3D'
+import { ModalOverlay } from '@/sharedComponents/Modal/Modal.styles'
 import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/theory/exercises/utils/explanation'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
-import React from 'react'
+import type { ReactNode } from 'react'
+import { createElement } from 'react'
 import { Modal, Text } from 'react-native'
 import {
-  ButtonContainer,
-  ContinueButton,
   ContinueButtonText,
   ExplanationText,
-  ModalContainer,
-  ModalOverlay
+  ModalContainer
 } from './QuestionExplanation.styles'
-import { VisualExplanation } from './VisualExplanation/VisualExplanation'
+import { VisualExplanation } from './VisualExplanation'
 
 interface QuestionExplanationProps {
   explanation?: Explanation
@@ -21,7 +20,7 @@ interface QuestionExplanationProps {
   onContinue: () => void
 }
 
-const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): React.ReactNode => {
+const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): ReactNode => {
   if (!text) return null
   
   const formattingConfig = getExplanationFormattingConfig()
@@ -47,7 +46,7 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
   const pattern = `(${escapedStrings.join('|')})`
   const regex = new RegExp(pattern, 'gi')
   
-  const parts: React.ReactNode[] = []
+  const parts: ReactNode[] = []
   let lastIndex = 0
   let match
   
@@ -59,9 +58,7 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
     
     // Add the bolded text with the same font family
     parts.push(
-      <Text key={match.index} style={{ fontFamily: getSourGummyFontFamily('700') }}>
-        {match[0]}
-      </Text>
+      createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily('700') } }, match[0])
     )
     
     lastIndex = regex.lastIndex
@@ -75,14 +72,12 @@ const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): R
   return parts.length > 0 ? <>{parts}</> : text
 }
 
-export const QuestionExplanation: React.FC<QuestionExplanationProps> = ({
+export const QuestionExplanation = ({
   explanation,
   correctAnswer,
   visualComponent,
   onContinue
-}) => {
-  const { isTablet } = useDevice()
-  
+}: QuestionExplanationProps) => {
   // Extract text and visualComponent from explanation
   const explanationText = explanation?.text
   // Merge visual components: start with question's visualComponent, override with explanation's visualComponent
@@ -110,7 +105,7 @@ export const QuestionExplanation: React.FC<QuestionExplanationProps> = ({
       onRequestClose={onContinue}
     >
       <ModalOverlay>
-        <ModalContainer isTablet={isTablet}>
+        <ModalContainer>
           {showVisual && displayVisualComponent && (
             <VisualExplanation 
               visualComponent={displayVisualComponent}
@@ -118,21 +113,23 @@ export const QuestionExplanation: React.FC<QuestionExplanationProps> = ({
           )}
 
           {formattedText && (
-            <ExplanationText isTablet={isTablet}>
+            <ExplanationText>
               {formattedText}
             </ExplanationText>
           )}
           
-          <ButtonContainer isTablet={isTablet}>
-            <ContinueButton isTablet={isTablet} onPress={onContinue}>
-              <ContinueButtonText isTablet={isTablet}>
+          <Button3D
+            onPress={onContinue}
+            fullWidth={true}
+          >
+            {() => (
+              <ContinueButtonText>
                 Continue
               </ContinueButtonText>
-            </ContinueButton>
-          </ButtonContainer>
+            )}
+          </Button3D>
         </ModalContainer>
       </ModalOverlay>
     </Modal>
   )
 }
-

@@ -1,3 +1,4 @@
+import { DEVICE, type DeviceType } from '@/constants/device'
 import { useMemo } from 'react'
 import { Dimensions } from 'react-native'
 
@@ -6,10 +7,10 @@ export interface DeviceInfo {
   isPhone: boolean
   width: number
   height: number
-  deviceType: 'phone' | 'tablet'
+  deviceType: DeviceType
 }
 
-export function useDevice(): DeviceInfo {
+export const useDevice = (): DeviceInfo => {
   const dimensions = Dimensions.get('window')
   
   const deviceInfo = useMemo(() => {
@@ -21,7 +22,7 @@ export function useDevice(): DeviceInfo {
       isPhone: !isTablet,
       width,
       height,
-      deviceType: isTablet ? 'tablet' as const : 'phone' as const
+      deviceType: isTablet ? DEVICE.TABLET : DEVICE.PHONE
     }
   }, [dimensions])
   
@@ -29,7 +30,7 @@ export function useDevice(): DeviceInfo {
 }
 
 // Helper hook specifically for responsive values
-export function useResponsiveValue<T>(phoneValue: T, tabletValue: T): T {
+export const useResponsiveValue = <T,>(phoneValue: T, tabletValue: T): T => {
   const { isTablet } = useDevice()
   return isTablet ? tabletValue : phoneValue
 }

@@ -1,5 +1,5 @@
 import { useUser } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents'
+import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useGlobalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 
@@ -11,7 +11,7 @@ import { PasswordResetForm } from './components/PasswordResetForm'
 import { SuccessState } from './components/SuccessState'
 import { getHandler } from './handlers/AuthActionHandlerRegistry'
 
-export function AuthActionScreen() {
+export const AuthActionScreen = () => {
   const router = useRouter()
   const { authUser } = useUser()
   const params = useGlobalSearchParams<{ 

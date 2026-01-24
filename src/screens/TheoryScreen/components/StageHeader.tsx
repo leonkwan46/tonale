@@ -1,11 +1,10 @@
 import type { Stage } from '@types'
 import styled from '@emotion/native'
-import * as React from 'react'
 import { Animated, Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
-import { StarLogo } from './LessonSection/components/Logo'
+import { StarLogo } from './LessonSection/components/Logo/StarLogo'
 
 interface StageHeaderProps {
   stage: Stage
@@ -80,12 +79,12 @@ const ChevronIcon = styled(Animated.View)<{ isCollapsed: boolean }>(({ isCollaps
   transform: [{ rotate: isCollapsed ? '135deg' : '-45deg' }]
 }))
 
-export const StageHeader: React.FC<StageHeaderProps> = ({ 
+export const StageHeader = ({ 
   stage, 
   isCollapsed, 
   onToggle, 
   showToggle = true 
-}) => {
+}: StageHeaderProps) => {
   const regularLessons = stage.lessons.filter(lesson => !lesson.isFinalTest)
   const totalStars = regularLessons.reduce((sum, lesson) => sum + (lesson.stars || 0), 0)
   const maxStars = regularLessons.length * 3

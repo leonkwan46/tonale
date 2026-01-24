@@ -1,33 +1,24 @@
 import styled from '@emotion/native'
+import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
-export const VisualQuestionContainer = styled.View<{ isTablet: boolean, isSMuFLSymbol: boolean, needsExtraSpacing: boolean }>`
-  align-items: center;
-  justify-content: flex-start;
-  marginBottom: ${({ needsExtraSpacing, isTablet }) => needsExtraSpacing || isTablet ? '20px' : '10px'};
-
-  ${({ isTablet, isSMuFLSymbol }) => isTablet && !isSMuFLSymbol && `
-    transform: scale(0.9);
-    marginTop: ${scale(20)}px;
-    marginBottom: ${scale(20)}px;
-  `}
-`
-
-export const SMuFLSymbolContainer = styled.View<{ isTablet?: boolean; isTextTerm?: boolean }>(({ isTablet, isTextTerm }) => ({
-  flex: 1,
-  justifyContent: 'center',
+export const VisualQuestionContainer = styled.View(() => ({
   alignItems: 'center',
-  padding: isTextTerm
-    ? (isTablet ? scale(8) : scale(12))
-    : null,
-  marginTop: isTablet && !isTextTerm ? scale(10) : scale(-10)
+  justifyContent: 'flex-start',
+  marginTop: scale(10)
 }))
 
-export const SMuFLSymbolText = styled.Text<{ isTablet?: boolean; isTextTerm?: boolean; isWideDynamic?: boolean }>(({ theme, isTablet, isTextTerm, isWideDynamic }) => ({
+export const SMuFLSymbolContainer = styled.View<{ isTextTerm?: boolean }>(() => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center'
+}))
+
+export const SMuFLSymbolText = styled.Text<{ isTextTerm?: boolean; isWideDynamic?: boolean }>(({ theme, isTextTerm, isWideDynamic }) => ({
   fontFamily: isTextTerm ? 'Times New Roman' : 'Bravura',
   fontSize: isTextTerm 
-    ? (isTablet ? scale(18) : scale(24)) 
-    : (isTablet ? scale(24) : scale(40)),
+    ? (theme.device.isTablet ? scale(18) : scale(24)) 
+    : (theme.device.isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
   color: '#000',
@@ -50,9 +41,13 @@ export const TTSButton = styled.TouchableOpacity(({ theme }) => ({
   shadowColor: '#000',
   shadowOffset: {
     width: 0,
-    height: 2
+    height: scale(2)
   },
   shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-  elevation: 5
+  shadowRadius: scale(3.84),
+  elevation: scale(5)
+}))
+
+export const TTSIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.text
 }))
