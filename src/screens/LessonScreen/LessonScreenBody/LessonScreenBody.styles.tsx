@@ -9,7 +9,8 @@ export const BodyContainer = styled.View(({ theme }) => ({
   borderRadius: scale(theme.spacing.sm),
   maxWidth: theme.device.isTablet ? scale(600) : scale(400),
   alignSelf: 'center',
-  width: '100%'
+  width: '100%',
+  paddingBottom: scale(10)
 }))
 
 export const QuestionText = styled.Text(({ theme }) => ({

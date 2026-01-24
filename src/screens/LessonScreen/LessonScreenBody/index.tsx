@@ -1,5 +1,6 @@
 import type { Question } from '@types'
 import { useCallback } from 'react'
+import { Platform, ScrollView } from 'react-native'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { VisualQuestion } from '../components/VisualQuestion'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
@@ -42,23 +43,30 @@ export const LessonScreenBody = ({
   if (questions.length === 0) return null
 
   return (
-    <BodyContainer>
-      {visualComponent && (
-        <VisualQuestion visualComponent={visualComponent} stage={stage} />
-      )}
+    <ScrollView
+      bounces={false}
+      overScrollMode={Platform.OS === 'android' ? 'never' : undefined}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      <BodyContainer>
+        {visualComponent && (
+          <VisualQuestion visualComponent={visualComponent} stage={stage} />
+        )}
 
-      <QuestionText testID="question-text">{question}</QuestionText>
+        <QuestionText testID="question-text">{question}</QuestionText>
 
-      <AnswerInterface 
-        questionType={type}
-        questionData={currentQuestion}
-        onAnswerSubmit={handleAnswerSubmitInternal}
-        onNextQuestion={handleNextQuestionInternal}
-        onLessonComplete={onLessonComplete}
-        wrongAnswersCount={wrongAnswersCount}
-        isFinalTest={isFinalTest}
-        isLastQuestion={isLastQuestion}
-      />
-    </BodyContainer>
+        <AnswerInterface 
+          questionType={type}
+          questionData={currentQuestion}
+          onAnswerSubmit={handleAnswerSubmitInternal}
+          onNextQuestion={handleNextQuestionInternal}
+          onLessonComplete={onLessonComplete}
+          wrongAnswersCount={wrongAnswersCount}
+          isFinalTest={isFinalTest}
+          isLastQuestion={isLastQuestion}
+        />
+      </BodyContainer>
+    </ScrollView>
   )
 }
