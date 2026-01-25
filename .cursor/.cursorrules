@@ -7,6 +7,7 @@
 - No semicolons (including in imports)
 - No trailing commas
 - Use TypeScript strictly - avoid `any` types
+- Don't use the type `any` if possible - always prefer proper TypeScript types (e.g., `ImageSourcePropType`, `string[]`, custom interfaces)
 - Import React hooks directly: `import { useState, useEffect } from 'react'` (not `React.useState`)
 
 ## React/React Native Patterns

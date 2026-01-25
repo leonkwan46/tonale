@@ -1,8 +1,10 @@
 import { signOutUser } from '@/config/firebase/auth'
-import { useUser, useSafeNavigation } from '@/hooks'
+import { useSafeNavigation, useUser } from '@/hooks'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 
+import { Sheet } from '@/sharedComponents/Sheet'
+import { CoffeeSheet } from './components/CoffeeSheet'
 import { ProfileHeader } from './components/ProfileHeader'
 import { SettingsItem } from './components/SettingsItem'
 import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent, ScrollContentContainer } from './SettingsScreen.styles'
@@ -11,9 +13,14 @@ export const SettingsScreen = () => {
   const { userData } = useUser()
   const { navigate, navigateReplace } = useSafeNavigation()
   const [loggingOut, setLoggingOut] = useState(false)
+  const [showCoffeeSheet, setShowCoffeeSheet] = useState(false)
 
   const handleAccountPress = () => {
     navigate('/(tabs)/settings/account')
+  }
+
+  const handleBuyMeACoffeePress = () => {
+    setShowCoffeeSheet(true)
   }
 
   const handleLogoutPress = () => {
@@ -63,6 +70,18 @@ export const SettingsScreen = () => {
               onPress={handleAccountPress}
               showSeparator={false}
             />
+
+            {/* Buy me coffee card */}
+
+          </Card>
+            <SettingsItem
+                  icon="cafe-outline"
+                  label="Buy me a coffee"
+                  onPress={handleBuyMeACoffeePress}
+                  showSeparator={false}
+                />
+          <Card>
+
           </Card>
           <LogoutCard>
             <SettingsItem
@@ -76,6 +95,14 @@ export const SettingsScreen = () => {
           </ScrollContent>
         </ScrollContentContainer>
       </FullScreenScrollView>
+
+      <Sheet
+        visible={showCoffeeSheet}
+        onDismiss={() => setShowCoffeeSheet(false)}
+        size="full"
+      >
+        <CoffeeSheet />
+      </Sheet>
     </Container>
   )
 }
