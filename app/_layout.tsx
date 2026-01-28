@@ -18,10 +18,10 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ErrorBoundary>
-          <UserProvider>
-            <ProgressProvider>
-              <AppThemeProvider>
+        <AppThemeProvider>
+          <ErrorBoundary>
+            <UserProvider>
+              <ProgressProvider>
                 <BottomSheetModalProvider>
                   {showSplash ? (
                     <SplashScreen onComplete={() => setShowSplash(false)} />
@@ -38,10 +38,10 @@ export default function RootLayout() {
                     </>
                   )}
                 </BottomSheetModalProvider>
-              </AppThemeProvider>
             </ProgressProvider>
           </UserProvider>
         </ErrorBoundary>
+        </AppThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   )

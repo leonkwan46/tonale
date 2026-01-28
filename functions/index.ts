@@ -1,3 +1,8 @@
+import * as dotenv from 'dotenv'
+
+// Load environment variables from .env file
+dotenv.config()
+
 import * as admin from 'firebase-admin'
 
 // Import handlers directly
@@ -34,4 +39,3 @@ export { deleteLessonProgress, getAllLessonProgress, getLessonProgress, updateLe
 
 // Export revisionQuestions CRUD functions
 export { deleteRevisionQuestion, deleteRevisionQuestions, deleteRevisionQuestionsByLesson, getRevisionQuestions, storeRevisionQuestion, storeRevisionQuestions }
-
