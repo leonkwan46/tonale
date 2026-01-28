@@ -84,12 +84,14 @@ export const OnboardingBody = ({
     >
       <ScrollContentContainer>
       <OnboardingHeader />
+      </ScrollContentContainer>
 
       <AvatarPreview 
         selectedGender={selectedGender} 
         selectedInstrument={selectedInstrument}
       />
 
+      <ScrollContentContainer>
       <GenderSelection
         selectedGender={selectedGender}
         onSelect={setSelectedGender}
