@@ -83,7 +83,7 @@ export const OnboardingBody = ({
       stickyHeaderIndices={[1]}
     >
       <ScrollContentContainer>
-      <OnboardingHeader />
+        <OnboardingHeader />
       </ScrollContentContainer>
 
       <AvatarPreview 
@@ -92,29 +92,29 @@ export const OnboardingBody = ({
       />
 
       <ScrollContentContainer>
-      <GenderSelection
-        selectedGender={selectedGender}
-        onSelect={setSelectedGender}
-      />
+        <GenderSelection
+          selectedGender={selectedGender}
+          onSelect={setSelectedGender}
+        />
 
-      <NameInput
-        name={name}
-        onNameChange={setName}
-      />
+        <NameInput
+          name={name}
+          onNameChange={setName}
+        />
 
-      <InstrumentSelection
-        selectedInstrument={selectedInstrument}
-        onSelect={setSelectedInstrument}
-        customInstrument={customInstrument}
-        onCustomInstrumentChange={setCustomInstrument}
-        onScrollToBottom={handleScrollToBottom}
-      />
+        <InstrumentSelection
+          selectedInstrument={selectedInstrument}
+          onSelect={setSelectedInstrument}
+          customInstrument={customInstrument}
+          onCustomInstrumentChange={setCustomInstrument}
+          onScrollToBottom={handleScrollToBottom}
+        />
 
-      <OnboardingButton
-        isEnabled={canCompleteOnboarding}
-        isCompleting={isCompleting}
-        onPress={handleCompleteOnboarding}
-      />
+        <OnboardingButton
+          isEnabled={canCompleteOnboarding}
+          isCompleting={isCompleting}
+          onPress={handleCompleteOnboarding}
+        />
       </ScrollContentContainer>
     </KeyboardAwareScrollView>
   )

@@ -1,29 +1,22 @@
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import styled from '@emotion/native'
-import { TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
+export const OnboardingButtonContainer = styled(View)({
+  marginBottom: scale(20),
+  width: '100%'
+})
 
-export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number; disabled: boolean }>(({ theme, opacity, disabled }) => ({
-  backgroundColor: theme.colors.primary,
+export const ButtonContent = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(10) : scale(16),
-  borderRadius: scale(12),
-  shadowColor: theme.colors.primary,
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.3,
-  shadowRadius: 8,
-  elevation: 8,
-  opacity: disabled ? 0.5 : opacity,
-  width: '100%'
-}))
+  paddingVertical: scale(16)
+})
 
-export const PrimaryButtonText = styled.Text<{ hasLeftMargin?: boolean }>(({ theme, hasLeftMargin }) => ({
+export const ButtonText = styled.Text<{ hasLeftMargin?: boolean }>(({ theme, hasLeftMargin }) => ({
   color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(14) : scale(16),
-  marginRight: scale(8),
-  marginLeft: hasLeftMargin ? scale(8) : 0,
+  fontSize: theme.device.isTablet ? scale(14) : scale(24),
   fontFamily: getSourGummyFontFamily('600')
 }))
 
