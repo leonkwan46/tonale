@@ -10,6 +10,7 @@ export default function SettingsLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="account" />
       <Stack.Screen name="donation" />
+      <Stack.Screen name="feedback" />
     </Stack>
   )
 }

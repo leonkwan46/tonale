@@ -21,6 +21,10 @@ export const SettingsScreen = () => {
     navigate('/(tabs)/settings/donation')
   }
 
+  const handleFeedbackPress = () => {
+    navigate('/(tabs)/settings/feedback')
+  }
+
   const handleLogoutPress = () => {
     Alert.alert(
       'Log Out',
@@ -79,6 +83,14 @@ export const SettingsScreen = () => {
               />
             </Card>
           )}
+          <Card>
+            <SettingsItem
+              icon="chatbubble-outline"
+              label="Feedback"
+              onPress={handleFeedbackPress}
+              showSeparator={false}
+            />
+          </Card>
           <LogoutCard>
             <SettingsItem
               icon="log-out-outline"
