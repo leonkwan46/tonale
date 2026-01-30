@@ -12,30 +12,30 @@ export const FullScreenScrollView = styled(ScrollView)({
   flex: 1
 })
 
-export const ScrollContent = styled.View({
-  padding: scale(20),
-  gap: scale(20)
-})
+export const ScrollContent = styled.View(({ theme }) => ({
+  padding: scale(theme.spacing.lg),
+  gap: scale(theme.spacing.lg)
+}))
 
 export const ScrollContentContainer = styled.View({
   flexGrow: 1
 })
 
 export const ContentContainer = styled.View(({ theme }) => ({
-  padding: scale(20),
-  gap: scale(20)
+  padding: scale(theme.spacing.lg),
+  gap: scale(theme.spacing.lg)
 }))
 
 export const Card = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
-  borderRadius: scale(12),
-  paddingHorizontal: scale(10)
+  borderRadius: scale(theme.borderRadius.md),
+  paddingHorizontal: scale(theme.spacing.sm)
 }))
 
 export const LogoutCard = styled.View(({ theme }) => ({
   backgroundColor: 'transparent',
-  borderRadius: scale(12),
+  borderRadius: scale(theme.borderRadius.md),
   borderWidth: 1,
   borderColor: theme.colors.error,
-  paddingHorizontal: scale(10)
+  paddingHorizontal: scale(theme.spacing.sm)
 }))

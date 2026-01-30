@@ -6,23 +6,23 @@ import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const Container = styled.View(({ theme }) => ({
   alignItems: 'center',
-  paddingTop: theme.device.isTablet ? scale(24) : scale(32),
-  paddingBottom: theme.device.isTablet ? scale(16) : scale(24),
-  paddingHorizontal: scale(20),
-  gap: theme.device.isTablet ? scale(12) : scale(16)
+  paddingTop: theme.device.isTablet ? scale(theme.spacing.xl) : scale(theme.spacing.xl),
+  paddingBottom: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl),
+  paddingHorizontal: scale(theme.spacing.lg),
+  gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
 export const IconContainer = styled.View(({ theme }) => ({
-  marginBottom: theme.device.isTablet ? scale(4) : scale(8)
+  marginBottom: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm)
 }))
 
 export const DescriptionText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(14) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.base),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400'),
-  lineHeight: theme.device.isTablet ? scale(20) : scale(24),
+  lineHeight: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
   textAlign: 'center',
-  paddingHorizontal: scale(8)
+  paddingHorizontal: scale(theme.spacing.sm)
 }))
 
 export const HeaderIcon = styled(Ionicons)(({ theme }) => ({

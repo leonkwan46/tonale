@@ -21,7 +21,7 @@ export const SMuFLSymbolText = styled.Text<{ isTextTerm?: boolean; isWideDynamic
     : (theme.device.isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
-  color: '#000',
+  color: theme.colors.text,
   textAlign: 'center',
   textAlignVertical: 'center',
   paddingHorizontal: scale(15),
@@ -38,14 +38,7 @@ export const TTSButton = styled.TouchableOpacity(({ theme }) => ({
   backgroundColor: theme.colors.primary,
   alignItems: 'center',
   justifyContent: 'center',
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 0,
-    height: scale(2)
-  },
-  shadowOpacity: 0.25,
-  shadowRadius: scale(3.84),
-  elevation: scale(5)
+  ...theme.shadows.md
 }))
 
 export const TTSIcon = styled(Ionicons)(({ theme }) => ({

@@ -4,12 +4,12 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const GreetingBannerContainer = styled(View)({
+export const GreetingBannerContainer = styled(View)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  borderRadius: scale(16)
-})
+  borderRadius: scale(theme.borderRadius.lg)
+}))
 
 export const GreetingText = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography['2xl']),

@@ -5,7 +5,7 @@ const OnboardingHeaderComponent = () => {
   return (
     <HeaderContainer>
       <Title>Welcome to Tonalè!</Title>
-      <Subtitle>Tell us a bit about yourself to get started</Subtitle>
+      <Subtitle>Let&apos;s set things up for you!</Subtitle>
     </HeaderContainer>
   )
 }

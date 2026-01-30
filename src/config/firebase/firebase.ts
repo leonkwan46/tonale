@@ -5,7 +5,7 @@ import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 import { Platform } from 'react-native'
 
-// getReactNativePersistence exists at runtime but may not be in TypeScript definitions
+// getReactNativePersistence exists at runtime but is not in TypeScript definitions
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const firebaseAuth = require('firebase/auth') as typeof import('firebase/auth') & {
   getReactNativePersistence: (storage: typeof ReactNativeAsyncStorage) => Persistence

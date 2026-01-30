@@ -3,9 +3,9 @@ import { Ionicons } from '@expo/vector-icons'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
-export const Container = styled.View(() => ({
+export const Container = styled.View(({ theme }) => ({
   alignItems: 'center',
-  marginBottom: scale(32)
+  marginBottom: scale(theme.spacing.xl)
 }))
 
 export const LogoContainer = styled(Animated.View)(() => ({
@@ -23,9 +23,9 @@ export const OuterCircle = styled.View(({ theme }) => ({
   borderRadius: scale(60),
   backgroundColor: theme.colors.primary,
   shadowColor: theme.colors.primary,
-  shadowOffset: { width: 0, height: scale(8) },
+  shadowOffset: { width: 0, height: scale(theme.spacing.sm) },
   shadowOpacity: 0.3,
-  shadowRadius: scale(16),
+  shadowRadius: scale(theme.spacing.md),
   elevation: 12
 }))
 
@@ -37,11 +37,11 @@ export const InnerCircle = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   shadowOffset: { width: 0, height: scale(2) },
   shadowOpacity: 0.1,
-  shadowRadius: scale(4),
+  shadowRadius: scale(theme.spacing.xs),
   elevation: 2
 }))
 
-export const MusicIcon = styled(Ionicons)(() => ({
+export const MusicIcon = styled(Ionicons)(({ theme }) => ({
   zIndex: 10,
   textShadowOffset: { width: 0, height: scale(1) },
   textShadowRadius: scale(2),

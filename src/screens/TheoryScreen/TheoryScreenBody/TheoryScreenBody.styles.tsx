@@ -9,8 +9,8 @@ export const ContentWrapper = styled(ScrollView)(({ theme }) => ({
 }))
 
 export const ContentContainer = styled.View(({ theme }) => ({
-  padding: scale(10),
-  gap: scale(20),
+  padding: scale(theme.spacing.sm),
+  gap: scale(theme.spacing.lg),
   alignItems: 'center'
 }))
 
@@ -53,13 +53,13 @@ export const MessageOverlay = styled.View(({ theme }) => ({
 
 export const MessageContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.modalMask,
-  padding: scale(12),
-  borderRadius: scale(8)
+  padding: scale(theme.spacing.sm),
+  borderRadius: scale(theme.borderRadius.sm)
 }))
 
 export const MessageText = styled.Text(({ theme }) => ({
   color: 'white',
-  fontSize: scale(14),
+  fontSize: scale(theme.typography.base),
   textAlign: 'center'
 }))
 
