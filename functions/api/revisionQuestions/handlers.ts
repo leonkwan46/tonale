@@ -4,7 +4,7 @@ import type {
     StoreRevisionQuestionResponse,
     StoreRevisionQuestionsPayload
 } from '@types'
-import * as functions from 'firebase-functions/v1'
+import { onCall, HttpsError } from 'firebase-functions/v2/https'
 import {
     deleteRevisionQuestionService,
     deleteRevisionQuestionsByLessonService,
@@ -14,13 +14,14 @@ import {
     storeRevisionQuestionsService
 } from './service'
 
-export const storeRevisionQuestion = functions.https.onCall(
-  async (data: StoreRevisionQuestionPayload, context) => {
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+export const storeRevisionQuestionV2 = onCall(
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as StoreRevisionQuestionPayload
 
     try {
       return await storeRevisionQuestionService(userId, data) as StoreRevisionQuestionResponse
@@ -28,22 +29,22 @@ export const storeRevisionQuestion = functions.https.onCall(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error storing revision question:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to store revision question')
+      throw new HttpsError('internal', 'Failed to store revision question')
     }
   }
 )
 
-export const getRevisionQuestions = functions.https.onCall(
-  async (_data: Record<string, never>, context) => {
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+export const getRevisionQuestionsV2 = onCall(
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
 
     try {
       return await getRevisionQuestionsService(userId) as RevisionQuestionsResponse
@@ -51,22 +52,23 @@ export const getRevisionQuestions = functions.https.onCall(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       
       if (errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error fetching revision questions:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to fetch revision questions')
+      throw new HttpsError('internal', 'Failed to fetch revision questions')
     }
   }
 )
 
-export const deleteRevisionQuestion = functions.https.onCall(
-  async (data: { id: string }, context) => {
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+export const deleteRevisionQuestionV2 = onCall(
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as { id: string }
     const { id } = data
 
     try {
@@ -75,22 +77,23 @@ export const deleteRevisionQuestion = functions.https.onCall(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error deleting revision question:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to delete revision question')
+      throw new HttpsError('internal', 'Failed to delete revision question')
     }
   }
 )
 
-export const deleteRevisionQuestions = functions.https.onCall(
-  async (data: { ids: string[] }, context) => {
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+export const deleteRevisionQuestionsV2 = onCall(
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as { ids: string[] }
     const { ids } = data
 
     try {
@@ -99,22 +102,23 @@ export const deleteRevisionQuestions = functions.https.onCall(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error deleting revision questions:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to delete revision questions')
+      throw new HttpsError('internal', 'Failed to delete revision questions')
     }
   }
 )
 
-export const deleteRevisionQuestionsByLesson = functions.https.onCall(
-  async (data: { lessonId: string }, context) => {
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+export const deleteRevisionQuestionsByLessonV2 = onCall(
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as { lessonId: string }
     const { lessonId } = data
 
     try {
@@ -123,22 +127,23 @@ export const deleteRevisionQuestionsByLesson = functions.https.onCall(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error deleting revision questions by lesson:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to delete revision questions')
+      throw new HttpsError('internal', 'Failed to delete revision questions')
     }
   }
 )
 
-export const storeRevisionQuestions = functions.https.onCall(
-  async (data: StoreRevisionQuestionsPayload, context) => {
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+export const storeRevisionQuestionsV2 = onCall(
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as StoreRevisionQuestionsPayload
 
     try {
       return await storeRevisionQuestionsService(userId, data) as StoreRevisionQuestionResponse
@@ -146,11 +151,11 @@ export const storeRevisionQuestions = functions.https.onCall(
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error storing revision questions:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to store revision questions')
+      throw new HttpsError('internal', 'Failed to store revision questions')
     }
   }
 )
