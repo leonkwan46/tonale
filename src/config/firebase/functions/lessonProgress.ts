@@ -24,27 +24,27 @@ export interface GetLessonProgressPayload {
   lessonId: string
 }
 
-// Update lesson progress (CREATE/UPDATE)
+// Update lesson progress (CREATE/UPDATE) - 2nd Gen (V2 suffix for migration)
 export const updateLessonProgressFn = httpsCallable<
   UpdateLessonProgressPayload,
   UserDataSuccessResponse
->(functions, 'updateLessonProgress')
+>(functions, 'updateLessonProgressV2')
 
-// Get single lesson progress (READ)
+// Get single lesson progress (READ) - 2nd Gen (V2 suffix for migration)
 export const getLessonProgressFn = httpsCallable<
   GetLessonProgressPayload,
   LessonProgressResponse
->(functions, 'getLessonProgress')
+>(functions, 'getLessonProgressV2')
 
-// Get all lesson progress (READ ALL)
+// Get all lesson progress (READ ALL) - 2nd Gen (V2 suffix for migration)
 export const getAllLessonProgressFn = httpsCallable<
   void,
   AllLessonProgressResponse
->(functions, 'getAllLessonProgress')
+>(functions, 'getAllLessonProgressV2')
 
-// Delete lesson progress (DELETE)
+// Delete lesson progress (DELETE) - 2nd Gen (V2 suffix for migration)
 export const deleteLessonProgressFn = httpsCallable<
   GetLessonProgressPayload,
   UserDataSuccessResponse
->(functions, 'deleteLessonProgress')
+>(functions, 'deleteLessonProgressV2')
 
