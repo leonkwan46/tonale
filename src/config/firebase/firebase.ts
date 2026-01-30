@@ -1,9 +1,16 @@
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'
 import { initializeApp } from 'firebase/app'
-import { connectAuthEmulator, getReactNativePersistence, initializeAuth } from 'firebase/auth'
+import { connectAuthEmulator, initializeAuth, type Persistence } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 import { Platform } from 'react-native'
+
+// getReactNativePersistence exists at runtime but may not be in TypeScript definitions
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const firebaseAuth = require('firebase/auth') as typeof import('firebase/auth') & {
+  getReactNativePersistence: (storage: typeof ReactNativeAsyncStorage) => Persistence
+}
+const getReactNativePersistence = firebaseAuth.getReactNativePersistence
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
