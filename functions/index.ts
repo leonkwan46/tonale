@@ -5,37 +5,38 @@ dotenv.config()
 
 import * as admin from 'firebase-admin'
 
-// Import handlers directly
+// Import V2 handlers (2nd gen functions)
 import {
-    createUserData,
-    deleteUserData,
-    getUserData,
-    updateUserData
+    createUserDataV2,
+    deleteUserDataV2,
+    getUserDataV2,
+    updateUserDataV2
 } from './api/userData/handlers'
 
 import {
-    deleteLessonProgress,
-    getAllLessonProgress,
-    getLessonProgress,
-    updateLessonProgress
+    deleteLessonProgressV2,
+    getAllLessonProgressV2,
+    getLessonProgressV2,
+    updateLessonProgressV2
 } from './api/lessonProgress/handlers'
 
 import {
-    deleteRevisionQuestion,
-    deleteRevisionQuestions,
-    deleteRevisionQuestionsByLesson,
-    getRevisionQuestions,
-    storeRevisionQuestion,
-    storeRevisionQuestions
+    deleteRevisionQuestionV2,
+    deleteRevisionQuestionsByLessonV2,
+    deleteRevisionQuestionsV2,
+    getRevisionQuestionsV2,
+    storeRevisionQuestionV2,
+    storeRevisionQuestionsV2
 } from './api/revisionQuestions/handlers'
 
 admin.initializeApp()
 
-// Export userData CRUD functions
-export { createUserData, deleteUserData, getUserData, updateUserData }
+// Export userData CRUD functions (2nd Gen - V2 suffix for migration)
+export { createUserDataV2, deleteUserDataV2, getUserDataV2, updateUserDataV2 }
 
-// Export lessonProgress CRUD functions
-export { deleteLessonProgress, getAllLessonProgress, getLessonProgress, updateLessonProgress }
+// Export lessonProgress CRUD functions (2nd Gen - V2 suffix for migration)
+export { deleteLessonProgressV2, getAllLessonProgressV2, getLessonProgressV2, updateLessonProgressV2 }
 
-// Export revisionQuestions CRUD functions
-export { deleteRevisionQuestion, deleteRevisionQuestions, deleteRevisionQuestionsByLesson, getRevisionQuestions, storeRevisionQuestion, storeRevisionQuestions }
+// Export revisionQuestions CRUD functions (2nd Gen - V2 suffix for migration)
+export { deleteRevisionQuestionV2, deleteRevisionQuestionsByLessonV2, deleteRevisionQuestionsV2, getRevisionQuestionsV2, storeRevisionQuestionV2, storeRevisionQuestionsV2 }
+

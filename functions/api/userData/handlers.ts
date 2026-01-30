@@ -1,5 +1,5 @@
 import type { CreateUserDataResponse, GetUserDataResponse, UpdateUserDataResponse, UserDataSuccessResponse } from '@types'
-import * as functions from 'firebase-functions/v1'
+import { onCall, HttpsError } from 'firebase-functions/v2/https'
 import {
     createUserDataService,
     deleteUserDataService,
@@ -8,20 +8,20 @@ import {
 } from './service'
 
 // ============================================================================
-// HTTP HANDLERS LAYER - Thin Orchestration Layer
+// HTTP HANDLERS LAYER - Thin Orchestration Layer (2nd Gen)
 // ============================================================================
 
 /**
- * Create user data HTTP handler
+ * Create user data HTTP handler (2nd Gen)
  */
-export const createUserData = functions.https.onCall(async (data: any, context) => {
+export const createUserDataV2 = onCall(async (request) => {
   // Authentication check
-  if (!context?.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = context.auth.uid
-  const userData = data
+  const userId = request.auth.uid
+  const userData = request.data
 
   try {
     // Delegate to service layer
@@ -31,25 +31,25 @@ export const createUserData = functions.https.onCall(async (data: any, context) 
     
     // Map business logic errors to HTTP errors
     if (errorMessage.includes('must be')) {
-      throw new functions.https.HttpsError('invalid-argument', errorMessage)
+      throw new HttpsError('invalid-argument', errorMessage)
     }
     
     console.error('Error creating user profile:', error)
-    throw new functions.https.HttpsError('internal', 'Failed to create user data')
+    throw new HttpsError('internal', 'Failed to create user data')
   }
 })
 
 /**
- * Get user data HTTP handler
+ * Get user data HTTP handler (2nd Gen)
  * Gets user's profile and progress data from Firestore (not Auth account info)
  */
-export const getUserData = functions.https.onCall(async (data: any, context) => {
+export const getUserDataV2 = onCall(async (request) => {
   // Authentication check
-  if (!context?.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = context.auth.uid
+  const userId = request.auth.uid
 
   try {
     // Delegate to service layer
@@ -59,25 +59,25 @@ export const getUserData = functions.https.onCall(async (data: any, context) => 
     
     // Map business logic errors to HTTP errors
     if (errorMessage === 'User data not found') {
-      throw new functions.https.HttpsError('not-found', errorMessage)
+      throw new HttpsError('not-found', errorMessage)
     }
     
     console.error('Error fetching user profile:', error)
-    throw new functions.https.HttpsError('internal', 'Failed to get user data')
+    throw new HttpsError('internal', 'Failed to get user data')
   }
 })
 
 /**
- * Update user data HTTP handler
+ * Update user data HTTP handler (2nd Gen)
  */
-export const updateUserData = functions.https.onCall(async (data: any, context) => {
+export const updateUserDataV2 = onCall(async (request) => {
   // Authentication check
-  if (!context?.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = context.auth.uid
-  const updates = data
+  const userId = request.auth.uid
+  const updates = request.data
 
   try {
     // Delegate to service layer
@@ -87,33 +87,33 @@ export const updateUserData = functions.https.onCall(async (data: any, context) 
     
     // Map business logic errors to HTTP errors
     if (errorMessage.includes('must be')) {
-      throw new functions.https.HttpsError('invalid-argument', errorMessage)
+      throw new HttpsError('invalid-argument', errorMessage)
     }
     
     console.error('Error updating user data:', error)
-    throw new functions.https.HttpsError('internal', 'Failed to update user data')
+    throw new HttpsError('internal', 'Failed to update user data')
   }
 })
 
 /**
- * Delete user data HTTP handler
+ * Delete user data HTTP handler (2nd Gen)
  * Deletes user's profile and progress data from Firestore only.
  * NOTE: Does NOT delete the Firebase Auth account - user can still authenticate.
  */
-export const deleteUserData = functions.https.onCall(async (data: any, context) => {
+export const deleteUserDataV2 = onCall(async (request) => {
   // Authentication check
-  if (!context?.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = context.auth.uid
+  const userId = request.auth.uid
 
   try {
     // Delegate to service layer (only deletes Firestore data, not Auth account)
     return await deleteUserDataService(userId) as UserDataSuccessResponse
   } catch (error) {
     console.error('Error deleting user data:', error)
-    throw new functions.https.HttpsError('internal', 'Failed to delete user data')
+    throw new HttpsError('internal', 'Failed to delete user data')
   }
 })
 
