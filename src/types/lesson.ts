@@ -1,7 +1,7 @@
 import type { StageNumber } from './stage'
 import type { VisualComponent } from './visual'
 
-export type QuestionAnswerType = 'multipleChoice' | 'trueFalse' | 'keyPress'
+export type QuestionAnswerType = 'multipleChoice' | 'trueFalse' | 'keyPress' | 'rhythmTap'
 
 export type LessonContentType = 
   | 'noteValue' | 'restValue' | 'noteValueName' | 'restValueName'
@@ -17,16 +17,25 @@ export interface Explanation {
   visualComponent?: VisualComponent
 }
 
+export interface QuestionInterface {
+  type: 'playback'
+  audioFile?: ReturnType<typeof require>
+  rhythm?: number[]
+  tempo?: number
+}
+
 export interface Question {
   id: string
   question: string
-  correctAnswer: string
+  correctAnswer: string | number[]
   choices: string[]
   explanation?: Explanation
   type: QuestionAnswerType
   visualComponent?: VisualComponent
   layoutType?: 'grid' | 'row'
   stage?: StageNumber
+  answerInterface?: QuestionAnswerType
+  questionInterface?: QuestionInterface
 }
 
 export interface ExerciseConfig {

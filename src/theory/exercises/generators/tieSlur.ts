@@ -55,7 +55,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
     }).join(';')
     return `tieSlur|${questionType}|${elementSignature}`
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createTieSlurQuestions = (questionsCount: number, stage: StageNumber, layoutType?: 'grid' | 'row'): Question[] => {

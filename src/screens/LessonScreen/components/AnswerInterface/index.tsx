@@ -1,10 +1,11 @@
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Text } from 'react-native'
 import { QuestionExplanation } from '../QuestionExplanation'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
+import { RhythmTap } from './AnswerTypes/RhythmTap'
 import { KeyPress } from './QuestionTypes/KeyPress'
 import { MultipleChoice } from './QuestionTypes/MultipleChoice'
 import { TrueFalse } from './QuestionTypes/TrueFalse'
@@ -19,13 +20,14 @@ interface AnswerInterfaceProps {
   wrongAnswersCount?: number
   isFinalTest?: boolean
   isLastQuestion?: boolean
+  onPlaybackFinishRef?: React.MutableRefObject<(() => void) | null>
 }
 
 const EXPLANATION_MODAL_DELAY = 1000
 const CORRECT_ANSWER_DELAY = 1500
 const FINAL_TEST_FAILURE_THRESHOLD = 3
 
-export const AnswerInterface = ({ 
+export const AnswerInterface = ({
   questionType,
   questionData,
   onAnswerSubmit,
@@ -33,7 +35,8 @@ export const AnswerInterface = ({
   onLessonComplete,
   wrongAnswersCount = 0,
   isFinalTest = false,
-  isLastQuestion = false
+  isLastQuestion = false,
+  onPlaybackFinishRef
 }: AnswerInterfaceProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
@@ -103,21 +106,55 @@ export const AnswerInterface = ({
   }
 
   const handleChoiceSelect = (choice: string) => {
-    handleAnswer(choice, choice === questionData.correctAnswer)
+    const correctAnswer = typeof questionData.correctAnswer === 'string'
+      ? questionData.correctAnswer
+      : ''
+    handleAnswer(choice, choice === correctAnswer)
   }
 
   const handleKeyPress = (key: string) => {
-    handleAnswer(key, isEnharmonicEquivalent(key, questionData.correctAnswer))
+    const correctAnswer = typeof questionData.correctAnswer === 'string'
+      ? questionData.correctAnswer
+      : ''
+    handleAnswer(key, isEnharmonicEquivalent(key, correctAnswer))
   }
+
+  const handleRhythmTapSubmit = (userTimestamps: number[]) => {
+    const correctAnswer = questionData.correctAnswer as number[]
+    let isCorrect = false
+
+    const isPulseExercise = questionData.questionInterface?.audioFile && !questionData.questionInterface?.rhythm
+    const isRhythmExercise = questionData.questionInterface?.rhythm && !questionData.questionInterface?.audioFile
+
+    if (isPulseExercise) {
+      const { comparePulsePattern } = require('@/subjects/aural/exercises/generators/pulse')
+      isCorrect = comparePulsePattern(userTimestamps, correctAnswer)
+    } else if (isRhythmExercise) {
+      const { compareRhythmPattern } = require('@/subjects/aural/exercises/generators/rhythm')
+      isCorrect = compareRhythmPattern(userTimestamps, correctAnswer)
+    }
+
+    handleAnswer(userTimestamps.join(','), isCorrect)
+  }
+
+  const rhythmDuration = useMemo(() => {
+    if (questionData.questionInterface?.rhythm) {
+      const totalDuration = questionData.questionInterface.rhythm.reduce((sum, dur) => sum + dur, 0)
+      const tempo = questionData.questionInterface.tempo || 90
+      const beatDuration = 60 / tempo
+      return (totalDuration * beatDuration * 1000) + 1000 // Add 1s buffer
+    }
+    return undefined
+  }, [questionData])
 
   const renderAnswerComponent = () => {
     switch (questionType) {
       case QUESTION_TYPE.MULTIPLE_CHOICE:
         return (
           <MultipleChoice
-            testID={`correct-answer-${questionData.correctAnswer}`}
+            testID={`correct-answer-${typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}`}
             choices={questionData.choices}
-            correctAnswer={questionData.correctAnswer}
+            correctAnswer={typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}
             selectedAnswer={selectedAnswer}
             showResult={showResult}
             onChoiceSelect={handleChoiceSelect}
@@ -128,19 +165,38 @@ export const AnswerInterface = ({
         return (
           <TrueFalse
             choices={questionData.choices}
-            correctAnswer={questionData.correctAnswer}
+            correctAnswer={typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}
             selectedAnswer={selectedAnswer}
             showResult={showResult}
             showCorrectAnswer={showCorrectAnswer}
             onChoiceSelect={handleChoiceSelect}
-            testID={`correct-answer-${questionData.correctAnswer}`}
+            testID={`correct-answer-${typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}`}
           />
         )
       case QUESTION_TYPE.KEY_PRESS:
         return (
           <KeyPress
-            correctKey={questionData.correctAnswer}
+            correctKey={typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}
             onKeyPress={handleKeyPress}
+          />
+        )
+      case 'rhythmTap':
+        return (
+          <RhythmTap
+            onTapSubmit={handleRhythmTapSubmit}
+            disabled={showResult}
+            rhythmDuration={rhythmDuration}
+            buttonState={
+              showResult
+                ? (isCorrect ? 'correct' : 'incorrect')
+                : 'default'
+            }
+            tempo={questionData.questionInterface?.tempo}
+            questionInterface={questionData.questionInterface}
+            onRecordingChange={(recording) => {
+              // Optional: track recording state
+            }}
+            onPlaybackFinishRef={onPlaybackFinishRef}
           />
         )
       default:
@@ -170,7 +226,7 @@ export const AnswerInterface = ({
       {showExplanationModal && !isFinalTest && (
         <QuestionExplanation
           explanation={questionData.explanation}
-          correctAnswer={questionData.correctAnswer}
+          correctAnswer={typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}
           visualComponent={questionData.visualComponent}
           onContinue={handleContinue}
         />

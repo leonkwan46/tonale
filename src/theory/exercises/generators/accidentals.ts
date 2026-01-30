@@ -58,7 +58,7 @@ export const createAccidentalQuestion = (
 const getDuplicateIdentifier = (question: Question): string | null => {
   const symbolType = question.visualComponent?.symbolType
   if (symbolType) return symbolType
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createAccidentalQuestions = (

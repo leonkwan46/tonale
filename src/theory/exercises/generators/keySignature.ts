@@ -38,7 +38,7 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey, l
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.correctAnswer) {
+  if (question.correctAnswer && typeof question.correctAnswer === 'string') {
     return question.correctAnswer
   }
 
