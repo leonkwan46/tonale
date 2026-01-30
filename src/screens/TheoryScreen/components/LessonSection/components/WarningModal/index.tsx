@@ -23,7 +23,7 @@ export const WarningModal = ({
   onContinue,
   onCancel,
   title = 'Warning',
-  description = 'Some lessons don\'t have any stars yet. Are you sure you want to continue?'
+  description = 'You haven\'t earned stars on all lessons yet. Continue to the test anyway?'
 }: WarningModalProps) => {
   return (
     <Modal
