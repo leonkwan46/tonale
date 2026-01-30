@@ -7,7 +7,7 @@ import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const GuestLoginContainer = styled.View(({ theme }) => ({
   flexDirection: 'column',
-  gap: theme.device.isTablet ? scale(6) : scale(16),
+  gap: theme.device.isTablet ? scale(6) : scale(theme.spacing.md),
   width: '100%'
 }))
 
@@ -24,8 +24,8 @@ export const Divider = styled.View(({ theme }) => ({
 }))
 
 export const DividerText = styled.Text(({ theme }) => ({
-  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
-  fontSize: theme.device.isTablet ? scale(10) : scale(14),
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.base),
   opacity: 0.6,
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400')
@@ -35,21 +35,21 @@ export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
-  borderRadius: scale(12),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  borderRadius: scale(theme.borderRadius.md),
   borderWidth: 2,
   borderColor: theme.colors.primary,
   opacity: disabled ? 0.7 : 1
 }))
 
 export const SecondaryButtonText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.primary,
   fontFamily: getSourGummyFontFamily('500')
 }))
 
 export const ButtonIcon = styled.View(({ theme }) => ({
-  marginLeft: theme.device.isTablet ? scale(3) : scale(4)
+  marginLeft: theme.device.isTablet ? scale(3) : scale(theme.spacing.xs)
 }))
 
 export const PersonIconStyled = styled(Ionicons)(({ theme }) => ({

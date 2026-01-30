@@ -10,14 +10,14 @@ export const HeaderContainer = styled(View)(() => ({
 }))
 
 export const Title = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(20) : scale(24),
+  fontSize: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
   textAlign: 'center'
 }))
 
 export const Subtitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.normal),
   textAlign: 'center',

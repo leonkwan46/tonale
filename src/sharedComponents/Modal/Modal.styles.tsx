@@ -18,26 +18,26 @@ export const ModalOverlay = styled.View(({ theme }) => ({
 
 export const ModalContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
-  borderRadius: scale(20),
-  padding: theme.device.isTablet ? scale(12) : scale(24),
-  margin: theme.device.isTablet ? scale(60) : scale(20),
+  borderRadius: scale(theme.borderRadius.xl),
+  padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.xl),
+  margin: theme.device.isTablet ? scale(60) : scale(theme.spacing.lg),
   minWidth: theme.device.isTablet ? scale(200) : scale(300),
   maxWidth: theme.device.isTablet ? scale(300) : scale(400),
   alignItems: 'center',
-  gap: theme.device.isTablet ? scale(16) : scale(24),
+  gap: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl),
   borderWidth: 1,
   borderColor: theme.colors.border
 }))
 
 export const TitleText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(20) : scale(24),
+  fontSize: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
   color: theme.colors.text,
   textAlign: 'center',
   fontFamily: getSourGummyFontFamily('bold')
 }))
 
 export const DescriptionText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(14) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.base),
   color: theme.colors.text,
   textAlign: 'center',
   opacity: 0.8,
@@ -50,13 +50,13 @@ export const ButtonContainer = styled.View<{ singleButton?: boolean }>(({ theme,
   alignItems: 'center',
   width: singleButton ? 'auto' : '100%',
   alignSelf: singleButton ? 'center' : 'stretch',
-  gap: theme.device.isTablet ? scale(8) : scale(12)
+  gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm)
 }))
 
 export const ModalButton = styled(TouchableOpacity)<{ variant: 'filled' | 'outlined'; singleButton?: boolean }>(({ theme, variant, singleButton }) => ({
   flex: singleButton ? 0 : 1,
-  paddingVertical: theme.device.isTablet ? scale(8) : scale(12),
-  borderRadius: scale(8),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm),
+  borderRadius: scale(theme.borderRadius.sm),
   backgroundColor: variant === 'filled' ? theme.colors.primary : 'transparent',
   borderWidth: variant === 'outlined' ? 1 : 0,
   borderColor: theme.colors.primary,
@@ -66,7 +66,7 @@ export const ModalButton = styled(TouchableOpacity)<{ variant: 'filled' | 'outli
 }))
 
 export const ModalButtonText = styled.Text<{ variant: 'filled' | 'outlined' }>(({ theme, variant }) => ({
-  fontSize: theme.device.isTablet ? scale(13) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: variant === 'filled' ? theme.colors.background : theme.colors.primary,
   fontFamily: getSourGummyFontFamily('600')
 }))

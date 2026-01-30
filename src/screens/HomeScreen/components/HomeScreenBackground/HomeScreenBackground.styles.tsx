@@ -28,7 +28,7 @@ export const StageImage = styled(Image)<{ screenWidth: number }>(({ screenWidth 
   resizeMode: 'cover'
 }))
 
-export const AvatarImage = styled(Image)<{ screenWidth: number }>(({ screenWidth }) => ({
+export const AvatarImage = styled(Image)<{ screenWidth: number }>(({ screenWidth, theme }) => ({
   position: 'absolute',
   bottom: scale(100),
   left: screenWidth / 2 - scale(65),
@@ -38,12 +38,12 @@ export const AvatarImage = styled(Image)<{ screenWidth: number }>(({ screenWidth
   resizeMode: 'contain'
 }))
 
-export const BackgroundGradient = styled(LinearGradient)({
+export const BackgroundGradient = styled(LinearGradient)(({ theme }) => ({
   paddingBottom: scale(100)
-})
+}))
 
-export const ContentContainer = styled(View)({
-  padding: scale(10),
-  gap: scale(20),
+export const ContentContainer = styled(View)(({ theme }) => ({
+  padding: scale(theme.spacing.sm),
+  gap: scale(theme.spacing.lg),
   alignItems: 'center'
-})
+}))

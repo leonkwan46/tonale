@@ -8,19 +8,19 @@ export type LayoutType = 'grid' | 'row'
 export const ChoicesContainer = styled.View<{ type: LayoutType }>(({ type, theme }) => ({
   alignItems: 'center',
   width: '100%',
-  gap: type === 'grid' ? scale(20) : theme.device.isTablet ? scale(12) : scale(20)
+  gap: type === 'grid' ? scale(theme.spacing.lg) : theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.lg)
 }))
 
-export const ChoiceRow = styled.View<{ type: 'grid' | 'row' }>(({ type }) => ({
+export const ChoiceRow = styled.View<{ type: 'grid' | 'row' }>(({ type, theme }) => ({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  gap: type === 'grid' ? scale(24) : scale(12)
+  gap: type === 'grid' ? scale(theme.spacing.xl) : scale(theme.spacing.sm)
 }))
 
 export const MultipleChoiceButtonContainer = styled.View<{ layoutType: LayoutType }>(({ theme, layoutType }) => ({
-  padding: theme.device.isTablet ? scale(15) : scale(20),
+  padding: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
   justifyContent: 'center',
   alignItems: 'center',
   height: layoutType === 'grid' ? (theme.device.isTablet ? scale(70) : scale(100)) : undefined,

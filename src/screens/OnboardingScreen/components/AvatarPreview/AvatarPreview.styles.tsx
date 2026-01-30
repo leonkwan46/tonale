@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export const StickerWrapper = styled(View)<{ screenWidth: number }>(({ screenWidth }) => ({
+export const StickerWrapper = styled(View)<{ screenWidth: number }>(({ screenWidth, theme }) => ({
   width: screenWidth,
   alignItems: 'center',
   padding: scale(6)

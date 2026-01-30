@@ -2,10 +2,10 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 export const ExplanationCard = styled.View<{ isTextTerm?: boolean }>(({ theme, isTextTerm }) => ({
-  backgroundColor: '#ffffff',
-  borderRadius: scale(16),
+  backgroundColor: theme.colors.surface,
+  borderRadius: scale(theme.borderRadius.lg),
   borderWidth: scale(1),
-  borderColor: '#000000',
+  borderColor: theme.colors.text,
   width: '100%',
   maxWidth: '100%',
   minHeight: isTextTerm ? (theme.device.isTablet ? scale(115) : scale(135)) : (theme.device.isTablet ? scale(115) : scale(135)),
@@ -37,7 +37,7 @@ export const ExplanationSymbolText = styled.Text<{ isTextTerm?: boolean; isWideD
     : (theme.device.isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
-  color: '#000000',
+  color: theme.colors.text,
   textAlign: 'center',
   textAlignVertical: 'center',
   paddingHorizontal: scale(15),

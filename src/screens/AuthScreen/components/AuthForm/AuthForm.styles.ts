@@ -10,7 +10,7 @@ export const FormSection = styled(Animated.View)(({ theme }) => ({
   minHeight: theme.device.isTablet ? scale(100) : scale(200),
   width: '100%',
   flexDirection: 'column',
-  gap: theme.device.isTablet ? scale(8) : scale(10)
+  gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm)
 }))
 
 export const ErrorContainer = styled.View(({ theme }) => ({
@@ -19,22 +19,22 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderWidth: 1,
   borderColor: theme.colors.error,
-  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
-  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
-  borderRadius: scale(8),
-  gap: theme.device.isTablet ? scale(5) : scale(8)
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm),
+  borderRadius: scale(theme.borderRadius.sm),
+  gap: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm)
 }))
 
 export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
+  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
 export const InputsContainer = styled.View(({ theme }) => ({
   flexDirection: 'column',
-  gap: theme.device.isTablet ? scale(5) : scale(8),
+  gap: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm),
   width: '100%'
 }))
 
@@ -42,17 +42,17 @@ export const InputField = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   borderWidth: 1,
-  borderRadius: scale(12),
-  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
+  borderRadius: scale(theme.borderRadius.md),
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
   height: theme.device.isTablet ? scale(40) : scale(56),
   backgroundColor: theme.colors.surface,
   borderColor: theme.colors.border,
-  gap: theme.device.isTablet ? scale(6) : scale(8)
+  gap: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm)
 }))
 
 export const Input = styled.TextInput(({ theme }) => ({
   flex: 1,
-  fontSize: theme.device.isTablet ? scale(12) : scale(14),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.sm),
   height: '100%',
   color: theme.colors.text,
   placeholderTextColor: theme.colors.secondary,
@@ -60,11 +60,11 @@ export const Input = styled.TextInput(({ theme }) => ({
 }))
 
 export const EyeIcon = styled(TouchableOpacity)(({ theme }) => ({
-  padding: theme.device.isTablet ? scale(3) : scale(4)
+  padding: scale(theme.spacing.xs)
 }))
 
 export const RequirementsText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
+  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   textAlign: 'center',
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400')
@@ -75,16 +75,16 @@ export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
-  borderRadius: scale(12),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  borderRadius: scale(theme.borderRadius.md),
   opacity: disabled ? 0.7 : 1,
-  marginTop: theme.device.isTablet ? scale(10) : scale(16)
+  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
-  marginRight: theme.device.isTablet ? scale(6) : scale(8),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
+  marginRight: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm),
   fontFamily: getSourGummyFontFamily('600')
 }))
 

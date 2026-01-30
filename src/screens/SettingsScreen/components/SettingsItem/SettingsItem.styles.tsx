@@ -5,15 +5,15 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const SettingsItemContainer = styled(TouchableOpacity)({
+export const SettingsItemContainer = styled(TouchableOpacity)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
-  gap: scale(12),
-  paddingVertical: scale(12)
-})
+  gap: scale(theme.spacing.sm),
+  paddingVertical: scale(theme.spacing.sm)
+}))
 
 export const IconContainer = styled(View)<{ type?: 'filled' | 'outlined' }>(({ theme, type }) => ({
-  padding: scale(8),
+  padding: scale(theme.spacing.sm),
   borderRadius: scale(40),
   backgroundColor: type === 'outlined' ? theme.colors.surface : 'transparent',
   justifyContent: 'center',
@@ -43,7 +43,7 @@ export const Separator = styled(View)(({ theme }) => ({
 }))
 
 export const VerifyIconContainer = styled(View)(({ theme }) => ({
-  marginRight: scale(8),
+  marginRight: scale(theme.spacing.sm),
   justifyContent: 'center',
   alignItems: 'center'
 }))

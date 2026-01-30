@@ -36,14 +36,7 @@ export const TabBarContainer = styled.View<{
     ios: theme.device.isTablet ? config.height.ios : verticalScale(config.height.ios),
     android: theme.device.isTablet ? config.height.android : verticalScale(config.height.android)
   }),
-  elevation: 8,
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 0,
-    height: -2
-  },
-  shadowOpacity: 0.1,
-  shadowRadius: 8
+  ...theme.shadows.lg
 }))
 
 export const TabButton = styled(TouchableOpacity)<{

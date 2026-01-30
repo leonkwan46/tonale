@@ -8,12 +8,12 @@ export const ChoicesContainer = styled.View`
   width: 100%;
 `
 
-export const ChoiceRow = styled.View<{ isLastRow: boolean }>(() => ({
+export const ChoiceRow = styled.View<{ isLastRow: boolean }>(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  gap: scale(24)
+  gap: scale(theme.spacing.xl)
 }))
 
 export const TrueFalseButtonContainer = styled.View(({ theme }) => ({
@@ -25,7 +25,7 @@ export const TrueFalseButtonContainer = styled.View(({ theme }) => ({
 
 export const ChoiceText = styled.Text(({ theme }) => {
   return {
-    fontSize: theme.device.isTablet ? scale(16) : scale(20),
+    fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
     color: theme.colors.text,
     textAlign: 'center',
     fontFamily: getSourGummyFontFamily('600')

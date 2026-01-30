@@ -4,10 +4,10 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const ProfileSection = styled.View({
+export const ProfileSection = styled.View(({ theme }) => ({
   alignItems: 'center',
-  gap: scale(16)
-})
+  gap: scale(theme.spacing.md)
+}))
 
 export const ProfileName = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.xl || 20),
