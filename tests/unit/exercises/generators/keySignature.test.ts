@@ -134,7 +134,7 @@ describe('keySignature generator', () => {
 
       it('should have correct deduplication logic', () => {
         const questions = createKeySignatureQuestions(20, 2)
-        const correctAnswers = questions.map(q => q.correctAnswer)
+        const correctAnswers = questions.map(q => q.correctAnswer).filter((a): a is string => typeof a === 'string')
 
         const keyCounts = new Map<string, number>()
         correctAnswers.forEach(key => {

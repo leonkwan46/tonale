@@ -109,7 +109,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   if (question.visualComponent?.symbolType) {
     return question.visualComponent.symbolType
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createMusicalTermQuestions = (

@@ -1,7 +1,8 @@
 import type { Question } from '@types'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Platform, ScrollView } from 'react-native'
 import { AnswerInterface } from '../components/AnswerInterface'
+import { Playback } from '../components/QuestionInterface/QuestionTypes/Playback'
 import { VisualQuestion } from '../components/VisualQuestion'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
 
@@ -28,6 +29,11 @@ export const LessonScreenBody = ({
   const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
 
+  // Playback state for aural exercises
+  const [hasPlaybackStarted, setHasPlaybackStarted] = useState(false)
+  const [hasPlaybackFinished, setHasPlaybackFinished] = useState(false)
+  const onPlaybackFinishRef = useRef<(() => void) | null>(null)
+
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
   }, [onAnswerSubmit])
@@ -39,6 +45,13 @@ export const LessonScreenBody = ({
       onNextQuestion()
     }
   }, [isLastQuestion, onLessonComplete, onNextQuestion])
+
+  // Reset playback state on question change
+  useEffect(() => {
+    setHasPlaybackStarted(false)
+    setHasPlaybackFinished(false)
+    onPlaybackFinishRef.current = null
+  }, [currentQuestion.id])
 
   if (questions.length === 0) return null
 
@@ -54,9 +67,18 @@ export const LessonScreenBody = ({
           <VisualQuestion visualComponent={visualComponent} stage={stage} />
         )}
 
+        {currentQuestion.questionInterface && (
+          <Playback
+            questionInterface={currentQuestion.questionInterface}
+            onPlaybackStart={() => setHasPlaybackStarted(true)}
+            onPlaybackFinish={() => setHasPlaybackFinished(true)}
+            enableMetronome={false}
+          />
+        )}
+
         <QuestionText testID="question-text">{question}</QuestionText>
 
-        <AnswerInterface 
+        <AnswerInterface
           questionType={type}
           questionData={currentQuestion}
           onAnswerSubmit={handleAnswerSubmitInternal}
@@ -65,6 +87,7 @@ export const LessonScreenBody = ({
           wrongAnswersCount={wrongAnswersCount}
           isFinalTest={isFinalTest}
           isLastQuestion={isLastQuestion}
+          onPlaybackFinishRef={onPlaybackFinishRef}
         />
       </BodyContainer>
     </ScrollView>

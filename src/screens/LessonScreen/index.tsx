@@ -3,6 +3,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress, useSafeNavigation } from '@/hooks'
 import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
 import { generateLessonQuestions } from '@/theory/exercises/generate'
+import { generateAuralQuestions } from '@/subjects/aural/exercises/generate'
 import { playLessonFailedSound, playLessonFinishedSound } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import type { Question } from '@types'
@@ -21,6 +22,14 @@ export const LessonScreen = () => {
   
   const generateQuestions = useCallback((lessonData: typeof lesson): Question[] => {
     if (!lessonData || !lessonData.exerciseConfig) return []
+
+    // Detect aural lessons by ID prefix
+    const isAuralLesson = lessonData.id.startsWith('aural-')
+
+    if (isAuralLesson) {
+      return generateAuralQuestions(lessonData.exerciseConfig)
+    }
+
     return generateLessonQuestions(lessonData.exerciseConfig)
   }, [])
   

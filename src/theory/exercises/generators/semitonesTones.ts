@@ -69,7 +69,7 @@ const getDuplicateIdentifier = (question: Question): string | null => {
   if (pitches && pitches.length > 0) {
     return pitches.join('|')
   }
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createSemitoneToneQuestions = (

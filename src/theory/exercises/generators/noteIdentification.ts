@@ -94,7 +94,7 @@ export const createNoteIdentificationQuestion = (
 const getDuplicateIdentifier = (question: Question): string | null => {
   const pitch = question.visualComponent?.elements?.[0]?.pitch
   if (pitch) return pitch
-  return question.correctAnswer ?? null
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
 }
 
 export const createNoteIdentificationQuestions = (

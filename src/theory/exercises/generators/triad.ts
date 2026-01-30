@@ -47,7 +47,7 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  if (question.correctAnswer) return question.correctAnswer
+  if (question.correctAnswer && typeof question.correctAnswer === 'string') return question.correctAnswer
   return question.visualComponent?.elements?.map((element: MusicElementData) => element.pitch).join('|') ?? null
 }
 
