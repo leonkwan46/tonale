@@ -10,6 +10,7 @@ interface Button3DProps {
   color?: ButtonColor
   layoutType?: LayoutType
   fullWidth?: boolean
+  width?: number
   customStyles?: Card3DCustomStyles
   children: (props: { color: ButtonColor, isPressed: boolean }) => ReactNode
 }
@@ -21,6 +22,7 @@ export const Button3D = ({
   color = 'blue',
   layoutType,
   fullWidth,
+  width,
   customStyles,
   children
 }: Button3DProps) => {
@@ -44,6 +46,7 @@ export const Button3D = ({
       isPressed={isPressed}
       layoutType={layoutType}
       fullWidth={fullWidth}
+      width={width}
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}

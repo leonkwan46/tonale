@@ -1,5 +1,6 @@
+import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { signOutUser } from '@/config/firebase/auth'
-import { useUser, useSafeNavigation } from '@/hooks'
+import { useSafeNavigation, useUser } from '@/hooks'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 
@@ -14,6 +15,14 @@ export const SettingsScreen = () => {
 
   const handleAccountPress = () => {
     navigate('/(tabs)/settings/account')
+  }
+
+  const handleBuyMeACoffeePress = () => {
+    navigate('/(tabs)/settings/donation')
+  }
+
+  const handleFeedbackPress = () => {
+    navigate('/(tabs)/settings/feedback')
   }
 
   const handleLogoutPress = () => {
@@ -61,6 +70,24 @@ export const SettingsScreen = () => {
               icon="person-outline"
               label="Account"
               onPress={handleAccountPress}
+              showSeparator={false}
+            />
+          </Card>
+          {isFeatureEnabled(FEATURES.ENABLE_DONATION) && (
+            <Card>
+              <SettingsItem
+                icon="cafe-outline"
+                label="Buy me a coffee"
+                onPress={handleBuyMeACoffeePress}
+                showSeparator={false}
+              />
+            </Card>
+          )}
+          <Card>
+            <SettingsItem
+              icon="chatbubble-outline"
+              label="Feedback"
+              onPress={handleFeedbackPress}
               showSeparator={false}
             />
           </Card>

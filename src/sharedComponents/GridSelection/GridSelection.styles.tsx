@@ -4,6 +4,8 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
+export const GAP_SIZE = scale(10)
+
 export const GridSelectionContainer = styled(View)(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
@@ -29,4 +31,3 @@ export const GridSelectionText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
   textAlign: 'center'
 }))
-
