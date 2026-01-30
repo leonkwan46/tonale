@@ -1,7 +1,7 @@
 import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
-import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
 

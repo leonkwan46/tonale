@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
 import { Keyboard, TextInput } from 'react-native'
 
-import { Icon } from '@/sharedComponents/Icon'
-import { KeyboardAwareScrollView } from '@/sharedComponents/containers/KeyboardAwareScrollView'
+import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenIntroHeader } from '@/screens/SettingsScreen/components/ScreenIntroHeader'
+import { Icon } from '@/sharedComponents/Icon'
 
 import {
   ErrorContainer,

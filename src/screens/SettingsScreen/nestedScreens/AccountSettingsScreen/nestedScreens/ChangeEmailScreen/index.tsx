@@ -1,12 +1,12 @@
 import { sendEmailVerificationToUser } from '@/config/firebase/auth'
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
-import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
-import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import { ScreenIntroHeader } from '../../../../components/ScreenIntroHeader'
+import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import { ContentContainer } from '../../../../SettingsScreen.styles'
 import {
   Card,
@@ -14,12 +14,12 @@ import {
   ErrorText,
   Input,
   InputField,
-    LabelText,
-    MessageText,
+  LabelText,
+  MessageText,
   PrimaryButton,
   PrimaryButtonText,
-    RefreshButton,
-    RefreshButtonText,
+  RefreshButton,
+  RefreshButtonText,
   SuccessContainer,
   SuccessText
 } from './ChangeEmailScreen.styles'

@@ -1,7 +1,7 @@
 import { deleteUserAccount } from '@/config/firebase/auth'
 import { deleteUserData } from '@/config/firebase/functions'
-import { useUser, useSafeNavigation } from '@/hooks'
-import { ScreenContainer } from '@/sharedComponents/containers/ScreenContainer'
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
+import { useSafeNavigation, useUser } from '@/hooks'
 import { Alert } from 'react-native'
 
 import { SettingItemHeader } from '../../components/SettingItemHeader'
