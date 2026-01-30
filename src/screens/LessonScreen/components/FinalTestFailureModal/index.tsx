@@ -27,11 +27,11 @@ export const FinalTestFailureModal = ({
           <FailureIcon>❌</FailureIcon>
           
           <ErrorTitleText>
-            Test Failed
+            Not quite yet!
           </ErrorTitleText>
-          
+
           <DescriptionText>
-            Sorry, you&apos;ve reached the maximum number of wrong answers. Don&apos;t worry, practice makes perfect! Review the lessons and try again.
+            You&apos;ve reached the maximum wrong answers. Don&apos;t worry - practise makes perfect! Review the lessons and try again.
           </DescriptionText>
           
           <ButtonContainer>

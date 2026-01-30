@@ -11,20 +11,20 @@ const ErrorContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: theme.colors.background,
-  padding: 20
+  padding: theme.spacing.lg
 }))
 
 const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: 18,
+  fontSize: theme.typography.lg,
   textAlign: 'center',
-  marginBottom: 10,
+  marginBottom: theme.spacing.sm,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
 const ErrorSubtext = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: 14,
+  fontSize: theme.typography.sm,
   textAlign: 'center',
   opacity: 0.7,
   fontFamily: getSourGummyFontFamily('400')

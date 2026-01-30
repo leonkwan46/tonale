@@ -21,9 +21,9 @@ export const Header = ({
         Tonalè
       </Title>
       <Subtitle>
-        {authState.mode === 'login' 
-          ? 'Welcome back to your musical journey'
-          : 'Begin your musical journey today'}
+        {authState.mode === 'login'
+          ? 'Welcome back! Let\'s continue learning'
+          : 'Start your musical journey today'}
       </Subtitle>
     </TitlesContainer>
   </HeaderContainer>

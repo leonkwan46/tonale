@@ -9,12 +9,9 @@ export const PrimaryButton = styled(TouchableOpacity)<{ opacity: number; disable
   alignItems: 'center',
   justifyContent: 'center',
   paddingVertical: theme.device.isTablet ? scale(10) : scale(16),
-  borderRadius: scale(12),
-  shadowColor: theme.colors.primary,
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.3,
-  shadowRadius: 8,
-  elevation: 8,
+  borderRadius: scale(theme.borderRadius.md),
+  ...theme.shadows.lg,
+  shadowColor: theme.colors.primary, // Override shadow colour for primary button glow effect
   opacity: disabled ? 0.5 : opacity,
   width: '100%'
 }))

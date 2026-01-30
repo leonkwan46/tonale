@@ -4,25 +4,18 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 import type { Card3DCustomStyles, Card3DVariant } from './index'
 
-// Constants
+// 3D depth effect constants (component-specific)
 const DEPTH_OFFSET = scale(3)
 const DEPTH_OFFSET_LEFT_FLEXIBLE = scale(2)
 const DEPTH_OFFSET_RIGHT = scale(-5)
 const DEPTH_OFFSET_BOTTOM = scale(-6)
-const BORDER_RADIUS = scale(15)
-const CONTENT_PADDING_SMALL = scale(8)
-const CONTENT_PADDING_MEDIUM = scale(10)
-const CONTENT_GAP_SMALL = scale(8)
-const CONTENT_GAP_MEDIUM = scale(10)
 const OUTLINED_BORDER_WIDTH = scale(2)
 
-// FinalTest-specific constants
+// FinalTest-specific 3D depth constants
 const FINAL_TEST_DEPTH_OFFSET_TOP = scale(6)
 const FINAL_TEST_DEPTH_OFFSET_LEFT = scale(6)
 const FINAL_TEST_DEPTH_OFFSET_RIGHT = scale(-2)
-const FINAL_TEST_BORDER_RADIUS = scale(25)
 const FINAL_TEST_DEPTH_OPACITY = 0.8
-const FINAL_TEST_CONTENT_PADDING_HORIZONTAL = scale(25)
 
 // Helper functions
 const getDepthColor = (
@@ -66,7 +59,7 @@ export const Card3DDepth = styled.View<{
   const baseDepthStyle = {
     position: 'absolute' as const,
     backgroundColor: depthColor,
-    borderRadius: BORDER_RADIUS
+    borderRadius: scale(theme.borderRadius.lg)
   }
   
   // Custom dimensions (for StrikeCard)
@@ -88,7 +81,7 @@ export const Card3DDepth = styled.View<{
       left: FINAL_TEST_DEPTH_OFFSET_LEFT,
       right: FINAL_TEST_DEPTH_OFFSET_RIGHT,
       height: customStyles!.height,
-      borderRadius: FINAL_TEST_BORDER_RADIUS,
+      borderRadius: scale(theme.borderRadius['2xl']),
       opacity: FINAL_TEST_DEPTH_OPACITY
     }
   }
@@ -166,7 +159,7 @@ export const Card3DContent = styled.View<{
   
   const baseContentStyle = {
     backgroundColor,
-    borderRadius: BORDER_RADIUS,
+    borderRadius: scale(theme.borderRadius.lg),
     borderWidth,
     borderColor,
     position: 'relative' as const,
@@ -179,8 +172,8 @@ export const Card3DContent = styled.View<{
       ...baseContentStyle,
       justifyContent: 'center',
       alignItems: 'center',
-      gap: CONTENT_GAP_SMALL,
-      padding: CONTENT_PADDING_SMALL,
+      gap: scale(theme.spacing.sm),
+      padding: scale(theme.spacing.sm),
       height: customStyles!.height,
       width: customStyles!.width
     }
@@ -193,10 +186,10 @@ export const Card3DContent = styled.View<{
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: FINAL_TEST_CONTENT_PADDING_HORIZONTAL,
+      paddingHorizontal: scale(theme.spacing.xl),
       height: customStyles!.height,
       width: '100%',
-      borderRadius: FINAL_TEST_BORDER_RADIUS,
+      borderRadius: scale(theme.borderRadius['2xl']),
       overflow: 'hidden'
     }
   }
@@ -208,8 +201,8 @@ export const Card3DContent = styled.View<{
       ...baseContentStyle,
       justifyContent: 'center',
       alignItems: 'center',
-      gap: CONTENT_GAP_MEDIUM,
-      padding: CONTENT_PADDING_MEDIUM,
+      gap: scale(theme.spacing.sm),
+      padding: scale(theme.spacing.sm),
       height: squareSize,
       width: squareSize
     }

@@ -7,9 +7,9 @@ import { getSourGummyFontFamily } from '@/utils/fontHelper'
 export const AppNameContainer = styled(Animated.View)(() => ({}))
 
 export const AppNameText = styled.Text(({ theme }) => ({
-  fontSize: scale(36),
+  fontSize: scale(theme.typography['4xl']),
   textAlign: 'center',
-  marginBottom: scale(12),
+  marginBottom: scale(theme.spacing.sm),
   letterSpacing: scale(-0.5),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('700')
@@ -18,9 +18,9 @@ export const AppNameText = styled.Text(({ theme }) => ({
 export const TaglineContainer = styled(Animated.View)(() => ({}))
 
 export const TaglineText = styled.Text(({ theme }) => ({
-  fontSize: scale(16),
+  fontSize: scale(theme.typography.base),
   textAlign: 'center',
-  marginBottom: scale(40),
+  marginBottom: scale(theme.spacing.xxl),
   lineHeight: scale(22),
   opacity: 0.8,
   color: theme.colors.icon,

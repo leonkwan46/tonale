@@ -108,6 +108,43 @@ theme.spacing.xxxl           // 48px  (Screen section)
 
 ---
 
+## 🔲 Border Radius Tokens
+
+```typescript
+theme.borderRadius.xs        // 4px   (Subtle rounding)
+theme.borderRadius.sm        // 8px   (Small elements)
+theme.borderRadius.md        // 12px  (Cards, buttons)
+theme.borderRadius.lg        // 16px  (Prominent cards)
+theme.borderRadius.xl        // 20px  (Large surfaces)
+theme.borderRadius['2xl']    // 24px  (Extra rounded)
+theme.borderRadius['3xl']    // 28px  (Maximum rounding)
+```
+
+---
+
+## 🌑 Shadow Tokens
+
+```typescript
+theme.shadows.none           // No shadow
+theme.shadows.xs             // Subtle depth (elevation: 1)
+theme.shadows.sm             // Light shadow (elevation: 2)
+theme.shadows.md             // Medium shadow (elevation: 4)
+theme.shadows.lg             // Prominent shadow (elevation: 8)
+theme.shadows.xl             // Maximum shadow (elevation: 12)
+```
+
+**Usage Example:**
+```typescript
+<View style={{
+  ...theme.shadows.md,
+  backgroundColor: theme.colors.surface
+}}>
+  <Content />
+</View>
+```
+
+---
+
 ## 🎨 Component Tokens
 
 ### Icon Sizes

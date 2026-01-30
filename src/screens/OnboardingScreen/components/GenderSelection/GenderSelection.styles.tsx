@@ -4,11 +4,11 @@ import { scale } from 'react-native-size-matters'
 
 export const SectionContainer = styled.View(({ theme }) => ({
   width: '100%',
-  gap: theme.device.isTablet ? scale(12) : scale(16)
+  gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
 export const SectionTitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(14) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.base),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))

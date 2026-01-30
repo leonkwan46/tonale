@@ -50,12 +50,12 @@ export const AuthForm = ({
 
   const validateForm = (): boolean => {
     if (!formData.email || !formData.password) {
-      updateAuthState({ error: 'Email and password are required' })
+      updateAuthState({ error: 'Please enter your email and password' })
       return false
     }
     if (authState.mode === 'register') {
       if (formData.password !== formData.confirmPassword) {
-        updateAuthState({ error: 'Passwords do not match' })
+        updateAuthState({ error: 'Passwords don\'t match' })
         return false
       }
       if (formData.password.length < 6) {

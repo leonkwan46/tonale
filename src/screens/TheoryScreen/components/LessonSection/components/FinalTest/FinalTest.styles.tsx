@@ -7,10 +7,9 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-// Constants
+// FinalTest-specific constants
 const FINAL_TEST_HEIGHT = scale(110)
 const FINAL_TEST_BORDER_WIDTH = scale(2)
-const FINAL_TEST_WRAPPER_MARGIN_VERTICAL = scale(15)
 
 // Helper function to get custom styles for FinalTest
 export const getFinalTestCustomStyles = (theme: AppTheme): Card3DCustomStyles => ({
@@ -24,7 +23,7 @@ export const getFinalTestCustomStyles = (theme: AppTheme): Card3DCustomStyles =>
 // Wrapper for the button to add margin and shadow
 export const FinalTestWrapper = styled.View<{ isLocked: boolean }>(({ theme, isLocked }) => ({
   width: '100%',
-  marginVertical: FINAL_TEST_WRAPPER_MARGIN_VERTICAL,
+  marginVertical: scale(theme.spacing.md),
   opacity: isLocked ? 0.5 : 1,
   shadowColor: theme.colors.warning,
   shadowOffset: { width: 0, height: 6 },
@@ -34,21 +33,23 @@ export const FinalTestWrapper = styled.View<{ isLocked: boolean }>(({ theme, isL
 }))
 
 // Gradient styled component with position styles
-const FinalTestGradientStyled = styled(LinearGradient)({
+const FinalTestGradientStyled = styled(LinearGradient)(({ theme }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
-  borderRadius: scale(23)
-})
+  borderRadius: scale(theme.borderRadius['2xl'])
+}))
 
 // Wrapper component that uses theme internally
 export const FinalTestGradient = () => {
   const theme = useTheme()
-  
+
   return (
     <FinalTestGradientStyled
+      // @ts-ignore
+      theme={theme}
       colors={theme.colors.finalTest.gradient}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
@@ -60,7 +61,7 @@ export const FinalTestGradient = () => {
 export const FinalTestIconContainer = styled.View(({ theme }) => ({
   width: scale(50),
   height: scale(50),
-  borderRadius: scale(25),
+  borderRadius: scale(theme.borderRadius['2xl']),
   backgroundColor: theme.colors.warning,
   alignItems: 'center',
   justifyContent: 'center',
@@ -73,7 +74,7 @@ export const FinalTestIconContainer = styled.View(({ theme }) => ({
 
 // Title styling for final test - more dramatic
 export const FinalTestTitle = styled.Text(({ theme }) => ({
-  fontSize: scale(20),
+  fontSize: scale(theme.typography.lg),
   color: theme.colors.text,
   textAlign: 'center',
   letterSpacing: 1,
@@ -85,7 +86,7 @@ export const FinalTestTitle = styled.Text(({ theme }) => ({
 
 // Description styling for final test - more prominent
 export const FinalTestDescription = styled.Text(({ theme }) => ({
-  fontSize: scale(13),
+  fontSize: scale(theme.typography.sm),
   color: theme.colors.text,
   textAlign: 'center',
   marginTop: scale(3),

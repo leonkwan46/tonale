@@ -44,7 +44,7 @@ export const ChangeNameScreen = () => {
 
     const trimmedName = name.trim()
     if (!trimmedName) {
-      setError('Name cannot be empty')
+      setError('Please enter a name')
       return
     }
 
@@ -82,7 +82,7 @@ export const ChangeNameScreen = () => {
         <ScrollContentContainer>
           <ScreenIntroHeader
           icon="person-outline"
-          description="Your name helps personalize your experience in Tonalè. This name will be visible in your profile and progress tracking."
+          description="Your name helps personalise your learning in Tonalè. It will show on your profile and progress."
         />
         {/* Display Name Section */}
         <Card>

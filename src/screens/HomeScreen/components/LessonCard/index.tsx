@@ -44,7 +44,7 @@ export const LessonCard = () => {
               <StarLogo filled={true} />
             </StarContainer>
           </Card3DView>
-          <Description title="All Lessons Completed" description="You have completed all lesson" />
+          <Description title="All Lessons Completed!" description="You've completed all lessons!" />
         </CardContentContainer>
       </LessonCardContainer>
     )
@@ -54,7 +54,7 @@ export const LessonCard = () => {
     return (
       <LessonCardContainer>
         <CardContentContainer>
-          <NoLessonText>Sorry, no lesson found here</NoLessonText>
+          <NoLessonText>No lessons available right now</NoLessonText>
         </CardContentContainer>
       </LessonCardContainer>
     )
