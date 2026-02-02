@@ -7,7 +7,6 @@ interface Button3DProps {
   disabled?: boolean
   testID?: string
   color?: ButtonColor
-  variant?: 'filled' | 'outlined'
   layoutType?: LayoutType
   fullWidth?: boolean
   width?: number
@@ -21,7 +20,6 @@ export const Button3D = ({
   disabled = false,
   testID,
   color = 'blue',
-  variant = 'filled',
   layoutType,
   fullWidth,
   width,
@@ -58,16 +56,15 @@ export const Button3D = ({
     >
       <Button3DDepth
         color={color}
-        variant={variant}
         customStyles={customStyles}
       />
       <Button3DContent
         color={color}
-        variant={variant}
         layoutType={layoutType}
         fullWidth={fullWidth}
         height={height}
         customStyles={customStyles}
+        isPressed={isPressed}
       >
         {children({ color, isPressed })}
       </Button3DContent>

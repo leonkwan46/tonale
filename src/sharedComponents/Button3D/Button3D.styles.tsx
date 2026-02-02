@@ -15,49 +15,26 @@ export type LayoutType = 'grid' | 'row'
 export interface Button3DCustomStyles {
   backgroundColor?: string
   depthColor?: string
-  borderWidth?: number
-  borderColor?: string
 }
 
 const getDepthColor = (
   customStyles: Button3DCustomStyles | undefined,
   color: ButtonColor | undefined,
-  variant: 'filled' | 'outlined',
   theme: AppTheme
 ): string => {
   if (customStyles?.depthColor) return customStyles.depthColor
-  if (variant === 'outlined') return 'transparent'
   return color ? theme.colors.choiceButtonDepth[color] : 'transparent'
 }
 
 const getBackgroundColor = (
   customStyles: Button3DCustomStyles | undefined,
   color: ButtonColor | undefined,
-  variant: 'filled' | 'outlined',
   theme: AppTheme
 ): string => {
   if (customStyles?.backgroundColor) return customStyles.backgroundColor
-  if (variant === 'outlined') return 'transparent'
   return color ? theme.colors.choiceButton[color] : 'transparent'
 }
 
-const getBorderColor = (
-  customStyles: Button3DCustomStyles | undefined,
-  color: ButtonColor | undefined,
-  variant: 'filled' | 'outlined',
-  theme: AppTheme
-): string => {
-  if (customStyles?.borderColor) return customStyles.borderColor
-  if (variant === 'outlined' && color) return theme.colors.choiceButton[color]
-  return 'transparent'
-}
-
-const getBorderWidth = (
-  customStyles: Button3DCustomStyles | undefined,
-  variant: 'filled' | 'outlined'
-): number => {
-  return customStyles?.borderWidth ?? (variant === 'outlined' ? scale(1) : 0)
-}
 
 const getContentWidth = (
   layoutType: LayoutType | undefined,
@@ -87,17 +64,19 @@ export const Button3DContainer = styled.TouchableOpacity<{ isPressed: boolean; l
 
 export const Button3DDepth = styled.View<{
   color?: ButtonColor
-  variant?: 'filled' | 'outlined'
   customStyles?: Button3DCustomStyles
-}>(({ theme, color, variant = 'filled', customStyles }) => {
-  const depthColor = getDepthColor(customStyles, color, variant, theme)
+}>(({ theme, color, customStyles }) => {
+  const depthColor = getDepthColor(customStyles, color, theme)
   const isTablet = theme.device.isTablet
   const offsets = getFlexibleDepthOffsets(isTablet)
+  const borderRadius = color === 'finalTest' 
+    ? scale(theme.borderRadius['2xl'])
+    : scale(theme.borderRadius.lg)
 
   return {
     position: 'absolute' as const,
     backgroundColor: depthColor,
-    borderRadius: scale(theme.borderRadius.lg),
+    borderRadius,
     top: offsets.top,
     left: offsets.left,
     right: offsets.right,
@@ -107,21 +86,22 @@ export const Button3DDepth = styled.View<{
 
 export const Button3DContent = styled.View<{
   color?: ButtonColor
-  variant?: 'filled' | 'outlined'
   layoutType?: LayoutType
   fullWidth?: boolean
   height?: number
   customStyles?: Button3DCustomStyles
-}>(({ theme, color, variant = 'filled', layoutType, fullWidth, height, customStyles }) => {
-  const backgroundColor = getBackgroundColor(customStyles, color, variant, theme)
-  const borderColor = getBorderColor(customStyles, color, variant, theme)
-  const borderWidth = getBorderWidth(customStyles, variant)
+  isPressed?: boolean
+}>(({ theme, color, layoutType, fullWidth, height, customStyles, isPressed }) => {
+  const backgroundColor = getBackgroundColor(customStyles, color, theme)
+  const borderRadius = color === 'finalTest'
+    ? scale(theme.borderRadius['2xl'])
+    : scale(theme.borderRadius.lg)
+  const opacity = color === 'finalTest' && isPressed ? 0.8 : 1
 
   return {
     backgroundColor,
-    borderRadius: scale(theme.borderRadius.lg),
-    borderWidth,
-    borderColor,
+    borderRadius,
+    opacity,
     position: 'relative' as const,
     zIndex: 1,
     width: getContentWidth(layoutType, fullWidth),
