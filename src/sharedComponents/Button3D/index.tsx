@@ -1,17 +1,18 @@
-import { Card3DView, type Card3DCustomStyles } from '@/sharedComponents/Card3DView'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { Button3DContainer, ButtonColor, LayoutType } from './Button3D.styles'
+import { Button3DContainer, Button3DContent, Button3DDepth, type Button3DCustomStyles, type ButtonColor, type LayoutType } from './Button3D.styles'
 
 interface Button3DProps {
   onPress: () => void
   disabled?: boolean
   testID?: string
   color?: ButtonColor
+  variant?: 'filled' | 'outlined'
   layoutType?: LayoutType
   fullWidth?: boolean
   width?: number
-  customStyles?: Card3DCustomStyles
+  height?: number
+  customStyles?: Button3DCustomStyles
   children: (props: { color: ButtonColor, isPressed: boolean }) => ReactNode
 }
 
@@ -20,9 +21,11 @@ export const Button3D = ({
   disabled = false,
   testID,
   color = 'blue',
+  variant = 'filled',
   layoutType,
   fullWidth,
   width,
+  height,
   customStyles,
   children
 }: Button3DProps) => {
@@ -52,9 +55,21 @@ export const Button3D = ({
       onPressOut={handlePressOut}
       disabled={disabled}
     >
-      <Card3DView color={color} layoutType={layoutType} fullWidth={fullWidth} customStyles={customStyles}>
+      <Button3DDepth
+        color={color}
+        variant={variant}
+        customStyles={customStyles}
+      />
+      <Button3DContent
+        color={color}
+        variant={variant}
+        layoutType={layoutType}
+        fullWidth={fullWidth}
+        height={height}
+        customStyles={customStyles}
+      >
         {children({ color, isPressed })}
-      </Card3DView>
+      </Button3DContent>
     </Button3DContainer>
   )
 }
