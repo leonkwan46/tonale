@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { TouchableOpacity } from 'react-native'
-import { createAudioPlayer } from 'expo-audio'
-import { useMetronome } from '@/hooks'
-import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
+import { useDevice, useMetronome } from '@/hooks'
+import { Button3D } from '@/sharedComponents/Button3D'
+import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
 import type { QuestionInterface } from '@/types/lesson'
-import { TapButton, TapButtonText } from './RhythmTap.styles'
+import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
+import { createAudioPlayer } from 'expo-audio'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { scale } from 'react-native-size-matters'
+import { Container, TapButtonText } from './RhythmTap.styles'
 
-const CLAP_SOUND = require('../../../../../../assets/sounds/clap.mp3')
+const CLAP_SOUND = require('../../../../../../../assets/sounds/clap.mp3')
 
 interface RhythmTapProps {
   onTapSubmit: (timestamps: number[]) => void
@@ -19,168 +21,180 @@ interface RhythmTapProps {
   onPlaybackFinishRef?: React.MutableRefObject<(() => void) | null>
 }
 
-/**
- * RhythmTap answer interface component.
- * Records tap timestamps and auto-submits based on exercise type.
- *
- * Features:
- * - Records relative timestamps (first tap = 0)
- * - Detects exercise type (pulse vs rhythm)
- * - Auto-starts metronome for rhythm exercises
- * - Auto-submits after playback (pulse) or duration (rhythm)
- * - 3D button with visual feedback
- * - Clap sound on each tap
- * - Prevents duplicate submissions
- *
- * @param props - Component configuration and callbacks
- */
-export const RhythmTap = ({
+export const RhythmTap: React.FC<RhythmTapProps> = ({
   onTapSubmit,
   disabled = false,
-  rhythmDuration,
+  rhythmDuration = 0,
   buttonState = 'default',
-  tempo = 90,
+  tempo = 120,
   questionInterface,
   onRecordingChange,
   onPlaybackFinishRef
-}: RhythmTapProps) => {
+}) => {
+  const { isTablet } = useDevice()
+  const [tapTimestamps, setTapTimestamps] = useState<number[]>([])
   const [isRecording, setIsRecording] = useState(false)
+  const [metronomeEnabled, setMetronomeEnabled] = useState(false)
   const [isTimeWindowExpired, setIsTimeWindowExpired] = useState(false)
-
-  const startTimeRef = useRef<number>(0)
+  const startTimeRef = useRef<number | null>(null)
+  const autoSubmitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hasSubmittedRef = useRef<boolean>(false)
   const tapTimestampsRef = useRef<number[]>([])
-  const hasSubmittedRef = useRef(false)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const { start: startMetronome, stop: stopMetronome } = useMetronome(tempo)
-
-  // Detect exercise type
-  const isPulseExercise = Boolean(questionInterface?.audioFile && !questionInterface?.rhythm)
-  const isRhythmExercise = Boolean(questionInterface?.rhythm && !questionInterface?.audioFile)
-
-  // Play clap sound on tap
-  const playClapSound = useCallback(() => {
-    const player = createAudioPlayer(CLAP_SOUND)
-    player.volume = 0.8
-    void player.play()
-    setupAutoCleanup(player)
-  }, [])
-
-  // Submit handler
-  const handleSubmit = useCallback(() => {
-    if (hasSubmittedRef.current) return
-
-    hasSubmittedRef.current = true
-    setIsRecording(false)
-    stopMetronome()
-    onRecordingChange?.(false)
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
+  // Map button state to ButtonColor
+  const getButtonColor = (state: 'default' | 'correct' | 'incorrect'): ButtonColor => {
+    switch (state) {
+      case 'correct':
+        return 'green'
+      case 'incorrect':
+        return 'red'
+      default:
+        return 'blue'
     }
+  }
 
-    onTapSubmit(tapTimestampsRef.current)
-  }, [onTapSubmit, stopMetronome, onRecordingChange])
+  const playClapSound = useCallback(() => {
+    try {
+      const player = createAudioPlayer(CLAP_SOUND)
+      player.volume = 0.8
+      void player.play()
+      
+      setupAutoCleanup(player)
+    } catch (error) {
+      console.warn('Could not play clap sound:', error)
+    }
+  }, [])
+  
+  const { start: startMetronome, stop: stopMetronome } = useMetronome({
+    enabled: false,
+    volume: 0.4,
+    bpm: tempo
+  })
 
-  // Set up playback finish callback for pulse exercises
+  const isPulseExercise = questionInterface?.audioFile && !questionInterface?.rhythm
+
+  const submitAnswer = useCallback(() => {
+    if (hasSubmittedRef.current) return
+    
+    hasSubmittedRef.current = true
+    setIsTimeWindowExpired(true)
+    setIsRecording(false)
+    onRecordingChange?.(false)
+    
+    if (metronomeEnabled) {
+      setMetronomeEnabled(false)
+      stopMetronome()
+    }
+    
+    const finalTimestamps = tapTimestampsRef.current.length > 0 
+      ? tapTimestampsRef.current 
+      : [0]
+    
+    setTimeout(() => {
+      onTapSubmit(finalTimestamps)
+    }, 0)
+  }, [metronomeEnabled, onRecordingChange, onTapSubmit, stopMetronome])
+
   useEffect(() => {
     if (isPulseExercise && onPlaybackFinishRef) {
-      onPlaybackFinishRef.current = () => {
-        if (isRecording && tapTimestampsRef.current.length > 0) {
-          handleSubmit()
+      onPlaybackFinishRef.current = submitAnswer
+      return () => {
+        if (onPlaybackFinishRef) {
+          onPlaybackFinishRef.current = null
         }
       }
     }
+  }, [isPulseExercise, onPlaybackFinishRef, submitAnswer])
 
-    return () => {
-      if (onPlaybackFinishRef) {
-        onPlaybackFinishRef.current = null
-      }
-    }
-  }, [isPulseExercise, isRecording, onPlaybackFinishRef, handleSubmit])
-
-  // Handle tap
-  const handleTap = useCallback(() => {
-    if (disabled || isTimeWindowExpired) return
-
-    const now = Date.now()
-
-    if (!isRecording) {
-      // First tap - start recording
-      startTimeRef.current = now
-      const firstTimestamp = 0
-
-      tapTimestampsRef.current = [firstTimestamp]
-      setIsRecording(true)
-      onRecordingChange?.(true)
-
-      playClapSound()
-
-      // Start metronome for rhythm exercises
-      if (isRhythmExercise) {
-        startMetronome()
-      }
-
-      // Set auto-submit timeout for rhythm exercises
-      if (isRhythmExercise && rhythmDuration) {
-        timeoutRef.current = setTimeout(() => {
-          setIsTimeWindowExpired(true)
-          handleSubmit()
-        }, rhythmDuration)
-      }
-    } else {
-      // Subsequent taps - record relative timestamp
-      const relativeTimestamp = (now - startTimeRef.current) / 1000
-
-      tapTimestampsRef.current = [...tapTimestampsRef.current, relativeTimestamp]
-
-      playClapSound()
-    }
-  }, [
-    disabled,
-    isTimeWindowExpired,
-    isRecording,
-    isRhythmExercise,
-    rhythmDuration,
-    onRecordingChange,
-    playClapSound,
-    startMetronome,
-    handleSubmit
-  ])
-
-  // Cleanup on unmount or disable
   useEffect(() => {
     if (disabled) {
-      stopMetronome()
+      if (metronomeEnabled) {
+        setMetronomeEnabled(false)
+        stopMetronome()
+      }
+      setTapTimestamps([])
+      tapTimestampsRef.current = []
       setIsRecording(false)
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-        timeoutRef.current = null
+      onRecordingChange?.(false)
+      setIsTimeWindowExpired(false)
+      startTimeRef.current = null
+      hasSubmittedRef.current = false
+      if (autoSubmitTimeoutRef.current) {
+        clearTimeout(autoSubmitTimeoutRef.current)
+        autoSubmitTimeoutRef.current = null
       }
     }
-  }, [disabled, stopMetronome])
+  }, [disabled, metronomeEnabled, stopMetronome, onRecordingChange])
 
   useEffect(() => {
     return () => {
-      stopMetronome()
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
+      if (autoSubmitTimeoutRef.current) {
+        clearTimeout(autoSubmitTimeoutRef.current)
       }
     }
-  }, [stopMetronome])
+  }, [])
+
+  const handleTapIn = useCallback(() => {
+    if (disabled || isTimeWindowExpired || hasSubmittedRef.current) return
+    if (!isRecording && tapTimestamps.length > 0) return
+
+    const currentTime = Date.now()
+    
+    if (!isRecording) {
+      setIsRecording(true)
+      onRecordingChange?.(true)
+      startTimeRef.current = currentTime
+      const initialTimestamps = [0]
+      tapTimestampsRef.current = initialTimestamps
+      setTapTimestamps(initialTimestamps)
+      
+      if (!metronomeEnabled && !isPulseExercise) {
+        setMetronomeEnabled(true)
+        startMetronome(currentTime)
+      }
+
+      if (rhythmDuration > 0 && !isPulseExercise) {
+        if (autoSubmitTimeoutRef.current) {
+          clearTimeout(autoSubmitTimeoutRef.current)
+        }
+        
+        autoSubmitTimeoutRef.current = setTimeout(() => {
+          submitAnswer()
+        }, rhythmDuration)
+      }
+    } else if (!isTimeWindowExpired) {
+      const relativeTime = (currentTime - (startTimeRef.current || currentTime)) / 1000
+      setTapTimestamps(prev => {
+        const updated = [...prev, relativeTime]
+        tapTimestampsRef.current = updated
+        return updated
+      })
+    }
+
+    playClapSound()
+  }, [disabled, isRecording, tapTimestamps.length, isTimeWindowExpired, metronomeEnabled, isPulseExercise, startMetronome, playClapSound, rhythmDuration, submitAnswer, onRecordingChange])
+
+  const isButtonDisabled = disabled || isTimeWindowExpired || hasSubmittedRef.current
+
+  // Button dimensions
+  const buttonHeight = isTablet ? scale(120) : scale(160)
+  const buttonWidth = isTablet ? scale(240) : scale(280)
 
   return (
-    <TouchableOpacity onPress={handleTap} disabled={disabled || isTimeWindowExpired}>
-      <TapButton
-        state={buttonState}
-        isRecording={isRecording}
-        disabled={disabled || isTimeWindowExpired}
+    <Container>
+      <Button3D
+        onPress={handleTapIn}
+        disabled={isButtonDisabled}
+        color={getButtonColor(buttonState)}
+        width={buttonWidth}
+        height={buttonHeight}
       >
-        <TapButtonText>
-          {isRecording ? 'Tap!' : 'Start'}
-        </TapButtonText>
-      </TapButton>
-    </TouchableOpacity>
+        {() => (
+          <TapButtonText isTablet={isTablet}>
+            Tap
+          </TapButtonText>
+        )}
+      </Button3D>
+    </Container>
   )
 }
