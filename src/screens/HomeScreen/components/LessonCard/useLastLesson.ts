@@ -1,6 +1,6 @@
 import { useProgress, type ProgressData } from '@/hooks/useProgressContext'
 import { useUser } from '@/hooks/useUserContext'
-import { getLessonWithProgress } from '@/theory/curriculum/stages/helpers'
+import { getTheoryLessonWithProgress } from '@/subjects/theory/curriculum/stages/helpers'
 import type { Lesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
@@ -95,7 +95,7 @@ const findIncompleteLessonFromIndex = (
 ): Lesson | null => {
   for (let i = startIndex; i < allStageLessons.length; i++) {
     const stageLesson = allStageLessons[i]
-    const lesson = getLessonWithProgress(stageLesson.id, progressData) ?? null
+    const lesson = getTheoryLessonWithProgress(stageLesson.id, progressData) ?? null
     if (!lesson) continue
     
     const progress = progressData[stageLesson.id]
@@ -113,7 +113,7 @@ const findLessonToDisplay = (
   allStageLessons: { id: string }[]
 ): Lesson | null => {
   if (lastAccess) {
-    const lesson = getLessonWithProgress(lastAccess.lessonId, progressData) ?? null
+    const lesson = getTheoryLessonWithProgress(lastAccess.lessonId, progressData) ?? null
     if (!lesson) return null
 
     const progress = progressData[lastAccess.lessonId]

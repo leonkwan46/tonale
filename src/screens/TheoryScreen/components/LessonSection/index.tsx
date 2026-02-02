@@ -1,10 +1,10 @@
 import { useSafeNavigation } from '@/hooks'
-import { Card3DView } from '@/sharedComponents/Card3DView'
+import { Card } from '@/sharedComponents/Card'
 import { useTheme } from '@emotion/react'
 import type { Lesson } from '@types'
 import { useState } from 'react'
 import { Description } from './components/Description/Description'
-import { FinalTest } from './components/FinalTest/FinalTest'
+import { FinalTestButton } from './components/FinalTestButton/FinalTestButton'
 import { BeamedQuaverLogo } from './components/Logo/BeamedQuaverLogo'
 import { LockLogo } from './components/Logo/LockLogo'
 import { StarLogo } from './components/Logo/StarLogo'
@@ -25,7 +25,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
   const cardColor = lesson.isLocked ? 'grey' : 'blue'
   
   const renderCard = () => (
-    <Card3DView key="card" color={cardColor} size={cardSize}>
+    <Card key="card" color={cardColor} size={cardSize}>
       {lesson.isLocked ? (
         <LockLogo />
       ) : (
@@ -38,7 +38,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
           </StarContainer>
         </>
       )}
-    </Card3DView>
+    </Card>
   )
   
   const components = (isPressed: boolean) => index % 2 === 0 && !lesson.isFinalTest
@@ -84,7 +84,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
   return (
     <>
       {lesson.isFinalTest ? (
-        <FinalTest
+        <FinalTestButton
           key="final"
           title={lesson.title}
           description={lesson.description}

@@ -1,5 +1,3 @@
-import type { AppTheme } from '@/config/theme/theme'
-import type { Card3DCustomStyles } from '@/sharedComponents/Card3DView'
 import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -7,32 +5,22 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-// FinalTest-specific constants
 const FINAL_TEST_HEIGHT = scale(110)
-const FINAL_TEST_BORDER_WIDTH = scale(2)
+const FINAL_TEST_WIDTH = '95%'
 
-// Helper function to get custom styles for FinalTest
-export const getFinalTestCustomStyles = (theme: AppTheme): Card3DCustomStyles => ({
-  height: FINAL_TEST_HEIGHT,
-  backgroundColor: 'transparent',
-  depthColor: theme.colors.finalTest.shadow,
-  borderWidth: FINAL_TEST_BORDER_WIDTH,
-  borderColor: theme.colors.warning
-})
-
-// Wrapper for the button to add margin and shadow
 export const FinalTestWrapper = styled.View<{ isLocked: boolean }>(({ theme, isLocked }) => ({
   width: '100%',
   marginVertical: scale(theme.spacing.md),
   opacity: isLocked ? 0.5 : 1,
-  shadowColor: theme.colors.warning,
-  shadowOffset: { width: 0, height: 6 },
-  shadowOpacity: 0.4,
-  shadowRadius: 12,
-  elevation: 12
+  alignItems: 'center',
+  justifyContent: 'center'
 }))
 
-// Gradient styled component with position styles
+export const FinalTestButtonContainer = styled.View({
+  width: FINAL_TEST_WIDTH,
+  height: FINAL_TEST_HEIGHT
+})
+
 const FinalTestGradientStyled = styled(LinearGradient)(({ theme }) => ({
   position: 'absolute',
   top: 0,
@@ -42,14 +30,10 @@ const FinalTestGradientStyled = styled(LinearGradient)(({ theme }) => ({
   borderRadius: scale(theme.borderRadius['2xl'])
 }))
 
-// Wrapper component that uses theme internally
 export const FinalTestGradient = () => {
   const theme = useTheme()
-
   return (
     <FinalTestGradientStyled
-      // @ts-ignore
-      theme={theme}
       colors={theme.colors.finalTest.gradient}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
@@ -57,7 +41,6 @@ export const FinalTestGradient = () => {
   )
 }
 
-// Crown/Trophy icon container
 export const FinalTestIconContainer = styled.View(({ theme }) => ({
   width: scale(50),
   height: scale(50),
@@ -72,7 +55,6 @@ export const FinalTestIconContainer = styled.View(({ theme }) => ({
   elevation: 4
 }))
 
-// Title styling for final test - more dramatic
 export const FinalTestTitle = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.lg),
   color: theme.colors.text,
@@ -84,7 +66,6 @@ export const FinalTestTitle = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily('900')
 }))
 
-// Description styling for final test - more prominent
 export const FinalTestDescription = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.sm),
   color: theme.colors.text,
@@ -96,9 +77,18 @@ export const FinalTestDescription = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily('600')
 }))
 
-// Content wrapper for text with better positioning
-export const FinalTestTextContainer = styled.View({
+export const FinalTestContentContainer = styled.View(({ theme }) => ({
+  flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
-  flex: 1
+  justifyContent: 'space-between',
+  paddingHorizontal: scale(theme.spacing.xl),
+  width: '100%',
+  height: '100%',
+  position: 'relative'
+}))
+
+export const FinalTestTextWrapper = styled.View({
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center'
 })
