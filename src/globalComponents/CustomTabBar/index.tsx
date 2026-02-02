@@ -5,6 +5,7 @@ import { scale } from 'react-native-size-matters'
 
 import { Ionicons } from '@expo/vector-icons'
 import { TAB_CONFIG, TabBarContainer, TabButton, TabIcon, TabLabel } from './CustomTabBar.styles'
+import { isFeatureEnabled, FEATURES } from '@/config/featureFlags'
 
 type IoniconsName = keyof typeof Ionicons.glyphMap
 
@@ -44,15 +45,25 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   const insets = useSafeAreaInsets()
   const theme = useTheme()
   const config = theme.device.isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
+  const isAuralEnabled = isFeatureEnabled(FEATURES.ENABLE_AURAL_LESSONS)
 
   return (
     <TabBarContainer 
       bottomInset={insets.bottom} 
       config={config}
     >
-      {state.routes.map((route, index: number) => {
+      {state.routes
+        .filter((route) => {
+          // Filter out aural route if feature is disabled
+          if (route.name === 'aural' && !isAuralEnabled) {
+            return false
+          }
+          return true
+        })
+        .map((route) => {
         const { options } = descriptors[route.key]
-        const isFocused = state.index === index
+        const focusedRoute = state.routes[state.index]
+        const isFocused = route.key === focusedRoute?.key
 
         const onPress = () => {
           const event = navigation.emit({
