@@ -1,7 +1,0 @@
-import { FOUR_FOUR_QUESTIONS, THREE_FOUR_QUESTIONS, TWO_FOUR_QUESTIONS } from '../../exercises/custom/grouping'
-
-export const STAGE_TWO_GROUPING_QUESTIONS = [
-  ...TWO_FOUR_QUESTIONS,
-  ...THREE_FOUR_QUESTIONS,
-  ...FOUR_FOUR_QUESTIONS
-] as const
