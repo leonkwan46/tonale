@@ -3,15 +3,6 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const ModalContainer = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(theme.borderRadius.xl),
-  padding: theme.device.isTablet ? scale(12) : scale(20),
-  width: '90%',
-  alignItems: 'center',
-  gap: theme.device.isTablet ? scale(12) : scale(20)
-}))
-
 export const ExplanationText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(14) : scale(16),
   color: theme.colors.text,

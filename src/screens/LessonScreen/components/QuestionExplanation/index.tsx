@@ -1,15 +1,14 @@
 import { Button3D } from '@/sharedComponents/Button3D'
-import { ModalOverlay } from '@/sharedComponents/Modal/Modal.styles'
+import { Modal } from '@/sharedComponents/Modal'
 import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/subjects/theory/exercises/utils/explanation'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
 import type { ReactNode } from 'react'
 import { createElement } from 'react'
-import { Modal, Text } from 'react-native'
+import { Text } from 'react-native'
 import {
-    ContinueButtonText,
-    ExplanationText,
-    ModalContainer
+  ContinueButtonText,
+  ExplanationText
 } from './QuestionExplanation.styles'
 import { VisualExplanation } from './VisualExplanation'
 
@@ -100,36 +99,31 @@ export const QuestionExplanation = ({
   return (
     <Modal
       visible={true}
-      transparent={true}
       animationType="fade"
       onRequestClose={onContinue}
     >
-      <ModalOverlay>
-        <ModalContainer>
-          {showVisual && displayVisualComponent && (
-            <VisualExplanation 
-              visualComponent={displayVisualComponent}
-            />
-          )}
+      {showVisual && displayVisualComponent && (
+        <VisualExplanation 
+          visualComponent={displayVisualComponent}
+        />
+      )}
 
-          {formattedText && (
-            <ExplanationText>
-              {formattedText}
-            </ExplanationText>
-          )}
-          
-          <Button3D
-            onPress={onContinue}
-            fullWidth={true}
-          >
-            {() => (
-              <ContinueButtonText>
-                Continue
-              </ContinueButtonText>
-            )}
-          </Button3D>
-        </ModalContainer>
-      </ModalOverlay>
+      {formattedText && (
+        <ExplanationText>
+          {formattedText}
+        </ExplanationText>
+      )}
+      
+      <Button3D
+        onPress={onContinue}
+        fullWidth={true}
+      >
+        {() => (
+          <ContinueButtonText>
+            Continue
+          </ContinueButtonText>
+        )}
+      </Button3D>
     </Modal>
   )
 }
