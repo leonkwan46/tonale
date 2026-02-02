@@ -19,7 +19,7 @@ export interface Explanation {
 
 export interface QuestionInterface {
   type: 'playback'
-  audioFile?: ReturnType<typeof require>
+  audioFile?: string | number
   rhythm?: number[]
   tempo?: number
 }

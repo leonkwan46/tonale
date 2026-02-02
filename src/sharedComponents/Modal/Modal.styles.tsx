@@ -19,8 +19,7 @@ export const ModalOverlay = styled.View(({ theme }) => ({
 export const ModalContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderRadius: scale(theme.borderRadius.xl),
-  padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.xl),
-  margin: theme.device.isTablet ? scale(60) : scale(theme.spacing.lg),
+  padding: theme.device.isTablet ? scale(theme.spacing.lg) : scale(theme.spacing.xl),
   minWidth: theme.device.isTablet ? scale(200) : scale(300),
   maxWidth: theme.device.isTablet ? scale(300) : scale(400),
   alignItems: 'center',

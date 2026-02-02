@@ -6,8 +6,15 @@ const METRONOME_SOUND = require('../../assets/sounds/metronome_beat.mp3')
 const AUDIO_VOLUME_METRONOME = 0.4
 const SCHEDULE_INTERVAL_MS = 5
 
+interface UseMetronomeOptions {
+  enabled?: boolean
+  volume?: number
+  bpm: number
+  sharedStartTime?: number
+}
+
 interface UseMetronomeReturn {
-  start: () => void
+  start: (sharedStartTime?: number) => void
   stop: () => void
   isPlaying: boolean
 }
@@ -16,13 +23,13 @@ interface UseMetronomeReturn {
  * Hook for metronome functionality.
  * Provides precise metronome playback at specified BPM.
  *
- * @param bpm - Beats per minute for the metronome
+ * @param options - Configuration options including enabled, volume, bpm, and optional sharedStartTime
  * @returns Object with start, stop functions and isPlaying state
  */
-export const useMetronome = (bpm: number = 90): UseMetronomeReturn => {
+export const useMetronome = ({ enabled = false, volume = AUDIO_VOLUME_METRONOME, bpm, sharedStartTime: initialSharedStartTime }: UseMetronomeOptions): UseMetronomeReturn => {
   const [isPlaying, setIsPlaying] = useState(false)
   const metronomePlayerRef = useRef<AudioPlayer | null>(null)
-  const schedulerIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const schedulerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const startTimeRef = useRef<number>(0)
   const nextBeatTimeRef = useRef<number>(0)
 
@@ -42,19 +49,20 @@ export const useMetronome = (bpm: number = 90): UseMetronomeReturn => {
     setIsPlaying(false)
   }, [])
 
-  const start = useCallback(() => {
+  const start = useCallback((sharedStartTime?: number) => {
+    if (!enabled) return
     if (isPlaying) {
       stop()
     }
 
     // Create metronome player
     const player = createAudioPlayer(METRONOME_SOUND)
-    player.volume = AUDIO_VOLUME_METRONOME
+    player.volume = volume
     metronomePlayerRef.current = player
     setupAutoCleanup(player)
 
     // Set up timing
-    startTimeRef.current = Date.now()
+    startTimeRef.current = sharedStartTime || Date.now()
     nextBeatTimeRef.current = startTimeRef.current
 
     setIsPlaying(true)
@@ -70,7 +78,7 @@ export const useMetronome = (bpm: number = 90): UseMetronomeReturn => {
       if (now >= nextBeatTimeRef.current) {
         // Play beat
         const beatPlayer = createAudioPlayer(METRONOME_SOUND)
-        beatPlayer.volume = AUDIO_VOLUME_METRONOME
+        beatPlayer.volume = volume
         setupAutoCleanup(beatPlayer)
         void beatPlayer.play()
 
@@ -78,7 +86,7 @@ export const useMetronome = (bpm: number = 90): UseMetronomeReturn => {
         nextBeatTimeRef.current += beatInterval
       }
     }, SCHEDULE_INTERVAL_MS)
-  }, [isPlaying, beatInterval, stop])
+  }, [enabled, isPlaying, beatInterval, stop, volume])
 
   // Cleanup on unmount
   useEffect(() => {
