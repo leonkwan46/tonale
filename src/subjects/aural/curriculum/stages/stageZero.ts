@@ -1,11 +1,8 @@
+import { calculateStageStats } from '@/subjects/curriculumHelper'
 import type { Lesson, Stage, StageLesson, StageNumber } from '../types'
 
 const stageZero: StageNumber = 0
 
-/**
- * Initial Grade (Stage 0) - Aural Lessons
- * Focus: Basic rhythm echoes and pulse tapping
- */
 export const stageZeroLessons: Lesson[] = [
   {
     id: 'aural-stage-0-lesson-1',
@@ -17,6 +14,19 @@ export const stageZeroLessons: Lesson[] = [
       questionsCount: 5,
       stage: stageZero,
       answerLayoutType: 'grid'
+    }
+  },
+  {
+    id: 'aural-stage-0-final',
+    title: 'Stage 0 Test',
+    description: 'Review all Stage 0 aural skills',
+    isFinalTest: true,
+    isPassed: false,
+    exerciseConfig: {
+      generatorType: 'aural-stage-0-final',
+      questionsCount: 10,
+      stage: stageZero,
+      answerLayoutType: 'row'
     }
   }
   // TODO: Uncomment when song files are available
@@ -31,12 +41,9 @@ export const stageZeroLessons: Lesson[] = [
   //     stage: stageZero,
   //     answerLayoutType: 'grid'
   //   }
-  // }
+  //   }
 ]
 
-/**
- * Stage 0 - Initial Grade
- */
 export const stage0: Stage = {
   id: 'aural-stage-0',
   title: 'Initial Grade',
@@ -45,8 +52,7 @@ export const stage0: Stage = {
     ...lesson,
     stageId: 'aural-stage-0'
   })) as StageLesson[],
-  isCleared: false,
   isUnlocked: true,
-  totalStars: 0,
-  order: 0
+  order: 0,
+  ...calculateStageStats(stageZeroLessons)
 }

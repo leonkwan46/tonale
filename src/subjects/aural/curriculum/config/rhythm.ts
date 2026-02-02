@@ -95,60 +95,10 @@ export const STAGE_ZERO_PATTERN_CONFIG: RhythmPatternConfig = {
 }
 
 /**
- * Stage 1 (Grade 1) - Adds dotted notes
- * - All Stage 0 patterns
- * - Dotted crotchets
- * - More complex combinations
- */
-export const STAGE_ONE_PATTERN_CONFIG: RhythmPatternConfig = {
-  noteGroupings: [
-    ...STAGE_ZERO_PATTERN_CONFIG.noteGroupings,
-    [1.5, 0.5], // Dotted crotchet + quaver
-    [0.5, 1.5], // Quaver + dotted crotchet
-    [1.5, 0.5, 1], // Dotted crotchet + quaver + crotchet
-    [1, 1.5, 0.5], // Crotchet + dotted crotchet + quaver
-    [0.5, 0.5, 0.5, 1.5], // Three quavers + dotted crotchet
-    [1.5, 0.5, 0.5, 0.5] // Dotted crotchet + three quavers
-  ],
-  timeSignature: '4/4',
-  minPatternLength: 2
-}
-
-/**
- * Stage 2 (Grade 2) - Adds triplets and 3/4 time
- * - All Stage 1 patterns
- * - Quaver triplets
- * - 3/4 time signature patterns
- */
-export const STAGE_TWO_PATTERN_CONFIG: RhythmPatternConfig = {
-  noteGroupings: [
-    ...STAGE_ONE_PATTERN_CONFIG.noteGroupings,
-    [0.333, 0.333, 0.333], // Quaver triplet
-    [1, 0.333, 0.333, 0.333], // Crotchet + triplet
-    [0.333, 0.333, 0.333, 1], // Triplet + crotchet
-    [0.5, 0.5, 0.333, 0.333, 0.333], // Two quavers + triplet
-    [0.333, 0.333, 0.333, 0.5, 0.5], // Triplet + two quavers
-    // 3/4 time patterns (3 beats total)
-    [1, 1, 1], // Three crotchets (3/4)
-    [2, 1], // Minim + crotchet (3/4)
-    [1, 2] // Crotchet + minim (3/4)
-  ],
-  timeSignature: '4/4', // Can also support 3/4
-  minPatternLength: 2
-}
-
-/**
  * Get pattern configuration for a given stage
+ * Currently only supports Stage 0
  */
 export const getStagePatternConfig = (stage: number): RhythmPatternConfig => {
-  switch (stage) {
-    case 0:
-      return STAGE_ZERO_PATTERN_CONFIG
-    case 1:
-      return STAGE_ONE_PATTERN_CONFIG
-    case 2:
-      return STAGE_TWO_PATTERN_CONFIG
-    default:
-      return STAGE_ZERO_PATTERN_CONFIG
-  }
+  // Only stage 0 is supported for now
+  return STAGE_ZERO_PATTERN_CONFIG
 }

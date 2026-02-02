@@ -36,8 +36,6 @@ export {
   strictness,
   STRICTNESS_CONFIG,
   STAGE_ZERO_PATTERN_CONFIG,
-  STAGE_ONE_PATTERN_CONFIG,
-  STAGE_TWO_PATTERN_CONFIG,
   getStagePatternConfig
 } from './config/rhythm'
 
@@ -48,6 +46,4 @@ export {
 
 // Stage exports
 export { stage0 } from './stages/stageZero'
-export { stage1 } from './stages/stageOne'
-export { stage2 } from './stages/stageTwo'
 export * from './stages/helpers'

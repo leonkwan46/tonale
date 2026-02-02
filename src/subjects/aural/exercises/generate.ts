@@ -23,6 +23,12 @@ export const generateAuralQuestions = (config: ExerciseConfig): Question[] => {
       return createSingingQuestions(questionsCount, stage)
     case 'dynamics':
       return createDynamicsQuestions(questionsCount, stage)
+    case 'aural-stage-0-final':
+      const questions: Question[] = []
+      questions.push(...createRhythmQuestions(2, stage))
+      // TODO: Add pulse questions when available
+      // questions.push(...createPulseQuestions(2, stage))
+      return questions
     default:
       console.warn(`Unknown aural generator type: ${generatorType}`)
       return []

@@ -1,4 +1,4 @@
-// import { generateQuestionId } from '@/theory/exercises/utils/question'
+// import { generateQuestionId } from '@/subjects/theory/exercises/utils/question'
 import {
   getPulseStrictnessConfig,
   pulseStrictness

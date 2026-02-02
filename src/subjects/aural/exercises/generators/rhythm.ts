@@ -1,10 +1,10 @@
-import { generateQuestionId } from '@/theory/exercises/utils/question'
+import { generateQuestionId } from '@/subjects/theory/exercises/utils/question'
 import {
-  DEFAULT_TEMPO,
-  MIN_PATTERN_LENGTH,
-  getStagePatternConfig,
-  getStrictnessConfig,
-  TIMING_STRICTNESS_LEVEL
+    DEFAULT_TEMPO,
+    getStagePatternConfig,
+    getStrictnessConfig,
+    MIN_PATTERN_LENGTH,
+    TIMING_STRICTNESS_LEVEL
 } from '../../curriculum/config/rhythm'
 import type { Question, QuestionInterface, StageNumber } from '../../curriculum/types'
 
