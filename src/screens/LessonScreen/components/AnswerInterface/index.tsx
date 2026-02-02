@@ -1,3 +1,5 @@
+import { comparePulsePattern } from '@/subjects/aural/exercises/generators/pulse'
+import { compareRhythmPattern } from '@/subjects/aural/exercises/generators/rhythm'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
@@ -6,13 +8,13 @@ import { Text } from 'react-native'
 import { QuestionExplanation } from '../QuestionExplanation'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
 import { RhythmTap } from './AnswerTypes/RhythmTap'
-import { KeyPress } from './QuestionTypes/KeyPress'
-import { MultipleChoice } from './QuestionTypes/MultipleChoice'
-import { TrueFalse } from './QuestionTypes/TrueFalse'
-import { QUESTION_TYPE, QuestionType } from './QuestionTypes/types'
+import { KeyPress } from './AnswerTypes/KeyPress'
+import { MultipleChoice } from './AnswerTypes/MultipleChoice'
+import { TrueFalse } from './AnswerTypes/TrueFalse'
+import { ANSWER_TYPE, AnswerType } from './AnswerTypes/types'
 
 interface AnswerInterfaceProps {
-  questionType: QuestionType
+  answerType: AnswerType
   questionData: Question
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
@@ -28,7 +30,7 @@ const CORRECT_ANSWER_DELAY = 1500
 const FINAL_TEST_FAILURE_THRESHOLD = 3
 
 export const AnswerInterface = ({
-  questionType,
+  answerType,
   questionData,
   onAnswerSubmit,
   onNextQuestion,
@@ -127,10 +129,8 @@ export const AnswerInterface = ({
     const isRhythmExercise = questionData.questionInterface?.rhythm && !questionData.questionInterface?.audioFile
 
     if (isPulseExercise) {
-      const { comparePulsePattern } = require('@/subjects/aural/exercises/generators/pulse')
       isCorrect = comparePulsePattern(userTimestamps, correctAnswer)
     } else if (isRhythmExercise) {
-      const { compareRhythmPattern } = require('@/subjects/aural/exercises/generators/rhythm')
       isCorrect = compareRhythmPattern(userTimestamps, correctAnswer)
     }
 
@@ -148,8 +148,8 @@ export const AnswerInterface = ({
   }, [questionData])
 
   const renderAnswerComponent = () => {
-    switch (questionType) {
-      case QUESTION_TYPE.MULTIPLE_CHOICE:
+    switch (answerType) {
+      case ANSWER_TYPE.MULTIPLE_CHOICE:
         return (
           <MultipleChoice
             testID={`correct-answer-${typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}`}
@@ -161,7 +161,7 @@ export const AnswerInterface = ({
             type={questionData.layoutType ?? 'row'}
           />
         )
-      case QUESTION_TYPE.TRUE_FALSE:
+      case ANSWER_TYPE.TRUE_FALSE:
         return (
           <TrueFalse
             choices={questionData.choices}
@@ -173,14 +173,14 @@ export const AnswerInterface = ({
             testID={`correct-answer-${typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}`}
           />
         )
-      case QUESTION_TYPE.KEY_PRESS:
+      case ANSWER_TYPE.KEY_PRESS:
         return (
           <KeyPress
             correctKey={typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''}
             onKeyPress={handleKeyPress}
           />
         )
-      case 'rhythmTap':
+      case ANSWER_TYPE.RHYTHM_TAP:
         return (
           <RhythmTap
             onTapSubmit={handleRhythmTapSubmit}
