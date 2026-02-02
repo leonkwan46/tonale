@@ -1,56 +1,57 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { convertDurationsToTimestamps } from '../utils'
 
-interface UsePlaybackRipplesProps {
+interface UsePlaybackRipplesOptions {
   isPlaying: boolean
   rhythm?: number[]
 }
 
 interface UsePlaybackRipplesReturn {
-  ripples: string[]
-  removeRipple: (id: string) => void
+  ripples: number[]
+  removeRipple: (id: number) => void
 }
 
-/**
- * Hook for managing visual ripple animations during playback.
- * Creates ripples at each rhythm timestamp and removes them when complete.
- *
- * @param props - Configuration with isPlaying state and rhythm pattern
- * @returns Object with ripples array and removeRipple function
- */
 export const usePlaybackRipples = ({
   isPlaying,
   rhythm
-}: UsePlaybackRipplesProps): UsePlaybackRipplesReturn => {
-  const [ripples, setRipples] = useState<string[]>([])
+}: UsePlaybackRipplesOptions): UsePlaybackRipplesReturn => {
+  const [ripples, setRipples] = useState<number[]>([])
+  const rippleIdRef = useRef(0)
+  const timeoutRefsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
+
+  const removeRipple = useCallback((id: number) => {
+    setRipples(prev => prev.filter(rippleId => rippleId !== id))
+  }, [])
 
   useEffect(() => {
-    if (!isPlaying || !rhythm) {
+    if (!isPlaying) {
       setRipples([])
+      const timeouts = timeoutRefsRef.current
+      timeouts.forEach(timeout => clearTimeout(timeout))
+      timeouts.clear()
       return
     }
 
+    if (!rhythm) return
+
     const timestamps = convertDurationsToTimestamps(rhythm)
-    const timeouts: NodeJS.Timeout[] = []
-
-    timestamps.forEach((timestamp, index) => {
+    timestamps.forEach(timestamp => {
       const timeout = setTimeout(() => {
-        const rippleId = `ripple-${Date.now()}-${index}`
-        setRipples(prev => [...prev, rippleId])
+        setRipples(prev => [...prev, rippleIdRef.current++])
+        timeoutRefsRef.current.delete(timeout)
       }, timestamp * 1000)
-
-      timeouts.push(timeout)
+      timeoutRefsRef.current.add(timeout)
     })
 
+    const timeouts = timeoutRefsRef.current
     return () => {
-      timeouts.forEach(clearTimeout)
-      setRipples([])
+      timeouts.forEach(timeout => clearTimeout(timeout))
+      timeouts.clear()
     }
   }, [isPlaying, rhythm])
 
-  const removeRipple = (id: string) => {
-    setRipples(prev => prev.filter(rippleId => rippleId !== id))
+  return {
+    ripples,
+    removeRipple
   }
-
-  return { ripples, removeRipple }
 }

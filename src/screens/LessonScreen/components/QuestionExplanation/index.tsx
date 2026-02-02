@@ -1,15 +1,15 @@
 import { Button3D } from '@/sharedComponents/Button3D'
 import { ModalOverlay } from '@/sharedComponents/Modal/Modal.styles'
-import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/theory/exercises/utils/explanation'
+import { getExplanationFormattingConfig, shouldShowVisualInExplanation } from '@/subjects/theory/exercises/utils/explanation'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
 import type { ReactNode } from 'react'
 import { createElement } from 'react'
 import { Modal, Text } from 'react-native'
 import {
-  ContinueButtonText,
-  ExplanationText,
-  ModalContainer
+    ContinueButtonText,
+    ExplanationText,
+    ModalContainer
 } from './QuestionExplanation.styles'
 import { VisualExplanation } from './VisualExplanation'
 

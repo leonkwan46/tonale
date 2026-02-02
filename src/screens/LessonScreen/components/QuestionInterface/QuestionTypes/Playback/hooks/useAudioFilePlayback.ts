@@ -1,70 +1,76 @@
-import { AudioPlayer, createAudioPlayer } from 'expo-audio'
-import { useRef, useState } from 'react'
-import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
+import { addSafePlaybackListener, setupAutoCleanup } from '@/utils/audioPlayerUtils'
+import { createAudioPlayer } from 'expo-audio'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AUDIO_VOLUME_PLAYBACK } from '../constants'
 
 interface UseAudioFilePlaybackReturn {
   isPlaying: boolean
-  play: (
-    audioFile: ReturnType<typeof require>,
-    onStart?: () => void,
-    onFinish?: () => void
-  ) => Promise<void>
+  play: (audioFile: string | number, onStart?: () => void, onFinish?: () => void) => Promise<void>
   stop: () => void
 }
 
 /**
- * Hook for playing pre-recorded audio files (MP3).
- * Used for pulse exercises where user taps along to a melody.
- *
- * @returns Object with play, stop functions and isPlaying state
+ * Hook for playing pre-recorded audio files (MP3, etc.)
+ * For note-based playback, see usePlayer hook
  */
 export const useAudioFilePlayback = (): UseAudioFilePlaybackReturn => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const playerRef = useRef<AudioPlayer | null>(null)
+  const audioFilePlayerRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null)
 
-  const play = async (
-    audioFile: ReturnType<typeof require>,
+  const stop = useCallback(() => {
+    if (audioFilePlayerRef.current) {
+      audioFilePlayerRef.current.pause()
+      audioFilePlayerRef.current = null
+    }
+    setIsPlaying(false)
+  }, [])
+
+  const play = useCallback(async (
+    audioFile: string | number,
     onStart?: () => void,
     onFinish?: () => void
   ) => {
-    // Stop any existing playback
-    if (playerRef.current) {
-      playerRef.current.remove()
-      playerRef.current = null
-    }
-
     try {
+      // Stop any currently playing audio
+      stop()
+
       const player = createAudioPlayer(audioFile)
+      audioFilePlayerRef.current = player
       player.volume = AUDIO_VOLUME_PLAYBACK
-      playerRef.current = player
+      await player.play()
+      setIsPlaying(true)
+      onStart?.()
 
-      setupAutoCleanup(player)
-
-      // Add finish listener
-      player.addListener('playbackStatusUpdate', (status) => {
+      addSafePlaybackListener(player, (status) => {
         if (status.isLoaded && status.didJustFinish) {
           setIsPlaying(false)
+          audioFilePlayerRef.current = null
           onFinish?.()
         }
       })
 
-      setIsPlaying(true)
-      onStart?.()
-      await player.play()
+      setupAutoCleanup(player)
     } catch (error) {
-      console.error('Audio playback error:', error)
+      console.warn('Could not play audio file:', error)
+      setIsPlaying(false)
+      audioFilePlayerRef.current = null
+    }
+  }, [stop])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (audioFilePlayerRef.current) {
+        audioFilePlayerRef.current.pause()
+        audioFilePlayerRef.current = null
+      }
       setIsPlaying(false)
     }
-  }
+  }, [])
 
-  const stop = () => {
-    if (playerRef.current) {
-      playerRef.current.remove()
-      playerRef.current = null
-    }
-    setIsPlaying(false)
+  return {
+    isPlaying,
+    play,
+    stop
   }
-
-  return { isPlaying, play, stop }
 }

@@ -1,13 +1,13 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
-import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
+import { formatAsNotation } from '@/subjects/theory/exercises/utils/timeSignature'
 import {
-  CommonTime,
-  CutTime,
-  TimeSignature as LibraryTimeSignature,
-  MusicStaff,
-  parseTimeSignature,
-  parseTimeSignature as parseTimeSignatureFromLibrary,
-  type MusicElementData
+    CommonTime,
+    CutTime,
+    TimeSignature as LibraryTimeSignature,
+    MusicStaff,
+    parseTimeSignature,
+    parseTimeSignature as parseTimeSignatureFromLibrary,
+    type MusicElementData
 } from '@leonkwan46/music-notation'
 import type { VisualComponent } from '@types'
 import { renderNoteComponent } from '../../VisualQuestion/visualRenderHelper'

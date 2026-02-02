@@ -1,47 +1,91 @@
 import { useEffect } from 'react'
-import Animated, {
+import {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming
 } from 'react-native-reanimated'
-import styled from '@emotion/native'
-
-const RippleCircle = styled(Animated.View)`
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
-  border-width: 3px;
-  border-color: #4ECDC4;
-`
+import { scale as scaleSize } from 'react-native-size-matters'
+import { RippleCircle, WaterArea } from './Playback.styles'
 
 interface RippleAnimationProps {
-  onAnimationComplete: () => void
+  isTablet: boolean
+  onComplete?: () => void
 }
 
-/**
- * Visual ripple animation component.
- * Expands and fades out, then auto-removes itself.
- *
- * @param props - Contains onAnimationComplete callback
- */
-export const RippleAnimation = ({ onAnimationComplete }: RippleAnimationProps) => {
-  const scale = useSharedValue(0)
-  const opacity = useSharedValue(0.6)
+export const RippleAnimation: React.FC<RippleAnimationProps> = ({ 
+  isTablet,
+  onComplete
+}) => {
+  const waterScale = useSharedValue(0.6)
+  const waterOpacity = useSharedValue(0.25)
+  const ringScale = useSharedValue(0.6)
+  const ringOpacity = useSharedValue(0.5)
+  const borderWidth = useSharedValue(2)
 
   useEffect(() => {
-    scale.value = withTiming(1.5, { duration: 800 })
-    opacity.value = withTiming(0, { duration: 800 }, (finished) => {
-      if (finished) {
-        onAnimationComplete()
-      }
+    waterScale.value = withTiming(6.5, {
+      duration: 800,
+      easing: Easing.out(Easing.cubic)
     })
-  }, [onAnimationComplete, scale, opacity])
+    
+    waterOpacity.value = withTiming(0, {
+      duration: 800,
+      easing: Easing.out(Easing.quad)
+    })
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: opacity.value
+    ringScale.value = withTiming(6, {
+      duration: 800,
+      easing: Easing.out(Easing.cubic)
+    })
+    
+    ringOpacity.value = withTiming(0, {
+      duration: 800,
+      easing: Easing.out(Easing.quad)
+    })
+
+    borderWidth.value = withTiming(0, {
+      duration: 800,
+      easing: Easing.out(Easing.quad)
+    })
+
+    const timeout = setTimeout(() => {
+      onComplete?.()
+    }, 800)
+
+    return () => {
+      clearTimeout(timeout)
+      waterScale.value = 0.6
+      waterOpacity.value = 0.25
+      ringScale.value = 0.6
+      ringOpacity.value = 0.5
+      borderWidth.value = 2
+    }
+  }, [onComplete, isTablet, borderWidth, ringOpacity, ringScale, waterOpacity, waterScale])
+
+  const waterStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: waterScale.value }],
+    opacity: waterOpacity.value
   }))
 
-  return <RippleCircle style={animatedStyle} />
+  const ringStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: ringScale.value }],
+    opacity: ringOpacity.value,
+    borderWidth: borderWidth.value
+  }))
+
+  const buttonSize = isTablet ? scaleSize(80) : scaleSize(100)
+
+  const baseStyle = {
+    width: buttonSize,
+    height: buttonSize,
+    borderRadius: buttonSize / 2
+  }
+
+  return (
+    <>
+      <WaterArea isTablet={isTablet} style={[waterStyle, baseStyle]} />
+      <RippleCircle isTablet={isTablet} style={[ringStyle, baseStyle]} />
+    </>
+  )
 }
