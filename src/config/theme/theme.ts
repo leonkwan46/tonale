@@ -143,7 +143,8 @@ export const lightTheme = {
       red: Colors.light.revisionCard.buttonDepth,
       green: '#2a8a3a',
       yellow: '#ffd43b',
-      grey: '#666666'
+      grey: '#666666',
+      finalTest: Colors.light.finalTest.shadow
     },
     
     // Button3D background colors (color-based naming)
@@ -152,7 +153,8 @@ export const lightTheme = {
       red: Colors.light.revisionCard.buttonBackground,
       green: Colors.light.success,
       yellow: Colors.light.warning,
-      grey: '#999'
+      grey: '#999',
+      finalTest: Colors.light.warning
     },
     
     // RevisionCard colors
@@ -212,7 +214,8 @@ export const darkTheme = {
       red: Colors.dark.revisionCard.buttonDepth,
       green: '#2a8a3a',
       yellow: '#ffe066',
-      grey: '#333333'
+      grey: '#333333',
+      finalTest: Colors.dark.finalTest.shadow
     },
     
     // Button3D background colors (color-based naming)
@@ -221,7 +224,8 @@ export const darkTheme = {
       red: Colors.dark.revisionCard.buttonBackground,
       green: Colors.dark.success,
       yellow: Colors.dark.warning,
-      grey: '#444'
+      grey: '#444',
+      finalTest: Colors.dark.warning
     },
     
     // RevisionCard colors
