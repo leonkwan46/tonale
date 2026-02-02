@@ -125,6 +125,10 @@ export const Button3DContent = styled.View<{
     position: 'relative' as const,
     zIndex: 1,
     width: getContentWidth(layoutType, fullWidth),
-    height
+    height,
+    ...(height && {
+      justifyContent: 'center',
+      alignItems: 'center'
+    })
   }
 })

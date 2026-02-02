@@ -50,6 +50,7 @@ export const Button3D = ({
       layoutType={layoutType}
       fullWidth={fullWidth}
       width={width}
+      height={height}
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
