@@ -4,8 +4,6 @@ import {
   DescriptionText,
   ModalButton,
   ModalButtonText,
-  ModalContainer,
-  ModalOverlay,
   TitleText
 } from '@/sharedComponents/Modal/Modal.styles'
 import { WarningIcon } from './WarningModal.styles'
@@ -30,39 +28,35 @@ export const WarningModal = ({
       visible={isVisible}
       onRequestClose={onCancel}
     >
-      <ModalOverlay>
-        <ModalContainer>
-          <WarningIcon>⚠️</WarningIcon>
-          
-          <TitleText>
-            {title}
-          </TitleText>
-          
-          <DescriptionText>
-            {description}
-          </DescriptionText>
-          
-          <ButtonContainer>
-            <ModalButton
-              variant="outlined"
-              onPress={onCancel}
-            >
-              <ModalButtonText variant="outlined">
-                Cancel
-              </ModalButtonText>
-            </ModalButton>
-            
-            <ModalButton
-              variant="filled"
-              onPress={onContinue}
-            >
-              <ModalButtonText variant="filled">
-                Continue
-              </ModalButtonText>
-            </ModalButton>
-          </ButtonContainer>
-        </ModalContainer>
-      </ModalOverlay>
+      <WarningIcon>⚠️</WarningIcon>
+      
+      <TitleText>
+        {title}
+      </TitleText>
+      
+      <DescriptionText>
+        {description}
+      </DescriptionText>
+      
+      <ButtonContainer>
+        <ModalButton
+          variant="outlined"
+          onPress={onCancel}
+        >
+          <ModalButtonText variant="outlined">
+            Cancel
+          </ModalButtonText>
+        </ModalButton>
+        
+        <ModalButton
+          variant="filled"
+          onPress={onContinue}
+        >
+          <ModalButtonText variant="filled">
+            Continue
+          </ModalButtonText>
+        </ModalButton>
+      </ButtonContainer>
     </Modal>
   )
 }
