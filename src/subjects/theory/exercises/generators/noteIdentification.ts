@@ -1,0 +1,121 @@
+import { NOTES, type AccidentalType, type ClefType, type StemDirection } from '@leonkwan46/music-notation'
+import { extractNotePrefix } from '../utils/interval'
+import { getNewNotesForStage } from '../../curriculum/config/noteRange'
+import type { Question } from '@/types/lesson'
+import type { StageNumber } from '@/types/stage'
+import { generateQuestionsFromPool } from '../utils/exercise'
+import {
+  generateQuestionId,
+  generateWrongChoices
+} from '../utils/question'
+import { generateExplanation } from '../utils/explanation'
+
+interface Note {
+  pitch: string
+  name: string
+  letterName?: string
+  stem: StemDirection
+  ledgerLines: number
+  accidental?: AccidentalType
+}
+
+interface AnswerTypeDistribution {
+  keyPress: number
+  multipleChoice: number
+}
+
+const DEFAULT_DISTRIBUTION: AnswerTypeDistribution = {
+  keyPress: 0,
+  multipleChoice: 100
+}
+
+export const createNoteIdentificationQuestion = (
+  stage: StageNumber,
+  clef: ClefType,
+  noteData?: Note,
+  questionType: 'multipleChoice' | 'keyPress' = 'multipleChoice',
+  layoutType?: 'grid' | 'row'
+): Question => {
+  const stagePitches = getNewNotesForStage(stage, clef)
+  
+  if (stagePitches.length === 0) {
+    throw new Error(`No valid notes found for stage ${stage} in ${clef} clef`)
+  }
+  
+  const correctNoteData = noteData || stagePitches[0]
+
+  if (!correctNoteData.letterName) {
+    throw new Error('Note data missing letterName')
+  }
+
+  const allLetterNames = stagePitches.map((note: Note) => note.letterName)
+  const validLetterNames = allLetterNames.filter((name: string | undefined): name is string => Boolean(name))
+  const noteLetterNames = [...new Set(validLetterNames)]
+
+  const questionText =
+    questionType === 'keyPress'
+      ? `Press the key for this note in the ${clef} clef:`
+      : `What note is this in the ${clef} clef?`
+
+  const correctAnswer = questionType === 'keyPress' 
+    ? extractNotePrefix(correctNoteData.pitch)
+    : correctNoteData.letterName
+
+  const visualComponent = {
+    clef: clef,
+    size: 'xs' as const,
+    elements: [
+      {
+        pitch: correctNoteData.pitch,
+        type: NOTES.CROTCHET,
+        accidental: correctNoteData.accidental,
+        stem: correctNoteData.stem,
+        ledgerLines: correctNoteData.ledgerLines
+      }
+    ]
+  }
+
+  return {
+    id: generateQuestionId('note-id'),
+    question: questionText,
+    correctAnswer,
+    choices: questionType === 'keyPress' ? [] : generateWrongChoices(noteLetterNames, correctNoteData.letterName),
+    explanation: generateExplanation('noteIdentification', {
+      correctAnswer,
+      letterName: correctNoteData.letterName,
+      clef
+    }, visualComponent),
+    type: questionType,
+    visualComponent,
+    layoutType: layoutType ?? 'grid'
+  }
+}
+
+const getDuplicateIdentifier = (question: Question): string | null => {
+  const pitch = question.visualComponent?.elements?.[0]?.pitch
+  if (pitch) return pitch
+  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
+}
+
+export const createNoteIdentificationQuestions = (
+  questionsCount: number,
+  stage: StageNumber,
+  clef: ClefType,
+  answerTypeDistribution?: AnswerTypeDistribution,
+  layoutType?: 'grid' | 'row'
+): Question[] => {
+  const stagePitches = getNewNotesForStage(stage, clef)
+  const distribution = answerTypeDistribution || DEFAULT_DISTRIBUTION
+  const totalPercentage = distribution.keyPress + distribution.multipleChoice
+
+  const keyPressCount = Math.floor((questionsCount * distribution.keyPress) / totalPercentage)
+  const multipleChoiceCount = questionsCount - keyPressCount
+
+  const keyPressPool = stagePitches.map((note) => createNoteIdentificationQuestion(stage, clef, note, 'keyPress', layoutType))
+  const multipleChoicePool = stagePitches.map((note) => createNoteIdentificationQuestion(stage, clef, note, 'multipleChoice', layoutType))
+
+  const keyPressQuestions = generateQuestionsFromPool(keyPressPool, keyPressCount, getDuplicateIdentifier)
+  const multipleChoiceQuestions = generateQuestionsFromPool(multipleChoicePool, multipleChoiceCount, getDuplicateIdentifier)
+
+  return [...keyPressQuestions, ...multipleChoiceQuestions]
+}
