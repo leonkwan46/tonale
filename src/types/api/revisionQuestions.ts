@@ -7,9 +7,10 @@ export interface RevisionQuestion extends Question {
   correctCount?: number
 }
 
-export interface StoreRevisionQuestionPayload extends Question {
+export interface StoreRevisionQuestionPayload extends Omit<Question, 'explanation'> {
   lessonId: string
   correctCount?: number
+  explanation?: string
 }
 
 export interface StoreRevisionQuestionsPayload {
