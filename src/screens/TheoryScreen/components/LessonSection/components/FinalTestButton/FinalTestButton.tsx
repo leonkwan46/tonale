@@ -1,13 +1,13 @@
 import { Button3D } from '@/sharedComponents/Button3D'
 import {
-    FinalTestButtonContainer,
-    FinalTestContentContainer,
-    FinalTestDescription,
-    FinalTestGradient,
-    FinalTestIconContainer,
-    FinalTestTextWrapper,
-    FinalTestTitle,
-    FinalTestWrapper
+  FinalTestButtonContainer,
+  FinalTestContentContainer,
+  FinalTestDescription,
+  FinalTestGradient,
+  FinalTestIconContainer,
+  FinalTestTextWrapper,
+  FinalTestTitle,
+  FinalTestWrapper
 } from './FinalTestButton.styles'
 import { ScrollIcon } from './ScrollIcon'
 
@@ -16,7 +16,6 @@ interface FinalTestButtonProps {
   description: string
   onPress: () => void
   disabled?: boolean
-  isLocked?: boolean
   testID?: string
 }
 
@@ -25,11 +24,10 @@ export const FinalTestButton = ({
   description,
   onPress,
   disabled = false,
-  isLocked = false,
   testID
 }: FinalTestButtonProps) => {
   return (
-    <FinalTestWrapper isLocked={isLocked}>
+    <FinalTestWrapper>
       <FinalTestButtonContainer>
         <Button3D
           onPress={onPress}

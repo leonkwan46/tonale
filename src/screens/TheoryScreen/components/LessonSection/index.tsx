@@ -58,7 +58,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
   }
 
   const handlePress = () => {
-    if (isNavigating || lesson.isLocked) return
+    if (isNavigating) return
     
     if (lesson.isFinalTest) {
       // Check if any lesson in the stage has 0 stars
@@ -68,6 +68,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
         navigate(`/lesson?lessonId=${lesson.id}`)
       }
     } else {
+      if (lesson.isLocked) return
       navigate(`/lesson?lessonId=${lesson.id}`)
     }
   }
@@ -89,8 +90,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
           title={lesson.title}
           description={lesson.description}
           onPress={handlePress}
-          disabled={lesson.isLocked || isNavigating}
-          isLocked={lesson.isLocked}
+          disabled={isNavigating}
           testID={`lesson-title-${lesson.id}`}
         />
       ) : (
