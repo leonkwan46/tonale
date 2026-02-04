@@ -4,7 +4,7 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const ModalOverlay = styled.View(({ theme }) => ({
+export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -16,13 +16,11 @@ export const ModalOverlay = styled.View(({ theme }) => ({
   zIndex: 1000
 }))
 
-export const ModalContainer = styled.View(({ theme }) => ({
+export const ModalContainer = styled.View<{ width?: number }>(({ theme, width }) => ({
   backgroundColor: theme.colors.surface,
   borderRadius: scale(theme.borderRadius.xl),
-  padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.xl),
-  margin: theme.device.isTablet ? scale(60) : scale(theme.spacing.lg),
-  minWidth: theme.device.isTablet ? scale(200) : scale(300),
-  maxWidth: theme.device.isTablet ? scale(300) : scale(400),
+  padding: theme.device.isTablet ? scale(theme.spacing.lg) : scale(theme.spacing.xl),
+  width: width,
   alignItems: 'center',
   gap: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl),
   borderWidth: 1,

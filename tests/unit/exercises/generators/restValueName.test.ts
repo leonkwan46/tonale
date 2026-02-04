@@ -1,4 +1,5 @@
-import { createRestValueNameQuestions } from '@/theory/exercises/generators/restValueName'
+import { createRestValueNameQuestions } from '@/subjects/theory/exercises/generators/restValueName'
+import type { Question } from '@/types/lesson'
 import {
   validateRestTypeForStage,
   validateQuestionCount,
@@ -23,14 +24,14 @@ describe('restValueName generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createRestValueNameQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
         })
       })
 
       it('should only use stage 0 rest types', () => {
         const questions = createRestValueNameQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const restType = question.visualComponent?.noteType
           if (restType) {
             validateRestTypeForStage(restType, stage)
@@ -54,7 +55,7 @@ describe('restValueName generator', () => {
 
       it('should only use stage 1 rest types', () => {
         const questions = createRestValueNameQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const restType = question.visualComponent?.noteType
           if (restType) {
             validateRestTypeForStage(restType, stage)
@@ -78,7 +79,7 @@ describe('restValueName generator', () => {
 
       it('should only use stage 2 rest types', () => {
         const questions = createRestValueNameQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const restType = question.visualComponent?.noteType
           if (restType) {
             validateRestTypeForStage(restType, stage)

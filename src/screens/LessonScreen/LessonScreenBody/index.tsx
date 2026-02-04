@@ -1,7 +1,8 @@
 import type { Question } from '@types'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { Platform, ScrollView } from 'react-native'
 import { AnswerInterface } from '../components/AnswerInterface'
+import { Playback } from '../components/QuestionInterface/QuestionTypes/Playback'
 import { VisualQuestion } from '../components/VisualQuestion'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
 
@@ -28,6 +29,9 @@ export const LessonScreenBody = ({
   const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
 
+  // Playback state for aural exercises
+  const onPlaybackFinishRef = useRef<(() => void) | null>(null)
+
   const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
     onAnswerSubmit(isCorrect)
   }, [onAnswerSubmit])
@@ -39,6 +43,11 @@ export const LessonScreenBody = ({
       onNextQuestion()
     }
   }, [isLastQuestion, onLessonComplete, onNextQuestion])
+
+  // Reset playback state on question change
+  useEffect(() => {
+    onPlaybackFinishRef.current = null
+  }, [currentQuestion.id])
 
   if (questions.length === 0) return null
 
@@ -54,10 +63,17 @@ export const LessonScreenBody = ({
           <VisualQuestion visualComponent={visualComponent} stage={stage} />
         )}
 
+        {currentQuestion.questionInterface && (
+          <Playback
+            questionInterface={currentQuestion.questionInterface}
+            enableMetronome={false}
+          />
+        )}
+
         <QuestionText testID="question-text">{question}</QuestionText>
 
-        <AnswerInterface 
-          questionType={type}
+        <AnswerInterface
+          answerType={type}
           questionData={currentQuestion}
           onAnswerSubmit={handleAnswerSubmitInternal}
           onNextQuestion={handleNextQuestionInternal}
@@ -65,6 +81,7 @@ export const LessonScreenBody = ({
           wrongAnswersCount={wrongAnswersCount}
           isFinalTest={isFinalTest}
           isLastQuestion={isLastQuestion}
+          onPlaybackFinishRef={onPlaybackFinishRef}
         />
       </BodyContainer>
     </ScrollView>

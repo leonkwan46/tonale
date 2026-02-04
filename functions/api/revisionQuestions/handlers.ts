@@ -155,7 +155,11 @@ export const storeRevisionQuestionsV2 = onCall(
       }
       
       console.error('Error storing revision questions:', error)
-      throw new HttpsError('internal', 'Failed to store revision questions')
+      // Include the actual error message for debugging
+      const detailedMessage = error instanceof Error 
+        ? `Failed to store revision questions: ${error.message}` 
+        : 'Failed to store revision questions'
+      throw new HttpsError('internal', detailedMessage)
     }
   }
 )

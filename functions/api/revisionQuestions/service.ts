@@ -44,7 +44,7 @@ function compressVisualComponent(visualComponent?: VisualComponent): VisualCompo
 export function validateStoreRevisionQuestionPayload(
   data: StoreRevisionQuestionPayload
 ): void {
-  const { id, lessonId, question, correctAnswer, choices, type } = data
+  const { id, lessonId, question, correctAnswer, choices, type, questionInterface } = data
 
   if (!id || typeof id !== 'string') {
     throw new Error('id is required and must be a string')
@@ -58,16 +58,28 @@ export function validateStoreRevisionQuestionPayload(
     throw new Error('question is required and must be a string')
   }
 
-  if (!correctAnswer || typeof correctAnswer !== 'string') {
-    throw new Error('correctAnswer is required and must be a string')
+  if (type === 'rhythmTap') {
+    if (!Array.isArray(correctAnswer) || correctAnswer.length === 0) {
+      throw new Error('correctAnswer is required and must be a non-empty array for rhythmTap questions')
+    }
+    if (!questionInterface || questionInterface.type !== 'playback') {
+      throw new Error('questionInterface is required for rhythmTap questions and must have type "playback"')
+    }
+    if (!questionInterface.rhythm && !questionInterface.audioFile) {
+      throw new Error('questionInterface must have either rhythm or audioFile for rhythmTap questions')
+    }
+  } else {
+    if (!correctAnswer || typeof correctAnswer !== 'string') {
+      throw new Error('correctAnswer is required and must be a string for non-rhythmTap questions')
+    }
   }
 
   if (!Array.isArray(choices)) {
     throw new Error('choices is required and must be an array')
   }
 
-  if (!type || !['multipleChoice', 'trueFalse', 'keyPress'].includes(type)) {
-    throw new Error('type must be "multipleChoice", "trueFalse", or "keyPress"')
+  if (!type || !['multipleChoice', 'trueFalse', 'keyPress', 'rhythmTap'].includes(type)) {
+    throw new Error('type must be "multipleChoice", "trueFalse", "keyPress", or "rhythmTap"')
   }
 }
 
@@ -78,16 +90,18 @@ export async function storeRevisionQuestionService(
   validateStoreRevisionQuestionPayload(payload)
   
   // Compress visualComponent before storing
+  const compressedVisualComponent = compressVisualComponent(payload.visualComponent)
   const compressedPayload: RevisionQuestionInput = {
     id: payload.id,
     lessonId: payload.lessonId,
     question: payload.question,
     correctAnswer: payload.correctAnswer,
     choices: payload.choices,
-    explanation: payload.explanation,
     type: payload.type,
-    visualComponent: compressVisualComponent(payload.visualComponent),
-    correctCount: payload.correctCount
+    ...(payload.explanation && { explanation: payload.explanation }),
+    ...(compressedVisualComponent && { visualComponent: compressedVisualComponent }),
+    ...(payload.questionInterface && { questionInterface: payload.questionInterface }),
+    ...(payload.correctCount !== undefined && { correctCount: payload.correctCount })
   }
   
   await storeRevisionQuestionInFirestore(userId, compressedPayload)
@@ -131,17 +145,21 @@ export async function storeRevisionQuestionsService(
   })
   
   // Compress visualComponent for each question
-  const compressedQuestions: RevisionQuestionInput[] = payload.questions.map(question => ({
-    id: question.id,
-    lessonId: question.lessonId,
-    question: question.question,
-    correctAnswer: question.correctAnswer,
-    choices: question.choices,
-    explanation: question.explanation,
-    type: question.type,
-    visualComponent: compressVisualComponent(question.visualComponent),
-    correctCount: question.correctCount
-  }))
+  const compressedQuestions: RevisionQuestionInput[] = payload.questions.map(question => {
+    const compressedVisualComponent = compressVisualComponent(question.visualComponent)
+    return {
+      id: question.id,
+      lessonId: question.lessonId,
+      question: question.question,
+      correctAnswer: question.correctAnswer,
+      choices: question.choices,
+      type: question.type,
+      ...(question.explanation && { explanation: question.explanation }),
+      ...(compressedVisualComponent && { visualComponent: compressedVisualComponent }),
+      ...(question.questionInterface && { questionInterface: question.questionInterface }),
+      ...(question.correctCount !== undefined && { correctCount: question.correctCount })
+    }
+  })
   
   await storeRevisionQuestionsInFirestore(userId, compressedQuestions)
   

@@ -2,9 +2,10 @@ import styled from '@emotion/native'
 import { Tabs } from 'expo-router'
 import React from 'react'
 
+import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { useUser } from '@/hooks'
-import { CustomTabBar } from '../../src/globalComponents/CustomTabBar'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { CustomTabBar } from '../../src/globalComponents/CustomTabBar'
 
 const ErrorContainer = styled.View(({ theme }) => ({
   flex: 1,
@@ -56,6 +57,8 @@ export default function TabLayout() {
     )
   }
 
+  const isAuralEnabled = isFeatureEnabled(FEATURES.ENABLE_AURAL_LESSONS)
+
   return (
     <Tabs
       screenOptions={{
@@ -65,7 +68,12 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="theory" />
-      <Tabs.Screen name="aural" />
+      <Tabs.Screen 
+        name="aural" 
+        options={{
+          href: isAuralEnabled ? '/aural' : null
+        }}
+      />
       <Tabs.Screen name="settings" />
     </Tabs>
   )

@@ -21,7 +21,7 @@ export const SMuFLSymbolText = styled.Text<{ isTextTerm?: boolean; isWideDynamic
     : (theme.device.isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
-  color: theme.colors.text,
+  color: theme.colors.displayCard.text,
   textAlign: 'center',
   textAlignVertical: 'center',
   paddingHorizontal: scale(15),
