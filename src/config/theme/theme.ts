@@ -176,7 +176,10 @@ export const lightTheme = {
     cardButton: Colors.light.cardButton,
     
     // Cloud colors for TopCloudsCover
-    clouds: Colors.light.clouds
+    clouds: Colors.light.clouds,
+    
+    // DisplayCard colors
+    displayCard: Colors.light.displayCard
     
   },
   // Use shared constants for consistent dimensions across themes
@@ -247,7 +250,10 @@ export const darkTheme = {
     cardButton: Colors.dark.cardButton,
     
     // Cloud colors for TopCloudsCover
-    clouds: Colors.dark.clouds
+    clouds: Colors.dark.clouds,
+    
+    // DisplayCard colors
+    displayCard: Colors.dark.displayCard
     
   },
   // Use shared constants for consistent dimensions across themes

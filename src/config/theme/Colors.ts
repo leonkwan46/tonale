@@ -69,6 +69,9 @@ export const Colors = {
       light6: '#d5e9ff',
       light7: '#cce6ff',
       light8: '#f8fcff'
+    },
+    displayCard: {
+      background: '#ffffff'
     }
   },
   dark: {
@@ -133,6 +136,9 @@ export const Colors = {
       light6: '#d5e9ff',
       light7: '#cce6ff',
       light8: '#f8fcff'
+    },
+    displayCard: {
+      background: '#ffffff'
     }
   }
 }
