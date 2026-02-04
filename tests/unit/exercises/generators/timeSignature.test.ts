@@ -1,5 +1,6 @@
-import { createTimeSignatureQuestion, createTimeSignatureQuestions } from '@/theory/exercises/generators/timeSignature'
-import { getTimeSignatures } from '@/theory/exercises/utils/exercise'
+import { createTimeSignatureQuestion, createTimeSignatureQuestions } from '@/subjects/theory/exercises/generators/timeSignature'
+import type { Question } from '@/types/lesson'
+import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
 import {
   validateCorrectAnswerInChoices,
   validateQuestionCount,
@@ -152,7 +153,7 @@ describe('timeSignature generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createTimeSignatureQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -166,14 +167,14 @@ describe('timeSignature generator', () => {
 
       it('should only use stage 0 time signatures', () => {
         const questions = createTimeSignatureQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const timeSignatureValue = question.visualComponent?.timeSignatureValue
           if (timeSignatureValue) {
             validateTimeSignatureForStage(timeSignatureValue, stage)
           }
         })
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map((q: Question) => q.visualComponent?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })
@@ -182,16 +183,16 @@ describe('timeSignature generator', () => {
         const questions = createTimeSignatureQuestions(5, stage)
         validateQuestionCount(questions, 5)
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map((q: Question) => q.visualComponent?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })
 
       it('should have correct deduplication', () => {
         const questions = createTimeSignatureQuestions(20, stage)
-        const timeSigValues = questions.map(q => q.visualComponent?.timeSignatureValue)
+        const timeSigValues = questions.map((q: Question) => q.visualComponent?.timeSignatureValue)
         const valueCounts = new Map<string, number>()
-        timeSigValues.forEach(val => {
+        timeSigValues.forEach((val: string | undefined) => {
           if (val) {
             valueCounts.set(val, (valueCounts.get(val) || 0) + 1)
           }
@@ -215,14 +216,14 @@ describe('timeSignature generator', () => {
 
       it('should only use stage 1 time signatures', () => {
         const questions = createTimeSignatureQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const timeSignatureValue = question.visualComponent?.timeSignatureValue
           if (timeSignatureValue) {
             validateTimeSignatureForStage(timeSignatureValue, stage)
           }
         })
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map((q: Question) => q.visualComponent?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })
@@ -243,14 +244,14 @@ describe('timeSignature generator', () => {
 
       it('should only use stage 2 time signatures', () => {
         const questions = createTimeSignatureQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const timeSignatureValue = question.visualComponent?.timeSignatureValue
           if (timeSignatureValue) {
             validateTimeSignatureForStage(timeSignatureValue, stage)
           }
         })
         const timeSigValues = new Set(
-          questions.map(q => q.visualComponent?.timeSignatureValue).filter(Boolean)
+          questions.map((q: Question) => q.visualComponent?.timeSignatureValue).filter(Boolean)
         )
         expect(timeSigValues.size).toBeGreaterThan(0)
       })

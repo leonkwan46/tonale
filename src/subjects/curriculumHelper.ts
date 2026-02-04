@@ -1,4 +1,4 @@
-import type { Lesson, Stage } from '@types';
+import type { Lesson, Stage } from '@types'
 
 export const getLessonProgress = (
   lessonId: string,

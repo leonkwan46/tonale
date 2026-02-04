@@ -1,4 +1,5 @@
-import { createNoteRestValueQuestions } from '@/theory/exercises/generators/noteRestValue'
+import { createNoteRestValueQuestions } from '@/subjects/theory/exercises/generators/noteRestValue'
+import type { Question } from '@/types/lesson'
 import {
   validateNoteTypeForStage,
   validateQuestionCount,
@@ -24,18 +25,18 @@ describe('noteRestValue generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createNoteRestValueQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
         })
       })
 
       it('should include both note and rest questions', () => {
         const questions = createNoteRestValueQuestions(10, stage)
-        const noteQuestions = questions.filter(q => {
+        const noteQuestions = questions.filter((q: Question) => {
           const noteType = q.visualComponent?.noteType
           return noteType && typeof noteType === 'object' && 'type' in noteType && !noteType.type.includes('rest')
         })
-        const restQuestions = questions.filter(q => {
+        const restQuestions = questions.filter((q: Question) => {
           const noteType = q.visualComponent?.noteType
           return noteType && typeof noteType === 'object' && 'type' in noteType && noteType.type.includes('rest')
         })
@@ -45,7 +46,7 @@ describe('noteRestValue generator', () => {
 
       it('should only use stage 0 note and rest types', () => {
         const questions = createNoteRestValueQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const noteType = question.visualComponent?.noteType
           if (noteType && typeof noteType === 'object' && 'type' in noteType) {
             if (noteType.type.includes('rest')) {

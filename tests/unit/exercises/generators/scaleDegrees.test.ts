@@ -1,5 +1,6 @@
-import { createScaleDegreeQuestion, createScaleDegreeQuestions } from '@/theory/exercises/generators/scaleDegrees'
-import { getKeys } from '@/theory/exercises/utils/exercise'
+import { createScaleDegreeQuestion, createScaleDegreeQuestions } from '@/subjects/theory/exercises/generators/scaleDegrees'
+import type { Question } from '@/types/lesson'
+import { getKeys } from '@/subjects/theory/exercises/utils/exercise'
 import {
   validateCorrectAnswerInChoices,
   validateKeyForStage,
@@ -138,7 +139,7 @@ describe('scaleDegrees generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createScaleDegreeQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -146,7 +147,7 @@ describe('scaleDegrees generator', () => {
 
       it('should only use stage 2 keys', () => {
         const questions = createScaleDegreeQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const keyName = question.visualComponent?.keyName
           if (keyName) {
             validateKeyForStage(keyName, stage)
@@ -156,8 +157,8 @@ describe('scaleDegrees generator', () => {
 
       it('should include both treble and bass clef questions', () => {
         const questions = createScaleDegreeQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'treble')
+        const bassQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

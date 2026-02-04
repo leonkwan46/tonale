@@ -1,9 +1,10 @@
+import type { Question } from '@/types/lesson'
 import {
     STAGE_ONE_MUSICAL_TERMS_DEFINITIONS,
     STAGE_TWO_MUSICAL_TERMS_DEFINITIONS,
     STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
-} from '@/theory/curriculum/config/musicalTerms'
-import { createMusicalTermQuestion, createMusicalTermQuestions } from '@/theory/exercises/generators/musicalTerm'
+} from '@/subjects/theory/curriculum/config/musicalTerms'
+import { createMusicalTermQuestion, createMusicalTermQuestions } from '@/subjects/theory/exercises/generators/musicalTerm'
 import {
     validateCorrectAnswerInChoices,
     validateQuestionCount,
@@ -125,7 +126,7 @@ describe('musicalTerm generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createMusicalTermQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -134,7 +135,7 @@ describe('musicalTerm generator', () => {
       it('should only use stage 0 musical terms', () => {
         const questions = createMusicalTermQuestions(10, stage)
         const stageDefinitions = Object.values(STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(stageDefinitions).toContain(question.correctAnswer)
         })
       })
@@ -156,7 +157,7 @@ describe('musicalTerm generator', () => {
       it('should only use stage 1 musical terms', () => {
         const questions = createMusicalTermQuestions(10, stage)
         const stageDefinitions = Object.values(STAGE_ONE_MUSICAL_TERMS_DEFINITIONS)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(stageDefinitions).toContain(question.correctAnswer)
         })
       })
@@ -178,7 +179,7 @@ describe('musicalTerm generator', () => {
       it('should only use stage 2 musical terms', () => {
         const questions = createMusicalTermQuestions(10, stage)
         const stageDefinitions = Object.values(STAGE_TWO_MUSICAL_TERMS_DEFINITIONS)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(stageDefinitions).toContain(question.correctAnswer)
         })
       })

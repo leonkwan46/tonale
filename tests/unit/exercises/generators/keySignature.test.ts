@@ -1,4 +1,5 @@
-import { createKeySignatureQuestion, createKeySignatureQuestions } from '@/theory/exercises/generators/keySignature'
+import { createKeySignatureQuestion, createKeySignatureQuestions } from '@/subjects/theory/exercises/generators/keySignature'
+import type { Question } from '@/types/lesson'
 import {
   validateCorrectAnswerInChoices,
   validateKeyForStage,
@@ -96,7 +97,7 @@ describe('keySignature generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createKeySignatureQuestions(3, 2)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -110,14 +111,14 @@ describe('keySignature generator', () => {
 
       it('should only use stage 2 keys', () => {
         const questions = createKeySignatureQuestions(10, 2)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const keyName = question.visualComponent?.keyName
           if (keyName) {
             validateKeyForStage(keyName, 2)
           }
         })
         const keyNames = new Set(
-          questions.map(q => {
+          questions.map((q: Question) => {
             const keyName = q.visualComponent?.keyName
             return keyName ? (typeof keyName === 'string' ? keyName : (keyName as { toString(): string }).toString()) : null
           }).filter(Boolean)
@@ -134,10 +135,10 @@ describe('keySignature generator', () => {
 
       it('should have correct deduplication logic', () => {
         const questions = createKeySignatureQuestions(20, 2)
-        const correctAnswers = questions.map(q => q.correctAnswer).filter((a): a is string => typeof a === 'string')
+        const correctAnswers = questions.map((q: Question) => q.correctAnswer).filter((a: string | number[]): a is string => typeof a === 'string')
 
         const keyCounts = new Map<string, number>()
-        correctAnswers.forEach(key => {
+        correctAnswers.forEach((key: string) => {
           keyCounts.set(key, (keyCounts.get(key) || 0) + 1)
         })
 
@@ -149,7 +150,7 @@ describe('keySignature generator', () => {
 
       it('should generate questions with valid keyName in visual component', () => {
         const questions = createKeySignatureQuestions(5, 2)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(question.visualComponent?.keyName).toBeDefined()
           const keyName = question.visualComponent?.keyName
           const expectedAnswer = keyName ? (typeof keyName === 'string' ? keyName : (keyName as { toString(): string }).toString()) : ''

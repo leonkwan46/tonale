@@ -1,5 +1,6 @@
-import { createSemitoneToneQuestion, createSemitoneToneQuestions } from '@/theory/exercises/generators/semitonesTones'
-import { getIntervalPairs } from '@/theory/exercises/utils/interval'
+import { createSemitoneToneQuestion, createSemitoneToneQuestions } from '@/subjects/theory/exercises/generators/semitonesTones'
+import type { Question } from '@/types/lesson'
+import { getIntervalPairs } from '@/subjects/theory/exercises/utils/interval'
 import {
   validateCorrectAnswerInChoices,
   validatePitchForStage,
@@ -134,7 +135,7 @@ describe('semitonesTones generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createSemitoneToneQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -142,15 +143,15 @@ describe('semitonesTones generator', () => {
 
       it('should only have Semitone or Tone as correct answers', () => {
         const questions = createSemitoneToneQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(['Semitone', 'Tone']).toContain(question.correctAnswer)
         })
       })
 
       it('should include both treble and bass clef questions', () => {
         const questions = createSemitoneToneQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'treble')
+        const bassQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

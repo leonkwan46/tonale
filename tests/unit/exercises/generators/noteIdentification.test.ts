@@ -1,4 +1,5 @@
-import { createNoteIdentificationQuestion, createNoteIdentificationQuestions } from '@/theory/exercises/generators/noteIdentification'
+import { createNoteIdentificationQuestion, createNoteIdentificationQuestions } from '@/subjects/theory/exercises/generators/noteIdentification'
+import type { Question } from '@/types/lesson'
 import {
   validateCorrectAnswerInChoices,
   validatePitchForStage,
@@ -234,7 +235,7 @@ describe('noteIdentification generator', () => {
 
         it('should generate questions with valid structure', () => {
           const questions = createNoteIdentificationQuestions(3, 0, 'treble')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             validateQuestionStructure(question)
             validateCorrectAnswerInChoices(question)
           })
@@ -248,21 +249,21 @@ describe('noteIdentification generator', () => {
 
         it('should only use stage 0 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 0, 'treble')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             const pitch = question.visualComponent?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 0, 'treble')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map((q: Question) => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
 
         it('should have treble clef in all questions', () => {
           const questions = createNoteIdentificationQuestions(5, 0, 'treble')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             expect(question.visualComponent?.clef).toBe('treble')
           })
         })
@@ -281,21 +282,21 @@ describe('noteIdentification generator', () => {
 
         it('should only use stage 0 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 0, 'bass')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             const pitch = question.visualComponent?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 0, 'bass')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map((q: Question) => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
 
         it('should have bass clef in all questions', () => {
           const questions = createNoteIdentificationQuestions(5, 0, 'bass')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             expect(question.visualComponent?.clef).toBe('bass')
           })
         })
@@ -316,14 +317,14 @@ describe('noteIdentification generator', () => {
 
         it('should only use stage 1 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 1, 'treble')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             const pitch = question.visualComponent?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 1, 'treble')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map((q: Question) => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -342,14 +343,14 @@ describe('noteIdentification generator', () => {
 
         it('should only use stage 1 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 1, 'bass')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             const pitch = question.visualComponent?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 1, 'bass')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map((q: Question) => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -370,14 +371,14 @@ describe('noteIdentification generator', () => {
 
         it('should only use stage 2 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 2, 'treble')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             const pitch = question.visualComponent?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 2, 'treble')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map((q: Question) => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
@@ -396,14 +397,14 @@ describe('noteIdentification generator', () => {
 
         it('should only use stage 2 note range', () => {
           const questions = createNoteIdentificationQuestions(10, 2, 'bass')
-          questions.forEach(question => {
+          questions.forEach((question: Question) => {
             const pitch = question.visualComponent?.elements?.[0]?.pitch
             if (pitch) {
               validatePitchForStage(pitch, 2, 'bass')
             }
           })
           const pitches = new Set(
-            questions.map(q => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
+            questions.map((q: Question) => q.visualComponent?.elements?.[0]?.pitch).filter(Boolean)
           )
           expect(pitches.size).toBeGreaterThan(0)
         })
