@@ -71,7 +71,8 @@ export const Colors = {
       light8: '#f8fcff'
     },
     displayCard: {
-      background: '#ffffff'
+      background: '#ffffff',
+      text: '#000000'
     }
   },
   dark: {
@@ -138,7 +139,8 @@ export const Colors = {
       light8: '#f8fcff'
     },
     displayCard: {
-      background: '#ffffff'
+      background: '#ffffff',
+      text: '#000000'
     }
   }
 }

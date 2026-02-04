@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 export const SMuFLCardContainer = styled.View<{ isTextTerm?: boolean }>(({ theme, isTextTerm }) => ({
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.displayCard.background,
     borderRadius: scale(theme.borderRadius.lg),
     borderWidth: scale(1),
     borderColor: theme.colors.text,
