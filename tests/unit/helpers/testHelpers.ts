@@ -1,8 +1,8 @@
 import { getCumulativeNoteDefinitions } from '@/subjects/theory/curriculum/config/noteRange'
-import type { Question } from '@/types/lesson'
 import type { StageNumber } from '@/subjects/theory/curriculum/types'
-import type { Note } from '@leonkwan46/music-notation'
 import { getAllNoteTypes, getAllRestTypes, getKeys, getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
+import type { Question } from '@/types/lesson'
+import type { Note } from '@leonkwan46/music-notation'
 
 export const TEST_STAGES: StageNumber[] = [0, 1, 2]
 

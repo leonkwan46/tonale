@@ -1,10 +1,10 @@
-import type { Question } from '@/types/lesson'
 import {
     STAGE_ONE_MUSICAL_TERMS_DEFINITIONS,
     STAGE_TWO_MUSICAL_TERMS_DEFINITIONS,
     STAGE_ZERO_MUSICAL_TERMS_DEFINITIONS
 } from '@/subjects/theory/curriculum/config/musicalTerms'
 import { createMusicalTermQuestion, createMusicalTermQuestions } from '@/subjects/theory/exercises/generators/musicalTerm'
+import type { Question } from '@/types/lesson'
 import {
     validateCorrectAnswerInChoices,
     validateQuestionCount,

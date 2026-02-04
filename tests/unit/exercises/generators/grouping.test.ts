@@ -1,13 +1,13 @@
 import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/subjects/theory/exercises/generators/grouping'
-import type { Question } from '@/types/lesson'
 import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
 import { formatAsNotation } from '@/subjects/theory/exercises/utils/timeSignature'
+import type { Question } from '@/types/lesson'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('grouping generator', () => {

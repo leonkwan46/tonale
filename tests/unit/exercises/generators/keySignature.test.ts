@@ -1,12 +1,12 @@
 import { createKeySignatureQuestion, createKeySignatureQuestions } from '@/subjects/theory/exercises/generators/keySignature'
 import type { Question } from '@/types/lesson'
 import {
-  validateCorrectAnswerInChoices,
-  validateKeyForStage,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateKeyForStage,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('keySignature generator', () => {

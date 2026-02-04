@@ -1,12 +1,12 @@
-import type { Question } from '@/types/lesson'
 import { createAccidentalQuestion, createAccidentalQuestions } from '@/subjects/theory/exercises/generators/accidentals'
 import { getAccidentals } from '@/subjects/theory/exercises/utils/exercise'
+import type { Question } from '@/types/lesson'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('accidentals generator', () => {

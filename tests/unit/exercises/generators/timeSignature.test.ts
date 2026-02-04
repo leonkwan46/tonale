@@ -1,13 +1,13 @@
 import { createTimeSignatureQuestion, createTimeSignatureQuestions } from '@/subjects/theory/exercises/generators/timeSignature'
-import type { Question } from '@/types/lesson'
 import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
+import type { Question } from '@/types/lesson'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateTimeSignatureForStage,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateTimeSignatureForStage,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('timeSignature generator', () => {
