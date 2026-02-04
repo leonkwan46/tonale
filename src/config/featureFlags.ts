@@ -10,7 +10,7 @@ export type FeatureFlag = typeof FEATURES[keyof typeof FEATURES]
 // Feature flags configuration - must include all flags defined above
 export const featureFlags: Record<FeatureFlag, boolean> = {
   [FEATURES.ENABLE_DONATION]: false,
-  [FEATURES.ENABLE_AURAL_LESSONS]: true
+  [FEATURES.ENABLE_AURAL_LESSONS]: false
 } as const
 
 export const isFeatureEnabled = (flag: FeatureFlag): boolean => {
