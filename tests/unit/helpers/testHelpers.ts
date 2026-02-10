@@ -1,7 +1,8 @@
-import { getCumulativeNoteDefinitions } from '@/theory/curriculum/config/noteRange'
-import type { Question } from '@types'
-import type { StageNumber } from '@/theory/curriculum/types'
-import { getAllNoteTypes, getAllRestTypes, getKeys, getTimeSignatures } from '@/theory/exercises/utils/exercise'
+import { getCumulativeNoteDefinitions } from '@/subjects/theory/curriculum/config/noteRange'
+import type { StageNumber } from '@/subjects/theory/curriculum/types'
+import { getAllNoteTypes, getAllRestTypes, getKeys, getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
+import type { Question } from '@/types/lesson'
+import type { Note } from '@leonkwan46/music-notation'
 
 export const TEST_STAGES: StageNumber[] = [0, 1, 2]
 
@@ -28,7 +29,7 @@ export const validateUniqueChoices = (question: Question): void => {
 }
 
 export const validateUniqueQuestions = (questions: Question[]): void => {
-  const questionIds = new Set(questions.map(q => q.id))
+  const questionIds = new Set(questions.map((q: Question) => q.id))
   expect(questionIds.size).toBe(questions.length)
 }
 
@@ -41,7 +42,7 @@ export const validateStageConstraints = (
   stage: StageNumber,
   validator: (question: Question, stage: StageNumber) => boolean
 ): void => {
-  questions.forEach(question => {
+  questions.forEach((question: Question) => {
     expect(validator(question, stage)).toBe(true)
   })
 }
@@ -69,7 +70,7 @@ export const validateNoteTypeForStage = (
   }
 
   const stageNoteTypes = getAllNoteTypes(stage)
-  const matches = stageNoteTypes.some(allowedType => matchesNoteType(noteType, allowedType))
+  const matches = stageNoteTypes.some((allowedType: string | { type: string; dots?: number }) => matchesNoteType(noteType, allowedType))
   expect(matches).toBe(true)
 }
 
@@ -82,7 +83,7 @@ export const validateRestTypeForStage = (
   }
 
   const stageRestTypes = getAllRestTypes(stage)
-  const matches = stageRestTypes.some(allowedType => matchesNoteType(restType, allowedType))
+  const matches = stageRestTypes.some((allowedType: string | { type: string; dots?: number }) => matchesNoteType(restType, allowedType))
   expect(matches).toBe(true)
 }
 
@@ -106,7 +107,7 @@ export const validateTimeSignatureForStage = (
   }
 
   const stageTimeSignatures = getTimeSignatures(stage)
-  const matches = stageTimeSignatures.some(allowedTs => matchesTimeSignature(timeSignatureValue, allowedTs))
+  const matches = stageTimeSignatures.some((allowedTs: string | { topNumber: number; bottomNumber: number }) => matchesTimeSignature(timeSignatureValue, allowedTs))
   expect(matches).toBe(true)
 }
 
@@ -130,7 +131,7 @@ export const validateKeyForStage = (
 
   const stageKeys = getKeys(stage)
   const keyNameStr = keyToString(keyName)
-  const matches = stageKeys.some(allowedKey => keyNameStr === keyToString(allowedKey))
+  const matches = stageKeys.some((allowedKey: unknown) => keyNameStr === keyToString(allowedKey))
   expect(matches).toBe(true)
 }
 
@@ -144,6 +145,6 @@ export const validatePitchForStage = (
   }
 
   const stageNoteDefinitions = getCumulativeNoteDefinitions(stage, clef)
-  const stagePitches = stageNoteDefinitions.map(note => note.pitch)
+  const stagePitches = stageNoteDefinitions.map((note: Note) => note.pitch)
   expect(stagePitches).toContain(pitch)
 }

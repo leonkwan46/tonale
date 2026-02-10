@@ -1,28 +1,28 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
-import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
+import { formatAsNotation } from '@/subjects/theory/exercises/utils/timeSignature'
 import { canPronounceTerm, pronounceTerm } from '@/utils/pronounce'
 import {
-  CommonTime,
-  Crotchet,
-  CrotchetRest,
-  CutTime,
-  TimeSignature as LibraryTimeSignature,
-  Minim,
-  MinimRest,
-  MusicStaff,
-  NoteType,
-  parseTimeSignature,
-  Quaver,
-  QuaverRest,
-  Semibreve,
-  SemibreveRest,
-  Semiquaver,
-  SemiquaverRest,
-  Tuplets,
-  type ClefType,
-  type KeyName,
-  type MusicElementData,
-  type TimeSignatureType
+    CommonTime,
+    Crotchet,
+    CrotchetRest,
+    CutTime,
+    TimeSignature as LibraryTimeSignature,
+    Minim,
+    MinimRest,
+    MusicStaff,
+    NoteType,
+    parseTimeSignature,
+    Quaver,
+    QuaverRest,
+    Semibreve,
+    SemibreveRest,
+    Semiquaver,
+    SemiquaverRest,
+    Tuplets,
+    type ClefType,
+    type KeyName,
+    type MusicElementData,
+    type TimeSignatureType
 } from '@leonkwan46/music-notation'
 import type { StageNumber, VisualComponent, VisualComponentSize } from '@types'
 import { scale } from 'react-native-size-matters'

@@ -1,4 +1,5 @@
-import { createNoteValueNameQuestions } from '@/theory/exercises/generators/noteValueName'
+import { createNoteValueNameQuestions } from '@/subjects/theory/exercises/generators/noteValueName'
+import type { Question } from '@/types/lesson'
 import {
   validateNoteTypeForStage,
   validateQuestionCount,
@@ -23,14 +24,14 @@ describe('noteValueName generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createNoteValueNameQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
         })
       })
 
       it('should only use stage 0 note types', () => {
         const questions = createNoteValueNameQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const noteType = question.visualComponent?.noteType
           if (noteType) {
             validateNoteTypeForStage(noteType, stage)
@@ -54,7 +55,7 @@ describe('noteValueName generator', () => {
 
       it('should only use stage 1 note types', () => {
         const questions = createNoteValueNameQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const noteType = question.visualComponent?.noteType
           if (noteType) {
             validateNoteTypeForStage(noteType, stage)
@@ -78,7 +79,7 @@ describe('noteValueName generator', () => {
 
       it('should only use stage 2 note types', () => {
         const questions = createNoteValueNameQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const noteType = question.visualComponent?.noteType
           if (noteType) {
             validateNoteTypeForStage(noteType, stage)

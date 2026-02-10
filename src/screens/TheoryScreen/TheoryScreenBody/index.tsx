@@ -1,5 +1,5 @@
 import { useProgress } from '@/hooks'
-import { stagesArray } from '@/theory/curriculum/stages/helpers'
+import { stagesArray } from '@/subjects/theory/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -242,8 +242,8 @@ export const TheoryScreenBody = () => {
                 }
               }}
             >
-              {/* Show stage header only for cleared stages */}
-              {stage.isCleared && (
+              {/* Show stage header only for cleared stages with lessons */}
+              {stage.isCleared && lessonsToShow.length > 0 && (
                 <StageHeader
                   stage={stage}
                   isCollapsed={isCollapsed}

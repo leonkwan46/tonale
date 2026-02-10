@@ -1,5 +1,5 @@
 import { MUSICAL_TERM_TTS_OVERRIDES } from '@/config/gradeSyllabus'
-import { STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/theory/curriculum/config/musicalTerms'
+import { STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STAGE_TWO_ITALIAN_MUSICAL_TERMS } from '@/subjects/theory/curriculum/config/musicalTerms'
 import * as Speech from 'expo-speech'
 
 const getLanguageForTerm = (term: string): string => {

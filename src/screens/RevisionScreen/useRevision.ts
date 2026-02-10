@@ -133,7 +133,13 @@ export const useRevision = ({
       remainingQuestions.push(questionWithUpdatedCount)
 
       if (updatedCount !== initialCount) {
-        toUpdate.push(questionWithUpdatedCount)
+        const payload: StoreRevisionQuestionPayload = {
+          ...questionWithUpdatedCount,
+          explanation: typeof questionWithUpdatedCount.explanation === 'string'
+            ? questionWithUpdatedCount.explanation
+            : questionWithUpdatedCount.explanation?.text
+        }
+        toUpdate.push(payload)
       }
     })
 

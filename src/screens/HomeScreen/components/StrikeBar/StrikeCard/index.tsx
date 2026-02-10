@@ -1,4 +1,4 @@
-import { Card3DView } from '@/sharedComponents/Card3DView'
+import { Card } from '@/sharedComponents/Card'
 import { useTheme } from '@emotion/react'
 import React from 'react'
 import { Dimensions } from 'react-native'
@@ -75,15 +75,14 @@ export const StrikeCard = ({ day, currentDay, index }: StrikeCardProps) => {
 
   return (
     <StrikeBarCardContainer key={`${day}-${index}`}>
-      <Card3DView
-        customStyles={{
-          width: cardWidth,
-          height: cardHeight,
-          backgroundColor: getCardColor(),
-          depthColor: getDepthColor(),
-          borderWidth: isActive ? scale(2) : 0,
-          borderColor: isActive ? theme.colors.flame.active : 'transparent'
-        }}
+      <Card
+        enable3D={true}
+        width={cardWidth}
+        height={cardHeight}
+        backgroundColor={getCardColor()}
+        depthColor={getDepthColor()}
+        borderWidth={isActive ? scale(2) : 0}
+        borderColor={isActive ? theme.colors.flame.active : 'transparent'}
       >
         {!isEmpty && (
           <>
@@ -97,7 +96,7 @@ export const StrikeCard = ({ day, currentDay, index }: StrikeCardProps) => {
             </FlameIconContainer>
           </>
         )}
-      </Card3DView>
+      </Card>
     </StrikeBarCardContainer>
   )
 }

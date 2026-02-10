@@ -1,6 +1,6 @@
 import { useProgress, useSafeNavigation } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
-import { Card3DView } from '@/sharedComponents/Card3DView'
+import { Card } from '@/sharedComponents/Card'
 import { Skeleton } from '@/sharedComponents/Skeleton'
 import { useTheme } from '@emotion/react'
 import {
@@ -42,9 +42,9 @@ export const RevisionCard = () => {
   return (
     <RevisionCardContainer hasRevisionQuestions={hasRevisionQuestions} testID="revision-card">
       <RevisionCardContent>
-        <Card3DView color={hasRevisionQuestions ? 'red' : 'green'} size={cardSize}>
+        <Card color={hasRevisionQuestions ? 'red' : 'green'} size={cardSize}>
           <IconText>♪</IconText>
-        </Card3DView>
+        </Card>
         <ContentSection>
           {hasRevisionQuestions ? (
             <>

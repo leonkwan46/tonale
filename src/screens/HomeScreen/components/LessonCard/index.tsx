@@ -4,7 +4,7 @@ import { BeamedQuaverLogo } from '@/screens/TheoryScreen/components/LessonSectio
 import { LockLogo } from '@/screens/TheoryScreen/components/LessonSection/components/Logo/LockLogo'
 import { StarLogo } from '@/screens/TheoryScreen/components/LessonSection/components/Logo/StarLogo'
 import { Button3D } from '@/sharedComponents/Button3D'
-import { Card3DView } from '@/sharedComponents/Card3DView'
+import { Card } from '@/sharedComponents/Card'
 import { Skeleton } from '@/sharedComponents/Skeleton'
 import { useTheme } from '@emotion/react'
 import { CardContentContainer, ContinueButtonText, LessonCardContainer, NoLessonText, SkeletonContentSection, StarContainer } from './LessonCard.styles'
@@ -36,14 +36,14 @@ export const LessonCard = () => {
     return (
       <LessonCardContainer>
         <CardContentContainer>
-          <Card3DView color="green" size={cardSize}>
+          <Card color="green" size={cardSize}>
             <BeamedQuaverLogo />
             <StarContainer>
               <StarLogo filled={true} />
               <StarLogo filled={true} />
               <StarLogo filled={true} />
             </StarContainer>
-          </Card3DView>
+          </Card>
           <Description title="All Lessons Completed!" description="You've completed all lessons!" />
         </CardContentContainer>
       </LessonCardContainer>
@@ -69,7 +69,7 @@ export const LessonCard = () => {
   return (
     <LessonCardContainer>
       <CardContentContainer>
-        <Card3DView color={cardColor} size={cardSize}>
+        <Card color={cardColor} size={cardSize}>
           {lesson.isLocked ? (
             <LockLogo />
           ) : (
@@ -82,7 +82,7 @@ export const LessonCard = () => {
               </StarContainer>
             </>
           )}
-        </Card3DView>
+        </Card>
         <Description title={lesson.title} description={lesson.description} />
       </CardContentContainer>
       <Button3D

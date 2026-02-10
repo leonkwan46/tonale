@@ -1,6 +1,7 @@
-import { getCumulativeNoteDefinitions } from '@/theory/curriculum/config/noteRange'
-import { createIntervalQuestion, createIntervalQuestions } from '@/theory/exercises/generators/interval'
-import { getStageIntervals } from '@/theory/exercises/utils/interval'
+import { getCumulativeNoteDefinitions } from '@/subjects/theory/curriculum/config/noteRange'
+import type { Question } from '@/types/lesson'
+import { createIntervalQuestion, createIntervalQuestions } from '@/subjects/theory/exercises/generators/interval'
+import { getStageIntervals } from '@/subjects/theory/exercises/utils/interval'
 import {
     validateCorrectAnswerInChoices,
     validatePitchForStage,
@@ -218,7 +219,7 @@ describe('interval generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createIntervalQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -226,15 +227,15 @@ describe('interval generator', () => {
 
       it('should only use stage 2 intervals', () => {
         const questions = createIntervalQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(stageIntervals).toContain(question.correctAnswer)
         })
       })
 
       it('should include both treble and bass clef questions', () => {
         const questions = createIntervalQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'treble')
+        const bassQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })

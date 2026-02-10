@@ -1,5 +1,6 @@
-import { createTriadQuestion, createTriadQuestions } from '@/theory/exercises/generators/triad'
-import { getChordsByStage } from '@/theory/exercises/utils/triad'
+import { createTriadQuestion, createTriadQuestions } from '@/subjects/theory/exercises/generators/triad'
+import type { Question } from '@/types/lesson'
+import { getChordsByStage } from '@/subjects/theory/exercises/utils/triad'
 import {
     validateCorrectAnswerInChoices,
     validateKeyForStage,
@@ -109,7 +110,7 @@ describe('triad generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createTriadQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -117,7 +118,7 @@ describe('triad generator', () => {
 
       it('should only use stage 2 chord keys', () => {
         const questions = createTriadQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const keyName = question.correctAnswer
           if (keyName) {
             validateKeyForStage(keyName, stage)
@@ -127,15 +128,15 @@ describe('triad generator', () => {
 
       it('should include both treble and bass clef questions', () => {
         const questions = createTriadQuestions(10, stage)
-        const trebleQuestions = questions.filter(q => q.visualComponent?.clef === 'treble')
-        const bassQuestions = questions.filter(q => q.visualComponent?.clef === 'bass')
+        const trebleQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'treble')
+        const bassQuestions = questions.filter((q: Question) => q.visualComponent?.clef === 'bass')
         expect(trebleQuestions.length).toBeGreaterThan(0)
         expect(bassQuestions.length).toBeGreaterThan(0)
       })
 
       it('should have correct deduplication logic', () => {
         const questions = createTriadQuestions(20, stage)
-        const correctAnswers = questions.map(q => q.correctAnswer)
+        const correctAnswers = questions.map((q: Question) => q.correctAnswer)
         const uniqueAnswers = new Set(correctAnswers)
         expect(uniqueAnswers.size).toBeGreaterThan(0)
       })
