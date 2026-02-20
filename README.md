@@ -186,7 +186,6 @@ import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
 2. **Required Configuration Files & Credentials**
    
    Contact **[leonkwan46](https://github.com/leonkwan46)** to obtain:
-   - **GitHub token** for npm authentication (required for `@leonkwan46/music-notation` package)
    - **Firebase configuration files**: `google-services.json` (Android), `GoogleService-Info.plist` (iOS)
    - **`.env` file** with Firebase environment variables
    
@@ -207,7 +206,12 @@ import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
    ```
    Starts Firebase Auth (port 9099), Firestore (port 8080), and Functions (port 5001) emulators.
 
-5. **Start Development Server**
+   If you are getting `'firebase' is not recognized as an internal or external command, operable program or batch file.` Error, please run the following:
+   ```bash
+   npm install -g firebase-tools
+   ```
+
+6. **Start Development Server**
    ```bash
    npm start
    ```
