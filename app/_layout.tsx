@@ -8,6 +8,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
+import { NetworkToast } from '@/globalComponents/NetworkToast'
+import { NetworkNotificationProvider } from '@/hooks/useNetworkNotificationContext'
 import { ProgressProvider } from '@/hooks/useProgressContext'
 import { UserProvider } from '@/hooks/useUserContext'
 import { SplashScreen } from '@/screens/SplashScreen'
@@ -20,12 +22,13 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <AppThemeProvider>
           <ErrorBoundary>
-            <UserProvider>
-              <ProgressProvider>
-                <BottomSheetModalProvider>
-                  {showSplash ? (
-                    <SplashScreen onComplete={() => setShowSplash(false)} />
-                  ) : (
+            <NetworkNotificationProvider>
+              <UserProvider>
+                <ProgressProvider>
+                  <BottomSheetModalProvider>
+                    {showSplash ? (
+                      <SplashScreen onComplete={() => setShowSplash(false)} />
+                    ) : (
                     <>
                       <Stack screenOptions={{ headerShown: false }}>
                         <Stack.Screen name="(auth)" />
@@ -34,12 +37,14 @@ export default function RootLayout() {
                         <Stack.Screen name="lesson" />
                         <Stack.Screen name="+not-found" />
                       </Stack>
+                      <NetworkToast />
                       <StatusBar style="auto" />
                     </>
-                  )}
-                </BottomSheetModalProvider>
-            </ProgressProvider>
-          </UserProvider>
+                    )}
+                  </BottomSheetModalProvider>
+                </ProgressProvider>
+              </UserProvider>
+            </NetworkNotificationProvider>
         </ErrorBoundary>
         </AppThemeProvider>
       </SafeAreaProvider>

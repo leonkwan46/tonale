@@ -179,7 +179,10 @@ export const lightTheme = {
     clouds: Colors.light.clouds,
     
     // DisplayCard colors
-    displayCard: Colors.light.displayCard
+    displayCard: Colors.light.displayCard,
+
+    // Toast text — always dark for readability on bright warning/success backgrounds
+    toastText: Colors.light.text
     
   },
   // Use shared constants for consistent dimensions across themes
@@ -253,7 +256,10 @@ export const darkTheme = {
     clouds: Colors.dark.clouds,
     
     // DisplayCard colors
-    displayCard: Colors.dark.displayCard
+    displayCard: Colors.dark.displayCard,
+
+    // Toast text — always dark for readability on bright warning/success backgrounds
+    toastText: Colors.light.text
     
   },
   // Use shared constants for consistent dimensions across themes
