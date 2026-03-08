@@ -9,8 +9,10 @@ import {
   signOut,
   updatePassword,
   updateProfile,
+  verifyBeforeUpdateEmail,
   verifyPasswordResetCode
 } from 'firebase/auth'
+import type { ActionCodeSettings, User } from 'firebase/auth'
 
 import { auth } from './firebase'
 
@@ -19,111 +21,100 @@ import { auth } from './firebase'
 // Authentication → Email Templates → Password Reset → Set to: https://tonale.firebaseapp.com/auth-action
 export const ACTION_URL = process.env.EXPO_PUBLIC_AUTH_ACTION_URL!
 
-/**
- * Send email verification to the current user
- * Opens app directly via deep link (handleCodeInApp: true)
- */
-export async function sendEmailVerificationToUser() {
-  const user = auth.currentUser
-  if (!user) {
-    throw new Error('No user is currently signed in')
+const actionCodeSettings: ActionCodeSettings = {
+  url: ACTION_URL,
+  handleCodeInApp: true,
+  iOS: {
+    bundleId: 'com.leonkwan46.tonale'
+  },
+  android: {
+    packageName: 'com.leonkwan46.tonale',
+    installApp: true,
+    minimumVersion: '1'
   }
-  if (!user.email) {
-    throw new Error('User does not have an email address')
-  }
-
-  await sendEmailVerification(user, {
-    url: ACTION_URL,
-    handleCodeInApp: true,
-    iOS: {
-      bundleId: 'com.leonkwan46.tonale'
-    },
-    android: {
-      packageName: 'com.leonkwan46.tonale',
-      installApp: true,
-      minimumVersion: '1'
-    }
-  })
 }
 
-/**
- * Send password reset email to the user
- * Opens app directly via deep link (handleCodeInApp: true)
- */
-export async function sendPasswordResetEmailToUser() {
+const requireCurrentUser = (): User => {
   const user = auth.currentUser
-  if (!user) {
-    throw new Error('No user is currently signed in')
-  }
-  if (!user.email) {
-    throw new Error('User does not have an email address')
-  }
-
-  await sendPasswordResetEmail(auth, user.email, {
-    url: ACTION_URL,
-    handleCodeInApp: true,
-    iOS: {
-      bundleId: 'com.leonkwan46.tonale'
-    },
-    android: {
-      packageName: 'com.leonkwan46.tonale',
-      installApp: true,
-      minimumVersion: '1'
-    }
-  })
+  if (!user) throw new Error('No user is currently signed in')
+  return user
 }
 
-export async function applyActionCodeToUser(code: string) {
+const requireCurrentUserWithEmail = (): User & { email: string } => {
+  const user = requireCurrentUser()
+  if (!user.email) throw new Error('User does not have an email address')
+  return user as User & { email: string }
+}
+
+// ============================================================================
+// EMAIL ACTIONS
+// ============================================================================
+
+export const sendEmailVerificationToUser = async () => {
+  const user = requireCurrentUserWithEmail()
+  await sendEmailVerification(user, actionCodeSettings)
+}
+
+export const sendPasswordResetEmailToUser = async () => {
+  const user = requireCurrentUserWithEmail()
+  await sendPasswordResetEmail(auth, user.email, actionCodeSettings)
+}
+
+// ============================================================================
+// AUTH ACTION CODE HANDLERS
+// ============================================================================
+
+export const applyActionCodeToUser = async (code: string) => {
   await applyActionCode(auth, code)
 }
 
-export async function verifyPasswordResetCodeForUser(code: string): Promise<string> {
+export const verifyPasswordResetCodeForUser = async (code: string): Promise<string> => {
   return await verifyPasswordResetCode(auth, code)
 }
 
-export async function confirmPasswordResetForUser(code: string, newPassword: string) {
+export const confirmPasswordResetForUser = async (code: string, newPassword: string) => {
   await confirmPasswordReset(auth, code, newPassword)
 }
 
-export async function reauthenticateUser(password: string) {
-  const user = auth.currentUser
-  if (!user) {
-    throw new Error('No user is currently signed in')
-  }
-  if (!user.email) {
-    throw new Error('User does not have an email address')
-  }
+// ============================================================================
+// ACCOUNT UPDATES
+// ============================================================================
 
+export const reauthenticateUser = async (password: string) => {
+  const user = requireCurrentUserWithEmail()
   const credential = EmailAuthProvider.credential(user.email, password)
   await reauthenticateWithCredential(user, credential)
 }
 
-export async function updateUserPassword(currentPassword: string, newPassword: string) {
-  const user = auth.currentUser
-  if (!user) {
-    throw new Error('No user is currently signed in')
-  }
-
+export const updateUserPassword = async (currentPassword: string, newPassword: string) => {
+  const user = requireCurrentUser()
   await reauthenticateUser(currentPassword)
   await updatePassword(user, newPassword)
 }
 
-export async function updateUserDisplayName(displayName: string) {
-  const user = auth.currentUser
-  if (!user) {
-    throw new Error('No user is currently signed in')
-  }
+export const updateUserEmailAddress = async (currentPassword: string, newEmail: string) => {
+  const user = requireCurrentUser()
+  await reauthenticateUser(currentPassword)
+  await verifyBeforeUpdateEmail(user, newEmail, {
+    url: `${ACTION_URL}?mode=verifyAndChangeEmail`,
+    handleCodeInApp: false
+  })
+}
+
+export const updateUserDisplayName = async (displayName: string) => {
+  const user = requireCurrentUser()
   await updateProfile(user, { displayName })
 }
 
-export async function signOutUser() {
+// ============================================================================
+// SESSION
+// ============================================================================
+
+export const signOutUser = async () => {
   await signOut(auth)
 }
 
-export async function deleteUserAccount() {
-  const user = auth.currentUser
-  if (!user) {
-    throw new Error('No user is currently signed in')
-  }
+export const deleteUserAccount = async () => {
+  const user = requireCurrentUser()
   await deleteUser(user)
 }

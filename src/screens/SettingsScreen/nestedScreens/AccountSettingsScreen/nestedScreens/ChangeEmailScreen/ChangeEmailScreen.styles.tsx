@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity, TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -19,7 +18,7 @@ export const InputField = styled.View<{ disabled?: boolean }>(({ theme, disabled
   borderRadius: scale(theme.borderRadius.md),
   paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
   height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: disabled ? theme.colors.surface : theme.colors.surface,
+  backgroundColor: theme.colors.surface,
   borderColor: theme.colors.border,
   opacity: disabled ? 0.6 : 1,
   gap: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm)
@@ -70,14 +69,6 @@ export const PrimaryButtonText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily('600')
 }))
 
-export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.error
-}))
-
-export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
-}))
-
 export const MessageText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.text,
@@ -120,10 +111,6 @@ export const RefreshButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   fontFamily: getSourGummyFontFamily('600')
-}))
-
-export const SuccessIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
 }))
 
 export const LabelText = styled.Text(({ theme }) => ({

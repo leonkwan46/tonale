@@ -1,7 +1,7 @@
 import { Router } from 'expo-router'
 import { User } from 'firebase/auth'
 
-export type AuthActionMode = 'verifyEmail' | 'resetPassword'
+export type AuthActionMode = 'verifyEmail' | 'resetPassword' | 'verifyAndChangeEmail'
 
 export type AuthActionStatus = 'loading' | 'success' | 'error' | 'password-reset-form'
 
