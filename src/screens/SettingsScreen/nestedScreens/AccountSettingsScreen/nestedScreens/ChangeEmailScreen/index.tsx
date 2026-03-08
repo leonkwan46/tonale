@@ -78,7 +78,6 @@ export const ChangeEmailScreen = () => {
     try {
       await updateUserEmailAddress(password, trimmedEmail)
       setChangeSuccess(true)
-      setIsVerified(false)
       setNewEmail('')
       setPassword('')
     } catch (err) {
@@ -129,7 +128,7 @@ export const ChangeEmailScreen = () => {
               <SuccessContainer>
                 <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
                 <SuccessText>
-                  Email updated! A verification email has been sent to your new address.
+                  Verification email sent! Please check your new inbox and click the link to confirm the change.
                 </SuccessText>
               </SuccessContainer>
             ) : (
