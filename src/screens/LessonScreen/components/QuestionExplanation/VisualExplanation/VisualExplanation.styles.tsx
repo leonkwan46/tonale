@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 export const ExplanationCard = styled.View<{ isTextTerm?: boolean }>(({ theme, isTextTerm }) => ({
-  backgroundColor: theme.colors.surface,
+  backgroundColor: '#ffffff',
   borderRadius: scale(theme.borderRadius.lg),
   borderWidth: scale(1),
   borderColor: theme.colors.text,

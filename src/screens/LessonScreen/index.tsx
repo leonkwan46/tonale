@@ -175,11 +175,9 @@ export const LessonScreen = () => {
     wrongAnswers.length,
     lessonId,
     questions.length,
-    progressData,
     updateFinalTestProgress,
     updateLessonProgress,
     storeRevisionQuestions,
-    navigate,
     navigateBack
   ])
   

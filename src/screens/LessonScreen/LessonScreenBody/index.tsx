@@ -1,5 +1,5 @@
 import type { Question } from '@types'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { Platform, ScrollView } from 'react-native'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { Playback } from '../components/QuestionInterface/QuestionTypes/Playback'
@@ -28,13 +28,7 @@ export const LessonScreenBody = ({
   const currentQuestion = questions[currentQuestionIndex]
   const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
-
-  // Playback state for aural exercises
   const onPlaybackFinishRef = useRef<(() => void) | null>(null)
-
-  const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
-    onAnswerSubmit(isCorrect)
-  }, [onAnswerSubmit])
 
   const handleNextQuestionInternal = useCallback(() => {
     if (isLastQuestion) {
@@ -43,11 +37,6 @@ export const LessonScreenBody = ({
       onNextQuestion()
     }
   }, [isLastQuestion, onLessonComplete, onNextQuestion])
-
-  // Reset playback state on question change
-  useEffect(() => {
-    onPlaybackFinishRef.current = null
-  }, [currentQuestion.id])
 
   if (questions.length === 0) return null
 
@@ -73,14 +62,13 @@ export const LessonScreenBody = ({
         <QuestionText testID="question-text">{question}</QuestionText>
 
         <AnswerInterface
+          key={currentQuestion.id}
           answerType={type}
           questionData={currentQuestion}
-          onAnswerSubmit={handleAnswerSubmitInternal}
+          onAnswerSubmit={onAnswerSubmit}
           onNextQuestion={handleNextQuestionInternal}
-          onLessonComplete={onLessonComplete}
           wrongAnswersCount={wrongAnswersCount}
           isFinalTest={isFinalTest}
-          isLastQuestion={isLastQuestion}
           onPlaybackFinishRef={onPlaybackFinishRef}
         />
       </BodyContainer>
