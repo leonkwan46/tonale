@@ -7,18 +7,8 @@ export const ExplanationCard = styled.View<{ isTextTerm?: boolean }>(({ theme, i
   borderWidth: scale(1),
   borderColor: theme.colors.text,
   width: '100%',
-  maxWidth: '100%',
   minHeight: isTextTerm ? (theme.device.isTablet ? scale(115) : scale(135)) : (theme.device.isTablet ? scale(115) : scale(135)),
   position: 'relative'
-}))
-
-export const TabletNoteScaleContainer = styled.View<{ isTextTerm?: boolean }>(({ theme, isTextTerm }) => ({
-  ...(theme.device.isTablet && {
-    width: '100%',
-    maxWidth: '100%',
-    minHeight: isTextTerm ? (theme.device.isTablet ? scale(115) : scale(135)) : (theme.device.isTablet ? scale(115) : scale(135)),
-    transform: [{ scale: 2 }]
-  })
 }))
 
 export const ExplanationSymbolContainer = styled.View<{ isTextTerm?: boolean }>(({ theme, isTextTerm }) => ({
