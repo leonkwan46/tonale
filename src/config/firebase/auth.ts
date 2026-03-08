@@ -7,10 +7,12 @@ import {
   sendEmailVerification,
   sendPasswordResetEmail,
   signOut,
+  updateEmail,
   updatePassword,
   updateProfile,
   verifyPasswordResetCode
 } from 'firebase/auth'
+import type { ActionCodeSettings } from 'firebase/auth'
 
 import { auth } from './firebase'
 
@@ -18,6 +20,19 @@ import { auth } from './firebase'
 // Note: To bypass Firebase's default page, configure Action URL in Firebase Console:
 // Authentication → Email Templates → Password Reset → Set to: https://tonale.firebaseapp.com/auth-action
 export const ACTION_URL = process.env.EXPO_PUBLIC_AUTH_ACTION_URL!
+
+const actionCodeSettings: ActionCodeSettings = {
+  url: ACTION_URL,
+  handleCodeInApp: true,
+  iOS: {
+    bundleId: 'com.leonkwan46.tonale'
+  },
+  android: {
+    packageName: 'com.leonkwan46.tonale',
+    installApp: true,
+    minimumVersion: '1'
+  }
+}
 
 /**
  * Send email verification to the current user
@@ -32,18 +47,7 @@ export async function sendEmailVerificationToUser() {
     throw new Error('User does not have an email address')
   }
 
-  await sendEmailVerification(user, {
-    url: ACTION_URL,
-    handleCodeInApp: true,
-    iOS: {
-      bundleId: 'com.leonkwan46.tonale'
-    },
-    android: {
-      packageName: 'com.leonkwan46.tonale',
-      installApp: true,
-      minimumVersion: '1'
-    }
-  })
+  await sendEmailVerification(user, actionCodeSettings)
 }
 
 /**
@@ -59,18 +63,7 @@ export async function sendPasswordResetEmailToUser() {
     throw new Error('User does not have an email address')
   }
 
-  await sendPasswordResetEmail(auth, user.email, {
-    url: ACTION_URL,
-    handleCodeInApp: true,
-    iOS: {
-      bundleId: 'com.leonkwan46.tonale'
-    },
-    android: {
-      packageName: 'com.leonkwan46.tonale',
-      installApp: true,
-      minimumVersion: '1'
-    }
-  })
+  await sendPasswordResetEmail(auth, user.email, actionCodeSettings)
 }
 
 export async function applyActionCodeToUser(code: string) {
@@ -106,6 +99,17 @@ export async function updateUserPassword(currentPassword: string, newPassword: s
 
   await reauthenticateUser(currentPassword)
   await updatePassword(user, newPassword)
+}
+
+export async function updateUserEmailAddress(currentPassword: string, newEmail: string) {
+  const user = auth.currentUser
+  if (!user) {
+    throw new Error('No user is currently signed in')
+  }
+
+  await reauthenticateUser(currentPassword)
+  await updateEmail(user, newEmail)
+  await sendEmailVerification(user, actionCodeSettings)
 }
 
 export async function updateUserDisplayName(displayName: string) {
