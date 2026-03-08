@@ -1,16 +1,19 @@
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { signOutUser } from '@/config/firebase/auth'
+import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { useSafeNavigation, useUser } from '@/hooks'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 
 import { ProfileHeader } from './components/ProfileHeader'
 import { SettingsItem } from './components/SettingsItem'
+import { ThemeToggle } from './components/ThemeToggle'
 import { Card, Container, FullScreenScrollView, LogoutCard, ScrollContent, ScrollContentContainer } from './SettingsScreen.styles'
 
 export const SettingsScreen = () => {
   const { userData } = useUser()
   const { navigate, navigateReplace } = useSafeNavigation()
+  const { isDark, setIsDark } = useThemeMode()
   const [loggingOut, setLoggingOut] = useState(false)
 
   const handleAccountPress = () => {
@@ -83,6 +86,16 @@ export const SettingsScreen = () => {
               />
             </Card>
           )}
+          <Card>
+            <SettingsItem
+              icon="color-palette-outline"
+              label="Appearance"
+              showSeparator={false}
+              rightElement={
+                <ThemeToggle isDark={isDark} onToggle={setIsDark} />
+              }
+            />
+          </Card>
           <Card>
             <SettingsItem
               icon="chatbubble-outline"
