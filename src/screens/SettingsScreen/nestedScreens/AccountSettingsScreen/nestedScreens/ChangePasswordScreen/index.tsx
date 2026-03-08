@@ -48,7 +48,7 @@ export const ChangePasswordScreen = () => {
         <ContentContainer>
           <ScreenIntroHeader
             icon="lock-closed-outline"
-            description="Choose a strong password to keep your account secure. We'll send you a secure link to reset your password."
+            description="Choose a strong password to keep your account safe. We'll send you a link to reset it."
           />
           <Card>
             {error ? (
@@ -62,13 +62,13 @@ export const ChangePasswordScreen = () => {
               <SuccessContainer>
                 <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
                 <SuccessText>
-                  Password reset email sent! Please check your inbox at {authUser?.email} and follow the instructions to reset your password.
+                  Password reset email sent! Check your inbox at {authUser?.email}.
                 </SuccessText>
               </SuccessContainer>
             ) : (
               <>
                 <MessageText>
-                  We&apos;ll send a password reset link to {authUser?.email}. Click the link in the email to reset your password securely.
+                  We&apos;ll send a password reset link to {authUser?.email}. Click the link to reset your password.
                 </MessageText>
 
                 <PrimaryButton

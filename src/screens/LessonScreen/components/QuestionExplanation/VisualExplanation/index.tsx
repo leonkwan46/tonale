@@ -1,17 +1,17 @@
 import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
-import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
+import { formatAsNotation } from '@/subjects/theory/exercises/utils/timeSignature'
 import {
-  CommonTime,
-  CutTime,
-  TimeSignature as LibraryTimeSignature,
-  MusicStaff,
-  parseTimeSignature,
-  parseTimeSignature as parseTimeSignatureFromLibrary,
-  type MusicElementData
+    CommonTime,
+    CutTime,
+    TimeSignature as LibraryTimeSignature,
+    MusicStaff,
+    parseTimeSignature,
+    parseTimeSignature as parseTimeSignatureFromLibrary,
+    type MusicElementData
 } from '@leonkwan46/music-notation'
 import type { VisualComponent } from '@types'
 import { renderNoteComponent } from '../../VisualQuestion/visualRenderHelper'
-import { ExplanationCard, ExplanationSymbolContainer, ExplanationSymbolText, TabletNoteScaleContainer } from './VisualExplanation.styles'
+import { ExplanationCard, ExplanationSymbolContainer, ExplanationSymbolText } from './VisualExplanation.styles'
 
 interface VisualExplanationProps {
   visualComponent: VisualComponent
@@ -67,7 +67,7 @@ export const VisualExplanation = ({
   )
 
   const shouldRenderTimeSignature = visualComponent.type === 'timeSignature' && visualComponent.timeSignatureValue
-  const shouldRenderNoteValue = visualComponent.type === 'noteValue' && visualComponent.noteType
+  const shouldRenderNoteValue = (visualComponent.type === 'noteValue') && visualComponent.noteType
   const shouldRenderTermAndSign = visualComponent.type === 'termAndSign' && visualComponent.symbolType
 
   if (shouldRenderTimeSignature && visualComponent.timeSignatureValue) {
@@ -95,9 +95,7 @@ export const VisualExplanation = ({
     
     return (
       <ExplanationCard>
-        <TabletNoteScaleContainer>
           {renderTimeSignature()}
-        </TabletNoteScaleContainer>
       </ExplanationCard>
     )
   }
@@ -126,9 +124,7 @@ export const VisualExplanation = ({
   if (shouldRenderNoteValue) {
     return (
       <ExplanationCard>
-        <TabletNoteScaleContainer>
           {renderNoteComponent(visualComponent.noteType)}
-        </TabletNoteScaleContainer>
       </ExplanationCard>
     )
   }

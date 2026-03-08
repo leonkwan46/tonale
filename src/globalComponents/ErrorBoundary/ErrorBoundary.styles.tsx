@@ -4,65 +4,65 @@ import styled from '@emotion/native'
 export const ScrollContainer = styled.ScrollView(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background,
-  padding: 20
+  padding: theme.spacing.lg
 }))
 
 export const Title = styled.Text(({ theme }) => ({
-  fontSize: 24,
+  fontSize: theme.typography.xl,
   color: theme.colors.error,
-  marginBottom: 16,
+  marginBottom: theme.spacing.md,
   textAlign: 'center',
   fontFamily: getSourGummyFontFamily('bold')
 }))
 
 export const Message = styled.Text(({ theme }) => ({
-  fontSize: 16,
+  fontSize: theme.typography.base,
   color: theme.colors.text,
   textAlign: 'center',
-  marginBottom: 24,
+  marginBottom: theme.spacing.lg,
   opacity: 0.8,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
 export const SectionTitle = styled.Text(({ theme }) => ({
-  fontSize: 18,
+  fontSize: theme.typography.lg,
   color: theme.colors.text,
-  marginTop: 16,
-  marginBottom: 8,
+  marginTop: theme.spacing.md,
+  marginBottom: theme.spacing.sm,
   fontFamily: getSourGummyFontFamily('600')
 }))
 
 export const ErrorText = styled.Text(({ theme }) => ({
-  fontSize: 14,
+  fontSize: theme.typography.sm,
   color: theme.colors.error,
   fontFamily: getSourGummyFontFamily('400'),
   backgroundColor: theme.colors.surface,
-  padding: 12,
-  borderRadius: 8,
-  marginBottom: 16
+  padding: theme.spacing.sm,
+  borderRadius: theme.borderRadius.sm,
+  marginBottom: theme.spacing.md
 }))
 
 export const StackText = styled.Text(({ theme }) => ({
-  fontSize: 12,
+  fontSize: theme.typography.sm,
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400'),
   backgroundColor: theme.colors.surface,
-  padding: 12,
-  borderRadius: 8,
-  marginBottom: 16,
+  padding: theme.spacing.sm,
+  borderRadius: theme.borderRadius.sm,
+  marginBottom: theme.spacing.md,
   opacity: 0.8
 }))
 
 export const ReloadButton = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.primary,
-  padding: 16,
-  borderRadius: 8,
-  marginTop: 24,
+  padding: theme.spacing.md,
+  borderRadius: theme.borderRadius.sm,
+  marginTop: theme.spacing.lg,
   alignItems: 'center'
 }))
 
 export const ReloadText = styled.Text(({ theme }) => ({
   color: theme.colors.background,
-  fontSize: 16,
+  fontSize: theme.typography.base,
   fontFamily: getSourGummyFontFamily('600')
 }))

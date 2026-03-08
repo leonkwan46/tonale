@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import {
   AuthActionsContainer,
   ContentWrapper,
-  ScrollContentContainer
+  scrollContentContainerStyle
 } from './AuthScreen.styles'
 import { AuthForm } from './components/AuthForm'
 import { GuestLogin } from './components/GuestLogin'
@@ -66,8 +66,8 @@ export const AuthScreen = () => {
     <ScreenContainer>
       <KeyboardAwareScrollView 
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={scrollContentContainerStyle}
       >
-        <ScrollContentContainer>
         <ContentWrapper>
           <Header
             authState={authState}
@@ -92,7 +92,6 @@ export const AuthScreen = () => {
             />
           </AuthActionsContainer>
         </ContentWrapper>
-        </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )

@@ -7,6 +7,7 @@
 - No semicolons (including in imports)
 - No trailing commas
 - Use TypeScript strictly - avoid `any` types
+- Don't use the type `any` if possible - always prefer proper TypeScript types (e.g., `ImageSourcePropType`, `string[]`, custom interfaces)
 - Import React hooks directly: `import { useState, useEffect } from 'react'` (not `React.useState`)
 
 ## React/React Native Patterns
@@ -71,3 +72,10 @@
 - Avoid unnecessary comments - code should be self-documenting
 - Never use re-exports - import directly from source files
 - Always check TypeScript compilation (`tsc --noEmit`) and linting after making changes
+
+## BMad Workflows
+- BMad is installed at `/Users/leonkwan/_bmad` and provides structured AI agent workflows
+- Use BMad workflows for code reviews, architecture planning, documentation, and structured development processes
+- Available workflows include: code review (`/bmad-bmm-code-review`), quick dev (`/bmad-bmm-quick-dev`), document project (`/bmad-bmm-document-project`), and more
+- Use `/bmad-help` for guidance on which workflow to use next
+- BMad Master agent can be activated to access the full menu of workflows and tasks

@@ -10,7 +10,7 @@ export const BLACK_KEY_OFFSET = WHITE_KEY_WIDTH / 2 - BLACK_KEY_WIDTH / 2 + scal
 
 export const KeyboardContainer = styled.View(({ theme }) => ({
   width: '100%',
-  marginBottom: scale(20),
+  marginBottom: scale(theme.spacing.lg),
   position: 'relative',
   height: WHITE_KEY_HEIGHT,
   alignItems: 'center'
@@ -53,14 +53,7 @@ export const Key = styled.TouchableOpacity<{ isBlack: boolean; isSelected: boole
       backgroundColor,
       borderWidth: isBlack ? 0 : borderWidth,
       borderColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: isBlack ? scale(2) : scale(1)
-      },
-      shadowOpacity: isBlack ? 0.3 : 0.1,
-      shadowRadius: isBlack ? scale(3) : scale(2),
-      elevation: isBlack ? 3 : 1
+      ...(isBlack ? theme.shadows.sm : theme.shadows.xs)
     }
   }
 )

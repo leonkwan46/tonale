@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
+import { ReactNode } from 'react'
 import { scale } from 'react-native-size-matters'
 
 import {
@@ -19,6 +20,7 @@ interface SettingsItemProps {
   variant?: 'default' | 'red'
   showVerifyIcon?: boolean
   isVerified?: boolean
+  rightElement?: ReactNode
 }
 
 export const SettingsItem = ({
@@ -29,7 +31,8 @@ export const SettingsItem = ({
   type = 'filled',
   variant = 'default',
   showVerifyIcon = false,
-  isVerified = false
+  isVerified = false,
+  rightElement
 }: SettingsItemProps) => {
   return (
     <>
@@ -47,10 +50,9 @@ export const SettingsItem = ({
             />
           </VerifyIconContainer>
         )}
-        {variant === 'default' && <StyledIcon name="chevron-forward" size={scale(20)} variant={variant} />}
+        {rightElement ?? (variant === 'default' && <StyledIcon name="chevron-forward" size={scale(20)} variant={variant} />)}
       </SettingsItemContainer>
       {showSeparator && <Separator />}
     </>
   )
 }
-

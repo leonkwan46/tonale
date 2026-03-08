@@ -1,14 +1,22 @@
 import type { Timestamp } from 'firebase/firestore'
 import type { VisualComponent } from './visual'
 
+export interface QuestionInterface {
+  type: 'playback'
+  audioFile?: string | number
+  rhythm?: number[]
+  tempo?: number
+}
+
 export interface Question {
   id: string
   question: string
-  correctAnswer: string
+  correctAnswer: string | number[]
   choices: string[]
   explanation?: string
-  type: 'multipleChoice' | 'trueFalse' | 'keyPress'
+  type: 'multipleChoice' | 'trueFalse' | 'keyPress' | 'rhythmTap'
   visualComponent?: VisualComponent
+  questionInterface?: QuestionInterface
 }
 
 export interface RevisionQuestion extends Question {

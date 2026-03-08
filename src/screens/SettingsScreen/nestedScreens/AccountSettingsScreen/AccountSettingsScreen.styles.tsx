@@ -8,8 +8,8 @@ export const FullScreenScrollView = styled(ScrollView)({
 
 export const Card = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
-  borderRadius: scale(12),
-  paddingHorizontal: scale(10)
+  borderRadius: scale(theme.borderRadius.md),
+  paddingHorizontal: scale(theme.spacing.sm)
 }))
 
 export const Divider = styled(View)(({ theme }) => ({
@@ -19,10 +19,10 @@ export const Divider = styled(View)(({ theme }) => ({
 
 export const DeleteAccountCard = styled.View(({ theme }) => ({
   backgroundColor: 'transparent',
-  borderRadius: scale(12),
+  borderRadius: scale(theme.borderRadius.md),
   borderWidth: scale(1),
   borderColor: theme.colors.error,
-  paddingHorizontal: scale(10)
+  paddingHorizontal: scale(theme.spacing.sm)
 }))
 
 export const ScrollContentContainer = styled.View({

@@ -4,7 +4,7 @@ import type {
   UpdateLessonProgressPayload,
   UserDataSuccessResponse
 } from '@types'
-import * as functions from 'firebase-functions/v1'
+import { HttpsError, onCall } from 'firebase-functions/v2/https'
 import {
   deleteLessonProgressService,
   getAllLessonProgressService,
@@ -13,7 +13,7 @@ import {
 } from './service'
 
 // ============================================================================
-// HTTP HANDLERS LAYER - Thin Orchestration Layer
+// HTTP HANDLERS LAYER - Thin Orchestration Layer (2nd Gen)
 // ============================================================================
 
 interface GetLessonProgressData {
@@ -21,16 +21,17 @@ interface GetLessonProgressData {
 }
 
 /**
- * Update lesson progress HTTP handler
+ * Update lesson progress HTTP handler (2nd Gen)
  */
-export const updateLessonProgress = functions.https.onCall(
-  async (data: UpdateLessonProgressPayload, context) => {
+export const updateLessonProgressV2 = onCall(
+  async (request) => {
     // Authentication check
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as UpdateLessonProgressPayload
 
     try {
       // Delegate to service layer
@@ -41,26 +42,27 @@ export const updateLessonProgress = functions.https.onCall(
       
       // Map business logic errors to HTTP errors
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error updating lesson progress:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to update lesson progress')
+      throw new HttpsError('internal', 'Failed to update lesson progress')
     }
   }
 )
 
 /**
- * Get single lesson progress HTTP handler
+ * Get single lesson progress HTTP handler (2nd Gen)
  */
-export const getLessonProgress = functions.https.onCall(
-  async (data: GetLessonProgressData, context) => {
+export const getLessonProgressV2 = onCall(
+  async (request) => {
     // Authentication check
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as GetLessonProgressData
     const { lessonId } = data
 
     try {
@@ -71,48 +73,49 @@ export const getLessonProgress = functions.https.onCall(
       
       // Map business logic errors to HTTP errors
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error fetching lesson progress:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to fetch lesson progress')
+      throw new HttpsError('internal', 'Failed to fetch lesson progress')
     }
   }
 )
 
 /**
- * Get all lesson progress HTTP handler
+ * Get all lesson progress HTTP handler (2nd Gen)
  */
-export const getAllLessonProgress = functions.https.onCall(
-  async (data: any, context) => {
+export const getAllLessonProgressV2 = onCall(
+  async (request) => {
     // Authentication check
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
 
     try {
       // Delegate to service layer
       return await getAllLessonProgressService(userId) as AllLessonProgressResponse
     } catch (error) {
       console.error('Error fetching all lesson progress:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to fetch lesson progress')
+      throw new HttpsError('internal', 'Failed to fetch lesson progress')
     }
   }
 )
 
 /**
- * Delete lesson progress HTTP handler
+ * Delete lesson progress HTTP handler (2nd Gen)
  */
-export const deleteLessonProgress = functions.https.onCall(
-  async (data: GetLessonProgressData, context) => {
+export const deleteLessonProgressV2 = onCall(
+  async (request) => {
     // Authentication check
-    if (!context?.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated')
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated')
     }
 
-    const userId = context.auth.uid
+    const userId = request.auth.uid
+    const data = request.data as GetLessonProgressData
     const { lessonId } = data
 
     try {
@@ -124,11 +127,11 @@ export const deleteLessonProgress = functions.https.onCall(
       
       // Map business logic errors to HTTP errors
       if (errorMessage.includes('required') || errorMessage.includes('must be')) {
-        throw new functions.https.HttpsError('invalid-argument', errorMessage)
+        throw new HttpsError('invalid-argument', errorMessage)
       }
       
       console.error('Error deleting lesson progress:', error)
-      throw new functions.https.HttpsError('internal', 'Failed to delete lesson progress')
+      throw new HttpsError('internal', 'Failed to delete lesson progress')
     }
   }
 )

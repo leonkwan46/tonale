@@ -106,7 +106,7 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
         <LogoAnimation isTransitioning={isTransitioning} />
         <AppText
           appName="Tonalè"
-          tagline="Master music through focused practice"
+          tagline="Your personal music learning companion"
           isTransitioning={isTransitioning}
         />
       </MusicLogoContainer>

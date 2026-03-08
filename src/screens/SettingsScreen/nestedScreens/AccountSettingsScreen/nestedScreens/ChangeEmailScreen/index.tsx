@@ -87,7 +87,7 @@ export const ChangeEmailScreen = () => {
               />
             </InputField>
             <MessageText>
-              Email address cannot be changed at this time.
+              Email address cannot be changed.
             </MessageText>
           </Card>
 
@@ -108,7 +108,7 @@ export const ChangeEmailScreen = () => {
               ) : (
                 <>
                   <MessageText>
-                    Verify your email address to access all features. We&apos;ll send a verification email to {authUser.email}.
+                    Verify your email to access all features. We&apos;ll send a verification email to {authUser.email}.
                   </MessageText>
 
                   {emailError ? (
@@ -122,7 +122,7 @@ export const ChangeEmailScreen = () => {
                     <SuccessContainer>
                       <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
                       <SuccessText>
-                        Verification email sent! Please check your inbox and click the verification link.
+                        Verification email sent! Please check your inbox.
                       </SuccessText>
                     </SuccessContainer>
                   ) : null}

@@ -54,18 +54,18 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorInfo }) => {
   return (
     <ScrollContainer>
-      <Title>🚨 Error Caught</Title>
+      <Title>Oops! Something went wrong</Title>
       <Message>
-        The app encountered an error. Check the details below:
+        The app ran into a problem. Try restarting the app.
       </Message>
-      
+
       {error && (
         <>
           <SectionTitle>Error Message:</SectionTitle>
           <ErrorText>
             {error.message}
           </ErrorText>
-          
+
           {error.stack && (
             <>
               <SectionTitle>Stack Trace:</SectionTitle>
@@ -76,7 +76,7 @@ const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
           )}
         </>
       )}
-      
+
       {errorInfo && errorInfo.componentStack && (
         <>
           <SectionTitle>Component Stack:</SectionTitle>
@@ -85,7 +85,7 @@ const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
           </StackText>
         </>
       )}
-      
+
       <ReloadButton>
         <ReloadText>
           Check Metro terminal for more details

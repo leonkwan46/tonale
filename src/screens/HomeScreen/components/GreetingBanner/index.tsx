@@ -32,7 +32,7 @@ export const GreetingBanner = ({ authUser, userData, loading }: GreetingBannerPr
 
   return (
     <GreetingBannerContainer>
-      <GreetingText>Hello, {username} 👋</GreetingText>
+      <GreetingText>Hello, {username}! 👋</GreetingText>
       <AvatarContainer>
         <CharacterAvatar source={characterImageSource} />
       </AvatarContainer>

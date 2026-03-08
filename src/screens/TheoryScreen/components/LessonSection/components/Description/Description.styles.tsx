@@ -6,7 +6,7 @@ import { getSourGummyFontFamily } from '@/utils/fontHelper'
 export const DescriptionTextContainer = styled.View(({ theme }) => ({
     flexDirection: 'column',
     justifyContent: 'center',
-    gap: scale(10),
+    gap: scale(theme.spacing.sm),
     width: '100%',
     flex: 1
   }))

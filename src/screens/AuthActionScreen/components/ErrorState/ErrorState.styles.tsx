@@ -10,10 +10,10 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderWidth: 1,
   borderColor: theme.colors.error,
-  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
-  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
-  borderRadius: scale(8),
-  gap: theme.device.isTablet ? scale(5) : scale(8)
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  paddingVertical: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm),
+  borderRadius: scale(theme.borderRadius.sm),
+  gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
 export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
@@ -22,7 +22,7 @@ export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
 
 export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
+  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
 }))

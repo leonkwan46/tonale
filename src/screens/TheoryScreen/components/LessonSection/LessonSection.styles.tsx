@@ -8,12 +8,12 @@ export const LessonSectionContainer = styled(Pressable)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   gap: scale(30),
-  padding: scale(10)
+  padding: scale(theme.spacing.sm)
 }))
 
 export const StarContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: theme.device.isTablet ? scale(4) : scale(2)
+  gap: theme.device.isTablet ? scale(theme.spacing.xs) : scale(2)
 }))

@@ -2,29 +2,30 @@ import styled from '@emotion/native'
 import { Tabs } from 'expo-router'
 import React from 'react'
 
+import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { useUser } from '@/hooks'
-import { CustomTabBar } from '../../src/globalComponents/CustomTabBar'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { CustomTabBar } from '../../src/globalComponents/CustomTabBar'
 
 const ErrorContainer = styled.View(({ theme }) => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: theme.colors.background,
-  padding: 20
+  padding: theme.spacing.lg
 }))
 
 const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: 18,
+  fontSize: theme.typography.lg,
   textAlign: 'center',
-  marginBottom: 10,
+  marginBottom: theme.spacing.sm,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
 const ErrorSubtext = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: 14,
+  fontSize: theme.typography.sm,
   textAlign: 'center',
   opacity: 0.7,
   fontFamily: getSourGummyFontFamily('400')
@@ -56,6 +57,8 @@ export default function TabLayout() {
     )
   }
 
+  const isAuralEnabled = isFeatureEnabled(FEATURES.ENABLE_AURAL_LESSONS)
+
   return (
     <Tabs
       screenOptions={{
@@ -65,7 +68,12 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="theory" />
-      <Tabs.Screen name="aural" />
+      <Tabs.Screen 
+        name="aural" 
+        options={{
+          href: isAuralEnabled ? '/aural' : null
+        }}
+      />
       <Tabs.Screen name="settings" />
     </Tabs>
   )

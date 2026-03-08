@@ -18,9 +18,9 @@ export const OuterCircle = styled.View(({ theme }) => ({
   borderRadius: theme.device.isTablet ? scale(50) : scale(45),
   backgroundColor: theme.colors.primary,
   shadowColor: theme.colors.primary,
-  shadowOffset: { width: 0, height: scale(8) },
+  shadowOffset: { width: 0, height: scale(theme.spacing.sm) },
   shadowOpacity: 0.3,
-  shadowRadius: scale(16),
+  shadowRadius: scale(theme.spacing.md),
   elevation: 12
 }))
 
@@ -32,7 +32,7 @@ export const InnerCircle = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   shadowOffset: { width: 0, height: scale(2) },
   shadowOpacity: 0.1,
-  shadowRadius: scale(4),
+  shadowRadius: scale(theme.spacing.xs),
   elevation: 2
 }))
 

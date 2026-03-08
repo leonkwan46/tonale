@@ -10,21 +10,21 @@ export const ToggleContainer = styled.View(() => ({
 
 export const ToggleBackground = styled.View(({ theme }) => ({
   flexDirection: 'row',
-  borderRadius: scale(12),
-  padding: scale(4),
+  borderRadius: scale(theme.borderRadius.md),
+  padding: scale(theme.spacing.xs),
   backgroundColor: theme.colors.surface
 }))
 
 export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean }>(({ theme, isActive }) => ({
   flex: 1,
-  paddingVertical: theme.device.isTablet ? scale(5) : scale(12),
-  borderRadius: scale(8),
+  paddingVertical: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm),
+  borderRadius: scale(theme.borderRadius.sm),
   alignItems: 'center',
   backgroundColor: isActive ? theme.colors.primary : 'transparent'
 }))
 
 export const ToggleText = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.text,
   opacity: isActive ? 1 : 0.7,
   fontFamily: getSourGummyFontFamily('600')

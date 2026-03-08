@@ -1,7 +1,8 @@
 import type { Question } from '@types'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { Platform, ScrollView } from 'react-native'
 import { AnswerInterface } from '../components/AnswerInterface'
+import { Playback } from '../components/QuestionInterface/QuestionTypes/Playback'
 import { VisualQuestion } from '../components/VisualQuestion'
 import { BodyContainer, QuestionText } from './LessonScreenBody.styles'
 
@@ -27,10 +28,7 @@ export const LessonScreenBody = ({
   const currentQuestion = questions[currentQuestionIndex]
   const { question, visualComponent, type, stage } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
-
-  const handleAnswerSubmitInternal = useCallback((isCorrect: boolean) => {
-    onAnswerSubmit(isCorrect)
-  }, [onAnswerSubmit])
+  const onPlaybackFinishRef = useRef<(() => void) | null>(null)
 
   const handleNextQuestionInternal = useCallback(() => {
     if (isLastQuestion) {
@@ -54,17 +52,24 @@ export const LessonScreenBody = ({
           <VisualQuestion visualComponent={visualComponent} stage={stage} />
         )}
 
+        {currentQuestion.questionInterface && (
+          <Playback
+            questionInterface={currentQuestion.questionInterface}
+            enableMetronome={false}
+          />
+        )}
+
         <QuestionText testID="question-text">{question}</QuestionText>
 
-        <AnswerInterface 
-          questionType={type}
+        <AnswerInterface
+          key={currentQuestion.id}
+          answerType={type}
           questionData={currentQuestion}
-          onAnswerSubmit={handleAnswerSubmitInternal}
+          onAnswerSubmit={onAnswerSubmit}
           onNextQuestion={handleNextQuestionInternal}
-          onLessonComplete={onLessonComplete}
           wrongAnswersCount={wrongAnswersCount}
           isFinalTest={isFinalTest}
-          isLastQuestion={isLastQuestion}
+          onPlaybackFinishRef={onPlaybackFinishRef}
         />
       </BodyContainer>
     </ScrollView>

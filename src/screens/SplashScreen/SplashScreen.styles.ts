@@ -9,11 +9,11 @@ export const Container = styled(Animated.View)(({ theme }) => ({
   backgroundColor: theme.colors.background
 }))
 
-export const MusicLogoContainer = styled.View(() => ({
+export const MusicLogoContainer = styled.View(({ theme }) => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  paddingHorizontal: scale(20)
+  paddingHorizontal: scale(theme.spacing.lg)
 }))
 
 export const WavesContainer = styled.View(({ theme }) => ({
@@ -22,6 +22,6 @@ export const WavesContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'flex-end',
-  gap: scale(8)
+  gap: scale(theme.spacing.sm)
 }))
 

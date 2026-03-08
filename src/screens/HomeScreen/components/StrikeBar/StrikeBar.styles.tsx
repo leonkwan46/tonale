@@ -4,16 +4,14 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-const GAP_SIZE = scale(8)
-
-export const StrikeBarContainer = styled(View)({
+export const StrikeBarContainer = styled(View)(({ theme }) => ({
   flexDirection: 'row',
-  gap: GAP_SIZE,
+  gap: scale(theme.spacing.sm),
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
   alignSelf: 'center'
-})
+}))
 
 export const StrikeBarCardContainer = styled(View)({
   position: 'relative'

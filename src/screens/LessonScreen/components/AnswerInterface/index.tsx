@@ -1,146 +1,165 @@
+import { comparePulsePattern } from '@/subjects/aural/exercises/generators/pulse'
+import { compareRhythmPattern } from '@/subjects/aural/exercises/generators/rhythm'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Text } from 'react-native'
 import { QuestionExplanation } from '../QuestionExplanation'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
-import { KeyPress } from './QuestionTypes/KeyPress'
-import { MultipleChoice } from './QuestionTypes/MultipleChoice'
-import { TrueFalse } from './QuestionTypes/TrueFalse'
-import { QUESTION_TYPE, QuestionType } from './QuestionTypes/types'
+import { RhythmTap } from './AnswerTypes/RhythmTap'
+import { KeyPress } from './AnswerTypes/KeyPress'
+import { MultipleChoice } from './AnswerTypes/MultipleChoice'
+import { TrueFalse } from './AnswerTypes/TrueFalse'
+import { ANSWER_TYPE, AnswerType } from './AnswerTypes/types'
 
 interface AnswerInterfaceProps {
-  questionType: QuestionType
+  answerType: AnswerType
   questionData: Question
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
-  onLessonComplete?: () => void
   wrongAnswersCount?: number
   isFinalTest?: boolean
-  isLastQuestion?: boolean
+  onPlaybackFinishRef?: React.MutableRefObject<(() => void) | null>
 }
 
 const EXPLANATION_MODAL_DELAY = 1000
 const CORRECT_ANSWER_DELAY = 1500
 const FINAL_TEST_FAILURE_THRESHOLD = 3
 
-export const AnswerInterface = ({ 
-  questionType,
+export const AnswerInterface = ({
+  answerType,
   questionData,
   onAnswerSubmit,
   onNextQuestion,
-  onLessonComplete,
   wrongAnswersCount = 0,
   isFinalTest = false,
-  isLastQuestion = false
+  onPlaybackFinishRef
 }: AnswerInterfaceProps) => {
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
-  const [showResult, setShowResult] = useState(false)
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
+  const [answerResult, setAnswerResult] = useState<{ selected: string; correct: boolean } | null>(null)
   const [showExplanationModal, setShowExplanationModal] = useState(false)
 
-  useEffect(() => {
-    setSelectedAnswer(null)
-    setShowResult(false)
-    setIsCorrect(null)
-    setShowCorrectAnswer(false)
-    setShowExplanationModal(false)
-  }, [questionData.id])
+  const showResult = answerResult !== null
+  const isCorrect = answerResult?.correct ?? null
+  const selectedAnswer = answerResult?.selected ?? null
+  const showCorrectAnswer = answerResult !== null && !answerResult.correct
+  const correctAnswerStr = typeof questionData.correctAnswer === 'string' ? questionData.correctAnswer : ''
 
   useEffect(() => {
-    // Only proceed if we have a result and a selected answer
-    if (!showResult || selectedAnswer === null) return
+    if (answerResult === null) return
 
-    // Handle wrong answers: show correct answer
-    if (!isCorrect) {
-      setShowCorrectAnswer(true)
-      
-      // For regular lessons (not final tests), show explanation modal
-      if (!isFinalTest) {
-        const timer = setTimeout(() => {
-          setShowExplanationModal(true)
-        }, EXPLANATION_MODAL_DELAY)
-        
-        return () => clearTimeout(timer)
-      }
-    }
+    const { correct } = answerResult
 
-    // Check if we should block progression (final test failure threshold)
-    // Block if: final test + wrong answer + this would be the 4th wrong answer
-    const totalWrong = wrongAnswersCount + (isCorrect ? 0 : 1)
-    const shouldBlock = isFinalTest && !isCorrect && totalWrong > 3
-    
-    // If not blocked, proceed to next question after delay
-    if (!shouldBlock) {
-      const timer = setTimeout(() => {
-        if (isLastQuestion && onLessonComplete) {
-          onLessonComplete()
-        } else {
-          onNextQuestion()
-        }
-      }, CORRECT_ANSWER_DELAY)
-
+    if (!correct && !isFinalTest) {
+      const timer = setTimeout(() => setShowExplanationModal(true), EXPLANATION_MODAL_DELAY)
       return () => clearTimeout(timer)
     }
-  }, [showResult, isCorrect, selectedAnswer, onNextQuestion, onLessonComplete, isFinalTest, wrongAnswersCount, isLastQuestion])
+  }, [answerResult, isFinalTest])
 
-  const handleAnswer = (answer: string, isCorrect: boolean) => {
-    if (selectedAnswer !== null) return
-    
-    setSelectedAnswer(answer)
-    setIsCorrect(isCorrect)
-    setShowResult(true)
-    
-    if (isCorrect) {
-      playSuccessSound()
-    } else {
-      playErrorSound()
-    }
-    
-    onAnswerSubmit(isCorrect)
+  useEffect(() => {
+    if (answerResult === null) return
+
+    const { correct } = answerResult
+    if (!correct && !isFinalTest) return
+
+    const totalWrong = wrongAnswersCount + (correct ? 0 : 1)
+    const shouldBlock = isFinalTest && !correct && totalWrong > FINAL_TEST_FAILURE_THRESHOLD
+
+    if (shouldBlock) return
+
+    const timer = setTimeout(() => onNextQuestion(), CORRECT_ANSWER_DELAY)
+    return () => clearTimeout(timer)
+  }, [answerResult, wrongAnswersCount, isFinalTest, onNextQuestion])
+
+  const handleAnswer = (answer: string, correct: boolean) => {
+    if (answerResult !== null) return
+    setAnswerResult({ selected: answer, correct })
+    if (correct) playSuccessSound()
+    else playErrorSound()
+    onAnswerSubmit(correct)
   }
 
   const handleChoiceSelect = (choice: string) => {
-    handleAnswer(choice, choice === questionData.correctAnswer)
+    handleAnswer(choice, choice === correctAnswerStr)
   }
 
   const handleKeyPress = (key: string) => {
-    handleAnswer(key, isEnharmonicEquivalent(key, questionData.correctAnswer))
+    handleAnswer(key, isEnharmonicEquivalent(key, correctAnswerStr))
   }
 
+  const handleRhythmTapSubmit = (userTimestamps: number[]) => {
+    const correctAnswer = questionData.correctAnswer as number[]
+    let isCorrect = false
+
+    const isPulseExercise = questionData.questionInterface?.audioFile && !questionData.questionInterface?.rhythm
+    const isRhythmExercise = questionData.questionInterface?.rhythm && !questionData.questionInterface?.audioFile
+
+    if (isPulseExercise) {
+      isCorrect = comparePulsePattern(userTimestamps, correctAnswer)
+    } else if (isRhythmExercise) {
+      isCorrect = compareRhythmPattern(userTimestamps, correctAnswer)
+    }
+
+    handleAnswer(userTimestamps.join(','), isCorrect)
+  }
+
+  const rhythmDuration = useMemo(() => {
+    if (questionData.questionInterface?.rhythm) {
+      const totalDuration = questionData.questionInterface.rhythm.reduce((sum, dur) => sum + dur, 0)
+      const tempo = questionData.questionInterface.tempo || 90
+      const beatDuration = 60 / tempo
+      return (totalDuration * beatDuration * 1000) + 1000
+    }
+    return undefined
+  }, [questionData])
+
   const renderAnswerComponent = () => {
-    switch (questionType) {
-      case QUESTION_TYPE.MULTIPLE_CHOICE:
+    switch (answerType) {
+      case ANSWER_TYPE.MULTIPLE_CHOICE:
         return (
           <MultipleChoice
-            testID={`correct-answer-${questionData.correctAnswer}`}
+            testID={`correct-answer-${correctAnswerStr}`}
             choices={questionData.choices}
-            correctAnswer={questionData.correctAnswer}
+            correctAnswer={correctAnswerStr}
             selectedAnswer={selectedAnswer}
             showResult={showResult}
             onChoiceSelect={handleChoiceSelect}
             type={questionData.layoutType ?? 'row'}
           />
         )
-      case QUESTION_TYPE.TRUE_FALSE:
+      case ANSWER_TYPE.TRUE_FALSE:
         return (
           <TrueFalse
             choices={questionData.choices}
-            correctAnswer={questionData.correctAnswer}
+            correctAnswer={correctAnswerStr}
             selectedAnswer={selectedAnswer}
             showResult={showResult}
             showCorrectAnswer={showCorrectAnswer}
             onChoiceSelect={handleChoiceSelect}
-            testID={`correct-answer-${questionData.correctAnswer}`}
+            testID={`correct-answer-${correctAnswerStr}`}
           />
         )
-      case QUESTION_TYPE.KEY_PRESS:
+      case ANSWER_TYPE.KEY_PRESS:
         return (
           <KeyPress
-            correctKey={questionData.correctAnswer}
+            correctKey={correctAnswerStr}
             onKeyPress={handleKeyPress}
+          />
+        )
+      case ANSWER_TYPE.RHYTHM_TAP:
+        return (
+          <RhythmTap
+            onTapSubmit={handleRhythmTapSubmit}
+            disabled={showResult}
+            rhythmDuration={rhythmDuration}
+            buttonState={
+              showResult
+                ? (isCorrect ? 'correct' : 'incorrect')
+                : 'default'
+            }
+            tempo={questionData.questionInterface?.tempo}
+            questionInterface={questionData.questionInterface}
+            onPlaybackFinishRef={onPlaybackFinishRef}
           />
         )
       default:
@@ -151,14 +170,8 @@ export const AnswerInterface = ({
   const handleContinue = () => {
     setShowExplanationModal(false)
     const shouldBlock = isFinalTest && wrongAnswersCount + 1 >= FINAL_TEST_FAILURE_THRESHOLD
-    
     if (shouldBlock) return
-    
-    if (isLastQuestion && onLessonComplete) {
-      onLessonComplete()
-    } else {
-      onNextQuestion()
-    }
+    onNextQuestion()
   }
 
   return (
@@ -170,7 +183,7 @@ export const AnswerInterface = ({
       {showExplanationModal && !isFinalTest && (
         <QuestionExplanation
           explanation={questionData.explanation}
-          correctAnswer={questionData.correctAnswer}
+          correctAnswer={correctAnswerStr}
           visualComponent={questionData.visualComponent}
           onContinue={handleContinue}
         />

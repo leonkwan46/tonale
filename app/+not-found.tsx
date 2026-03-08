@@ -21,26 +21,26 @@ const Container = styled.View(({ theme }) => ({
   flex: 1,
   alignItems: 'center',
   justifyContent: 'center',
-  padding: 20,
+  padding: theme.spacing.lg,
   backgroundColor: theme.colors.background
 }))
 
 const Title = styled.Text(({ theme }) => ({
-  fontSize: 24,
+  fontSize: theme.typography.xl,
   color: theme.colors.text,
   textAlign: 'center',
-  marginBottom: 16,
+  marginBottom: theme.spacing.md,
   fontFamily: getSourGummyFontFamily('bold')
 }))
 
-const StyledLink = styled(Link)({
-  marginTop: 15,
-  paddingVertical: 15
-})
+const StyledLink = styled(Link)(({ theme }) => ({
+  marginTop: theme.spacing.md,
+  paddingVertical: theme.spacing.md
+}))
 
 const LinkText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
-  fontSize: 16,
+  fontSize: theme.typography.base,
   textDecorationLine: 'underline',
   fontFamily: getSourGummyFontFamily('400')
 }))

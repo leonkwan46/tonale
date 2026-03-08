@@ -22,12 +22,36 @@ Tonale is a music theory learning platform that provides structured lessons alig
 
 ## Documentation
 
-Additional project documentation is available in the [`docs/`](./docs/) folder:
+### 📚 Curriculum Documentation
+
+Available in the [`docs/`](./docs/) folder:
 
 - **[Grade-Syllabus.md](./docs/Grade-Syllabus.md)** - ABRSM-style summary of Grades 1–3 curriculum requirements, covering terms, signs, clefs, time signatures, pitches, scales, intervals, triads, and more
 - **[App-Stage-Syllabus.md](./docs/App-Stage-Syllabus.md)** - Detailed application stage syllabus with lesson breakdowns organised by stages (Pre-Grade, Grade 1, Grade 2, Grade 3)
 - **[Stage-Syllabus-Gap-Analysis.md](./docs/Stage-Syllabus-Gap-Analysis.md)** - Comprehensive analysis identifying missing topics compared to ABRSM requirements, with priority recommendations
 - **[Music_Theory_Qual_Spec_April_2023_2023_rebrand.pdf](./docs/Music_Theory_Qual_Spec_April_2023_2023_rebrand.pdf)** - Official ABRSM Music Theory Qualification Specification reference document
+
+### 🎨 Design System & UX
+
+Complete design and UX documentation in [`_bmad-output/design-system/`](./_bmad-output/design-system/):
+
+- **[UX Audit Report](./_bmad-output/design-system/ux-audit-report-2026-01-30.md)** - Comprehensive app UX review, user journey analysis, priority fixes
+- **[UX Content Audit](./_bmad-output/design-system/ux-content-audit-2026-01-30.md)** - Complete text/microcopy review, clarity issues, style guide (NEW!)
+- **[Design System Overview](./_bmad-output/design-system/README.md)** - Design principles, quick reference, and navigation hub
+- **[Color System](./_bmad-output/design-system/colors.md)** - Complete palette, semantic meanings, usage guidelines
+- **[WCAG Accessibility](./_bmad-output/design-system/wcag-accessibility.md)** - Accessibility audit, compliance fixes, color contrast ratios
+- **[Typography System](./_bmad-output/design-system/typography.md)** - Font scales, weights, usage patterns
+- **[Spacing System](./_bmad-output/design-system/spacing.md)** - Layout spacing, component padding guidelines
+- **[Design Tokens](./_bmad-output/design-system/design-tokens.md)** - Quick reference for all design values
+
+### 🏗️ Architecture & Planning
+
+Development and architecture documentation in [`_bmad-output/planning-artifacts/`](./_bmad-output/planning-artifacts/):
+
+- **[Codebase Structure Guide](./_bmad-output/planning-artifacts/codebase-structure-guide-2026-01-29.md)** - Complete folder structure, where to add new code
+- **[Architecture Assessment](./_bmad-output/planning-artifacts/architecture-assessment-b2c-v1-2026-01-29.md)** - Technical architecture review for B2C launch
+- **[B2C Launch Checklist](./_bmad-output/planning-artifacts/b2c-launch-checklist-2026-01-29.md)** - Pre-launch tasks and verification
+- **[Technical Concerns Decision Log](./_bmad-output/planning-artifacts/technical-concerns-decision-log-2026-01-29.md)** - Answers to technical "what if" scenarios
 
 ## Architecture Overview
 
@@ -162,7 +186,6 @@ import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
 2. **Required Configuration Files & Credentials**
    
    Contact **[leonkwan46](https://github.com/leonkwan46)** to obtain:
-   - **GitHub token** for npm authentication (required for `@leonkwan46/music-notation` package)
    - **Firebase configuration files**: `google-services.json` (Android), `GoogleService-Info.plist` (iOS)
    - **`.env` file** with Firebase environment variables
    
@@ -183,7 +206,12 @@ import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
    ```
    Starts Firebase Auth (port 9099), Firestore (port 8080), and Functions (port 5001) emulators.
 
-5. **Start Development Server**
+   If you are getting `'firebase' is not recognized as an internal or external command, operable program or batch file.` Error, please run the following:
+   ```bash
+   npm install -g firebase-tools
+   ```
+
+6. **Start Development Server**
    ```bash
    npm start
    ```

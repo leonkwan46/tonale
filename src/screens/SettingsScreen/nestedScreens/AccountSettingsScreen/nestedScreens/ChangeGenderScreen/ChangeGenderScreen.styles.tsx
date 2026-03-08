@@ -11,15 +11,15 @@ export const Container = styled.View(({ theme }) => ({
 }))
 
 export const ContentContainer = styled.View(({ theme }) => ({
-  padding: scale(20),
-  gap: scale(20)
+  padding: scale(theme.spacing.lg),
+  gap: scale(theme.spacing.lg)
 }))
 
 export const Card = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
-  borderRadius: scale(12),
-  padding: theme.device.isTablet ? scale(16) : scale(20),
-  gap: theme.device.isTablet ? scale(12) : scale(16),
+  borderRadius: scale(theme.borderRadius.md),
+  padding: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
+  gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
   width: '100%'
 }))
 
@@ -29,15 +29,15 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderWidth: 1,
   borderColor: theme.colors.error,
-  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
-  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
-  borderRadius: scale(8),
-  gap: theme.device.isTablet ? scale(5) : scale(8)
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  paddingVertical: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm),
+  borderRadius: scale(theme.borderRadius.sm),
+  gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
 export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
+  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
 }))
@@ -47,15 +47,15 @@ export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
-  borderRadius: scale(12),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  borderRadius: scale(theme.borderRadius.md),
   opacity: disabled ? 0.7 : 1,
-  marginTop: theme.device.isTablet ? scale(10) : scale(16)
+  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   fontFamily: getSourGummyFontFamily('600')
 }))
 
@@ -66,6 +66,6 @@ export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
 export const ScrollContentContainer = styled.View(({ theme }) => ({
   alignItems: 'center',
   flexGrow: 1,
-  padding: theme.device.isTablet ? scale(8) : scale(10),
-  gap: theme.device.isTablet ? scale(16) : scale(32)
+  padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm),
+  gap: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl)
 }))

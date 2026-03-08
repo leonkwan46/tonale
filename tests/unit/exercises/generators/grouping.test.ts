@@ -1,12 +1,13 @@
-import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/theory/exercises/generators/grouping'
-import { getTimeSignatures } from '@/theory/exercises/utils/exercise'
-import { formatAsNotation } from '@/theory/exercises/utils/timeSignature'
+import { createNoteGroupingQuestion, createNoteGroupingQuestions } from '@/subjects/theory/exercises/generators/grouping'
+import { getTimeSignatures } from '@/subjects/theory/exercises/utils/exercise'
+import { formatAsNotation } from '@/subjects/theory/exercises/utils/timeSignature'
+import type { Question } from '@/types/lesson'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('grouping generator', () => {
@@ -55,7 +56,7 @@ describe('grouping generator', () => {
         const timeSignature = question.visualComponent?.timeSignature
         if (timeSignature) {
           const timeSigs = getTimeSignatures(stage)
-          const timeSigValues = timeSigs.map(ts => 
+          const timeSigValues = timeSigs.map((ts: string | { topNumber: number; bottomNumber: number }) => 
             typeof ts === 'string' ? ts : formatAsNotation(ts)
           )
           const timeSigStr = formatAsNotation(timeSignature)
@@ -81,7 +82,7 @@ describe('grouping generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createNoteGroupingQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -90,10 +91,10 @@ describe('grouping generator', () => {
       it('should only use stage 2 time signatures', () => {
         const questions = createNoteGroupingQuestions(10, stage)
         const stageTimeSigs = getTimeSignatures(stage)
-        const timeSigValues = stageTimeSigs.map(ts => 
+        const timeSigValues = stageTimeSigs.map((ts: string | { topNumber: number; bottomNumber: number }) => 
           typeof ts === 'string' ? ts : formatAsNotation(ts)
         )
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const timeSignature = question.visualComponent?.timeSignature
           if (timeSignature) {
             const timeSigStr = formatAsNotation(timeSignature)
@@ -105,7 +106,7 @@ describe('grouping generator', () => {
       it('should have balanced time signature distribution', () => {
         const questions = createNoteGroupingQuestions(20, stage)
         const timeSigCounts = new Map<string, number>()
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const timeSig = question.visualComponent?.timeSignature
           if (timeSig) {
             const timeSigStr = formatAsNotation(timeSig)

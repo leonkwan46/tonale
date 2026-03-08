@@ -1,6 +1,6 @@
 import { useProgress, useSafeNavigation } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
-import { Card3DView } from '@/sharedComponents/Card3DView'
+import { Card } from '@/sharedComponents/Card'
 import { Skeleton } from '@/sharedComponents/Skeleton'
 import { useTheme } from '@emotion/react'
 import {
@@ -42,13 +42,13 @@ export const RevisionCard = () => {
   return (
     <RevisionCardContainer hasRevisionQuestions={hasRevisionQuestions} testID="revision-card">
       <RevisionCardContent>
-        <Card3DView color={hasRevisionQuestions ? 'red' : 'green'} size={cardSize}>
+        <Card color={hasRevisionQuestions ? 'red' : 'green'} size={cardSize}>
           <IconText>♪</IconText>
-        </Card3DView>
+        </Card>
         <ContentSection>
           {hasRevisionQuestions ? (
             <>
-              <RevisionText testID="revision-card-text">You&apos;ve got {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
+              <RevisionText testID="revision-card-text">You have {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
               <Button3D
                 onPress={handleStartRevision}
                 disabled={isNavigating}
@@ -57,12 +57,12 @@ export const RevisionCard = () => {
                 color="red"
               >
                 {() => (
-                  <StartButtonText>Start Revision!</StartButtonText>
+                  <StartButtonText>Start Revision</StartButtonText>
                 )}
               </Button3D>
             </>
           ) : (
-            <RevisionText testID="revision-card-completion-text">{'All Done!\nYou\'ve cleared all your revision questions!'}</RevisionText>
+            <RevisionText testID="revision-card-completion-text">{'Well done!\nYou\'ve completed all your revision!'}</RevisionText>
           )}
         </ContentSection>
       </RevisionCardContent>

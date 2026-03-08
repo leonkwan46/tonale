@@ -1,4 +1,5 @@
-import { createSlurDefinitionQuestion, createTieDefinitionQuestion, createTieSlurQuestions } from '@/theory/exercises/generators/tieSlur'
+import { createSlurDefinitionQuestion, createTieDefinitionQuestion, createTieSlurQuestions } from '@/subjects/theory/exercises/generators/tieSlur'
+import type { Question } from '@/types/lesson'
 import {
     validateCorrectAnswerInChoices,
     validateQuestionCount,
@@ -169,7 +170,7 @@ describe('tieSlur generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createTieSlurQuestions(3, 0)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -183,7 +184,7 @@ describe('tieSlur generator', () => {
 
       it('should only include definition questions (no custom questions)', () => {
         const questions = createTieSlurQuestions(10, 0)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(question.explanation).toBeDefined()
           expect(question.explanation?.text).toBeDefined()
           const isTieDefinition = question.explanation?.text?.toLowerCase().includes('tie') && question.correctAnswer === 'Held together'
@@ -206,7 +207,7 @@ describe('tieSlur generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createTieSlurQuestions(3, 1)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -214,8 +215,8 @@ describe('tieSlur generator', () => {
 
       it('should include both tie and slur definition questions in pool', () => {
         const questions = createTieSlurQuestions(10, 1)
-        const tieQuestions = questions.filter(q => q.explanation?.text?.includes('tie') || q.correctAnswer === 'Held together')
-        const slurQuestions = questions.filter(q => q.explanation?.text?.includes('slur') || q.correctAnswer === 'Smoothly connected')
+        const tieQuestions = questions.filter((q: Question) => q.explanation?.text?.includes('tie') || q.correctAnswer === 'Held together')
+        const slurQuestions = questions.filter((q: Question) => q.explanation?.text?.includes('slur') || q.correctAnswer === 'Smoothly connected')
 
         expect(tieQuestions.length).toBeGreaterThan(0)
         expect(slurQuestions.length).toBeGreaterThan(0)
@@ -224,14 +225,14 @@ describe('tieSlur generator', () => {
       it('should include custom questions (Stage 1 has custom tie/slur questions)', () => {
         const questions = createTieSlurQuestions(10, 1)
         validateQuestionCount(questions, 10)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
         })
       })
 
       it('should respect deduplication logic', () => {
         const questions = createTieSlurQuestions(20, 1)
-        const questionSignatures = questions.map(q => {
+        const questionSignatures = questions.map((q: Question) => {
           if (q.visualComponent?.elements && q.visualComponent.elements.length > 0) {
             return q.visualComponent.elements.map((el: any) => {
               const parts: string[] = []
@@ -265,7 +266,7 @@ describe('tieSlur generator', () => {
 
       it('should only include definition questions (no custom questions)', () => {
         const questions = createTieSlurQuestions(10, 2)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           expect(question.explanation).toBeDefined()
           expect(question.explanation?.text).toBeDefined()
           const isTieDefinition = question.explanation?.text?.toLowerCase().includes('tie') && question.correctAnswer === 'Held together'

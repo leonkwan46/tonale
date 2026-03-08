@@ -1,11 +1,12 @@
-import { createAccidentalQuestion, createAccidentalQuestions } from '@/theory/exercises/generators/accidentals'
-import { getAccidentals } from '@/theory/exercises/utils/exercise'
+import { createAccidentalQuestion, createAccidentalQuestions } from '@/subjects/theory/exercises/generators/accidentals'
+import { getAccidentals } from '@/subjects/theory/exercises/utils/exercise'
+import type { Question } from '@/types/lesson'
 import {
-  validateCorrectAnswerInChoices,
-  validateQuestionCount,
-  validateQuestionStructure,
-  validateUniqueChoices,
-  validateUniqueQuestions
+    validateCorrectAnswerInChoices,
+    validateQuestionCount,
+    validateQuestionStructure,
+    validateUniqueChoices,
+    validateUniqueQuestions
 } from '../../helpers/testHelpers'
 
 describe('accidentals generator', () => {
@@ -108,7 +109,7 @@ describe('accidentals generator', () => {
 
       it('should generate questions with valid structure', () => {
         const questions = createAccidentalQuestions(3, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           validateQuestionStructure(question)
           validateCorrectAnswerInChoices(question)
         })
@@ -116,7 +117,7 @@ describe('accidentals generator', () => {
 
       it('should only use stage accidentals', () => {
         const questions = createAccidentalQuestions(10, stage)
-        questions.forEach(question => {
+        questions.forEach((question: Question) => {
           const correctAnswer = question.correctAnswer
           expect(['Sharp', 'Flat', 'Natural']).toContain(correctAnswer)
         })

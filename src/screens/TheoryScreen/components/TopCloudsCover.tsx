@@ -4,12 +4,22 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useEffect, useMemo, useRef } from 'react'
 import { Animated, Dimensions, Easing } from 'react-native'
 import { scale } from 'react-native-size-matters'
-import { Colors } from '@/config/theme/Colors'
 
 const { width: screenWidth } = Dimensions.get('window')
 
 interface TopCloudsCoverProps {
   coverHeight?: number
+}
+
+interface CloudColors {
+  light1: string
+  light2: string
+  light3: string
+  light4: string
+  light5: string
+  light6: string
+  light7: string
+  light8: string
 }
 
 const CloudsContainer = styled.View<{ coverHeight: number }>(({ coverHeight }) => ({
@@ -22,7 +32,7 @@ const CloudsContainer = styled.View<{ coverHeight: number }>(({ coverHeight }) =
   overflow: 'hidden'
 }))
 
-const CloudLayer = styled(Animated.View)<{ 
+const CloudLayer = styled(Animated.View)<{
   backgroundColor: string
   height: number
   borderRadius: number
@@ -43,7 +53,7 @@ const GradientOverlay = styled(LinearGradient)<{ coverHeight: number }>(({ cover
   zIndex: 1
 }))
 
-const getCloudShapes = (cloudColors: typeof Colors.light.clouds) => [
+const getCloudShapes = (cloudColors: CloudColors) => [
   // Top layer - distributed across full width
   { width: screenWidth * 0.4, left: -25, top: 5, color: cloudColors.light1 },
   { width: screenWidth * 0.65, left: screenWidth * 0.25, top: 10, color: cloudColors.light2 },

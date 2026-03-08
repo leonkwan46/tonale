@@ -9,7 +9,7 @@ export const StarContainer = styled.View(() => ({
 }))
 
 export const StarIcon = styled.Text<{ filled: boolean }>(({ theme, filled }) => ({
-  fontSize: theme.device.isTablet ? scale(24) : scale(32),
+  fontSize: theme.device.isTablet ? scale(theme.typography.xl) : scale(theme.typography['3xl']),
   color: filled ? theme.colors.gold : theme.colors.secondary
 }))
 

@@ -4,8 +4,6 @@ import {
   DescriptionText,
   ModalButton,
   ModalButtonText,
-  ModalContainer,
-  ModalOverlay,
   TitleText
 } from '@/sharedComponents/Modal/Modal.styles'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
@@ -108,43 +106,39 @@ export const StarRatingModal = ({
 
   return (
     <Modal visible={visible} onRequestClose={onRetry}>
-      <ModalOverlay>
-        <ModalContainer>
-          <TitleText>
-            {getStarMessage(stars)}
-          </TitleText>
-          
-          <StarContainer>
-            {renderStars()}
-          </StarContainer>
-          
-          <DescriptionText>
-            {getStarDescription(stars, totalQuestions, wrongAnswers)}
-          </DescriptionText>
-          
-          <ButtonContainer>
-            <ModalButton
-              testID="retry-button"
-              variant="outlined"
-              onPress={onRetry}
-            >
-              <ModalButtonText variant="outlined">
-                Retry
-              </ModalButtonText>
-            </ModalButton>
-            
-            <ModalButton
-              testID="continue-button"
-              variant="filled"
-              onPress={onContinue}
-            >
-              <ModalButtonText variant="filled">
-                Continue
-              </ModalButtonText>
-            </ModalButton>
-          </ButtonContainer>
-        </ModalContainer>
-      </ModalOverlay>
+      <TitleText>
+        {getStarMessage(stars)}
+      </TitleText>
+      
+      <StarContainer>
+        {renderStars()}
+      </StarContainer>
+      
+      <DescriptionText>
+        {getStarDescription(stars, totalQuestions, wrongAnswers)}
+      </DescriptionText>
+      
+      <ButtonContainer>
+        <ModalButton
+          testID="retry-button"
+          variant="outlined"
+          onPress={onRetry}
+        >
+          <ModalButtonText variant="outlined">
+            Retry
+          </ModalButtonText>
+        </ModalButton>
+        
+        <ModalButton
+          testID="continue-button"
+          variant="filled"
+          onPress={onContinue}
+        >
+          <ModalButtonText variant="filled">
+            Continue
+          </ModalButtonText>
+        </ModalButton>
+      </ButtonContainer>
     </Modal>
   )
 }
