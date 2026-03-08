@@ -1,9 +1,10 @@
-import { sendEmailVerificationToUser } from '@/config/firebase/auth'
+import { sendEmailVerificationToUser, updateUserEmailAddress } from '@/config/firebase/auth'
+import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
 import { useEffect, useState } from 'react'
-import { ScrollView } from 'react-native'
+import { Keyboard } from 'react-native'
 
 import { ScreenIntroHeader } from '../../../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
@@ -26,74 +27,161 @@ import {
 
 export const ChangeEmailScreen = () => {
   const { authUser } = useUser()
-  
+
+  const [newEmail, setNewEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [changeLoading, setChangeLoading] = useState(false)
+  const [changeError, setChangeError] = useState('')
+  const [changeSuccess, setChangeSuccess] = useState(false)
+
   const [isVerified, setIsVerified] = useState(authUser?.emailVerified || false)
-  const [emailLoading, setEmailLoading] = useState(false)
-  const [emailError, setEmailError] = useState('')
-  const [emailSuccess, setEmailSuccess] = useState(false)
+  const [verifyLoading, setVerifyLoading] = useState(false)
+  const [verifyError, setVerifyError] = useState('')
+  const [verifySuccess, setVerifySuccess] = useState(false)
 
   useEffect(() => {
     setIsVerified(authUser?.emailVerified || false)
   }, [authUser?.emailVerified])
 
   const refreshVerificationStatus = async () => {
-    if (authUser) {
-      try {
-        await authUser.reload()
-        setIsVerified(authUser.emailVerified)
-        setEmailSuccess(false)
-        setEmailError('')
-      } catch {
-        // Failed to refresh authUser
-      }
+    if (!authUser) return
+    try {
+      await authUser.reload()
+      setIsVerified(authUser.emailVerified)
+      setVerifySuccess(false)
+      setVerifyError('')
+    } catch {
+      // Failed to refresh
     }
   }
 
-  const sendVerification = async () => {
-    setEmailLoading(true)
-    setEmailError('')
-    setEmailSuccess(false)
+  const handleChangeEmail = async () => {
+    Keyboard.dismiss()
+    setChangeError('')
+    setChangeSuccess(false)
+
+    const trimmedEmail = newEmail.trim()
+    if (!trimmedEmail) {
+      setChangeError('Please enter a new email address')
+      return
+    }
+    if (!password) {
+      setChangeError('Please enter your current password')
+      return
+    }
+    if (trimmedEmail === authUser?.email) {
+      setChangeError('New email is the same as your current email')
+      return
+    }
+
+    setChangeLoading(true)
+    try {
+      await updateUserEmailAddress(password, trimmedEmail)
+      setChangeSuccess(true)
+      setIsVerified(false)
+      setNewEmail('')
+      setPassword('')
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update email'
+      setChangeError(errorMessage)
+    } finally {
+      setChangeLoading(false)
+    }
+  }
+
+  const handleSendVerification = async () => {
+    setVerifyLoading(true)
+    setVerifyError('')
+    setVerifySuccess(false)
 
     try {
       await sendEmailVerificationToUser()
-      setEmailSuccess(true)
+      setVerifySuccess(true)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to send verification email'
-      setEmailError(errorMessage)
+      setVerifyError(errorMessage)
     } finally {
-      setEmailLoading(false)
+      setVerifyLoading(false)
     }
   }
 
-    return (
-      <ScreenContainer>
+  return (
+    <ScreenContainer>
       <SettingItemHeader title="Email" />
-      <ScrollView>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <ContentContainer>
           <ScreenIntroHeader
             icon="mail-outline"
             description="Email helps us verify your account or reach you in case of security or support issues. Your email address won't be visible to others."
           />
+
           <Card>
-            <LabelText>Email Address</LabelText>
-            <InputField disabled={true}>
-              <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-              <Input
-                value={authUser?.email || ''}
-                editable={false}
-                placeholder="Email address"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-            </InputField>
-            <MessageText>
-              Email address cannot be changed.
-            </MessageText>
+            <LabelText>Change Email</LabelText>
+
+            {changeError ? (
+              <ErrorContainer>
+                <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+                <ErrorText>{changeError}</ErrorText>
+              </ErrorContainer>
+            ) : null}
+
+            {changeSuccess ? (
+              <SuccessContainer>
+                <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
+                <SuccessText>
+                  Email updated! A verification email has been sent to your new address.
+                </SuccessText>
+              </SuccessContainer>
+            ) : (
+              <>
+                <MessageText>
+                  Your current email is {authUser?.email}. Enter your new email and current password to update it.
+                </MessageText>
+
+                <InputField>
+                  <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
+                  <Input
+                    placeholder="New email address"
+                    value={newEmail}
+                    onChangeText={setNewEmail}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    editable={!changeLoading}
+                    returnKeyType="next"
+                  />
+                </InputField>
+
+                <InputField>
+                  <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
+                  <Input
+                    placeholder="Current password"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    editable={!changeLoading}
+                    returnKeyType="done"
+                    onSubmitEditing={handleChangeEmail}
+                  />
+                </InputField>
+
+                <PrimaryButton
+                  disabled={changeLoading || !newEmail.trim() || !password}
+                  onPress={handleChangeEmail}
+                  activeOpacity={0.7}
+                >
+                  <PrimaryButtonText>
+                    {changeLoading ? 'Updating...' : 'Update Email'}
+                  </PrimaryButtonText>
+                </PrimaryButton>
+              </>
+            )}
           </Card>
 
-          {/* Email Verification Section */}
           {authUser?.email && (
-        <Card>
+            <Card>
               <LabelText>Email Verification</LabelText>
               {isVerified ? (
                 <>
@@ -111,14 +199,14 @@ export const ChangeEmailScreen = () => {
                     Verify your email to access all features. We&apos;ll send a verification email to {authUser.email}.
                   </MessageText>
 
-                  {emailError ? (
-            <ErrorContainer>
-              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                      <ErrorText>{emailError}</ErrorText>
-            </ErrorContainer>
-          ) : null}
+                  {verifyError ? (
+                    <ErrorContainer>
+                      <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+                      <ErrorText>{verifyError}</ErrorText>
+                    </ErrorContainer>
+                  ) : null}
 
-                  {emailSuccess ? (
+                  {verifySuccess ? (
                     <SuccessContainer>
                       <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
                       <SuccessText>
@@ -127,25 +215,21 @@ export const ChangeEmailScreen = () => {
                     </SuccessContainer>
                   ) : null}
 
-          <PrimaryButton
-                    // disabled={emailLoading || emailSuccess}
-                    onPress={sendVerification}
-            activeOpacity={0.7}
-          >
-            <PrimaryButtonText>
-                      {emailLoading ? 'Sending...' : 'Send Verification Email'}
-            </PrimaryButtonText>
-          </PrimaryButton>
+                  <PrimaryButton onPress={handleSendVerification} activeOpacity={0.7}>
+                    <PrimaryButtonText>
+                      {verifyLoading ? 'Sending...' : 'Send Verification Email'}
+                    </PrimaryButtonText>
+                  </PrimaryButton>
 
                   <RefreshButton onPress={refreshVerificationStatus} activeOpacity={0.7}>
                     <RefreshButtonText>Refresh Status</RefreshButtonText>
                   </RefreshButton>
                 </>
               )}
-        </Card>
+            </Card>
           )}
-      </ContentContainer>
-      </ScrollView>
+        </ContentContainer>
+      </KeyboardAwareScrollView>
     </ScreenContainer>
   )
 }
