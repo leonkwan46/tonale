@@ -5,6 +5,7 @@ import { useUser } from '@/hooks'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
 import { Icon } from '@/sharedComponents/Icon'
+import { Button3D } from '@/sharedComponents/Button3D'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
@@ -12,11 +13,10 @@ import { Keyboard, ScrollView } from 'react-native'
 
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
-  Card,
   ErrorContainer,
   ErrorText,
-  PrimaryButton,
   PrimaryButtonText,
+  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeInstrumentScreen.styles'
 
@@ -113,7 +113,6 @@ export const ChangeInstrumentScreen = () => {
           selectedGender={userData?.gender || 'male'} 
           selectedInstrument={selectedInstrument}
         />
-        <Card>
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
@@ -129,14 +128,19 @@ export const ChangeInstrumentScreen = () => {
             onScrollToBottom={handleScrollToBottom}
           />
 
-          <PrimaryButton
+          <Button3D
             disabled={!canSave}
             onPress={handleSave}
-            activeOpacity={0.7}
+            color="blue"
+            layoutType="row"
+            fullWidth
           >
-            <PrimaryButtonText>Save</PrimaryButtonText>
-          </PrimaryButton>
-        </Card>
+            {() => (
+              <SaveButtonContent>
+                <PrimaryButtonText>Save</PrimaryButtonText>
+              </SaveButtonContent>
+            )}
+          </Button3D>
         </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>
