@@ -11,8 +11,8 @@ import { Alert, Keyboard, Platform } from 'react-native'
 
 import { ScreenIntroHeader } from '../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
+import { SettingSection } from '../../components/SettingSection'
 import {
-    Card,
     CheckboxButton,
     ConsentContainer,
     ConsentText,
@@ -102,7 +102,7 @@ export const FeedbackScreen = () => {
               icon="chatbubble-outline"
               description="We'd love to hear your thoughts! Share your feedback, suggestions, or report any issues you've encountered."
             />
-            <Card>
+            <SettingSection>
             {error ? (
               <ErrorContainer>
                 <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
@@ -169,7 +169,7 @@ export const FeedbackScreen = () => {
                 {loading ? 'Submitting...' : 'Submit Feedback'}
               </PrimaryButtonText>
               </PrimaryButton>
-            </Card>
+            </SettingSection>
           </ContentWrapper>
         </ScrollContentContainer>
       </KeyboardAwareScrollView>

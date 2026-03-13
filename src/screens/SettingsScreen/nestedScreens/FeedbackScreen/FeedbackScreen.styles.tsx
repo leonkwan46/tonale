@@ -4,13 +4,6 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const Card = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(12),
-  padding: scale(20),
-  gap: scale(16)
-}))
-
 export const InputField = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'flex-start',
@@ -42,7 +35,7 @@ export const EmailInput = styled.TextInput(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   height: '100%',
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
@@ -51,7 +44,7 @@ export const FeedbackInput = styled.TextInput(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   minHeight: theme.device.isTablet ? scale(100) : scale(130),
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily('400'),
   lineHeight: theme.device.isTablet ? scale(18) : scale(20)
 }))
