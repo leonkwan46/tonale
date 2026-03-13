@@ -68,6 +68,25 @@ export const ErrorText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily('400')
 }))
 
+export const SuccessContainer = styled.View(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: 'transparent',
+  borderWidth: 1,
+  borderColor: theme.colors.success,
+  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
+  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
+  borderRadius: scale(8),
+  gap: theme.device.isTablet ? scale(5) : scale(8)
+}))
+
+export const SuccessText = styled.Text(({ theme }) => ({
+  color: theme.colors.success,
+  fontSize: theme.device.isTablet ? scale(10) : scale(12),
+  flex: 1,
+  fontFamily: getSourGummyFontFamily('400')
+}))
+
 export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
   backgroundColor: theme.colors.primary,
   flexDirection: 'row',

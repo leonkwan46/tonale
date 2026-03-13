@@ -4,10 +4,9 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
 import Constants from 'expo-constants'
-import { useRouter } from 'expo-router'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useState } from 'react'
-import { Alert, Keyboard, Platform } from 'react-native'
+import { Keyboard, Platform } from 'react-native'
 
 import { ScreenIntroHeader } from '../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
@@ -25,21 +24,24 @@ import {
   PrimaryButton,
   PrimaryButtonText,
   PrivacyNoticeText,
-  ScrollContentContainer
+  ScrollContentContainer,
+  SuccessContainer,
+  SuccessText
 } from './FeedbackScreen.styles'
 
 export const FeedbackScreen = () => {
-  const router = useRouter()
   const { authUser } = useUser()
   const [feedback, setFeedback] = useState('')
   const [email, setEmail] = useState(authUser?.email || '')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [consentGiven, setConsentGiven] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async () => {
     Keyboard.dismiss()
     setError('')
+    setSuccess(false)
 
     const trimmedFeedback = feedback.trim()
     if (!trimmedFeedback) {
@@ -68,19 +70,9 @@ export const FeedbackScreen = () => {
         appVersion: Constants.expoConfig?.version ?? 'unknown',
         createdAt: serverTimestamp()
       })
-      
-      Alert.alert(
-        'Thank you!',
-        'Thanks for your feedback! It helps us make the app better.',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              router.back()
-            }
-          }
-        ]
-      )
+
+      setSuccess(true)
+      setFeedback('')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit feedback'
       setError(errorMessage)
@@ -101,72 +93,79 @@ export const FeedbackScreen = () => {
               icon="chatbubble-outline"
               description="We&apos;d love to hear from you! Share your ideas, feedback, or report a problem."
             />
-            <SettingSection>
-            {error ? (
-              <ErrorContainer>
-                <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                <ErrorText>{error}</ErrorText>
-              </ErrorContainer>
-            ) : null}
+            {success ? (
+              <SuccessContainer>
+                <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
+                <SuccessText>Thanks for your feedback! It helps us make the app better.</SuccessText>
+              </SuccessContainer>
+            ) : (
+              <SettingSection>
+                {error ? (
+                  <ErrorContainer>
+                    <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+                    <ErrorText>{error}</ErrorText>
+                  </ErrorContainer>
+                ) : null}
 
-            <InputField>
-              <FeedbackInput
-                placeholder="Tell us what you think..."
-                onChangeText={setFeedback}
-                value={feedback}
-                multiline
-                numberOfLines={6}
-                textAlignVertical="top"
-                autoCapitalize="sentences"
-                autoCorrect={true}
-                editable={!loading}
-              />
-            </InputField>
+                <InputField>
+                  <FeedbackInput
+                    placeholder="Tell us what you think..."
+                    onChangeText={setFeedback}
+                    value={feedback}
+                    multiline
+                    numberOfLines={6}
+                    textAlignVertical="top"
+                    autoCapitalize="sentences"
+                    autoCorrect={true}
+                    editable={!loading}
+                  />
+                </InputField>
 
-            <EmailInputField>
-              <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-              <EmailInput
-                placeholder="Email (optional)"
-                onChangeText={setEmail}
-                value={email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                editable={!loading}
-              />
-            </EmailInputField>
+                <EmailInputField>
+                  <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
+                  <EmailInput
+                    placeholder="Email (optional)"
+                    onChangeText={setEmail}
+                    value={email}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    editable={!loading}
+                  />
+                </EmailInputField>
 
-            <ConsentContainer
-              onPress={() => {
-                setConsentGiven(!consentGiven)
-                setError('')
-              }}
-              activeOpacity={0.7}
-            >
-              <Icon
-                name={consentGiven ? 'checkbox' : 'checkbox-outline'}
-                sizeVariant="sm"
-                colorVariant={consentGiven ? 'primary' : 'icon'}
-              />
-              <ConsentText>
-                I agree to share my feedback to help improve the app.
-              </ConsentText>
-            </ConsentContainer>
+                <ConsentContainer
+                  onPress={() => {
+                    setConsentGiven(!consentGiven)
+                    setError('')
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Icon
+                    name={consentGiven ? 'checkbox' : 'checkbox-outline'}
+                    sizeVariant="sm"
+                    colorVariant={consentGiven ? 'primary' : 'icon'}
+                  />
+                  <ConsentText>
+                    I agree to share my feedback to help improve the app.
+                  </ConsentText>
+                </ConsentContainer>
 
-            <PrivacyNoticeText>
-              We collect your message, email (if provided), device type, and app version so we can review feedback and improve the app. We may contact you by email if needed.
-            </PrivacyNoticeText>
+                <PrivacyNoticeText>
+                  We collect your message, email (if provided), device type, and app version so we can review feedback and improve the app. We may contact you by email if needed.
+                </PrivacyNoticeText>
 
-            <PrimaryButton
-              disabled={loading || !feedback.trim() || !consentGiven}
-              onPress={handleSubmit}
-              activeOpacity={0.7}
-            >
-              <PrimaryButtonText>
-                {loading ? 'Submitting...' : 'Submit Feedback'}
-              </PrimaryButtonText>
-              </PrimaryButton>
-            </SettingSection>
+                <PrimaryButton
+                  disabled={loading || !feedback.trim() || !consentGiven}
+                  onPress={handleSubmit}
+                  activeOpacity={0.7}
+                >
+                  <PrimaryButtonText>
+                    {loading ? 'Submitting...' : 'Submit Feedback'}
+                  </PrimaryButtonText>
+                </PrimaryButton>
+              </SettingSection>
+            )}
           </ContentWrapper>
         </ScrollContentContainer>
       </KeyboardAwareScrollView>
