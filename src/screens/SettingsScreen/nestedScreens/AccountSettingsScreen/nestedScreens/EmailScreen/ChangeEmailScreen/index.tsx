@@ -6,9 +6,9 @@ import { Icon } from '@/sharedComponents/Icon'
 import { useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
 
-import { ScreenIntroHeader } from '../../../../../../components/ScreenIntroHeader'
-import { SettingItemHeader } from '../../../../../../components/SettingItemHeader'
-import { ContentContainer } from '../../../../../../SettingsScreen.styles'
+import { ScreenIntroHeader } from '../../../../../components/ScreenIntroHeader'
+import { SettingItemHeader } from '../../../../../components/SettingItemHeader'
+import { ContentContainer } from '../../../../../SettingsScreen.styles'
 import {
   ErrorContainer,
   ErrorText,
