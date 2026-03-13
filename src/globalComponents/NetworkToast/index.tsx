@@ -146,9 +146,13 @@ export const NetworkToast = () => {
   const { top } = useSafeAreaInsets()
   const { displayedStatus, animatedStyle } = useNetworkToast(top)
 
-  const variant = displayedStatus ? STATUS_VARIANT[displayedStatus] : 'warning'
-  const message = displayedStatus ? TOAST_MESSAGES[displayedStatus] : ''
-  const iconName = displayedStatus ? STATUS_ICON[displayedStatus] : ICONS.sync
+  if (!displayedStatus) {
+    return null
+  }
+
+  const variant = STATUS_VARIANT[displayedStatus]
+  const message = TOAST_MESSAGES[displayedStatus]
+  const iconName = STATUS_ICON[displayedStatus]
 
   return (
     <ToastContainer topInset={top} style={animatedStyle}>
