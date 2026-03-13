@@ -1,13 +1,14 @@
 import { Ionicons } from '@expo/vector-icons'
 import { ReactNode } from 'react'
-import { scale } from 'react-native-size-matters'
+
+import { Icon } from '@/sharedComponents/Icon'
+import type { IconColorVariant } from '@/config/theme/theme'
 
 import {
   IconContainer,
   Separator,
   SettingsItemContainer,
   SettingsItemLabel,
-  StyledIcon,
   VerifyIconContainer
 } from './SettingsItem.styles'
 
@@ -23,6 +24,11 @@ interface SettingsItemProps {
   rightElement?: ReactNode
 }
 
+const variantToColor: Record<string, IconColorVariant> = {
+  default: 'icon',
+  red: 'error'
+}
+
 export const SettingsItem = ({
   icon,
   label,
@@ -34,23 +40,25 @@ export const SettingsItem = ({
   isVerified = false,
   rightElement
 }: SettingsItemProps) => {
+  const iconColor = variantToColor[variant] ?? 'icon'
+
   return (
     <>
       <SettingsItemContainer onPress={onPress} activeOpacity={0.7}>
         <IconContainer type={type}>
-          <StyledIcon name={icon} size={scale(20)} variant={variant} />
+          <Icon name={icon} sizeVariant="lg" colorVariant={iconColor} />
         </IconContainer>
         <SettingsItemLabel variant={variant}>{label}</SettingsItemLabel>
         {showVerifyIcon && (
           <VerifyIconContainer>
-            <StyledIcon
+            <Icon
               name={isVerified ? 'checkmark-circle' : 'checkmark-circle-outline'}
-              size={scale(16)}
-              variant={isVerified ? 'verified' : 'default'}
+              sizeVariant="sm"
+              colorVariant={isVerified ? 'primary' : 'icon'}
             />
           </VerifyIconContainer>
         )}
-        {rightElement ?? (variant === 'default' && <StyledIcon name="chevron-forward" size={scale(20)} variant={variant} />)}
+        {rightElement ?? (variant === 'default' && <Icon name="chevron-forward" sizeVariant="lg" colorVariant={iconColor} />)}
       </SettingsItemContainer>
       {showSeparator && <Separator />}
     </>

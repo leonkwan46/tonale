@@ -94,7 +94,8 @@ export const sharedConstants = {
       md: [18, 20],
       lg: [20, 24],
       xl: [36, 40],
-      '2xl': [48, 64]
+      '2xl': [48, 64],
+      '3xl': [64, 80]
     }
   }
 }
@@ -125,6 +126,8 @@ export const lightTheme = {
     error: Colors.light.error,
     surface: Colors.light.surface,
     border: Colors.light.border,
+    card: Colors.light.card,
+    placeholderText: Colors.light.textSecondary,
     
     // Navigation specific colors
     tint: Colors.light.tint,
@@ -202,6 +205,8 @@ export const darkTheme = {
     error: Colors.dark.error,
     surface: Colors.dark.surface,
     border: Colors.dark.border,
+    card: Colors.dark.card,
+    placeholderText: Colors.dark.textSecondary,
     
     // Navigation specific colors
     tint: Colors.dark.tint,
