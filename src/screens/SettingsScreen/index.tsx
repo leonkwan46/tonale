@@ -23,6 +23,10 @@ export const SettingsScreen = () => {
   const { isDark, setIsDark } = useThemeMode()
   const [loggingOut, setLoggingOut] = useState(false)
 
+  const handleAppearancePress = () => {
+    setIsDark(!isDark)
+  }
+
   const handleAccountPress = () => {
     navigate('/(tabs)/settings/account')
   }
@@ -74,7 +78,16 @@ export const SettingsScreen = () => {
                 icon='person-outline'
                 label='Account'
                 onPress={handleAccountPress}
+                showSeparator
+              />
+              <SettingsItem
+                icon='color-palette-outline'
+                label='Appearance'
+                onPress={handleAppearancePress}
                 showSeparator={false}
+                rightElement={
+                  <ThemeToggle isDark={isDark} onToggle={setIsDark} />
+                }
               />
             </SettingSection>
             {isFeatureEnabled(FEATURES.ENABLE_DONATION) && (
@@ -87,16 +100,6 @@ export const SettingsScreen = () => {
                 />
               </SettingSection>
             )}
-            <SettingSection variant='list'>
-              <SettingsItem
-                icon='color-palette-outline'
-                label='Appearance'
-                showSeparator={false}
-                rightElement={
-                  <ThemeToggle isDark={isDark} onToggle={setIsDark} />
-                }
-              />
-            </SettingSection>
             <SettingSection variant='list'>
               <SettingsItem
                 icon='chatbubble-outline'
