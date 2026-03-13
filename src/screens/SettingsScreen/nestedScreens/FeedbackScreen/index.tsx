@@ -13,20 +13,19 @@ import { ScreenIntroHeader } from '../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { SettingSection } from '../../components/SettingSection'
 import {
-    CheckboxButton,
-    ConsentContainer,
-    ConsentText,
-    ContentWrapper,
-    EmailInput,
-    EmailInputField,
-    ErrorContainer,
-    ErrorText,
-    FeedbackInput,
-    InputField,
-    PrimaryButton,
-    PrimaryButtonText,
-    PrivacyNoticeText,
-    ScrollContentContainer
+  ConsentContainer,
+  ConsentText,
+  ContentWrapper,
+  EmailInput,
+  EmailInputField,
+  ErrorContainer,
+  ErrorText,
+  FeedbackInput,
+  InputField,
+  PrimaryButton,
+  PrimaryButtonText,
+  PrivacyNoticeText,
+  ScrollContentContainer
 } from './FeedbackScreen.styles'
 
 export const FeedbackScreen = () => {
@@ -44,17 +43,17 @@ export const FeedbackScreen = () => {
 
     const trimmedFeedback = feedback.trim()
     if (!trimmedFeedback) {
-      setError('Please enter your feedback')
+      setError('Please enter your feedback.')
       return
     }
 
     if (trimmedFeedback.length < 10) {
-      setError('Please provide more detailed feedback (at least 10 characters)')
+      setError('Please add a little more detail (at least 10 characters).')
       return
     }
 
     if (!consentGiven) {
-      setError('Please accept the privacy notice to submit feedback')
+      setError('Please accept the privacy notice to send feedback.')
       return
     }
 
@@ -72,7 +71,7 @@ export const FeedbackScreen = () => {
       
       Alert.alert(
         'Thank you!',
-        'Your feedback has been submitted successfully. We appreciate your input!',
+        'Thanks for your feedback! It helps us make the app better.',
         [
           {
             text: 'OK',
@@ -100,7 +99,7 @@ export const FeedbackScreen = () => {
           <ContentWrapper>
             <ScreenIntroHeader
               icon="chatbubble-outline"
-              description="We'd love to hear your thoughts! Share your feedback, suggestions, or report any issues you've encountered."
+              description="We&apos;d love to hear from you! Share your ideas, feedback, or report a problem."
             />
             <SettingSection>
             {error ? (
@@ -137,27 +136,25 @@ export const FeedbackScreen = () => {
               />
             </EmailInputField>
 
-            <ConsentContainer>
-              <CheckboxButton
-                onPress={() => {
-                  setConsentGiven(!consentGiven)
-                  setError('')
-                }}
-                activeOpacity={0.7}
-              >
-                <Icon
-                  name={consentGiven ? 'checkbox' : 'checkbox-outline'}
-                  sizeVariant="sm"
-                  colorVariant={consentGiven ? 'primary' : 'secondary'}
-                />
-              </CheckboxButton>
+            <ConsentContainer
+              onPress={() => {
+                setConsentGiven(!consentGiven)
+                setError('')
+              }}
+              activeOpacity={0.7}
+            >
+              <Icon
+                name={consentGiven ? 'checkbox' : 'checkbox-outline'}
+                sizeVariant="sm"
+                colorVariant={consentGiven ? 'primary' : 'icon'}
+              />
               <ConsentText>
-                I agree to share my feedback and basic app information to help improve the app.
+                I agree to share my feedback to help improve the app.
               </ConsentText>
             </ConsentContainer>
 
             <PrivacyNoticeText>
-              We collect your message, email address, device type, app version, and submission time. This information is used only to review feedback and improve the app. We may contact you by email if needed.
+              We collect your message, email (if provided), device type, and app version so we can review feedback and improve the app. We may contact you by email if needed.
             </PrivacyNoticeText>
 
             <PrimaryButton

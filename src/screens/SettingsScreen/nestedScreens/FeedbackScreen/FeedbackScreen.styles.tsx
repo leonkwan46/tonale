@@ -93,13 +93,11 @@ export const ContentWrapper = styled.View({
   gap: scale(20)
 })
 
-export const ConsentContainer = styled.View(({ theme }) => ({
+export const ConsentContainer = styled(TouchableOpacity)(({ theme }) => ({
   flexDirection: 'row',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   gap: theme.device.isTablet ? scale(8) : scale(12)
 }))
-
-export const CheckboxButton = styled(TouchableOpacity)({})
 
 export const ConsentText = styled.Text(({ theme }) => ({
   flex: 1,
