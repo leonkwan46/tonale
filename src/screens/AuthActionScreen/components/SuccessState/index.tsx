@@ -38,7 +38,7 @@ export const SuccessState = ({ mode }: SuccessStateProps) => {
       </SuccessContainer>
       <PrimaryButton onPress={handleContinue} activeOpacity={0.7}>
         <PrimaryButtonText>
-          {mode === 'resetPassword' ? 'Go to Sign In' : 'Continue'}
+          {mode === 'verifyEmail' ? 'Continue' : 'Go to Sign In'}
         </PrimaryButtonText>
       </PrimaryButton>
     </>

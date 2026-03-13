@@ -1,5 +1,6 @@
 import { AuthActionHandler, AuthActionMode } from '../AuthActionScreen.types'
 import { resetPasswordHandler } from './ResetPasswordHandler'
+import { verifyAndChangeEmailHandler } from './VerifyAndChangeEmailHandler'
 import { verifyEmailHandler } from './VerifyEmailHandler'
 
 const handlers = new Map<AuthActionMode, AuthActionHandler>()
@@ -18,3 +19,4 @@ export const getHandler = (mode: string): AuthActionHandler => {
 // Auto-register all handlers
 registerHandler(verifyEmailHandler)
 registerHandler(resetPasswordHandler)
+registerHandler(verifyAndChangeEmailHandler)
