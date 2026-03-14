@@ -6,14 +6,14 @@ import {
   withTiming
 } from 'react-native-reanimated'
 import { scale as scaleSize } from 'react-native-size-matters'
-import { RippleCircle, WaterArea } from './Playback.styles'
+import { RippleCircle, WaterArea } from './RippleAnimation.styles'
 
 interface RippleAnimationProps {
   isTablet: boolean
   onComplete?: () => void
 }
 
-export const RippleAnimation: React.FC<RippleAnimationProps> = ({ 
+export const RippleAnimation: React.FC<RippleAnimationProps> = ({
   isTablet,
   onComplete
 }) => {
@@ -28,22 +28,18 @@ export const RippleAnimation: React.FC<RippleAnimationProps> = ({
       duration: 800,
       easing: Easing.out(Easing.cubic)
     })
-    
     waterOpacity.value = withTiming(0, {
       duration: 800,
       easing: Easing.out(Easing.quad)
     })
-
     ringScale.value = withTiming(6, {
       duration: 800,
       easing: Easing.out(Easing.cubic)
     })
-    
     ringOpacity.value = withTiming(0, {
       duration: 800,
       easing: Easing.out(Easing.quad)
     })
-
     borderWidth.value = withTiming(0, {
       duration: 800,
       easing: Easing.out(Easing.quad)
@@ -75,7 +71,6 @@ export const RippleAnimation: React.FC<RippleAnimationProps> = ({
   }))
 
   const buttonSize = isTablet ? scaleSize(80) : scaleSize(100)
-
   const baseStyle = {
     width: buttonSize,
     height: buttonSize,
