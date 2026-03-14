@@ -33,6 +33,7 @@ export const createKeySignatureQuestion = (stage: StageNumber, key?: StageKey, l
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

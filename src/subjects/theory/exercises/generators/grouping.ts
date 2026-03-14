@@ -147,7 +147,8 @@ const createQuestionFromElements = (
       timeSignature
     }, visualComponent),
     type: 'trueFalse',
-    visualComponent
+    visualComponent,
+    questionInterface: { type: 'notation' }
   }
 }
 

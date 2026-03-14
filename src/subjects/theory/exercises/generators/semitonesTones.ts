@@ -60,6 +60,7 @@ export const createSemitoneToneQuestion = (
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

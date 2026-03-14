@@ -17,12 +17,25 @@ export interface Explanation {
   visualComponent?: VisualComponent
 }
 
-export interface QuestionInterface {
+export interface PlaybackQuestionInterface {
   type: 'playback'
   audioFile?: string | number
   rhythm?: number[]
   tempo?: number
 }
+
+export interface NotationQuestionInterface {
+  type: 'notation'
+}
+
+export interface SymbolsQuestionInterface {
+  type: 'symbols'
+}
+
+export type QuestionInterface =
+  | PlaybackQuestionInterface
+  | NotationQuestionInterface
+  | SymbolsQuestionInterface
 
 export interface Question {
   id: string

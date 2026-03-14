@@ -87,6 +87,7 @@ export const createNoteIdentificationQuestion = (
     }, visualComponent),
     type: questionType,
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType: layoutType ?? 'grid'
   }
 }

@@ -264,6 +264,10 @@ export const MUSICAL_TERM_TTS_OVERRIDES = {
 // ======================
 
 export const TERM_DISPLAY_NAMES = {
+  'legato': 'Legato',
+  'staccato': 'Staccato',
+  'stacc.': 'Staccato',
+  'tenuto': 'Tenuto',
   'adagio': 'Adagio',
   'allegretto': 'Allegretto', 
   'allegro': 'Allegro',

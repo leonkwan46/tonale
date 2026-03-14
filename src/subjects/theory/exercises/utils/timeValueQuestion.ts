@@ -85,6 +85,7 @@ export const createValueBeatQuestion = ({
     explanation,
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }
