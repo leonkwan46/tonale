@@ -2,9 +2,9 @@ name: QA Checks
 
 on:
   pull_request:
-    branches: [ staging ]
+    branches: [ main, staging ]
   push:
-    branches: [ staging ]
+    branches: [ main, staging ]
 
 jobs:
   qa:
