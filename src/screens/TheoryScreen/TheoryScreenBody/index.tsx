@@ -8,82 +8,62 @@ import { LessonDivider } from '../components/LessonDivider'
 import { LessonSection } from '../components/LessonSection'
 import { StageHeader } from '../components/StageHeader'
 import { TopCloudsCover } from '../components/TopCloudsCover'
-import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, MessageContainer, MessageOverlay, MessageText, PartialLessonContainer, SpacerView, StageContainer } from './TheoryScreenBody.styles'
+import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, PartialLessonContainer, StageContainer } from './TheoryScreenBody.styles'
+
+const PREVIEW_LESSONS_COUNT = 2
 
 export const TheoryScreenBody = () => {
-  const { getStageById, getStageRequirements } = useProgress()
+  const { getStageById, getStageRequirements, getNextLockedStage } = useProgress()
 
-// UI Utility Functions for TheoryScreenBody
   const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
-  const stage = getStageById(stageId)
-  if (!stage) return []
-  
-  // If stage is unlocked, show all lessons
-  if (stage.isUnlocked) {
-    return stage.lessons.map(lesson => ({ ...lesson, isLocked: false }))
-  }
-  
-  // If stage is locked, show lessons as locked
-  return stage.lessons.map(lesson => ({ ...lesson, isLocked: true }))
+    const stage = getStageById(stageId)
+    if (!stage) return []
+    const isLocked = !stage.isUnlocked
+    return stage.lessons.map(lesson => ({ ...lesson, isLocked }))
   }, [getStageById])
 
-  const getStageDisplayData = useCallback((stageId: string): {
-  stage: Stage | undefined
-  isAccessible: boolean
-  blockingMessage: string
-  lessons: StageLesson[]
-} => {
-  const stage = getStageById(stageId)
-  if (!stage) {
-    return {
-      stage: undefined,
-      isAccessible: false,
-      blockingMessage: 'Stage not found',
-      lessons: []
-    }
-  }
-  
-  const requirements = getStageRequirements(stageId)
-  const lessons = getVisibleLessonsForStage(stageId)
-  
-  let blockingMessage = ''
-  if (!requirements.isUnlocked && requirements.progressNeeded.length > 0) {
-    blockingMessage = requirements.progressNeeded.join(', ')
-  }
-  
-  return {
-    stage,
-    isAccessible: requirements.isUnlocked,
-    blockingMessage,
-    lessons
-  }
-  }, [getStageById, getStageRequirements, getVisibleLessonsForStage])
+  const getStageDisplayData = useCallback(
+    (stageId: string): { stage: Stage | undefined; isAccessible: boolean; blockingMessage: string; lessons: StageLesson[] } => {
+      const stage = getStageById(stageId)
+      if (!stage) {
+        return { stage: undefined, isAccessible: false, blockingMessage: 'Stage not found', lessons: [] }
+      }
+      const requirements = getStageRequirements(stageId)
+      const lessons = getVisibleLessonsForStage(stageId)
+      const blockingMessage =
+        !requirements.isUnlocked && requirements.progressNeeded.length > 0
+          ? requirements.progressNeeded.join(', ')
+          : ''
+      return {
+        stage,
+        isAccessible: requirements.isUnlocked,
+        blockingMessage,
+        lessons
+      }
+    },
+    [getStageById, getStageRequirements, getVisibleLessonsForStage]
+  )
+
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
-  const [refreshKey, setRefreshKey] = useState(0) // Force re-render when progress updates
+  const [refreshKey, setRefreshKey] = useState(0)
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
   const openedStageIdsRef = useRef<Set<string>>(new Set())
 
-  // Helper function to scroll to a stage
-  const scrollToStage = (stageId: string, offset: number = 100) => {
-    if (stageRefs.current[stageId] && scrollViewRef.current) {
-      stageRefs.current[stageId].measureLayout(
-        scrollViewRef.current as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-        (x: number, y: number) => {
-          scrollViewRef.current?.scrollTo({
-            y: Math.max(0, y - offset),
-            animated: true
-          })
-        },
-        () => {
-          // Fallback if measureLayout fails
-          scrollViewRef.current?.scrollToEnd({ animated: true })
-        }
-      )
-    }
-  }
+  const scrollToStage = useCallback((stageId: string, offset = 100) => {
+    const stageRef = stageRefs.current[stageId]
+    const scrollRef = scrollViewRef.current
+    if (!stageRef || !scrollRef) return
+    stageRef.measureLayout(
+      scrollRef as unknown as View,
+      (x: number, y: number) => {
+        scrollViewRef.current?.scrollTo({ y: Math.max(0, y - offset), animated: true })
+      },
+      () => scrollViewRef.current?.scrollToEnd({ animated: true })
+    )
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -102,8 +82,6 @@ export const TheoryScreenBody = () => {
     const initState = async () => {
       const initialCollapsedState: Record<string, boolean> = {}
       const initialVisibleState: Record<string, boolean> = {}
-
-      // Determine highest unlocked stage (furthest) - auto-open this stage
       const unlockedStages = stagesArray.filter(s => s.isUnlocked)
       const furthest = unlockedStages.length > 0
         ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
@@ -111,7 +89,6 @@ export const TheoryScreenBody = () => {
       const furthestId = furthest?.id
 
       stagesArray.forEach(stage => {
-        // Initialize animated value for each stage
         if (!animatedHeights.current[stage.id]) {
           animatedHeights.current[stage.id] = new Animated.Value(1)
         }
@@ -119,12 +96,10 @@ export const TheoryScreenBody = () => {
         const shouldBeOpen = furthestId === stage.id
 
         if (stage.isCleared) {
-          // Cleared stages are collapsible; open if shouldBeOpen, otherwise collapse
           initialCollapsedState[stage.id] = !shouldBeOpen
           initialVisibleState[stage.id] = shouldBeOpen
           animatedHeights.current[stage.id].setValue(shouldBeOpen ? 1 : 0)
         } else {
-          // Non-cleared stages should remain visible (not collapsible)
           initialVisibleState[stage.id] = true
           animatedHeights.current[stage.id].setValue(1)
         }
@@ -137,100 +112,63 @@ export const TheoryScreenBody = () => {
     void initState()
   }, [refreshKey])
 
-  const toggleStageCollapse = (stageId: string) => {
-    const isCurrentlyCollapsed = collapsedStages[stageId]
-    const newCollapsedState = !isCurrentlyCollapsed
-    
-    if (newCollapsedState) {
-      // Collapsing: hide content immediately (no scroll)
-      setVisibleStages(prev => ({
-        ...prev,
-        [stageId]: false
-      }))
-      setCollapsedStages(prev => ({
-        ...prev,
-        [stageId]: true
-      }))
-    } else {
-      // Expanding: show then fade in
-      setVisibleStages(prev => ({
-        ...prev,
-        [stageId]: true
-      }))
-      setCollapsedStages(prev => ({
-        ...prev,
-        [stageId]: false
-      }))
-      
-      // Track user intent to keep this stage open (session-only, not persisted)
-      openedStageIdsRef.current.add(stageId)
+  const toggleStageCollapse = useCallback(
+    (stageId: string) => {
+      const isCurrentlyCollapsed = collapsedStages[stageId]
+      const newCollapsedState = !isCurrentlyCollapsed
 
-      // Small delay to ensure DOM update, then start fade in animation and scroll
-      setTimeout(() => {
-        animatedHeights.current[stageId].setValue(0)
-        Animated.timing(animatedHeights.current[stageId], {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true
-        }).start()
-        
-        // Scroll to the expanded content
+      if (newCollapsedState) {
+        setVisibleStages(prev => ({ ...prev, [stageId]: false }))
+        setCollapsedStages(prev => ({ ...prev, [stageId]: true }))
+      } else {
+        setVisibleStages(prev => ({ ...prev, [stageId]: true }))
+        setCollapsedStages(prev => ({ ...prev, [stageId]: false }))
+        openedStageIdsRef.current.add(stageId)
         setTimeout(() => {
-          scrollToStage(stageId, 0)
-        }, 150) // Wait for content to be rendered
-      }, 10)
-    }
-    if (newCollapsedState) {
-      // Track user intent to keep this stage closed (session-only, not persisted)
-      openedStageIdsRef.current.delete(stageId)
-    }
-  }
+          animatedHeights.current[stageId].setValue(0)
+          Animated.timing(animatedHeights.current[stageId], {
+            toValue: 1,
+            duration: 200,
+            useNativeDriver: true
+          }).start()
+          setTimeout(() => scrollToStage(stageId, 0), 150)
+        }, 10)
+      }
+      if (newCollapsedState) openedStageIdsRef.current.delete(stageId)
+    },
+    [collapsedStages, scrollToStage]
+  )
 
-  // Get all unlocked stages plus a preview of the next locked stage
-  const displayStages = stagesArray.filter(stage => stage.isUnlocked)
-  const nextLockedStage = stagesArray.find(stage => !stage.isUnlocked && stage.order === Math.min(...stagesArray.filter(s => !s.isUnlocked).map(s => s.order)))
-  
-  if (nextLockedStage) {
-    displayStages.push(nextLockedStage)
-  }
-  
-  // Check if there's no next stage (all stages completed)
+  const nextLockedStage = getNextLockedStage()
+  const unlockedStages = stagesArray.filter(s => s.isUnlocked)
+  const displayStages = nextLockedStage ? [...unlockedStages, nextLockedStage] : unlockedStages
+  const sortedStages = [...displayStages].sort((a, b) => b.order - a.order)
   const hasNextStage = nextLockedStage !== undefined
-
-  // Sort stages by order (reverse for display from bottom to top)
-  const sortedStages = displayStages.sort((a, b) => b.order - a.order)
+  const currentStage = hasNextStage ? [...unlockedStages].sort((a, b) => b.order - a.order)[0] : undefined
+  const currentStageFinalTestNotCleared = Boolean(currentStage && !currentStage.isCleared)
 
   return (
     <ContentWrapper ref={scrollViewRef}>
       <ContentContainer>
-        <TopCloudsCover />
+        <TopCloudsCover
+          message={
+            hasNextStage && currentStageFinalTestNotCleared && currentStage
+              ? 'Finish the final test to unlock next stage!'
+              : !hasNextStage
+                ? 'Next stage in progress...'
+                : null
+          }
+          reserveLayoutSpace={!hasNextStage}
+        />
         
-        {/* Show "next stage in progress" message when no next stage exists */}
-        {!hasNextStage && (
-          <MessageOverlay>
-            <MessageContainer>
-              <MessageText>
-                Next stage still in progress...
-              </MessageText>
-            </MessageContainer>
-          </MessageOverlay>
-        )}
-        
-        {/* Spacer to maintain 1.25 space when no next stage */}
-        {!hasNextStage && (
-          <SpacerView />
-        )}
-        
-        {sortedStages.map((stage, stageIndex) => {
+        {sortedStages.map((stage) => {
           const stageData = getStageDisplayData(stage.id)
           const isCollapsed = collapsedStages[stage.id] || false
-          const isVisible = visibleStages[stage.id] !== false // Default to true if not set
+          const isVisible = visibleStages[stage.id] !== false
           const isPreviewStage = !stage.isUnlocked
-          
-          // For preview stage, only show 1.25 lessons
           let lessonsToShow = stageData.lessons
           if (isPreviewStage) {
-            lessonsToShow = stageData.lessons.slice(0, 2) // Show 2 lessons for preview
+            lessonsToShow = stageData.lessons.slice(0, PREVIEW_LESSONS_COUNT)
           }
 
           return (
@@ -242,7 +180,6 @@ export const TheoryScreenBody = () => {
                 }
               }}
             >
-              {/* Show stage header only for cleared stages with lessons */}
               {stage.isCleared && lessonsToShow.length > 0 && (
                 <StageHeader
                   stage={stage}
@@ -251,8 +188,6 @@ export const TheoryScreenBody = () => {
                   showToggle={true}
                 />
               )}
-              
-              {/* Lessons container - collapsible for cleared stages */}
               {isVisible && (
                 <CollapsibleLessonsContainer
                   style={{
