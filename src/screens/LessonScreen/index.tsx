@@ -21,7 +21,7 @@ import type { Question, StoreRevisionQuestionPayload } from '@types'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { FinalTestModal } from './components/FinalTestModal'
-import { StarRatingModal } from './components/StarRatingModal'
+import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
 
@@ -281,7 +281,7 @@ export const LessonScreen = () => {
         isFinalTest={lesson?.isFinalTest || false}
       />
 
-      <StarRatingModal
+      <LessonCompleteModal
         visible={showStarModal}
         stars={calculateStars(questions.length, wrongAnswers.length)}
         totalQuestions={questions.length}

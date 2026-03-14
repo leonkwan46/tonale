@@ -75,12 +75,18 @@ export function QuestionExplanation({
   const formattedText = formatExplanationWithBoldAnswer(displayText, correctAnswer)
 
   return (
-    <Modal visible animationType="fade" onRequestClose={onContinue} contentVariant="light">
+    <Modal
+      visible
+      animationType="fade"
+      onRequestClose={onContinue}
+      contentVariant="light"
+      testID="question-explanation-modal"
+    >
       {showVisual && displayVisualComponent && (
         <VisualExplanation visualComponent={displayVisualComponent} />
       )}
       {formattedText && <ExplanationText>{formattedText}</ExplanationText>}
-      <Button3D onPress={onContinue} fullWidth>
+      <Button3D onPress={onContinue} fullWidth testID="question-explanation-continue-button">
         {() => <ContinueButtonText>Continue</ContinueButtonText>}
       </Button3D>
     </Modal>
