@@ -79,13 +79,17 @@ export const LessonScreen = () => {
   const [showFailureModal, setShowFailureModal] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
+  /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
+  const [restartKey, setRestartKey] = useState(0)
 
   const restartLesson = useCallback(() => {
-    if (!lesson) return
     setCurrentQuestionIndex(0)
     setWrongAnswers([])
-    setQuestions(generateQuestions(lesson))
     setIsCompleting(false)
+    if (lesson) {
+      setQuestions(generateQuestions(lesson))
+    }
+    setRestartKey((k) => k + 1)
   }, [lesson, generateQuestions])
 
   const onAnswerSubmit = useCallback(
@@ -264,6 +268,7 @@ export const LessonScreen = () => {
       />
 
       <LessonScreenBody
+        key={restartKey}
         questions={questions}
         currentQuestionIndex={currentQuestionIndex}
         onAnswerSubmit={onAnswerSubmit}
