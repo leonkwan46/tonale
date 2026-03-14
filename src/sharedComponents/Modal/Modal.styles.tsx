@@ -1,8 +1,9 @@
 import styled from '@emotion/native'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createForwardProps } from '@/utils/styledProps'
 
 export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
   position: 'absolute',
@@ -16,9 +17,14 @@ export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
   zIndex: 1000
 }))
 
-export const ModalContainer = styled.View<{ width?: number; variant?: 'default' | 'light' }>(
+export const ModalContainer = styled(View, {
+  shouldForwardProp: createForwardProps(['width', 'variant'])
+})<{ width?: number; variant?: 'default' | 'light' }>(
   ({ theme, width, variant }) => ({
-    backgroundColor: variant === 'light' ? theme.colors.displayCard.background : theme.colors.surface,
+    backgroundColor:
+      variant === 'light'
+        ? theme.colors.displayCard.background
+        : theme.colors.surface,
     borderRadius: scale(theme.borderRadius.xl),
     padding: theme.device.isTablet
       ? scale(theme.spacing.lg)
@@ -29,7 +35,8 @@ export const ModalContainer = styled.View<{ width?: number; variant?: 'default' 
       ? scale(theme.spacing.md)
       : scale(theme.spacing.xl),
     borderWidth: 1,
-    borderColor: variant === 'light' ? theme.colors.displayCard.text : theme.colors.border
+    borderColor:
+      variant === 'light' ? theme.colors.displayCard.text : theme.colors.border
   })
 )
 
@@ -65,7 +72,9 @@ export const ButtonContainer = styled.View<{ singleButton?: boolean }>(
   })
 )
 
-export const ModalButton = styled(TouchableOpacity)<{
+export const ModalButton = styled(TouchableOpacity, {
+  shouldForwardProp: createForwardProps(['variant', 'singleButton'])
+})<{
   variant: 'filled' | 'outlined';
   singleButton?: boolean;
 }>(({ theme, variant, singleButton }) => ({
