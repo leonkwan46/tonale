@@ -150,6 +150,9 @@ export const LessonScreen = () => {
         if (question.questionInterface) {
           payload.questionInterface = question.questionInterface
         }
+        if (question.layoutType) {
+          payload.layoutType = question.layoutType
+        }
         return payload
       }
     )
