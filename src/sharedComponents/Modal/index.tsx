@@ -4,12 +4,13 @@ import { Modal as RNModal } from 'react-native'
 import { ModalContainer, ModalOverlay } from './Modal.styles'
 
 interface ModalProps {
-  visible: boolean;
-  onRequestClose: () => void;
-  animationType?: 'none' | 'slide' | 'fade';
-  transparent?: boolean;
-  testID?: string;
-  children: React.ReactNode;
+  visible: boolean
+  onRequestClose: () => void
+  animationType?: 'none' | 'slide' | 'fade'
+  transparent?: boolean
+  testID?: string
+  contentVariant?: 'default' | 'light'
+  children: React.ReactNode
 }
 
 export const Modal = ({
@@ -18,6 +19,7 @@ export const Modal = ({
   animationType = 'fade',
   transparent = true,
   testID,
+  contentVariant = 'default',
   children
 }: ModalProps) => {
   const { width: screenWidth } = useWindowDimensions()
@@ -38,6 +40,7 @@ export const Modal = ({
         <ModalContainer
           testID={testID}
           width={modalWidth}
+          variant={contentVariant}
           onStartShouldSetResponder={() => true}
         >
           {children}

@@ -67,6 +67,7 @@ export const createScaleDegreeQuestion = (
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

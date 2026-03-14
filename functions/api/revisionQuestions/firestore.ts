@@ -13,6 +13,7 @@ export interface RevisionQuestionInput {
   visualComponent?: VisualComponent
   questionInterface?: QuestionInterface
   correctCount?: number
+  layoutType?: 'grid' | 'row'
 }
 
 export async function storeRevisionQuestionInFirestore(

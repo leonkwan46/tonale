@@ -1,90 +1,15 @@
-import { DisplayCard } from '@/sharedComponents/DisplayCard'
-import { NoteType } from '@leonkwan46/music-notation'
 import type { StageNumber, VisualComponent } from '@types'
-import { VisualQuestionContainer } from './VisualQuestion.styles'
-import {
-  calculateMusicStaffMinHeight,
-  renderMusicStaff,
-  renderNoteComponent,
-  renderTermAndSign,
-  renderTimeSignature,
-  renderTriplet
-} from './visualRenderHelper'
+import { Notation } from '../QuestionInterface/QuestionTypes/Notation'
+import { Symbols } from '../QuestionInterface/QuestionTypes/Symbols'
 
 interface VisualQuestionProps {
   visualComponent: VisualComponent
   stage?: StageNumber
 }
 
-export const VisualQuestion = ({ visualComponent, stage }: VisualQuestionProps) => {
-  const shouldRenderIndividualNotes = visualComponent.type !== 'timeSignature' && 
-    visualComponent.type !== 'noteValue' && 
-    visualComponent.type !== 'termAndSign' && 
-    visualComponent.type !== 'triplet' && 
-    visualComponent.elements?.length === 1 && 
-    !visualComponent.clef
-
-  const shouldRenderMusicStaff = visualComponent.type !== 'timeSignature' && 
-    visualComponent.type !== 'noteValue' && 
-    visualComponent.type !== 'termAndSign' && 
-    visualComponent.type !== 'triplet' && 
-    !shouldRenderIndividualNotes
-
-  return (
-    <VisualQuestionContainer>
-      {visualComponent.type === 'timeSignature' && visualComponent.timeSignatureValue && (
-        <DisplayCard>
-          {renderTimeSignature(visualComponent.timeSignatureValue)}
-        </DisplayCard>
-      )}
-      
-      {visualComponent.type === 'noteValue' && visualComponent.noteType && (
-        <DisplayCard>
-          {renderNoteComponent(visualComponent.noteType)}
-        </DisplayCard>
-      )}
-      
-      {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
-        <DisplayCard>
-          {renderTriplet(
-            visualComponent.tupletConfig.noteType as NoteType,
-            visualComponent.tupletConfig.numberOfNotes
-          )}
-        </DisplayCard>
-      )}
-      
-      {visualComponent.type === 'termAndSign' && visualComponent.symbolType && 
-        renderTermAndSign(
-          visualComponent.symbolType,
-          visualComponent.renderAsSymbol,
-          visualComponent.enableTTS
-        )
-      }
-      
-      {shouldRenderIndividualNotes && visualComponent.elements?.[0]?.type && (
-        <DisplayCard>
-          {renderNoteComponent({ type: visualComponent.elements[0].type })}
-        </DisplayCard>
-      )}
-      
-      {shouldRenderMusicStaff && (
-        <DisplayCard minHeight={calculateMusicStaffMinHeight(
-          visualComponent.clef,
-          visualComponent.elements,
-          stage
-        )}>
-          {renderMusicStaff(
-            visualComponent.size,
-            visualComponent.clef,
-            visualComponent.timeSignature,
-            visualComponent.keyName,
-            visualComponent.elements,
-            visualComponent.isChord,
-            visualComponent.showStaff
-          )}
-        </DisplayCard>
-      )}
-    </VisualQuestionContainer>
-  )
+export function VisualQuestion({ visualComponent, stage }: VisualQuestionProps) {
+  if (visualComponent.type === 'termAndSign' && visualComponent.symbolType) {
+    return <Symbols visualComponent={visualComponent} />
+  }
+  return <Notation visualComponent={visualComponent} stage={stage} />
 }
-

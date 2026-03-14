@@ -171,7 +171,8 @@ export const lightTheme = {
     
     // Modal mask color (backdrop/overlay behind modal)
     modalMask: Colors.light.modalMask,
-    
+    overlayText: Colors.light.overlayText,
+
     // FinalTest specific colors
     finalTest: Colors.light.finalTest,
     
@@ -184,9 +185,12 @@ export const lightTheme = {
     // DisplayCard colors
     displayCard: Colors.light.displayCard,
 
+    // Playback ripple animation colors
+    playback: Colors.light.playback,
+
     // Toast text — always dark for readability on bright warning/success backgrounds
     toastText: Colors.light.text
-    
+
   },
   // Use shared constants for consistent dimensions across themes
   ...sharedConstants
@@ -250,7 +254,8 @@ export const darkTheme = {
     
     // Modal mask color (backdrop/overlay behind modal)
     modalMask: Colors.dark.modalMask,
-    
+    overlayText: Colors.dark.overlayText,
+
     // FinalTest specific colors
     finalTest: Colors.dark.finalTest,
     
@@ -263,9 +268,12 @@ export const darkTheme = {
     // DisplayCard colors
     displayCard: Colors.dark.displayCard,
 
+    // Playback ripple animation colors
+    playback: Colors.dark.playback,
+
     // Toast text — always dark for readability on bright warning/success backgrounds
     toastText: Colors.light.text
-    
+
   },
   // Use shared constants for consistent dimensions across themes
   ...sharedConstants

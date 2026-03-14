@@ -101,7 +101,8 @@ export async function storeRevisionQuestionService(
     ...(payload.explanation && { explanation: payload.explanation }),
     ...(compressedVisualComponent && { visualComponent: compressedVisualComponent }),
     ...(payload.questionInterface && { questionInterface: payload.questionInterface }),
-    ...(payload.correctCount !== undefined && { correctCount: payload.correctCount })
+    ...(payload.correctCount !== undefined && { correctCount: payload.correctCount }),
+    ...(payload.layoutType && { layoutType: payload.layoutType })
   }
   
   await storeRevisionQuestionInFirestore(userId, compressedPayload)
@@ -157,7 +158,8 @@ export async function storeRevisionQuestionsService(
       ...(question.explanation && { explanation: question.explanation }),
       ...(compressedVisualComponent && { visualComponent: compressedVisualComponent }),
       ...(question.questionInterface && { questionInterface: question.questionInterface }),
-      ...(question.correctCount !== undefined && { correctCount: question.correctCount })
+      ...(question.correctCount !== undefined && { correctCount: question.correctCount }),
+      ...(question.layoutType && { layoutType: question.layoutType })
     }
   })
   

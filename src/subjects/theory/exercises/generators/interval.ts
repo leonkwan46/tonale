@@ -58,6 +58,7 @@ export const createIntervalQuestion = (
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

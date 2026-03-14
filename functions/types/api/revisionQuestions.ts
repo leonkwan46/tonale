@@ -17,6 +17,7 @@ export interface Question {
   type: 'multipleChoice' | 'trueFalse' | 'keyPress' | 'rhythmTap'
   visualComponent?: VisualComponent
   questionInterface?: QuestionInterface
+  layoutType?: 'grid' | 'row'
 }
 
 export interface RevisionQuestion extends Question {

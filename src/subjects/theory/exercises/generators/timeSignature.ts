@@ -48,6 +48,7 @@ export const createTimeSignatureQuestion = (
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

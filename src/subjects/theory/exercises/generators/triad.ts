@@ -42,6 +42,7 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

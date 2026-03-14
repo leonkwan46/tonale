@@ -49,6 +49,7 @@ export const Colors = {
       buttonDepth: '#156382'
     },
     modalMask: 'rgba(0, 0, 0, 0.7)',
+    overlayText: '#ffffff',
     finalTest: {
       gradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const,
       shadow: '#8B0000'
@@ -73,6 +74,10 @@ export const Colors = {
     displayCard: {
       background: '#ffffff',
       text: '#000000'
+    },
+    playback: {
+      rippleWater: 'rgba(80, 160, 255, 1)',
+      rippleCircleBorder: 'rgba(180, 220, 255, 0.9)'
     }
   },
   dark: {
@@ -117,6 +122,7 @@ export const Colors = {
       buttonDepth: '#156382'
     },
     modalMask: 'rgba(0, 0, 0, 0.7)',
+    overlayText: '#ffffff',
     finalTest: {
       gradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const,
       shadow: '#8B0000'
@@ -141,6 +147,10 @@ export const Colors = {
     displayCard: {
       background: '#ffffff',
       text: '#000000'
+    },
+    playback: {
+      rippleWater: 'rgba(80, 160, 255, 1)',
+      rippleCircleBorder: 'rgba(180, 220, 255, 0.9)'
     }
   }
 }

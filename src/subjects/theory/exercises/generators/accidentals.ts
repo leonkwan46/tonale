@@ -51,6 +51,7 @@ export const createAccidentalQuestion = (
     explanation: generateExplanation('accidentals', { correctAnswer }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'symbols' },
     layoutType
   }
 }
