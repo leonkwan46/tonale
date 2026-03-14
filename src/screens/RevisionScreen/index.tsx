@@ -49,7 +49,7 @@ export const RevisionScreen = () => {
       )}
 
       <RevisionCompletionModal
-        visible={completion.showModal}
+        visible={completion.showModal && completion.status === 'completed'}
         remainingQuestions={completion.remainingCount}
         onExit={handleExit}
         onRevise={handleRevise}

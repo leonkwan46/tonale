@@ -35,7 +35,7 @@ export const RevisionCompletionModal = ({
       <ButtonContainer singleButton={isAllComplete}>
         {isAllComplete ? (
           <ModalButton
-            testID="okay-button"
+            testID="done-button"
             variant="filled"
             singleButton={true}
             onPress={onExit}
