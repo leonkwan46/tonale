@@ -20,8 +20,7 @@ import { calculateStars } from '@/utils/starCalculation'
 import type { Question, StoreRevisionQuestionPayload } from '@types'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { FinalTestFailureModal } from './components/FinalTestFailureModal'
-import { FinalTestSuccessModal } from './components/FinalTestSuccessModal'
+import { FinalTestModal } from './components/FinalTestModal'
 import { StarRatingModal } from './components/StarRatingModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
@@ -283,15 +282,12 @@ export const LessonScreen = () => {
         onRetry={closeModalAndRetry}
       />
 
-      <FinalTestFailureModal
-        visible={showFailureModal}
+      <FinalTestModal
+        visible={showSuccessModal || showFailureModal}
+        variant={showSuccessModal ? 'success' : 'failure'}
+        onContinue={closeSuccessModalAndContinue}
         onRetry={closeFailureModalAndRetry}
         onExit={closeFailureModalAndExit}
-      />
-
-      <FinalTestSuccessModal
-        visible={showSuccessModal}
-        onContinue={closeSuccessModalAndContinue}
       />
     </ScreenContainer>
   )
