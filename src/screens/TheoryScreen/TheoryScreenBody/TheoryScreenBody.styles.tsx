@@ -1,6 +1,7 @@
 import styled from '@emotion/native'
 import { Animated, ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const ContentWrapper = styled(ScrollView)(({ theme }) => ({
   flex: 1,
@@ -17,14 +18,14 @@ export const ContentContainer = styled.View(({ theme }) => ({
 export const PartialLessonContainer = styled.View<{ isPartial?: boolean }>(({ isPartial }) => ({
   width: '100%',
   overflow: 'hidden',
-  height: isPartial ? scale(30) : 'auto', // Quarter height for partial lessons (25% visible)
-  opacity: isPartial ? 0.4 : 1, // Reduced opacity for subtle preview
+  height: isPartial ? scale(30) : 'auto',
+  opacity: isPartial ? 0.4 : 1,
   position: 'relative'
 }))
 
 export const LessonContent = styled.View<{ isPartial?: boolean }>(({ isPartial }) => ({
   position: isPartial ? 'absolute' : 'relative',
-  bottom: isPartial ? 0 : 'auto', // Align to bottom for partial lessons
+  bottom: isPartial ? 0 : 'auto',
   left: 0,
   right: 0,
   width: '100%'
@@ -54,12 +55,15 @@ export const MessageOverlay = styled.View(({ theme }) => ({
 export const MessageContainer = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.modalMask,
   padding: scale(theme.spacing.sm),
-  borderRadius: scale(theme.borderRadius.sm)
+  borderRadius: scale(theme.borderRadius.sm),
+  maxWidth: scale(280),
+  alignSelf: 'center'
 }))
 
 export const MessageText = styled.Text(({ theme }) => ({
-  color: 'white',
-  fontSize: scale(theme.typography.base),
+  color: theme.colors.overlayText,
+  fontSize: scale(theme.typography.sm),
+  fontFamily: getSourGummyFontFamily('500'),
   textAlign: 'center'
 }))
 
