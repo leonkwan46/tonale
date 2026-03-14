@@ -17,15 +17,15 @@ import {
 const CONFIG = {
   success: {
     icon: '🎉',
-    title: "Congratulations!",
+    title: 'Congratulations!',
     description:
-      "You've passed the final test! Great work on mastering this stage."
+      'You\'ve passed the final test! Great work on mastering this stage.'
   },
   failure: {
     icon: '❌',
     title: 'Not quite yet!',
     description:
-      "You've reached the maximum wrong answers. Don't worry - practise makes perfect! Review the lessons and try again."
+      'You\'ve reached the maximum wrong answers. Don\'t worry - practise makes perfect! Review the lessons and try again.'
   }
 } as const
 
