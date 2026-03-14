@@ -4,13 +4,13 @@ import { Modal as RNModal } from 'react-native'
 import { ModalContainer, ModalOverlay } from './Modal.styles'
 
 interface ModalProps {
-  visible: boolean
-  onRequestClose: () => void
-  animationType?: 'none' | 'slide' | 'fade'
-  transparent?: boolean
-  testID?: string
-  contentVariant?: 'default' | 'light'
-  children: React.ReactNode
+  visible: boolean;
+  onRequestClose: () => void;
+  animationType?: 'none' | 'slide' | 'fade';
+  transparent?: boolean;
+  testID?: string;
+  contentVariant?: 'default' | 'light';
+  children: React.ReactNode;
 }
 
 export const Modal = ({
