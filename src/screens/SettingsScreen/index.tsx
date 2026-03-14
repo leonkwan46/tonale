@@ -39,6 +39,10 @@ export const SettingsScreen = () => {
     navigate('/(tabs)/settings/feedback')
   }
 
+  const handlePrivacyPolicyPress = () => {
+    navigate('/(tabs)/settings/privacy-policy')
+  }
+
   const handleLogoutPress = () => {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
       {
@@ -105,6 +109,12 @@ export const SettingsScreen = () => {
                 icon='chatbubble-outline'
                 label='Feedback'
                 onPress={handleFeedbackPress}
+                showSeparator
+              />
+              <SettingsItem
+                icon='document-text-outline'
+                label='Privacy Policy'
+                onPress={handlePrivacyPolicyPress}
                 showSeparator={false}
               />
             </SettingSection>
