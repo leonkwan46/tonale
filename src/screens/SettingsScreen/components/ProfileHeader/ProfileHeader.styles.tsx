@@ -20,7 +20,7 @@ export const AvatarContainer = styled(View)(({ theme }) => ({
   width: scale(120),
   height: scale(120),
   borderRadius: scale(120),
-  backgroundColor: theme.colors.surface,
+  backgroundColor: theme.colors.card,
   justifyContent: 'center',
   alignItems: 'center',
   overflow: 'hidden'

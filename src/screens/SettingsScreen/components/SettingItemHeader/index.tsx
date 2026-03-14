@@ -1,9 +1,9 @@
-import { BackArrowIcon } from '@/screens/LessonScreen/components/LessonHeader/BackArrowIcon'
+import { BackArrowIcon } from '@/screens/LessonScreen/LessonHeader/BackArrowIcon'
 import { useRouter } from 'expo-router'
 import { BackButton, Header, Title } from './SettingItemHeader.styles'
 
 interface SettingItemHeaderProps {
-  title: string
+  title: string;
 }
 
 export const SettingItemHeader = ({ title }: SettingItemHeaderProps) => {
@@ -18,4 +18,3 @@ export const SettingItemHeader = ({ title }: SettingItemHeaderProps) => {
     </Header>
   )
 }
-

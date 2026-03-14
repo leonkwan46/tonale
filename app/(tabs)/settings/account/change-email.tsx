@@ -1,5 +1,5 @@
-import { ChangeEmailScreen } from '@/screens/SettingsScreen/nestedScreens/AccountSettingsScreen/nestedScreens/ChangeEmailScreen'
+import { EmailScreen } from '@/screens/SettingsScreen/nestedScreens/AccountSettingsScreen/nestedScreens/EmailScreen'
 
 export default function ChangeEmailRoute() {
-  return <ChangeEmailScreen />
+  return <EmailScreen />
 }

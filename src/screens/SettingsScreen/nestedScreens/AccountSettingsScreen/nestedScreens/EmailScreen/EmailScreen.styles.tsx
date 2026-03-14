@@ -1,14 +1,25 @@
 import styled from '@emotion/native'
-import { TouchableOpacity, TextInput } from 'react-native'
+import { TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const Card = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(theme.borderRadius.md),
-  padding: scale(theme.spacing.lg),
-  gap: scale(theme.spacing.md)
+export const EmailPill = styled.View(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  alignSelf: 'center',
+  borderWidth: 1,
+  borderColor: theme.colors.primary,
+  borderRadius: scale(30),
+  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm),
+  gap: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm)
+}))
+
+export const EmailPillText = styled.Text(({ theme }) => ({
+  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
+  color: theme.colors.text,
+  fontFamily: getSourGummyFontFamily('400')
 }))
 
 export const InputField = styled.View<{ disabled?: boolean }>(({ theme, disabled }) => ({
@@ -29,7 +40,7 @@ export const Input = styled(TextInput)(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   height: '100%',
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
@@ -52,36 +63,34 @@ export const ErrorText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  backgroundColor: theme.colors.primary,
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  borderRadius: scale(theme.borderRadius.md),
-  opacity: disabled ? 0.7 : 1,
-  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
-}))
-
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   fontFamily: getSourGummyFontFamily('600')
 }))
 
+export const SaveButtonContent = styled.View(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  width: '100%'
+}))
+
 export const MessageText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
+  fontSize: scale(theme.typography.base),
   color: theme.colors.text,
   fontFamily: getSourGummyFontFamily('400'),
-  lineHeight: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.lg)
+  lineHeight: scale(theme.typography.lg),
+  textAlign: 'center'
 }))
 
 export const SuccessContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
-  backgroundColor: theme.colors.surface,
+  backgroundColor: 'transparent',
   borderWidth: 1,
-  borderColor: theme.colors.primary,
+  borderColor: theme.colors.success,
   paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
   paddingVertical: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),
@@ -89,33 +98,8 @@ export const SuccessContainer = styled.View(({ theme }) => ({
 }))
 
 export const SuccessText = styled.Text(({ theme }) => ({
-  color: theme.colors.primary,
+  color: theme.colors.success,
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
-}))
-
-export const RefreshButton = styled(TouchableOpacity)(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm),
-  borderRadius: scale(theme.borderRadius.md),
-  borderWidth: 1,
-  borderColor: theme.colors.primary,
-  backgroundColor: 'transparent',
-  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm)
-}))
-
-export const RefreshButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primary,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily('600')
-}))
-
-export const LabelText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
-  marginBottom: theme.device.isTablet ? scale(theme.spacing.xs) : scale(6)
 }))

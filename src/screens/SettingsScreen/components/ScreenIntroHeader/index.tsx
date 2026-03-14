@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { Icon } from '@/sharedComponents/Icon'
 
-import { Container, DescriptionText, IconContainer } from './ScreenIntroHeader.styles'
+import { Container, DescriptionText } from './ScreenIntroHeader.styles'
 
 interface ScreenIntroHeaderProps {
   icon: keyof typeof Ionicons.glyphMap
@@ -11,9 +11,7 @@ interface ScreenIntroHeaderProps {
 export const ScreenIntroHeader = ({ icon, description }: ScreenIntroHeaderProps) => {
   return (
     <Container>
-      <IconContainer>
-        <Icon name={icon} sizeVariant="2xl" colorVariant="text" />
-      </IconContainer>
+      <Icon name={icon} sizeVariant="3xl" colorVariant="text" />
       <DescriptionText>{description}</DescriptionText>
     </Container>
   )

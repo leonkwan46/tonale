@@ -1,6 +1,9 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native'
+import { forwardRef } from 'react'
+import type { TextInputProps } from 'react-native'
+import { TouchableOpacity, TextInput } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
@@ -50,14 +53,24 @@ export const InputField = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm)
 }))
 
-export const Input = styled.TextInput(({ theme }) => ({
+const BaseInput = styled(TextInput)(({ theme }) => ({
   flex: 1,
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.sm),
   height: '100%',
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
   fontFamily: getSourGummyFontFamily('400')
 }))
+
+export const Input = forwardRef<TextInput, TextInputProps>(function AuthInput(props, ref) {
+  const theme = useTheme()
+  return (
+    <BaseInput
+      ref={ref}
+      placeholderTextColor={theme.colors.placeholderText}
+      {...props}
+    />
+  )
+})
 
 export const EyeIcon = styled(TouchableOpacity)(({ theme }) => ({
   padding: scale(theme.spacing.xs)

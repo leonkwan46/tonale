@@ -33,6 +33,7 @@ export const createRestValueQuestion = (
     explanation: generateExplanation('restValue', { correctAnswer: correctAnswerString }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

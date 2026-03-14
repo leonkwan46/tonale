@@ -1,7 +1,7 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress } from '@/hooks'
 import { useRouter } from 'expo-router'
-import { LessonHeader } from '../LessonScreen/components/LessonHeader'
+import { LessonHeader } from '../LessonScreen/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'
 import { RevisionCompletionModal } from './components/RevisionCompletionModal'
 import { useRevision } from './useRevision'
@@ -39,6 +39,7 @@ export const RevisionScreen = () => {
 
       {hasQuestions && currentQuestion && (
         <LessonScreenBody
+          key={revision.viewResetKey}
           questions={revision.questions}
           currentQuestionIndex={revision.currentQuestionIndex}
           onAnswerSubmit={onAnswerSubmit}

@@ -5,7 +5,6 @@ import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
 import { useEffect, useMemo, useState } from 'react'
 import { Text } from 'react-native'
-import { QuestionExplanation } from '../QuestionExplanation'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
 import { RhythmTap } from './AnswerTypes/RhythmTap'
 import { KeyPress } from './AnswerTypes/KeyPress'
@@ -18,6 +17,7 @@ interface AnswerInterfaceProps {
   questionData: Question
   onAnswerSubmit: (isCorrect: boolean) => void
   onNextQuestion: () => void
+  onShowExplanation?: () => void
   wrongAnswersCount?: number
   isFinalTest?: boolean
   onPlaybackFinishRef?: React.MutableRefObject<(() => void) | null>
@@ -32,12 +32,12 @@ export const AnswerInterface = ({
   questionData,
   onAnswerSubmit,
   onNextQuestion,
+  onShowExplanation,
   wrongAnswersCount = 0,
   isFinalTest = false,
   onPlaybackFinishRef
 }: AnswerInterfaceProps) => {
   const [answerResult, setAnswerResult] = useState<{ selected: string; correct: boolean } | null>(null)
-  const [showExplanationModal, setShowExplanationModal] = useState(false)
 
   const showResult = answerResult !== null
   const isCorrect = answerResult?.correct ?? null
@@ -51,10 +51,10 @@ export const AnswerInterface = ({
     const { correct } = answerResult
 
     if (!correct && !isFinalTest) {
-      const timer = setTimeout(() => setShowExplanationModal(true), EXPLANATION_MODAL_DELAY)
+      const timer = setTimeout(() => onShowExplanation?.(), EXPLANATION_MODAL_DELAY)
       return () => clearTimeout(timer)
     }
-  }, [answerResult, isFinalTest])
+  }, [answerResult, isFinalTest, onShowExplanation])
 
   useEffect(() => {
     if (answerResult === null) return
@@ -87,12 +87,14 @@ export const AnswerInterface = ({
     handleAnswer(key, isEnharmonicEquivalent(key, correctAnswerStr))
   }
 
+  const playbackInterface = questionData.questionInterface?.type === 'playback' ? questionData.questionInterface : undefined
+
   const handleRhythmTapSubmit = (userTimestamps: number[]) => {
     const correctAnswer = questionData.correctAnswer as number[]
     let isCorrect = false
 
-    const isPulseExercise = questionData.questionInterface?.audioFile && !questionData.questionInterface?.rhythm
-    const isRhythmExercise = questionData.questionInterface?.rhythm && !questionData.questionInterface?.audioFile
+    const isPulseExercise = playbackInterface?.audioFile && !playbackInterface?.rhythm
+    const isRhythmExercise = playbackInterface?.rhythm && !playbackInterface?.audioFile
 
     if (isPulseExercise) {
       isCorrect = comparePulsePattern(userTimestamps, correctAnswer)
@@ -104,14 +106,14 @@ export const AnswerInterface = ({
   }
 
   const rhythmDuration = useMemo(() => {
-    if (questionData.questionInterface?.rhythm) {
-      const totalDuration = questionData.questionInterface.rhythm.reduce((sum, dur) => sum + dur, 0)
-      const tempo = questionData.questionInterface.tempo || 90
+    if (playbackInterface?.rhythm) {
+      const totalDuration = playbackInterface.rhythm.reduce((sum, dur) => sum + dur, 0)
+      const tempo = playbackInterface.tempo || 90
       const beatDuration = 60 / tempo
       return (totalDuration * beatDuration * 1000) + 1000
     }
     return undefined
-  }, [questionData])
+  }, [playbackInterface])
 
   const renderAnswerComponent = () => {
     switch (answerType) {
@@ -157,8 +159,8 @@ export const AnswerInterface = ({
                 ? (isCorrect ? 'correct' : 'incorrect')
                 : 'default'
             }
-            tempo={questionData.questionInterface?.tempo}
-            questionInterface={questionData.questionInterface}
+            tempo={playbackInterface?.tempo}
+            questionInterface={playbackInterface}
             onPlaybackFinishRef={onPlaybackFinishRef}
           />
         )
@@ -167,28 +169,10 @@ export const AnswerInterface = ({
     }
   }
 
-  const handleContinue = () => {
-    setShowExplanationModal(false)
-    const shouldBlock = isFinalTest && wrongAnswersCount + 1 >= FINAL_TEST_FAILURE_THRESHOLD
-    if (shouldBlock) return
-    onNextQuestion()
-  }
-
   return (
-    <>
-      <AnswerInterfaceContainer>
-        {renderAnswerComponent()}
-      </AnswerInterfaceContainer>
-      
-      {showExplanationModal && !isFinalTest && (
-        <QuestionExplanation
-          explanation={questionData.explanation}
-          correctAnswer={correctAnswerStr}
-          visualComponent={questionData.visualComponent}
-          onContinue={handleContinue}
-        />
-      )}
-    </>
+    <AnswerInterfaceContainer>
+      {renderAnswerComponent()}
+    </AnswerInterfaceContainer>
   )
 }
 

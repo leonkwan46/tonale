@@ -4,13 +4,6 @@ import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export const Card = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(12),
-  padding: scale(20),
-  gap: scale(16)
-}))
-
 export const InputField = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'flex-start',
@@ -42,7 +35,7 @@ export const EmailInput = styled.TextInput(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   height: '100%',
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily('400')
 }))
 
@@ -51,7 +44,7 @@ export const FeedbackInput = styled.TextInput(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   minHeight: theme.device.isTablet ? scale(100) : scale(130),
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily('400'),
   lineHeight: theme.device.isTablet ? scale(18) : scale(20)
 }))
@@ -70,6 +63,25 @@ export const ErrorContainer = styled.View(({ theme }) => ({
 
 export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
+  fontSize: theme.device.isTablet ? scale(10) : scale(12),
+  flex: 1,
+  fontFamily: getSourGummyFontFamily('400')
+}))
+
+export const SuccessContainer = styled.View(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: 'transparent',
+  borderWidth: 1,
+  borderColor: theme.colors.success,
+  paddingHorizontal: theme.device.isTablet ? scale(10) : scale(16),
+  paddingVertical: theme.device.isTablet ? scale(6) : scale(12),
+  borderRadius: scale(8),
+  gap: theme.device.isTablet ? scale(5) : scale(8)
+}))
+
+export const SuccessText = styled.Text(({ theme }) => ({
+  color: theme.colors.success,
   fontSize: theme.device.isTablet ? scale(10) : scale(12),
   flex: 1,
   fontFamily: getSourGummyFontFamily('400')
@@ -100,13 +112,11 @@ export const ContentWrapper = styled.View({
   gap: scale(20)
 })
 
-export const ConsentContainer = styled.View(({ theme }) => ({
+export const ConsentContainer = styled(TouchableOpacity)(({ theme }) => ({
   flexDirection: 'row',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   gap: theme.device.isTablet ? scale(8) : scale(12)
 }))
-
-export const CheckboxButton = styled(TouchableOpacity)({})
 
 export const ConsentText = styled.Text(({ theme }) => ({
   flex: 1,

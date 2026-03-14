@@ -1,16 +1,8 @@
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
-
-export const Card = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(12),
-  padding: scale(20),
-  gap: scale(16)
-}))
 
 export const InputField = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -52,21 +44,18 @@ export const ErrorText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily('400')
 }))
 
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  backgroundColor: theme.colors.primary,
+export const PrimaryButtonText = styled.Text(({ theme }) => ({
+  color: theme.colors.text,
+  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
+  fontFamily: getSourGummyFontFamily('600')
+}))
+
+export const SaveButtonContent = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
-  borderRadius: scale(12),
-  opacity: disabled ? 0.7 : 1,
-  marginTop: theme.device.isTablet ? scale(10) : scale(16)
-}))
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
-  fontFamily: getSourGummyFontFamily('600')
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  width: '100%'
 }))
 
 export const ErrorIcon = styled(Ionicons)(({ theme }) => ({

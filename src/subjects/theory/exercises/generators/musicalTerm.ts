@@ -101,6 +101,7 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string, 
     }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: visualComponent.type === 'termAndSign' ? 'symbols' : 'notation' },
     layoutType
   }
 }

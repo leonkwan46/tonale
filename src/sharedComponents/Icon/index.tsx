@@ -24,7 +24,8 @@ export const ICON_NAMES = [
   'person-outline',
   'sync',
   'trash-outline',
-  'volume-high'
+  'volume-high',
+  'pause'
 ] as const
 
 export type IconName = keyof typeof Ionicons.glyphMap

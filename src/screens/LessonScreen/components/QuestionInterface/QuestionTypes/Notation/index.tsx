@@ -1,0 +1,82 @@
+import { DisplayCard } from '@/sharedComponents/DisplayCard'
+import { NoteType } from '@leonkwan46/music-notation'
+import type { StageNumber, VisualComponent } from '@types'
+import {
+  calculateMusicStaffMinHeight,
+  renderMusicStaff,
+  renderNoteComponent,
+  renderTimeSignature,
+  renderTriplet
+} from '../../../../utils/visualRender'
+import { VisualQuestionContainer } from '../../../VisualQuestion/VisualQuestion.styles'
+
+interface NotationProps {
+  visualComponent: VisualComponent
+  stage?: StageNumber
+}
+
+export const Notation = ({ visualComponent, stage }: NotationProps) => {
+  const shouldRenderIndividualNotes =
+    visualComponent.type !== 'timeSignature' &&
+    visualComponent.type !== 'noteValue' &&
+    visualComponent.type !== 'triplet' &&
+    visualComponent.elements?.length === 1 &&
+    !visualComponent.clef
+
+  const shouldRenderMusicStaff =
+    visualComponent.type !== 'timeSignature' &&
+    visualComponent.type !== 'noteValue' &&
+    visualComponent.type !== 'triplet' &&
+    !shouldRenderIndividualNotes
+
+  return (
+    <VisualQuestionContainer>
+      {visualComponent.type === 'timeSignature' && visualComponent.timeSignatureValue && (
+        <DisplayCard>
+          {renderTimeSignature(visualComponent.timeSignatureValue)}
+        </DisplayCard>
+      )}
+
+      {visualComponent.type === 'noteValue' && visualComponent.noteType && (
+        <DisplayCard>
+          {renderNoteComponent(visualComponent.noteType)}
+        </DisplayCard>
+      )}
+
+      {visualComponent.type === 'triplet' && visualComponent.tupletConfig && (
+        <DisplayCard>
+          {renderTriplet(
+            visualComponent.tupletConfig.noteType as NoteType,
+            visualComponent.tupletConfig.numberOfNotes
+          )}
+        </DisplayCard>
+      )}
+
+      {shouldRenderIndividualNotes && visualComponent.elements?.[0]?.type && (
+        <DisplayCard>
+          {renderNoteComponent({ type: visualComponent.elements[0].type })}
+        </DisplayCard>
+      )}
+
+      {shouldRenderMusicStaff && (
+        <DisplayCard
+          minHeight={calculateMusicStaffMinHeight(
+            visualComponent.clef,
+            visualComponent.elements,
+            stage
+          )}
+        >
+          {renderMusicStaff(
+            visualComponent.size,
+            visualComponent.clef,
+            visualComponent.timeSignature,
+            visualComponent.keyName,
+            visualComponent.elements,
+            visualComponent.isChord,
+            visualComponent.showStaff
+          )}
+        </DisplayCard>
+      )}
+    </VisualQuestionContainer>
+  )
+}

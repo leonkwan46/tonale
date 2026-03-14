@@ -8,6 +8,7 @@ import { generateQuestionId } from '../utils/question'
 
 const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage: StageNumber, layoutType?: 'grid' | 'row'): Question => {
   const symbolType = customQuestion.visualComponent?.symbolType || 'tie'
+  const visualComponent = customQuestion.visualComponent
   return {
     id: generateQuestionId(`${symbolType}-${customQuestion.questionType}`),
     question: customQuestion.question,
@@ -15,7 +16,8 @@ const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage
     choices: customQuestion.choices,
     explanation: customQuestion.explanation,
     type: 'multipleChoice',
-    visualComponent: customQuestion.visualComponent,
+    visualComponent,
+    questionInterface: visualComponent ? { type: visualComponent.type === 'termAndSign' ? 'symbols' : 'notation' } : undefined,
     layoutType
   }
 }

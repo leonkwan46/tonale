@@ -33,6 +33,7 @@ export const createNoteValueQuestion = (
     explanation: generateExplanation('noteValue', { correctAnswer: correctAnswerString }, visualComponent),
     type: 'multipleChoice',
     visualComponent,
+    questionInterface: { type: 'notation' },
     layoutType
   }
 }

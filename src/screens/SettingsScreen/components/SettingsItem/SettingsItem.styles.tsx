@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -14,7 +13,7 @@ export const SettingsItemContainer = styled(TouchableOpacity)(({ theme }) => ({
 
 export const IconContainer = styled(View)<{ type?: 'filled' | 'outlined' }>(({ theme, type }) => ({
   padding: scale(theme.spacing.sm),
-  borderRadius: scale(40),
+  borderRadius: scale(theme.borderRadius['3xl']),
   backgroundColor: type === 'outlined' ? theme.colors.surface : 'transparent',
   justifyContent: 'center',
   alignItems: 'center'
@@ -22,20 +21,10 @@ export const IconContainer = styled(View)<{ type?: 'filled' | 'outlined' }>(({ t
 
 export const SettingsItemLabel = styled.Text<{ variant?: 'default' | 'red' }>(({ theme, variant }) => ({
   flex: 1,
-  fontSize: scale(theme.typography.base || 16),
+  fontSize: scale(theme.typography.base),
   color: variant === 'red' ? theme.colors.error : theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal || '400')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
 }))
-
-export const StyledIcon = styled(Ionicons)<{ variant?: 'default' | 'red' | 'verified' }>(({ theme, variant }) => {
-  if (variant === 'red') {
-    return { color: theme.colors.error }
-  }
-  if (variant === 'verified') {
-    return { color: theme.colors.primary }
-  }
-  return { color: theme.colors.icon }
-})
 
 export const Separator = styled(View)(({ theme }) => ({
   height: 1,

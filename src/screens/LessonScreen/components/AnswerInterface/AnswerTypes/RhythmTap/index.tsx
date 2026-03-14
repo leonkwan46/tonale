@@ -71,7 +71,10 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
     bpm: tempo
   })
 
-  const isPulseExercise = questionInterface?.audioFile && !questionInterface?.rhythm
+  const isPulseExercise =
+    questionInterface?.type === 'playback' &&
+    Boolean(questionInterface.audioFile) &&
+    !questionInterface.rhythm
 
   const submitAnswer = useCallback(() => {
     if (hasSubmittedRef.current) return

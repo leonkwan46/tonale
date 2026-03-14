@@ -26,12 +26,6 @@ export const ContentContainer = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.lg)
 }))
 
-export const Card = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: scale(theme.spacing.sm)
-}))
-
 export const LogoutCard = styled.View(({ theme }) => ({
   backgroundColor: 'transparent',
   borderRadius: scale(theme.borderRadius.md),
