@@ -73,6 +73,10 @@ export const Colors = {
     displayCard: {
       background: '#ffffff',
       text: '#000000'
+    },
+    playback: {
+      rippleWater: 'rgba(80, 160, 255, 1)',
+      rippleCircleBorder: 'rgba(180, 220, 255, 0.9)'
     }
   },
   dark: {
@@ -141,6 +145,10 @@ export const Colors = {
     displayCard: {
       background: '#ffffff',
       text: '#000000'
+    },
+    playback: {
+      rippleWater: 'rgba(80, 160, 255, 1)',
+      rippleCircleBorder: 'rgba(180, 220, 255, 0.9)'
     }
   }
 }
