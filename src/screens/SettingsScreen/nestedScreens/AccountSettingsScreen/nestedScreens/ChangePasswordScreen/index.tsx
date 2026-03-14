@@ -2,6 +2,7 @@ import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
+import { Button3D } from '@/sharedComponents/Button3D'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -9,12 +10,10 @@ import { ScreenIntroHeader } from '../../../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import { ContentContainer } from '../../../../SettingsScreen.styles'
 import {
-  Card,
   ErrorContainer,
   ErrorText,
-  MessageText,
-  PrimaryButton,
   PrimaryButtonText,
+  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './ChangePasswordScreen.styles'
@@ -48,41 +47,39 @@ export const ChangePasswordScreen = () => {
         <ContentContainer>
           <ScreenIntroHeader
             icon="lock-closed-outline"
-            description="Choose a strong password to keep your account safe. We'll send you a link to reset it."
+            description="Reset your password to keep your account secure. We&apos;ll send you a reset link."
           />
-          <Card>
-            {error ? (
-              <ErrorContainer>
-                <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                <ErrorText>{error}</ErrorText>
-              </ErrorContainer>
-            ) : null}
+          {error ? (
+            <ErrorContainer>
+              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+              <ErrorText>{error}</ErrorText>
+            </ErrorContainer>
+          ) : null}
 
-            {success ? (
-              <SuccessContainer>
-                <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
-                <SuccessText>
-                  Password reset email sent! Check your inbox at {authUser?.email}.
-                </SuccessText>
-              </SuccessContainer>
-            ) : (
-              <>
-                <MessageText>
-                  We&apos;ll send a password reset link to {authUser?.email}. Click the link to reset your password.
-                </MessageText>
-
-                <PrimaryButton
-                  disabled={loading}
-                  onPress={handleSendResetEmail}
-                  activeOpacity={0.7}
-                >
+          {success ? (
+            <SuccessContainer>
+              <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
+              <SuccessText>
+                Password reset email sent! Check your email at {authUser?.email}.
+              </SuccessText>
+            </SuccessContainer>
+          ) : (
+            <Button3D
+              disabled={loading}
+              onPress={handleSendResetEmail}
+              color="blue"
+              layoutType="row"
+              fullWidth
+            >
+              {() => (
+                <SaveButtonContent>
                   <PrimaryButtonText>
                     {loading ? 'Sending...' : 'Send Password Reset Email'}
                   </PrimaryButtonText>
-                </PrimaryButton>
-              </>
-            )}
-          </Card>
+                </SaveButtonContent>
+              )}
+            </Button3D>
+          )}
         </ContentContainer>
       </ScrollView>
     </ScreenContainer>

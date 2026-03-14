@@ -4,20 +4,21 @@ import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollV
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
+import { Button3D } from '@/sharedComponents/Button3D'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Keyboard } from 'react-native'
 
 import { ScreenIntroHeader } from '../../../../components/ScreenIntroHeader'
 import { SettingItemHeader } from '../../../../components/SettingItemHeader'
+import { SettingSection } from '../../../../components/SettingSection'
 import {
-  Card,
   ErrorContainer,
   ErrorText,
   Input,
   InputField,
-  PrimaryButton,
   PrimaryButtonText,
+  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeNameScreen.styles'
 
@@ -85,7 +86,7 @@ export const ChangeNameScreen = () => {
           description="Your name helps personalise your learning in Tonalè. It will show on your profile and progress."
         />
         {/* Display Name Section */}
-        <Card>
+        <SettingSection>
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
@@ -107,14 +108,20 @@ export const ChangeNameScreen = () => {
             />
           </InputField>
 
-          <PrimaryButton
+          <Button3D
             disabled={loading || !name.trim()}
             onPress={handleSave}
-            activeOpacity={0.7}
+            color="blue"
+            layoutType="row"
+            fullWidth
           >
-            <PrimaryButtonText>Save</PrimaryButtonText>
-          </PrimaryButton>
-        </Card>
+            {() => (
+              <SaveButtonContent>
+                <PrimaryButtonText>Save</PrimaryButtonText>
+              </SaveButtonContent>
+            )}
+          </Button3D>
+        </SettingSection>
         </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>

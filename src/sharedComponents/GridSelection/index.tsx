@@ -1,9 +1,6 @@
 import { useWindowDimensions } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
-import { useTheme } from '@emotion/react'
-import * as React from 'react'
-import { useMemo } from 'react'
-import { scale } from 'react-native-size-matters'
+import { useMemo, useState } from 'react'
 import {
   GAP_SIZE,
   GridSelectionContainer,
@@ -12,13 +9,13 @@ import {
 } from './GridSelection.styles'
 
 interface GridSelectionProps<T extends string> {
-  options: T[]
-  selectedOption: T | null
-  onSelect: (option: T) => void
-  testID?: string
-  getDisplayLabel?: (option: T) => string
-  renderIcon?: (option: T, isSelected: boolean) => React.ReactElement | null
-  columns?: number
+  options: T[];
+  selectedOption: T | null;
+  onSelect: (option: T) => void;
+  testID?: string;
+  getDisplayLabel?: (option: T) => string;
+  renderIcon?: (option: T, isSelected: boolean) => React.ReactElement | null;
+  columns?: number;
 }
 
 const DEFAULT_COLUMNS = 2
@@ -32,19 +29,37 @@ export const GridSelection = <T extends string>({
   renderIcon,
   columns = DEFAULT_COLUMNS
 }: GridSelectionProps<T>): React.ReactElement => {
-  const theme = useTheme()
   const { width: screenWidth } = useWindowDimensions()
-  
+  const [containerWidth, setContainerWidth] = useState<number | null>(null)
+
+  const isSingleColumn = columns === 1
+
   const buttonWidth = useMemo(() => {
-    const containerPadding = theme.device.isTablet ? scale(8) * 2 : scale(10) * 2
-    const availableWidth = screenWidth - containerPadding
+    if (isSingleColumn) {
+      return undefined
+    }
+
+    const baseWidth = containerWidth ?? screenWidth
+    if (!baseWidth) {
+      return 0
+    }
+
     // Account for gaps between columns: (columns - 1) gaps
     const totalGaps = GAP_SIZE * (columns - 1)
-    return (availableWidth - totalGaps) / columns
-  }, [screenWidth, theme.device.isTablet, columns])
+    const availableWidth = baseWidth - totalGaps
+    return availableWidth / columns
+  }, [containerWidth, screenWidth, columns, isSingleColumn])
 
   return (
-    <GridSelectionContainer testID={testID}>
+    <GridSelectionContainer
+      testID={testID}
+      onLayout={(event) => {
+        const width = event.nativeEvent.layout.width
+        if (width && width !== containerWidth) {
+          setContainerWidth(width)
+        }
+      }}
+    >
       {options.map((option) => {
         const isSelected = selectedOption === option
         const displayLabel = getDisplayLabel ? getDisplayLabel(option) : option
@@ -56,7 +71,8 @@ export const GridSelection = <T extends string>({
             testID={isSelected ? `selected-${option}` : `option-${option}`}
             color={isSelected ? 'blue' : 'grey'}
             layoutType="grid"
-            width={buttonWidth}
+            width={isSingleColumn ? undefined : buttonWidth}
+            fullWidth={isSingleColumn}
           >
             {() => (
               <GridSelectionContent>
@@ -70,4 +86,3 @@ export const GridSelection = <T extends string>({
     </GridSelectionContainer>
   )
 }
-

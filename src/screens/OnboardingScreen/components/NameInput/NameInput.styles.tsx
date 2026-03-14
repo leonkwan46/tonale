@@ -24,7 +24,7 @@ export const NameInputField = styled(TextInput)(({ theme }) => ({
   color: theme.colors.text,
   backgroundColor: theme.colors.surface,
   borderColor: theme.colors.primary,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
 }))
 

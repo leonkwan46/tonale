@@ -51,7 +51,7 @@ export const Input = styled(TextInput)(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   height: '100%',
   color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
+  placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily('400')
 }))
 

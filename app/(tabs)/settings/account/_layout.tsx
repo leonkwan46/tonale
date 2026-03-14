@@ -11,6 +11,7 @@ export default function AccountLayout() {
       <Stack.Screen name="edit-name" />
       <Stack.Screen name="change-password" />
       <Stack.Screen name="change-email" />
+      <Stack.Screen name="change-email-form" />
       <Stack.Screen name="change-instrument" />
       <Stack.Screen name="change-gender" />
     </Stack>

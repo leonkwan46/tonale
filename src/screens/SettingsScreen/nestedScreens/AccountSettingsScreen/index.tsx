@@ -5,9 +5,15 @@ import { useSafeNavigation, useUser } from '@/hooks'
 import { Alert } from 'react-native'
 
 import { SettingItemHeader } from '../../components/SettingItemHeader'
+import { SettingSection } from '../../components/SettingSection'
 import { SettingsItem } from '../../components/SettingsItem'
 import { ContentContainer } from '../../SettingsScreen.styles'
-import { Card, DeleteAccountCard, Divider, FullScreenScrollView, ScrollContentContainer } from './AccountSettingsScreen.styles'
+import {
+    DeleteAccountCard,
+    Divider,
+    FullScreenScrollView,
+    ScrollContentContainer
+} from './AccountSettingsScreen.styles'
 
 export const AccountSettingsScreen = () => {
   const { userData, authUser } = useUser()
@@ -79,55 +85,53 @@ export const AccountSettingsScreen = () => {
   return (
     <ScreenContainer>
       <SettingItemHeader title="Account" />
-      <FullScreenScrollView
-        showsVerticalScrollIndicator={false}
-      >
+      <FullScreenScrollView showsVerticalScrollIndicator={false}>
         <ScrollContentContainer>
           <ContentContainer>
-          <Card>
-            <SettingsItem
-              icon="person-outline"
-              label={userData?.name || 'Not set'}
-              onPress={handleDisplayNamePress}
-              showSeparator={true}
-            />
-            <SettingsItem
-              icon="people-outline"
-              label={formatGender(userData?.gender)}
-              onPress={handleChangeGender}
-              showSeparator={true}
-            />
-            <SettingsItem
-              icon="musical-notes-outline"
-              label={formatInstrument(userData?.instrument)}
-              onPress={handleChangeInstrument}
-              showSeparator={true}
-            />
-            <SettingsItem
-              icon="mail-outline"
-              label={authUser?.email || 'Not set'}
-              onPress={handleChangeEmail}
-              showSeparator={true}
-              showVerifyIcon={true}
-              isVerified={authUser?.emailVerified || false}
-            />
-            <SettingsItem
-              icon="lock-closed-outline"
-              label="Change Password"
-              onPress={handleChangePassword}
-              showSeparator={false}
-            />
-          </Card>
-          <Divider />
-          <DeleteAccountCard>
-            <SettingsItem
-              icon="trash-outline"
-              label="Delete Account"
-              onPress={handleDeleteAccountPress}
-              showSeparator={false}
-              variant="red"
-            />
-          </DeleteAccountCard>
+            <SettingSection variant="list">
+              <SettingsItem
+                icon="person-outline"
+                label={userData?.name || 'Not set'}
+                onPress={handleDisplayNamePress}
+                showSeparator={true}
+              />
+              <SettingsItem
+                icon="people-outline"
+                label={formatGender(userData?.gender)}
+                onPress={handleChangeGender}
+                showSeparator={true}
+              />
+              <SettingsItem
+                icon="musical-notes-outline"
+                label={formatInstrument(userData?.instrument)}
+                onPress={handleChangeInstrument}
+                showSeparator={true}
+              />
+              <SettingsItem
+                icon="mail-outline"
+                label={authUser?.email || 'Not set'}
+                onPress={handleChangeEmail}
+                showSeparator={true}
+                showVerifyIcon={true}
+                isVerified={authUser?.emailVerified || false}
+              />
+              <SettingsItem
+                icon="lock-closed-outline"
+                label="Change Password"
+                onPress={handleChangePassword}
+                showSeparator={false}
+              />
+            </SettingSection>
+            <Divider />
+            <DeleteAccountCard>
+              <SettingsItem
+                icon="trash-outline"
+                label="Delete Account"
+                onPress={handleDeleteAccountPress}
+                showSeparator={false}
+                variant="red"
+              />
+            </DeleteAccountCard>
           </ContentContainer>
         </ScrollContentContainer>
       </FullScreenScrollView>

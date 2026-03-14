@@ -22,7 +22,7 @@ export const Colors = {
     error: '#ff6b6b',
     surface: '#f8f9fa',
     border: '#868e96',
-    card: '#adb5bd',
+    card: '#e9ecef',
     textSecondary: '#687076',
     stageCleared: '#4CAF50',
     stagePerfect: '#FFD700',

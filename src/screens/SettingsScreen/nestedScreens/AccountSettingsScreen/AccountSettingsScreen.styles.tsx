@@ -6,12 +6,6 @@ export const FullScreenScrollView = styled(ScrollView)({
   flex: 1
 })
 
-export const Card = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: scale(theme.spacing.sm)
-}))
-
 export const Divider = styled(View)(({ theme }) => ({
   height: scale(1),
   backgroundColor: theme.colors.border
