@@ -171,7 +171,8 @@ export const lightTheme = {
     
     // Modal mask color (backdrop/overlay behind modal)
     modalMask: Colors.light.modalMask,
-    
+    overlayText: Colors.light.overlayText,
+
     // FinalTest specific colors
     finalTest: Colors.light.finalTest,
     
@@ -253,7 +254,8 @@ export const darkTheme = {
     
     // Modal mask color (backdrop/overlay behind modal)
     modalMask: Colors.dark.modalMask,
-    
+    overlayText: Colors.dark.overlayText,
+
     // FinalTest specific colors
     finalTest: Colors.dark.finalTest,
     

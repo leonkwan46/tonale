@@ -49,6 +49,7 @@ export const Colors = {
       buttonDepth: '#156382'
     },
     modalMask: 'rgba(0, 0, 0, 0.7)',
+    overlayText: '#ffffff',
     finalTest: {
       gradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const,
       shadow: '#8B0000'
@@ -121,6 +122,7 @@ export const Colors = {
       buttonDepth: '#156382'
     },
     modalMask: 'rgba(0, 0, 0, 0.7)',
+    overlayText: '#ffffff',
     finalTest: {
       gradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const,
       shadow: '#8B0000'
