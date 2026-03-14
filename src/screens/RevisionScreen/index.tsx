@@ -39,6 +39,7 @@ export const RevisionScreen = () => {
 
       {hasQuestions && currentQuestion && (
         <LessonScreenBody
+          key={revision.viewResetKey}
           questions={revision.questions}
           currentQuestionIndex={revision.currentQuestionIndex}
           onAnswerSubmit={onAnswerSubmit}
