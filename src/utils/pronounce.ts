@@ -3,20 +3,14 @@ import { STAGE_ONE_ITALIAN_MUSICAL_TERMS, STAGE_THREE_ITALIAN_MUSICAL_TERMS, STA
 import * as Speech from 'expo-speech'
 
 const getLanguageForTerm = (term: string): string => {
-  // Italian terms (Stage One, Two, and Three)
-  if (STAGE_ONE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
-      STAGE_TWO_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
-      STAGE_THREE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS]) {
+  if (
+    STAGE_ONE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_ONE_ITALIAN_MUSICAL_TERMS] ||
+    STAGE_TWO_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_TWO_ITALIAN_MUSICAL_TERMS] ||
+    STAGE_THREE_ITALIAN_MUSICAL_TERMS[term as keyof typeof STAGE_THREE_ITALIAN_MUSICAL_TERMS]
+  ) {
     return 'it-IT'
   }
-  
-  // Future: French terms
-  // if (STAGE_ONE_FRENCH_MUSICAL_TERMS[term]) return 'fr-FR'
-  
-  // Future: German terms  
-  // if (STAGE_ONE_GERMAN_MUSICAL_TERMS[term]) return 'de-DE'
-  
-  return 'en-US' // fallback
+  return 'en-US'
 }
 
 const getSpokenTerm = (term: string): { text: string, language?: string } => {
@@ -28,45 +22,66 @@ const getSpokenTerm = (term: string): { text: string, language?: string } => {
   return { text: term }
 }
 
-// TTS configuration
 const TTS_CONFIG = {
   pitch: 1.0,
   rate: 0.8,
   quality: Speech.VoiceQuality.Enhanced
 } as const
 
-export const pronounceTerm = (term: string): void => {
-  if (!term) return
+const CHARS_PER_SECOND_AT_RATE_08 = 10
+const MIN_DURATION_MS = 800
+const BUFFER_MS = 200
 
-  const trimmedTerm = term.trim()
+const estimateDurationMs = (text: string): number => {
+  const durationMs = (text.length / CHARS_PER_SECOND_AT_RATE_08) * 1000 + BUFFER_MS
+  return Math.max(MIN_DURATION_MS, Math.round(durationMs))
+}
+
+export const pronounceTerm = (term: string, onDone?: () => void): void => {
+  const trimmedTerm = term?.trim()
   if (!trimmedTerm) return
-  
+
   const { text: spokenTerm, language: overrideLanguage } = getSpokenTerm(trimmedTerm)
-  
-  try {
-    // Stop any ongoing speech
-    Speech.stop()
-    
-    // Get appropriate language for the term
-    const language = overrideLanguage ?? getLanguageForTerm(spokenTerm)
-    
-    // Speak the term
-    Speech.speak(spokenTerm, {
-      language,
-      ...TTS_CONFIG,
-      onError: (error) => console.error('TTS Error:', error)
-    })
-  } catch (error) {
-    console.error('TTS Error:', error)
+
+  const run = async () => {
+    try {
+      await Speech.stop()
+
+      const language = overrideLanguage ?? getLanguageForTerm(spokenTerm)
+
+      let done = false
+      let timeoutId: ReturnType<typeof setTimeout> | null = null
+
+      const finish = () => {
+        if (done) return
+        done = true
+        if (timeoutId) clearTimeout(timeoutId)
+        void Speech.stop().then(() => onDone?.())
+      }
+
+      Speech.speak(spokenTerm, {
+        language,
+        ...TTS_CONFIG,
+        onDone: finish,
+        onError: (error) => {
+          console.error('TTS Error:', error)
+          finish()
+        }
+      })
+
+      timeoutId = setTimeout(finish, estimateDurationMs(spokenTerm))
+    } catch (error) {
+      console.error('TTS Error:', error)
+      onDone?.()
+    }
   }
+
+  void run()
 }
 
 export const canPronounceTerm = (term: string): boolean => {
-  if (!term) return false
-
-  const trimmedTerm = term.trim()
-  if (!trimmedTerm) return false
-
-  const { text: spokenTerm } = getSpokenTerm(trimmedTerm)
+  const trimmed = term?.trim()
+  if (!trimmed) return false
+  const { text: spokenTerm } = getSpokenTerm(trimmed)
   return spokenTerm.length > 0
 }
