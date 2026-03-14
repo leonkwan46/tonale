@@ -16,9 +16,9 @@ export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
   zIndex: 1000
 }))
 
-export const ModalContainer = styled.View<{ width?: number }>(
-  ({ theme, width }) => ({
-    backgroundColor: theme.colors.surface,
+export const ModalContainer = styled.View<{ width?: number; variant?: 'default' | 'light' }>(
+  ({ theme, width, variant }) => ({
+    backgroundColor: variant === 'light' ? theme.colors.displayCard.background : theme.colors.surface,
     borderRadius: scale(theme.borderRadius.xl),
     padding: theme.device.isTablet
       ? scale(theme.spacing.lg)
@@ -29,7 +29,7 @@ export const ModalContainer = styled.View<{ width?: number }>(
       ? scale(theme.spacing.md)
       : scale(theme.spacing.xl),
     borderWidth: 1,
-    borderColor: theme.colors.border
+    borderColor: variant === 'light' ? theme.colors.displayCard.text : theme.colors.border
   })
 )
 
