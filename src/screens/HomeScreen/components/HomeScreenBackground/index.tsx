@@ -1,25 +1,45 @@
 import { useWindowDimensions } from '@/hooks'
-import { useTheme } from '@emotion/react'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
+import BouncingScrollView from '@/sharedComponents/BouncingScrollView'
+import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { NativeScrollEvent, NativeSyntheticEvent, Platform, RefreshControl, ScrollView } from 'react-native'
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  RefreshControl,
+  ScrollView
+} from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
 import { ClapCelebration } from './ClapCelebration'
-import { AvatarImage, BackgroundGradient, HomeScreenContainer, ImageContainer, ScrollContentContainer, StageImage } from './HomeScreenBackground.styles'
+import {
+  AvatarImage,
+  BackgroundGradient,
+  HomeScreenContainer,
+  ImageContainer,
+  ScrollContentContainer,
+  StageImage
+} from './HomeScreenBackground.styles'
 import { PullIndicator } from './PullIndicator'
 import { PULL_THRESHOLD } from './PullIndicator/PullIndicator.constants'
 
 interface HomeScreenBackgroundProps {
-  children: React.ReactNode
-  refreshing: boolean
-  onRefresh: () => void
-  gender?: UserGender
-  instrument?: UserInstrument | string
+  children: React.ReactNode;
+  refreshing: boolean;
+  onRefresh: () => void;
+  gender?: UserGender;
+  instrument?: UserInstrument | string;
 }
 
-export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, instrument }: HomeScreenBackgroundProps) => {
+export const HomeScreenBackground = ({
+  children,
+  refreshing,
+  onRefresh,
+  gender,
+  instrument
+}: HomeScreenBackgroundProps) => {
   const theme = useTheme()
   const { isDark } = useThemeMode()
   const { width: screenWidth } = useWindowDimensions()
@@ -76,70 +96,110 @@ export const HomeScreenBackground = ({ children, refreshing, onRefresh, gender, 
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
   // Need to implement gesture-based solution for Android if cross-platform support is required.
-  const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (Platform.OS !== 'ios') return
-    
-    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent
-    const maxScrollY = contentSize.height - layoutMeasurement.height
-    const scrollY = contentOffset.y
-    
-    if (scrollY > maxScrollY) {
-      const overscroll = scrollY - maxScrollY
-      pullDistance.value = withTiming(Math.min(overscroll, PULL_THRESHOLD * 1.5), { duration: 100 })
-    } else {
-      pullDistance.value = withTiming(0, { duration: 150 })
-    }
-  }, [pullDistance])
+  const handleScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (Platform.OS !== 'ios') return
 
-  const handleScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (Platform.OS !== 'ios' || hasTriggeredRef.current) return
-    
-    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent
-    const maxScrollY = contentSize.height - layoutMeasurement.height
-    const scrollY = contentOffset.y
-    
-    if (scrollY > maxScrollY + PULL_THRESHOLD) {
-      hasTriggeredRef.current = true
-      setCelebrationTrigger(true)
-      setMessageIndex(prev => prev + 1)
-      setTimeout(() => {
-        setCelebrationTrigger(false)
-        hasTriggeredRef.current = false
-      }, 1600)
-    }
-  }, [])
+      const { contentOffset, contentSize, layoutMeasurement } =
+        event.nativeEvent
+      const maxScrollY = contentSize.height - layoutMeasurement.height
+      const scrollY = contentOffset.y
+
+      if (scrollY > maxScrollY) {
+        const overscroll = scrollY - maxScrollY
+        pullDistance.value = withTiming(
+          Math.min(overscroll, PULL_THRESHOLD * 1.5),
+          { duration: 100 }
+        )
+      } else {
+        pullDistance.value = withTiming(0, { duration: 150 })
+      }
+    },
+    [pullDistance]
+  )
+
+  const handleScrollEndDrag = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (hasTriggeredRef.current) return
+      const { contentOffset, contentSize, layoutMeasurement } =
+        event.nativeEvent
+      const maxScrollY = contentSize.height - layoutMeasurement.height
+      const scrollY = contentOffset.y
+
+
+      if (Platform.OS === 'ios') {
+        if (scrollY > maxScrollY + PULL_THRESHOLD) {
+          hasTriggeredRef.current = true
+          setCelebrationTrigger(true)
+          setMessageIndex((prev) => prev + 1)
+          setTimeout(() => {
+            setCelebrationTrigger(false)
+          }, 1600)
+        }
+      } else {
+        if (scrollY + PULL_THRESHOLD > maxScrollY) {
+          hasTriggeredRef.current = true
+          setCelebrationTrigger(true)
+          setMessageIndex((prev) => prev + 1)
+          setTimeout(() => {
+            setCelebrationTrigger(false)
+          }, 1600)
+        }
+      }
+    },
+    []
+  )
 
   return (
     <HomeScreenContainer>
-      <ScrollView
-        ref={scrollViewRef}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      <BouncingScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         bounces={Platform.OS === 'ios'}
         alwaysBounceVertical={Platform.OS === 'ios'}
-        overScrollMode={Platform.OS === 'android' ? 'never' : undefined}
+        overScrollMode={'auto'}
         showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         onScrollEndDrag={handleScrollEndDrag}
       >
         <ScrollContentContainer>
-        <BackgroundGradient 
-          colors={gradientColors} 
-          locations={[0, 0.3, 0.8, 1]}
-          start={{ x: 0, y: 0 }} 
-          end={{ x: 0, y: 1 }}
-        >
-          <ContentContainer>
-            {children as React.ReactElement[]}
-          </ContentContainer>
-        </BackgroundGradient>
-        <ImageContainer>
-          <StageImage source={stageImage} screenWidth={screenWidth} />
-          <AvatarImage source={avatarImage} screenWidth={screenWidth} />
-        </ImageContainer>
-        <PullIndicator pullDistance={pullDistance} messageIndex={messageIndex} />
+          <BackgroundGradient
+            colors={gradientColors}
+            locations={[0, 0.3, 0.8, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          >
+            <ContentContainer>
+              {children as React.ReactElement[]}
+            </ContentContainer>
+          </BackgroundGradient>
+          <ImageContainer>
+            <StageImage source={stageImage} screenWidth={screenWidth} />
+            <AvatarImage source={avatarImage} screenWidth={screenWidth} />
+          </ImageContainer>
+          <PullIndicator
+            pullDistance={pullDistance}
+            messageIndex={messageIndex}
+          />
         </ScrollContentContainer>
-      </ScrollView>
+      </BouncingScrollView>
+      {/* <ScrollView
+        ref={scrollViewRef}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        bounces={Platform.OS === 'ios'}
+        alwaysBounceVertical={Platform.OS === 'ios'}
+        overScrollMode={'auto'}
+        showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        onScrollEndDrag={handleScrollEndDrag}
+      >
+       
+      </ScrollView> */}
       <ClapCelebration trigger={celebrationTrigger} />
     </HomeScreenContainer>
   )
