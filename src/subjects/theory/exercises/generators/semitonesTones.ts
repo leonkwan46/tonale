@@ -3,7 +3,7 @@ import type { Question } from '@/types/lesson'
 import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { getIntervalPairs, getNotesForPitches } from '../utils/interval'
-import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
+import { generateQuestionId, generateWrongChoices, shuffleArray, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 import { generateExplanation } from '../utils/explanation'
 
 const INTERVAL_ORDER = ['Semitone', 'Tone'] as const
@@ -48,7 +48,7 @@ export const createSemitoneToneQuestion = (
   }
   
   return {
-    id: generateQuestionId('semitone-tone'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.SEMITONE_TONE),
     question: 'What is the interval between these two notes?',
     correctAnswer,
     choices: generateWrongChoices([...INTERVAL_ORDER], correctAnswer, 3, true),

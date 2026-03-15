@@ -9,11 +9,11 @@ appId: com.leonkwan46.tonale
     id: "tab-theory"
 - scrollUntilVisible:
     element:
-      id: "lesson-title-stage-1-lesson-6"
+      id: "lesson-title-theory-stage-1-lesson-6"
     direction: UP
     centerElement: true
 - tapOn:
-    id: "lesson-title-stage-1-lesson-6"
+    id: "lesson-title-theory-stage-1-lesson-6"
 
 - assertVisible:
     id: "choice-.*"
@@ -83,10 +83,10 @@ appId: com.leonkwan46.tonale
     id: "back-button"
 - scrollUntilVisible:
     element:
-      id: "lesson-title-stage-1-lesson-6"
+      id: "lesson-title-theory-stage-1-lesson-6"
     direction: UP
 - tapOn:
-    id: "lesson-title-stage-1-lesson-6"
+    id: "lesson-title-theory-stage-1-lesson-6"
 - tapOn:
     id: "back-button"
 

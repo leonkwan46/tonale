@@ -3,7 +3,7 @@ import type { Question } from '@/types/lesson'
 import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool, getAccidentals } from '../utils/exercise'
 import { generateExplanation } from '../utils/explanation'
-import { generateQuestionId, generateWrongChoices } from '../utils/question'
+import { generateQuestionId, generateWrongChoices, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 
 const ACCIDENTAL_TO_SYMBOL: Partial<Record<AccidentalType, string>> = {
   [ACCIDENTALS.SHARP]: 'sharp',
@@ -44,7 +44,7 @@ export const createAccidentalQuestion = (
   }
   
   return {
-    id: generateQuestionId('accidental'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.ACCIDENTAL),
     question: 'What accidental is this?',
     correctAnswer,
     choices: generateWrongChoices(availableChoices, correctAnswer, 3, true),

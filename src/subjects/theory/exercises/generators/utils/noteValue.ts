@@ -1,6 +1,7 @@
 import { getAllNoteTypes } from '../../utils/exercise'
 import {
   generateQuestionId,
+  THEORY_QUESTION_ID_PREFIX,
   generateWrongChoices
 } from '../../utils/question'
 import { ensureFourChoicesForStage2, noteTypeToString } from '../../utils/timeValue'
@@ -26,7 +27,7 @@ export const createNoteValueQuestion = (
   }
   
   return {
-    id: generateQuestionId('note-value'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.NOTE_VALUE_NAME),
     question: 'What is this note value?',
     correctAnswer: correctAnswerString,
     choices: generateWrongChoices(choiceStrings, correctAnswerString),

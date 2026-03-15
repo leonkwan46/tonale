@@ -97,11 +97,11 @@ const findIncompleteLessonFromIndex = (
     const stageLesson = allStageLessons[i]
     const lesson = getTheoryLessonWithProgress(stageLesson.id, progressData) ?? null
     if (!lesson) continue
-    
+
     const progress = progressData[stageLesson.id]
     if (progress?.isLocked ?? lesson.isLocked ?? false) continue
     if (isLessonComplete(lesson, progress)) continue
-    
+
     return lesson
   }
   return null
@@ -116,16 +116,16 @@ const findLessonToDisplay = (
     const lesson = getTheoryLessonWithProgress(lastAccess.lessonId, progressData) ?? null
     if (!lesson) return null
 
-    const progress = progressData[lastAccess.lessonId]
+    const progress = progressData[lesson.id]
     if (isLessonComplete(lesson, progress)) {
-      const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
+      const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lesson.id)
       if (currentIndex === -1) return null
       return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons)
     }
-    
+
     return lesson
   }
-  
+
   return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
 }
 
@@ -143,7 +143,7 @@ const mergeProgressData = (
   lesson: Lesson,
   progressData: Record<string, ProgressData>
 ): Lesson => {
-  const progress: ProgressData | undefined = progressData[lesson.id]
+  const progress = progressData[lesson.id]
   return {
     ...lesson,
     isLocked: progress?.isLocked ?? lesson.isLocked,

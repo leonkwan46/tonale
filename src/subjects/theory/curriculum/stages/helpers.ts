@@ -1,4 +1,4 @@
-import { calculateStageUnlockStatus, getLessonWithProgress as getLessonWithProgressGeneric } from '@/subjects/curriculumHelper'
+import { calculateStageUnlockStatus, getLessonWithProgress } from '@/subjects/curriculumHelper'
 import type { Lesson, Stage } from '../types'
 import { stage1, stageOneLessons } from './stageOne'
 import { stage2, stageTwoLessons } from './stageTwo'
@@ -14,7 +14,7 @@ export const getTheoryLessonWithProgress = (
   lessonId: string,
   progressData?: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
 ): Lesson | undefined => {
-  return getLessonWithProgressGeneric(lessonId, allLessons, progressData)
+  return getLessonWithProgress(lessonId, allLessons, progressData)
 }
 
 const createStageData = (): Stage[] => {

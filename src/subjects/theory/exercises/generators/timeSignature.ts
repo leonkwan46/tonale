@@ -1,6 +1,6 @@
 import { type TimeSignatureType } from '@leonkwan46/music-notation'
 import { generateQuestionsFromPool, getTimeSignatures } from '../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../utils/question'
+import { generateQuestionId, generateWrongChoices, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 import { formatAsNotation, formatAsText, generateWrongAnswers } from '../utils/timeSignature'
 import { generateExplanation } from '../utils/explanation'
 import type { Question } from '@/types/lesson'
@@ -37,7 +37,7 @@ export const createTimeSignatureQuestion = (
   }
   
   return {
-    id: generateQuestionId('time-sig'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.TIME_SIGNATURE),
     question: `What does the ${notation} time signature mean?`,
     correctAnswer,
     choices: generateWrongChoices(wrongAnswers, correctAnswer),

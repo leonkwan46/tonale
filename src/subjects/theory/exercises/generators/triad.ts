@@ -2,7 +2,7 @@ import { NOTES, type ClefType, type MusicElementData, type Note } from '@leonkwa
 import type { Question } from '@/types/lesson'
 import type { StageNumber } from '@/types/stage'
 import { balanceCorrectAnswerPositions, generateQuestionsFromPool } from '../utils/exercise'
-import { generateQuestionId, generateWrongChoices, shuffleArray } from '../utils/question'
+import { generateQuestionId, generateWrongChoices, shuffleArray, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 import { addRegisterToChord, getChordsByStage } from '../utils/triad'
 import { generateExplanation } from '../utils/explanation'
 
@@ -31,7 +31,7 @@ export const createTriadQuestion = (stage: StageNumber, clef: ClefType, chordKey
   }
   
   return {
-    id: generateQuestionId('triad'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.TRIAD),
     question: 'What is this tonic triad?',
     correctAnswer: selectedChordKey,
     choices: generateWrongChoices(chordKeys, selectedChordKey),

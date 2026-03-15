@@ -12,7 +12,7 @@ appId: com.leonkwan46.tonale
 
 - scrollUntilVisible:
     element:
-        id: "lesson-title-stage-2-lesson-5"
+        id: "lesson-title-theory-stage-2-lesson-5"
     direction: UP
     centerElement: true
     timeout: 30000
@@ -21,14 +21,14 @@ appId: com.leonkwan46.tonale
     visibilityPercentage: 50
 - scrollUntilVisible:
     element:
-        id: "lesson-title-stage-2-final"
+        id: "lesson-title-theory-stage-2-final"
     direction: UP
     timeout: 30000
     speed: 60
     waitToSettleTimeoutMs: 1000
     visibilityPercentage: 50
 - tapOn:
-    id: "lesson-title-stage-2-final"
+    id: "lesson-title-theory-stage-2-final"
 
 - assertVisible: "1/30"
 - assertVisible:
