@@ -12,9 +12,9 @@ appId: com.leonkwan46.tonale
 - tapOn:
     id: "tab-theory"
 - assertVisible:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - tapOn:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - assertVisible:
     id: "choice-.*"
 - assertVisible: "1/10"
