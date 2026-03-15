@@ -1,6 +1,7 @@
 import { getAllRestTypes } from '../../utils/exercise'
 import {
   generateQuestionId,
+  THEORY_QUESTION_ID_PREFIX,
   generateWrongChoices
 } from '../../utils/question'
 import { ensureFourChoicesForStage2, restTypeToString } from '../../utils/timeValue'
@@ -26,7 +27,7 @@ export const createRestValueQuestion = (
   }
   
   return {
-    id: generateQuestionId('rest-value'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.REST_VALUE_NAME),
     question: 'What is this rest value?',
     correctAnswer: correctAnswerString,
     choices: generateWrongChoices(choiceStrings, correctAnswerString),

@@ -4,13 +4,14 @@ import type { StageNumber } from '@/types/stage'
 import { STAGE_ONE_TIE_SLUR_QUESTIONS } from '../../curriculum/config/tieSlur'
 import { createSlurMeaningQuestions, createTieMeaningQuestions, SLUR_MEANING_VISUAL, TIE_MEANING_VISUAL, type TieSlurQuestion } from '../custom/tieSlur/helpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
-import { generateQuestionId } from '../utils/question'
+import { generateQuestionId, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 
 const convertTieSlurQuestionToQuestion = (customQuestion: TieSlurQuestion, stage: StageNumber, layoutType?: 'grid' | 'row'): Question => {
   const symbolType = customQuestion.visualComponent?.symbolType || 'tie'
+  const prefix = symbolType === 'slur' ? THEORY_QUESTION_ID_PREFIX.SLUR : THEORY_QUESTION_ID_PREFIX.TIE
   const visualComponent = customQuestion.visualComponent
   return {
-    id: generateQuestionId(`${symbolType}-${customQuestion.questionType}`),
+    id: generateQuestionId(`${prefix}-${customQuestion.questionType}`),
     question: customQuestion.question,
     correctAnswer: customQuestion.correctAnswer,
     choices: customQuestion.choices,

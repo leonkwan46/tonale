@@ -2,7 +2,7 @@ import { KEY_NAMES, NOTES, type ClefType } from '@leonkwan46/music-notation'
 import type { Question } from '@/types/lesson'
 import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool, getKeys, getPitchDefinitionsForClef } from '../utils/exercise'
-import { generateQuestionId, generateWrongChoices } from '../utils/question'
+import { generateQuestionId, generateWrongChoices, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 import { getNoteAtScaleDegree, getScaleDegreeName } from '../utils/scaleDegree'
 import { generateExplanation } from '../utils/explanation'
 
@@ -56,7 +56,7 @@ export const createScaleDegreeQuestion = (
   }
   
   return {
-    id: generateQuestionId('scale-degree'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.SCALE_DEGREE),
     question: `What scale degree is this note in ${keyDisplayName}?`,
     correctAnswer,
     choices: generateWrongChoices(allDegrees, correctAnswer),

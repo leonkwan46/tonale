@@ -5,7 +5,7 @@ import { STAGE_TWO_GROUPING_QUESTIONS } from '../../curriculum/config/grouping'
 import type { GroupingQuestion } from '../custom/grouping/groupingHelpers'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateExplanation } from '../utils/explanation'
-import { generateQuestionId, shuffleArray } from '../utils/question'
+import { generateQuestionId, shuffleArray, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 import { formatAsNotation } from '../utils/timeSignature'
 
 // ============================================================================
@@ -138,7 +138,7 @@ const createQuestionFromElements = (
   }
   
   return {
-    id: generateQuestionId('grouping'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.NOTE_GROUPING),
     question: 'Is this note grouping correct for the time signature?',
     correctAnswer,
     choices: ['True', 'False'],
