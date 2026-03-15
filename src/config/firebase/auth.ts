@@ -55,9 +55,10 @@ export const sendEmailVerificationToUser = async () => {
   await sendEmailVerification(user, actionCodeSettings)
 }
 
-export const sendPasswordResetEmailToUser = async () => {
-  const user = requireCurrentUserWithEmail()
-  await sendPasswordResetEmail(auth, user.email, actionCodeSettings)
+/** Send password reset email. Pass an email for forgot-password (e.g. login); omit to use the current user's email. */
+export const sendPasswordResetEmailToUser = async (email?: string) => {
+  const to = email ?? requireCurrentUserWithEmail().email
+  await sendPasswordResetEmail(auth, to, actionCodeSettings)
 }
 
 // ============================================================================
