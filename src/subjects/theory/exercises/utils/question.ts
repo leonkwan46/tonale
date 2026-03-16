@@ -1,4 +1,5 @@
 import { randomUUID } from 'expo-crypto'
+export { capitalize } from '@/utils/string'
 
 export const THEORY_QUESTION_ID_PREFIX = {
   NOTE_VALUE_NAME: 'note-value-name',
@@ -51,8 +52,4 @@ export const generateQuestionId = (prefix: string): string => {
 
 export const shuffleArray = <T>(array: T[]): T[] => {
   return [...array].sort(() => Math.random() - 0.5)
-}
-
-export const capitalize = (text: string): string => {
-  return text.charAt(0).toUpperCase() + text.slice(1)
 }

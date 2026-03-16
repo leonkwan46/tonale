@@ -1,9 +1,21 @@
 import type { Timestamp } from 'firebase/firestore'
 import type { LessonProgress } from './lessons'
 
-export type UserGender = 'male' | 'female'
+export const GENDER = {
+  MALE: 'male',
+  FEMALE: 'female',
+  NEUTRAL: 'neutral'
+} as const
+export type UserGender = typeof GENDER[keyof typeof GENDER]
 
-export type UserInstrument = 'piano' | 'guitar' | 'violin' | 'drums' | 'flute' | 'saxophone' | 'trumpet' | 'cello' | 'vocal' | 'other'
+export const INSTRUMENT = {
+  PIANO: 'piano',
+  GUITAR: 'guitar',
+  VIOLIN: 'violin',
+  VOCAL: 'vocal',
+  OTHER: 'other'
+} as const
+export type UserInstrument = typeof INSTRUMENT[keyof typeof INSTRUMENT]
 
 export interface StageProgress {
   isUnlocked: boolean
