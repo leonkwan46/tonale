@@ -18,8 +18,9 @@ import {
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateExplanation } from '../utils/explanation'
 import {
-    generateQuestionId,
-    generateWrongChoices
+  generateQuestionId,
+  generateWrongChoices,
+  THEORY_QUESTION_ID_PREFIX
 } from '../utils/question'
 
 export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string, layoutType?: 'grid' | 'row'): Question => {
@@ -90,7 +91,7 @@ export const createMusicalTermQuestion = (stage: StageNumber, termKey?: string, 
   }
 
   return {
-    id: generateQuestionId('musical-term-smufl'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.MUSICAL_TERM),
     question: 'What is this musical term/sign?',
     correctAnswer: correctDefinition,
     choices: generateWrongChoices(Object.values(distinctDefinitions), correctDefinition),

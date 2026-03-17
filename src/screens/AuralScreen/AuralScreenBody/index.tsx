@@ -1,5 +1,5 @@
 import { useProgress } from '@/hooks'
-import { getAllAuralStages, getAuralStage } from '@/subjects/aural/curriculum/stages/helpers'
+import { auralStagesArray } from '@/subjects/aural/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -15,7 +15,7 @@ export const AuralScreenBody = () => {
 
   // UI Utility Functions for AuralScreenBody
   const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
-    const stage = getAuralStage(stageId)
+    const stage = auralStagesArray.find(s => s.id === stageId)
     if (!stage) return []
     
     // Merge progress data with lessons
@@ -35,7 +35,7 @@ export const AuralScreenBody = () => {
     blockingMessage: string
     lessons: StageLesson[]
   } => {
-    const stage = getAuralStage(stageId)
+    const stage = auralStagesArray.find(s => s.id === stageId)
     if (!stage) {
       return {
         stage: undefined,
@@ -101,7 +101,7 @@ export const AuralScreenBody = () => {
     const initState = async () => {
       const initialCollapsedState: Record<string, boolean> = {}
       const initialVisibleState: Record<string, boolean> = {}
-      const allStages = getAllAuralStages()
+      const allStages = auralStagesArray
 
       // Determine highest unlocked stage (furthest) - auto-open this stage
       const unlockedStages = allStages.filter(s => s.isUnlocked)
@@ -187,7 +187,7 @@ export const AuralScreenBody = () => {
   }
 
   // Get all unlocked stages plus a preview of the next locked stage
-  const allStages = getAllAuralStages()
+  const allStages = auralStagesArray
   const displayStages = allStages.filter(stage => stage.isUnlocked)
   const nextLockedStage = allStages.find(stage => !stage.isUnlocked && stage.order === Math.min(...allStages.filter(s => !s.isUnlocked).map(s => s.order)))
   

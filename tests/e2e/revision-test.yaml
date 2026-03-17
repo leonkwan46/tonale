@@ -12,9 +12,9 @@ appId: com.leonkwan46.tonale
 - tapOn:
     id: "tab-theory"
 - assertVisible:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - tapOn:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - assertVisible:
     id: "choice-.*"
 - assertVisible: "1/10"
@@ -133,7 +133,7 @@ appId: com.leonkwan46.tonale
 - tapOn:
     id: "correct-choice-.*"
 - tapOn:
-    id: "okay-button"
+    id: "done-button"
 
 # Verify completion state on home screen
 - assertVisible:
@@ -142,4 +142,3 @@ appId: com.leonkwan46.tonale
     id: "revision-card"
 - assertVisible:
     id: "revision-card-completion-text"
-- assertVisible: "All Done!\nYou've cleared all your revision questions!"

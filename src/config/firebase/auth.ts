@@ -21,6 +21,12 @@ import { auth } from './firebase'
 // Authentication → Email Templates → Password Reset → Set to: https://tonale.firebaseapp.com/auth-action
 export const ACTION_URL = process.env.EXPO_PUBLIC_AUTH_ACTION_URL!
 
+const withMode = (baseUrl: string, mode: string): string => {
+  const url = new URL(baseUrl)
+  url.searchParams.set('mode', mode)
+  return url.toString()
+}
+
 const actionCodeSettings: ActionCodeSettings = {
   url: ACTION_URL,
   handleCodeInApp: true,
@@ -52,12 +58,19 @@ const requireCurrentUserWithEmail = (): User & { email: string } => {
 
 export const sendEmailVerificationToUser = async () => {
   const user = requireCurrentUserWithEmail()
-  await sendEmailVerification(user, actionCodeSettings)
+  await sendEmailVerification(user, {
+    ...actionCodeSettings,
+    url: withMode(ACTION_URL, 'verifyEmail')
+  })
 }
 
-export const sendPasswordResetEmailToUser = async () => {
-  const user = requireCurrentUserWithEmail()
-  await sendPasswordResetEmail(auth, user.email, actionCodeSettings)
+/** Send password reset email. Pass an email for forgot-password (e.g. login); omit to use the current user's email. */
+export const sendPasswordResetEmailToUser = async (email?: string) => {
+  const to = email ?? requireCurrentUserWithEmail().email
+  await sendPasswordResetEmail(auth, to, {
+    ...actionCodeSettings,
+    url: withMode(ACTION_URL, 'resetPassword')
+  })
 }
 
 // ============================================================================
@@ -96,7 +109,7 @@ export const updateUserEmailAddress = async (currentPassword: string, newEmail: 
   const user = requireCurrentUser()
   await reauthenticateUser(currentPassword)
   await verifyBeforeUpdateEmail(user, newEmail, {
-    url: `${ACTION_URL}?mode=verifyAndChangeEmail`,
+    url: withMode(ACTION_URL, 'verifyAndChangeEmail'),
     handleCodeInApp: false
   })
 }

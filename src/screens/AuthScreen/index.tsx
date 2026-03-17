@@ -1,8 +1,11 @@
 import { auth } from '@/config/firebase/firebase'
+import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
+import { useTheme } from '@emotion/react'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
+import { useWindowDimensions } from 'react-native'
 import {
   AuthActionsContainer,
   ContentWrapper,
@@ -30,6 +33,10 @@ export interface AuthState {
 }
 
 export const AuthScreen = () => {
+  const theme = useTheme()
+  const { height: windowHeight } = useWindowDimensions()
+  const topSpacerRatio = theme.device.isTablet ? 0.05 : 0.1
+
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
     email: '',
@@ -66,7 +73,10 @@ export const AuthScreen = () => {
     <ScreenContainer>
       <KeyboardAwareScrollView 
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={scrollContentContainerStyle}
+        contentContainerStyle={[
+          scrollContentContainerStyle,
+          { paddingTop: windowHeight * topSpacerRatio }
+        ]}
       >
         <ContentWrapper>
           <Header
@@ -85,11 +95,13 @@ export const AuthScreen = () => {
               setAuthState={setAuthState}
             />
             
-            <GuestLogin
-              loading={authState.loading}
-              onGuestLogin={handleGuestLogin}
-              isVisible={authState.mode === 'login'}
-            />
+            {isFeatureEnabled(FEATURES.ENABLE_GUEST_LOGIN) && (
+              <GuestLogin
+                loading={authState.loading}
+                onGuestLogin={handleGuestLogin}
+                isVisible={authState.mode === 'login'}
+              />
+            )}
           </AuthActionsContainer>
         </ContentWrapper>
       </KeyboardAwareScrollView>

@@ -2,7 +2,7 @@ import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQu
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress, useSafeNavigation } from '@/hooks'
 import {
-    getAllAuralStages,
+    auralStagesArray,
     getAuralLessonWithProgress
 } from '@/subjects/aural/curriculum/stages/helpers'
 import { generateAuralQuestions } from '@/subjects/aural/exercises/generate'
@@ -11,7 +11,7 @@ import {
     getTheoryLessonWithProgress,
     stagesArray as theoryStagesArray
 } from '@/subjects/theory/curriculum/stages/helpers'
-import { generateLessonQuestions } from '@/subjects/theory/exercises/generate'
+import { generateLessonQuestions } from '@/subjects/theory/exercises/generator'
 import {
     playLessonFailedSound,
     playLessonFinishedSound
@@ -21,7 +21,7 @@ import type { Question, StoreRevisionQuestionPayload } from '@types'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { FinalTestModal } from './components/FinalTestModal'
-import { StarRatingModal } from './components/StarRatingModal'
+import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
 
@@ -250,7 +250,7 @@ export const LessonScreen = () => {
     setShowSuccessModal(false)
     // Determine subject and check for unlocked stages
     const isAuralLesson = lessonId?.startsWith('aural-') ?? false
-    const stages = isAuralLesson ? getAllAuralStages() : theoryStagesArray
+    const stages = isAuralLesson ? auralStagesArray : theoryStagesArray
     const nextLockedStage = getNextLockedStage(stages, progressData)
 
     if (nextLockedStage) {
@@ -281,7 +281,7 @@ export const LessonScreen = () => {
         isFinalTest={lesson?.isFinalTest || false}
       />
 
-      <StarRatingModal
+      <LessonCompleteModal
         visible={showStarModal}
         stars={calculateStars(questions.length, wrongAnswers.length)}
         totalQuestions={questions.length}

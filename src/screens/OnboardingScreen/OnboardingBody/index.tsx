@@ -1,7 +1,7 @@
 import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
-import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
+import { GENDER, INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
 import type { ScrollView } from 'react-native'
@@ -24,7 +24,7 @@ export const OnboardingBody = ({
 }: OnboardingBodyProps) => {
   const router = useRouter()
   const scrollViewRef = useRef<ScrollView>(null)
-  const [selectedGender, setSelectedGender] = useState<UserGender | null>('male')
+  const [selectedGender, setSelectedGender] = useState<UserGender | null>(GENDER.MALE)
   const [name, setName] = useState<string>('')
   const [selectedInstrument, setSelectedInstrument] = useState<UserInstrument | null>(null)
   const [customInstrument, setCustomInstrument] = useState<string>('')

@@ -22,7 +22,6 @@ export const NameInputField = styled(TextInput)(({ theme }) => ({
   paddingHorizontal: scale(theme.spacing.md),
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.text,
-  backgroundColor: theme.colors.surface,
   borderColor: theme.colors.primary,
   placeholderTextColor: theme.colors.placeholderText,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)

@@ -13,9 +13,9 @@ import {
   AnimatedStarContainer,
   StarContainer,
   StarIcon
-} from './StarRatingModal.styles'
+} from './LessonCompleteModal.styles'
 
-interface StarRatingModalProps {
+interface LessonCompleteModalProps {
   visible: boolean
   stars: number
   totalQuestions: number
@@ -24,14 +24,14 @@ interface StarRatingModalProps {
   onRetry: () => void
 }
 
-export const StarRatingModal = ({
+export const LessonCompleteModal = ({
   visible,
   stars,
   totalQuestions,
   wrongAnswers,
   onContinue,
   onRetry
-}: StarRatingModalProps) => {
+}: LessonCompleteModalProps) => {
   const [animatedStars, setAnimatedStars] = useState(0)
   const starAnimations = useRef([
     new Animated.Value(0),
@@ -59,7 +59,7 @@ export const StarRatingModal = ({
     starAnimations.forEach(anim => anim.setValue(0))
     timeoutRef.current.forEach(clearTimeout)
     timeoutRef.current = []
-    
+
     for (let i = 1; i <= stars; i++) {
       const timeout = setTimeout(() => {
         setAnimatedStars(i)
@@ -82,7 +82,7 @@ export const StarRatingModal = ({
     return Array.from({ length: 3 }, (_, index) => {
       const isFilled = index < animatedStars
       const animation = starAnimations[index]
-      
+
       return (
         <AnimatedStarContainer
           key={index}
@@ -105,38 +105,34 @@ export const StarRatingModal = ({
   }
 
   return (
-    <Modal visible={visible} onRequestClose={onRetry}>
-      <TitleText>
-        {getStarMessage(stars)}
-      </TitleText>
-      
-      <StarContainer>
-        {renderStars()}
-      </StarContainer>
-      
+    <Modal
+      visible={visible}
+      onRequestClose={onRetry}
+      testID="lesson-complete-modal"
+    >
+      <TitleText>{getStarMessage(stars)}</TitleText>
+
+      <StarContainer>{renderStars()}</StarContainer>
+
       <DescriptionText>
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
       </DescriptionText>
-      
+
       <ButtonContainer>
         <ModalButton
-          testID="retry-button"
+          testID="lesson-complete-modal-retry-button"
           variant="outlined"
           onPress={onRetry}
         >
-          <ModalButtonText variant="outlined">
-            Retry
-          </ModalButtonText>
+          <ModalButtonText variant="outlined">Retry</ModalButtonText>
         </ModalButton>
-        
+
         <ModalButton
-          testID="continue-button"
+          testID="lesson-complete-modal-continue-button"
           variant="filled"
           onPress={onContinue}
         >
-          <ModalButtonText variant="filled">
-            Continue
-          </ModalButtonText>
+          <ModalButtonText variant="filled">Continue</ModalButtonText>
         </ModalButton>
       </ButtonContainer>
     </Modal>

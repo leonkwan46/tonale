@@ -1,15 +1,12 @@
 import * as React from 'react'
 import { GridSelection } from '@/sharedComponents/GridSelection'
 import { useTheme } from '@emotion/react'
-import type { UserGender } from '@types'
+import { GENDER, type UserGender } from '@types'
+import { getGenderDisplayLabel } from '@/utils/avatarAssets'
 import { renderGenderIcon } from '../OnboardingIcons'
 import { SectionContainer, SectionTitle } from './GenderSelection.styles'
 
-const GENDER_OPTIONS: UserGender[] = ['male', 'female']
-
-const getDisplayLabel = (value: string): string => {
-  return value.charAt(0).toUpperCase() + value.slice(1)
-}
+const GENDER_OPTIONS: UserGender[] = [GENDER.MALE, GENDER.FEMALE, GENDER.NEUTRAL]
 
 interface GenderSelectionProps {
   selectedGender: UserGender | null
@@ -29,7 +26,7 @@ const GenderSelectionComponent = ({
         options={GENDER_OPTIONS}
         selectedOption={selectedGender}
         onSelect={onSelect}
-        getDisplayLabel={getDisplayLabel}
+        getDisplayLabel={(value) => getGenderDisplayLabel(value as UserGender)}
         renderIcon={(option, isSelected) => renderGenderIcon(option as UserGender, theme)}
         testID="gender-selection"
       />

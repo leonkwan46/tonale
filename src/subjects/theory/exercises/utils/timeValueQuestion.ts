@@ -2,7 +2,7 @@ import type { Question } from '@/types/lesson'
 import type { StageNumber } from '@/types/stage'
 import { getAllNoteTypes, getAllRestTypes } from './exercise'
 import { generateExplanation } from './explanation'
-import { generateQuestionId, generateWrongChoices } from './question'
+import { generateQuestionId, generateWrongChoices, THEORY_QUESTION_ID_PREFIX } from './question'
 import { formatBeats, formatDottedBeatsDecomposed, noteTypeToBeats, noteTypeToString, restTypeToBeats, restTypeToString, TimeValueType } from './timeValue'
 
 type QuestionKind = 'note' | 'rest'
@@ -78,7 +78,7 @@ export const createValueBeatQuestion = ({
   }, visualComponent)
 
   return {
-    id: generateQuestionId(`${questionKind}-value-beats`),
+    id: generateQuestionId(questionKind === 'rest' ? THEORY_QUESTION_ID_PREFIX.REST_VALUE_BEATS : THEORY_QUESTION_ID_PREFIX.NOTE_VALUE_BEATS),
     question: questionText,
     correctAnswer,
     choices: generateWrongChoices(choiceStrings, correctAnswer),

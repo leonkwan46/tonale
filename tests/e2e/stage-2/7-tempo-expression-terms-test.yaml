@@ -9,11 +9,11 @@ appId: com.leonkwan46.tonale
     id: "tab-theory"
 - scrollUntilVisible:
     element:
-        id: "lesson-title-stage-2-lesson-7"
+      id: "lesson-title-theory-stage-2-lesson-7"
     direction: UP
     centerElement: true
 - tapOn:
-    id: "lesson-title-stage-2-lesson-7"
+    id: "lesson-title-theory-stage-2-lesson-7"
 
 - assertVisible:
     id: "choice-.*"
@@ -21,13 +21,22 @@ appId: com.leonkwan46.tonale
 - assertVisible:
     id: "correct-answer-.*"
 - tapOn:
-    id: "correct-choice-.*"
-
-- assertVisible: "2/10"
-- assertVisible:
-    id: "correct-choice-.*"
+    id: "choice-.*"
+- extendedWaitUntil:
+    visible:
+      id: "question-explanation-continue-button"
+    timeout: 8000
 - tapOn:
-    id: "correct-choice-.*"
+    id: "question-explanation-continue-button"
+- assertVisible: "2/10"
+- tapOn:
+    id: "choice-.*"
+- extendedWaitUntil:
+    visible:
+      id: "question-explanation-continue-button"
+    timeout: 8000
+- tapOn:
+    id: "question-explanation-continue-button"
 - assertVisible: "3/10"
 - tapOn:
     id: "correct-choice-.*"
@@ -52,15 +61,78 @@ appId: com.leonkwan46.tonale
 - assertVisible: "10/10"
 - tapOn:
     id: "correct-choice-.*"
-
-- assertVisible: "Continue"
-- assertVisible: "Retry"
-- tapOn: "Continue"
-
+- waitForAnimationToEnd
 - assertVisible:
-    id: "lesson-title-stage-2-lesson-7"
+    id: "lesson-complete-modal"
+- assertVisible:
+    id: "lesson-complete-modal-retry-button"
 - tapOn:
-    id: "lesson-title-stage-2-lesson-7"
+    id: "lesson-complete-modal-retry-button"
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/10"
+- assertVisible:
+    id: "correct-answer-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "2/10"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "3/10"
+- tapOn:
+    id: "back-button"
+- scrollUntilVisible:
+    element:
+      id: "lesson-title-theory-stage-2-lesson-7"
+    direction: UP
+- tapOn:
+    id: "lesson-title-theory-stage-2-lesson-7"
 - tapOn:
     id: "back-button"
 
+# Go back to the home screen and do revision test
+- tapOn:
+    id: "tab-index"
+- tapOn:
+    id: "start-revision-button"
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "2/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible:
+    id: "revise-button"
+- tapOn:
+    id: "revise-button"
+# Repeat the revision test
+- assertVisible:
+    id: "choice-.*"
+- assertVisible: "1/2"
+- assertVisible:
+    id: "correct-answer-.*"
+- tapOn:
+    id: "correct-choice-.*"
+- assertVisible: "2/2"
+- assertVisible:
+    id: "correct-choice-.*"
+- tapOn:
+    id: "correct-choice-.*"
+# Done
+- assertVisible:
+    id: "done-button"
+- tapOn:
+    id: "done-button"
+# Verify completion state on home screen
+- assertVisible:
+    id: "tab-index"
+- assertVisible:
+    id: "revision-card"
+- assertVisible:
+    id: "revision-card-completion-text"

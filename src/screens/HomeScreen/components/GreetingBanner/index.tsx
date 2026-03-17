@@ -1,5 +1,6 @@
-import type { UserData } from '@types'
+import { GENDER, type UserData } from '@types'
 import type { User } from 'firebase/auth'
+import { getAvatarHeadSource } from '@/utils/avatarAssets'
 import {
   AvatarContainer,
   CharacterAvatar,
@@ -26,9 +27,7 @@ const getUsername = (authUser: User | null, userData: UserData | null, loading: 
 
 export const GreetingBanner = ({ authUser, userData, loading }: GreetingBannerProps) => {
   const username = getUsername(authUser, userData, loading)
-  const characterImageSource = userData?.gender === 'female'
-    ? require('../../../../../assets/images/girl/girl_head.png')
-    : require('../../../../../assets/images/boy/boy_head.png')
+  const characterImageSource = getAvatarHeadSource(userData?.gender || GENDER.MALE)
 
   return (
     <GreetingBannerContainer>

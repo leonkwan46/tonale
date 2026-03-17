@@ -4,34 +4,34 @@ import {
 } from '@/config/firebase/functions/revisionQuestions'
 import { playLessonFinishedSound } from '@/utils/soundUtils'
 import type { RevisionQuestion, StoreRevisionQuestionPayload } from '@types'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 const CORRECT_STREAK_THRESHOLD = 2
 
-type CompletionStatus = 'idle' | 'completing' | 'completed'
+type CompletionStatus = 'idle' | 'completing' | 'completed';
 
 interface RevisionState {
-  questions: RevisionQuestion[]
-  counts: Record<string, number>
-  currentQuestionIndex: number
-  viewResetKey: number
+  questions: RevisionQuestion[];
+  counts: Record<string, number>;
+  currentQuestionIndex: number;
+  viewResetKey: number;
 }
 
 interface RestartState {
-  questions: RevisionQuestion[]
-  counts: Record<string, number>
+  questions: RevisionQuestion[];
+  counts: Record<string, number>;
 }
 
 interface CompletionState {
-  status: CompletionStatus
-  showModal: boolean
-  remainingCount: number
+  status: CompletionStatus;
+  showModal: boolean;
+  remainingCount: number;
 }
 
 interface UseRevisionParams {
-  revisionQuestions?: RevisionQuestion[]
-  refreshRevisionQuestions: () => Promise<void>
-  onExit: () => void
+  revisionQuestions?: RevisionQuestion[];
+  refreshRevisionQuestions: () => Promise<void>;
+  onExit: () => void;
 }
 
 export const useRevision = ({
@@ -70,24 +70,35 @@ export const useRevision = ({
     remainingCount: 0
   })
 
+  const prevRevisionQuestionsRef = useRef(revisionQuestions)
+  const completionGenerationRef = useRef(0)
+  const cancelledCompletionGenerationRef = useRef(0)
+
   useEffect(() => {
     if (completion.showModal || completion.status === 'completing') return
+    if (prevRevisionQuestionsRef.current === revisionQuestions) return
 
+    prevRevisionQuestionsRef.current = revisionQuestions
     const nextQuestions = revisionQuestions || []
     const snapshotCounts = buildCountsMap(nextQuestions)
 
     setRestart({ questions: nextQuestions, counts: snapshotCounts })
-    setRevision(prev => ({
+    setRevision((prev) => ({
       questions: nextQuestions,
       counts: snapshotCounts,
       currentQuestionIndex: 0,
       viewResetKey: prev.viewResetKey + 1
     }))
-    setCompletion(prev => ({
+    setCompletion((prev) => ({
       ...prev,
       status: 'idle'
     }))
-  }, [revisionQuestions, buildCountsMap, completion.showModal, completion.status])
+  }, [
+    revisionQuestions,
+    buildCountsMap,
+    completion.showModal,
+    completion.status
+  ])
 
   const updatedCountForQuestion = useCallback(
     (question: RevisionQuestion): number => {
@@ -102,9 +113,11 @@ export const useRevision = ({
       if (!currentQuestion) return
 
       const currentCount = updatedCountForQuestion(currentQuestion)
-      const nextCount = isCorrect ? currentCount + 1 : Math.max(0, currentCount - 1)
+      const nextCount = isCorrect
+        ? currentCount + 1
+        : Math.max(0, currentCount - 1)
 
-      setRevision(prev => ({
+      setRevision((prev) => ({
         ...prev,
         counts: {
           ...prev.counts,
@@ -112,7 +125,11 @@ export const useRevision = ({
         }
       }))
     },
-    [revision.questions, revision.currentQuestionIndex, updatedCountForQuestion]
+    [
+      revision.questions,
+      revision.currentQuestionIndex,
+      updatedCountForQuestion
+    ]
   )
 
   const updateRevision = useCallback(async () => {
@@ -120,24 +137,29 @@ export const useRevision = ({
     const toDelete: string[] = []
     const remainingQuestions: RevisionQuestion[] = []
 
-    revision.questions.forEach(question => {
+    revision.questions.forEach((question) => {
       const updatedCount = updatedCountForQuestion(question)
-      const initialCount = restart.counts[question.id] ?? question.correctCount ?? 0
+      const initialCount =
+        restart.counts[question.id] ?? question.correctCount ?? 0
 
       if (updatedCount >= CORRECT_STREAK_THRESHOLD) {
         toDelete.push(question.id)
         return
       }
 
-      const questionWithUpdatedCount = { ...question, correctCount: updatedCount }
+      const questionWithUpdatedCount = {
+        ...question,
+        correctCount: updatedCount
+      }
       remainingQuestions.push(questionWithUpdatedCount)
 
       if (updatedCount !== initialCount) {
         const payload: StoreRevisionQuestionPayload = {
           ...questionWithUpdatedCount,
-          explanation: typeof questionWithUpdatedCount.explanation === 'string'
-            ? questionWithUpdatedCount.explanation
-            : questionWithUpdatedCount.explanation?.text
+          explanation:
+            typeof questionWithUpdatedCount.explanation === 'string'
+              ? questionWithUpdatedCount.explanation
+              : questionWithUpdatedCount.explanation?.text
         }
         toUpdate.push(payload)
       }
@@ -154,31 +176,42 @@ export const useRevision = ({
     await refreshRevisionQuestions()
 
     const refreshedCounts = buildCountsMap(remainingQuestions)
-    setRevision(prev => ({
-      ...prev,
+    return {
+      remainingCount: remainingQuestions.length,
       counts: refreshedCounts
-    }))
-
-    return remainingQuestions.length
-  }, [revision.questions, updatedCountForQuestion, refreshRevisionQuestions, buildCountsMap, restart.counts])
+    }
+  }, [
+    revision.questions,
+    updatedCountForQuestion,
+    refreshRevisionQuestions,
+    buildCountsMap,
+    restart.counts
+  ])
 
   const completeRevision = useCallback(async () => {
     if (completion.status !== 'idle') return
 
-    setCompletion(prev => ({ ...prev, status: 'completing' }))
+    const myGeneration = ++completionGenerationRef.current
+    setCompletion((prev) => ({ ...prev, status: 'completing' }))
 
     try {
-      const remaining = await updateRevision()
+      const result = await updateRevision()
+      if (cancelledCompletionGenerationRef.current === myGeneration) {
+        setCompletion((prev) => ({ ...prev, status: 'idle' }))
+        return
+      }
+      const remainingCount = result.remainingCount ?? 0
+      setRevision((prev) => ({ ...prev, counts: result.counts }))
       setCompletion({
         status: 'completed',
         showModal: true,
-        remainingCount: remaining ?? 0
+        remainingCount
       })
       playLessonFinishedSound()
     } catch (error) {
       console.error('Failed to complete revision:', error)
     } finally {
-      setCompletion(prev => ({
+      setCompletion((prev) => ({
         ...prev,
         status: prev.status === 'completed' ? 'completed' : 'idle'
       }))
@@ -186,7 +219,8 @@ export const useRevision = ({
   }, [completion.status, updateRevision])
 
   const restartRevision = useCallback(() => {
-    setRevision(prev => ({
+    cancelledCompletionGenerationRef.current = completionGenerationRef.current
+    setRevision((prev) => ({
       questions: restart.questions,
       counts: restart.counts,
       currentQuestionIndex: 0,
@@ -203,15 +237,20 @@ export const useRevision = ({
     if (completion.status === 'completed' || completion.showModal) return
 
     if (revision.currentQuestionIndex < revision.questions.length - 1) {
-      setRevision(prev => ({
+      setRevision((prev) => ({
         ...prev,
         currentQuestionIndex: prev.currentQuestionIndex + 1
       }))
     }
-  }, [completion.showModal, completion.status, revision.currentQuestionIndex, revision.questions.length])
+  }, [
+    completion.showModal,
+    completion.status,
+    revision.currentQuestionIndex,
+    revision.questions.length
+  ])
 
   const handleExit = useCallback(() => {
-    setCompletion(prev => ({ ...prev, showModal: false }))
+    setCompletion((prev) => ({ ...prev, showModal: false }))
     onExit()
   }, [onExit])
 
@@ -219,8 +258,13 @@ export const useRevision = ({
     restartRevision()
   }, [restartRevision])
 
-  const hasQuestions = useMemo(() => revision.questions.length > 0, [revision.questions.length])
-  const currentQuestion = hasQuestions ? revision.questions[revision.currentQuestionIndex] : null
+  const hasQuestions = useMemo(
+    () => revision.questions.length > 0,
+    [revision.questions.length]
+  )
+  const currentQuestion = hasQuestions
+    ? revision.questions[revision.currentQuestionIndex]
+    : null
 
   return {
     revision,

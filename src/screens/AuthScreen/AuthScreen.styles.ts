@@ -13,7 +13,7 @@ export const ContentWrapper = styled(View)(({ theme }) => ({
   gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(30),
   alignItems: 'center' as const,
   paddingHorizontal: scale(theme.spacing.xl),
-  justifyContent: 'center' as const,
+  justifyContent: 'flex-start' as const,
   flex: 1
 }))
 

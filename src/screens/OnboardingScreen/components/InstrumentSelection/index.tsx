@@ -1,6 +1,7 @@
 import { GridSelection } from '@/sharedComponents/GridSelection'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserInstrument } from '@types'
+import { capitalize } from '@/utils/string'
 import * as React from 'react'
 import { renderInstrumentIcon } from '../OnboardingIcons'
 import { CustomInstrumentInput, SectionContainer, SectionTitle } from './InstrumentSelection.styles'
@@ -14,7 +15,7 @@ const INSTRUMENT_OPTIONS: UserInstrument[] = [
 ]
 
 const getDisplayLabel = (value: string): string => {
-  return value.charAt(0).toUpperCase() + value.slice(1)
+  return capitalize(value)
 }
 
 interface InstrumentSelectionProps {

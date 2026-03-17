@@ -4,6 +4,7 @@ import { Platform, TouchableOpacity } from 'react-native'
 import { scale, verticalScale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createForwardProps } from '@/utils/styledProps'
 
 export const TAB_CONFIG = {
   PHONE: {
@@ -39,7 +40,9 @@ export const TabBarContainer = styled.View<{
   ...theme.shadows.lg
 }))
 
-export const TabButton = styled(TouchableOpacity)<{
+export const TabButton = styled(TouchableOpacity, {
+  shouldForwardProp: createForwardProps(['config'])
+})<{
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ theme, config }) => ({
   flex: 1,

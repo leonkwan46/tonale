@@ -1,4 +1,4 @@
-import { generateQuestionId } from '@/subjects/theory/exercises/utils/question'
+import { AURAL_QUESTION_ID_PREFIX, generateQuestionId } from '@/subjects/theory/exercises/utils/question'
 import {
     DEFAULT_TEMPO,
     getStagePatternConfig,
@@ -156,7 +156,7 @@ export const createRhythmQuestions = (
     const tempo = DEFAULT_TEMPO
 
     questions.push({
-      id: generateQuestionId('rhythm-echo'),
+      id: generateQuestionId(AURAL_QUESTION_ID_PREFIX.RHYTHM_ECHO),
       question: 'Clap back the rhythm you hear.',
       correctAnswer: timestamps,
       choices: [],

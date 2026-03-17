@@ -6,7 +6,8 @@ import type { StageNumber } from '@/types/stage'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import {
   generateQuestionId,
-  generateWrongChoices
+  generateWrongChoices,
+  THEORY_QUESTION_ID_PREFIX
 } from '../utils/question'
 import { generateExplanation } from '../utils/explanation'
 
@@ -76,7 +77,7 @@ export const createNoteIdentificationQuestion = (
   }
 
   return {
-    id: generateQuestionId('note-id'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.NOTE_IDENTIFICATION),
     question: questionText,
     correctAnswer,
     choices: questionType === 'keyPress' ? [] : generateWrongChoices(noteLetterNames, correctNoteData.letterName),

@@ -47,73 +47,73 @@ const distributeQuestionsWithLayouts = (
 export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
   const questions: Question[] = []
   const layoutType = config.answerLayoutType
-  
+
   switch (config.generatorType) {
     case 'noteRestValue':
       questions.push(...createNoteRestValueQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'noteNameValue':
       questions.push(...createNoteValueNameQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'restNameValue':
       questions.push(...createRestValueNameQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'trebleClef':
       questions.push(...createNoteIdentificationQuestions(config.questionsCount, config.stage, CLEFS.TREBLE, undefined, layoutType))
       break
-    
+
     case 'bassClef':
       questions.push(...createNoteIdentificationQuestions(config.questionsCount, config.stage, CLEFS.BASS, undefined, layoutType))
       break
-    
+
     case 'accidentals':
       questions.push(...createAccidentalQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'semitonesTones':
       questions.push(...createSemitoneToneQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'timeSignature':
       questions.push(...createTimeSignatureQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'keySignature':
       questions.push(...createKeySignatureQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'musicalTerm':
       questions.push(...createMusicalTermQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'dottedValues':
       questions.push(...createDottedValueQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'noteGrouping':
       questions.push(...createNoteGroupingQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'tieSlur':
       questions.push(...createTieSlurQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'scaleDegrees':
       questions.push(...createScaleDegreeQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'interval':
       questions.push(...createIntervalQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
+
     case 'triad':
       questions.push(...createTriadQuestions(config.questionsCount, config.stage, layoutType))
       break
-    
-    case 'stage-0-final':
+
+    case 'theory-stage-0-final':
       return distributeQuestionsWithLayouts(
         config.questionsCount,
         [
@@ -128,7 +128,7 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
         config.stage
       ).map(q => ({ ...q, stage: config.stage }))
 
-    case 'stage-1-final':
+    case 'theory-stage-1-final':
       return distributeQuestionsWithLayouts(
         config.questionsCount,
         [
@@ -141,8 +141,8 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
         ],
         config.stage
       ).map(q => ({ ...q, stage: config.stage }))
-    
-    case 'stage-2-final':
+
+    case 'theory-stage-2-final':
       return distributeQuestionsWithLayouts(
         config.questionsCount,
         [
@@ -156,10 +156,10 @@ export const generateLessonQuestions = (config: ExerciseConfig): Question[] => {
         ],
         config.stage
       ).map(q => ({ ...q, stage: config.stage }))
-    
+
     default:
       console.warn(`Unknown generator type: ${config.generatorType}`)
   }
-  
+
   return questions.map(q => ({ ...q, stage: config.stage }))
 }
