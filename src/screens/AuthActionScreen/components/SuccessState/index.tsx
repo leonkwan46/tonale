@@ -12,9 +12,10 @@ import {
 
 interface SuccessStateProps {
   mode: AuthActionMode
+  onContinue?: () => void
 }
 
-export const SuccessState = ({ mode }: SuccessStateProps) => {
+export const SuccessState = ({ mode, onContinue }: SuccessStateProps) => {
   const router = useRouter()
 
   const handler = getHandler(mode)
@@ -22,6 +23,11 @@ export const SuccessState = ({ mode }: SuccessStateProps) => {
   const route = handler.getRedirectRoute()
 
   const handleContinue = () => {
+    if (onContinue) {
+      onContinue()
+      return
+    }
+
     const instructions = handler.handleResult({ status: 'success' })
     if (handler.executeRedirect) {
       handler.executeRedirect(router, instructions)
