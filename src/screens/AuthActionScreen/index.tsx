@@ -1,7 +1,7 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { useGlobalSearchParams, useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Card } from './AuthActionScreen.styles'
 import { AuthActionMode, AuthActionParams, AuthActionStatus } from './AuthActionScreen.types'
@@ -27,10 +27,25 @@ export const AuthActionScreen = () => {
   const [code, setCode] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [isResetting, setIsResetting] = useState(false)
+  const redirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hasProcessedRef = useRef(false)
+
+  const scheduleRedirect = (
+    handler: ReturnType<typeof getHandler>,
+    instructions: ReturnType<typeof handler.handleResult>
+  ) => {
+    if (!instructions.shouldRedirect) return
+
+    if (redirectTimerRef.current) {
+      clearTimeout(redirectTimerRef.current)
+    }
+
+    redirectTimerRef.current = setTimeout(() => {
+      handler.executeRedirect(router, instructions)
+    }, instructions.redirectDelay!)
+  }
 
   useEffect(() => {
-    let redirectTimer: ReturnType<typeof setTimeout> | null = null
-
     const actionParams: AuthActionParams = {
       mode: params.mode,
       oobCode: params.oobCode,
@@ -39,6 +54,8 @@ export const AuthActionScreen = () => {
     }
 
     const processAction = async () => {
+      if (hasProcessedRef.current) return
+
       if (actionParams.error) {
         setError(decodeURIComponent(actionParams.error))
         setStatus('error')
@@ -50,6 +67,10 @@ export const AuthActionScreen = () => {
         setStatus('error')
         return
       }
+
+      // We have a valid action mode now – clear any previous errors
+      // (e.g. a prior "missing action mode" from an earlier navigation).
+      setError('')
 
       const actionMode = actionParams.mode as AuthActionMode
       setMode(actionMode)
@@ -70,12 +91,9 @@ export const AuthActionScreen = () => {
       }
 
       const instructions = handler.handleResult(result)
-      
-      if (instructions.shouldRedirect) {
-        redirectTimer = setTimeout(() => {
-          handler.executeRedirect(router, instructions)
-        }, instructions.redirectDelay!)
-      }
+      hasProcessedRef.current = true
+
+      scheduleRedirect(handler, instructions)
 
       if (instructions.customData) {
         if (instructions.customData.email) setEmail(instructions.customData.email as string)
@@ -89,14 +107,15 @@ export const AuthActionScreen = () => {
     })
 
     return () => {
-      if (redirectTimer) {
-        clearTimeout(redirectTimer)
+      if (redirectTimerRef.current) {
+        clearTimeout(redirectTimerRef.current)
+        redirectTimerRef.current = null
       }
     }
     // authUser is intentionally excluded from dependencies to prevent re-processing
     // when it changes (e.g., after password reset signs out the user)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.mode, params.oobCode, params.error, params.email, router])
+  }, [params.mode, params.oobCode, router])
 
   const handlePasswordReset = async (resetCode: string, newPassword: string) => {
     setError('')
@@ -117,11 +136,22 @@ export const AuthActionScreen = () => {
 
     if (result.status === 'success') {
       const instructions = handler.handleResult(result)
-      if (instructions.shouldRedirect) {
-        setTimeout(() => {
-          handler.executeRedirect(router, instructions)
-        }, instructions.redirectDelay!)
-      }
+      scheduleRedirect(handler, instructions)
+    }
+  }
+
+  const handleSuccessContinue = () => {
+    if (!mode) return
+    const handler = getHandler(mode)
+    const instructions = handler.handleResult({ status: 'success' })
+
+    if (redirectTimerRef.current) {
+      clearTimeout(redirectTimerRef.current)
+      redirectTimerRef.current = null
+    }
+
+    if (instructions.shouldRedirect) {
+      handler.executeRedirect(router, instructions)
     }
   }
 
@@ -132,14 +162,14 @@ export const AuthActionScreen = () => {
           <LoadingState />
         </Card>
       )}
-      {status === 'error' && (
+      {status === 'error' && !hasProcessedRef.current && (
         <Card>
           <ErrorState error={error} />
         </Card>
       )}
       {status === 'success' && (
         <Card>
-          <SuccessState mode={mode!} />
+          <SuccessState mode={mode!} onContinue={handleSuccessContinue} />
         </Card>
       )}
       {status === 'password-reset-form' && (
