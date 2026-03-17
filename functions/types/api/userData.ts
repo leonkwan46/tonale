@@ -29,8 +29,9 @@ export interface ProgressData {
 }
 
 export interface UserData {
+  firebaseUid: string
   email: string
-  onboardingCompleted?: boolean
+  onboardingCompleted: boolean
   gender?: UserGender
   name?: string
   instrument?: UserInstrument | string // Allow custom instrument strings
