@@ -2,6 +2,7 @@ import { auth } from '@/config/firebase/firebase'
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
+import { useTheme } from '@emotion/react'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
@@ -31,10 +32,10 @@ export interface AuthState {
   showConfirmPassword: boolean
 }
 
-const TOP_SPACER_RATIO = 0.1
-
 export const AuthScreen = () => {
+  const theme = useTheme()
   const { height: windowHeight } = useWindowDimensions()
+  const topSpacerRatio = theme.device.isTablet ? 0.05 : 0.1
 
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
@@ -74,7 +75,7 @@ export const AuthScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           scrollContentContainerStyle,
-          { paddingTop: windowHeight * TOP_SPACER_RATIO }
+          { paddingTop: windowHeight * topSpacerRatio }
         ]}
       >
         <ContentWrapper>
