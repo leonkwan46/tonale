@@ -113,17 +113,28 @@ const findLessonToDisplay = (
   allStageLessons: { id: string }[]
 ): Lesson | null => {
   if (lastAccess) {
-    const lesson = getTheoryLessonWithProgress(lastAccess.lessonId, progressData) ?? null
-    if (!lesson) return null
+    const startIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
+    const lessonFromId = getTheoryLessonWithProgress(lastAccess.lessonId, progressData) ?? null
 
-    const progress = progressData[lesson.id]
-    if (isLessonComplete(lesson, progress)) {
-      const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lesson.id)
-      if (currentIndex === -1) return null
-      return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons)
+    // If lastAccess points to a lesson that no longer exists, or isn't in allStageLessons,
+    // fall back to the first incomplete lesson instead of bailing out.
+    if (!lessonFromId || startIndex === -1) {
+      return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
     }
 
-    return lesson
+    const progress = progressData[lessonFromId.id]
+    if (isLessonComplete(lessonFromId, progress)) {
+      // Try to find the next incomplete lesson after the last accessed one.
+      const nextLesson = findIncompleteLessonFromIndex(startIndex + 1, progressData, allStageLessons)
+      if (nextLesson) {
+        return nextLesson
+      }
+
+      // Wrap around: if there are incomplete lessons before startIndex, pick the first one.
+      return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
+    }
+
+    return lessonFromId
   }
 
   return findIncompleteLessonFromIndex(0, progressData, allStageLessons)

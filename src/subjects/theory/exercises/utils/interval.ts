@@ -1,5 +1,6 @@
 import { type ClefType, type Note } from '@leonkwan46/music-notation'
 import { LESS_COMMON_ACCIDENTALS } from '@/config/gradeSyllabus/pitchRange'
+import { capitalize } from '@/utils/string'
 import { STAGE_ONE_INTERVALS, STAGE_THREE_INTERVALS, STAGE_TWO_INTERVALS } from '../../curriculum/config/intervals'
 import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
 import type { StageNumber } from '@/types/stage'
@@ -140,7 +141,7 @@ const getIntervalName = (interval: Interval): string => {
   const { number, type, compound } = interval
   const simpleNumber = getSimpleInterval(number)
   
-  const capitalisedType = type.charAt(0).toUpperCase() + type.slice(1)
+  const capitalisedType = capitalize(type)
   let name = `${capitalisedType} ${getOrdinal(simpleNumber)}`
   
   if (compound) {

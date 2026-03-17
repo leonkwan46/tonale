@@ -1,3 +1,4 @@
+import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
@@ -7,20 +8,22 @@ import {
   signInWithEmailAndPassword
 } from 'firebase/auth'
 import * as React from 'react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Keyboard, TextInput } from 'react-native'
 import type { AuthFormData, AuthState } from '../../index'
 import {
-  ErrorContainer,
-  ErrorText,
   EyeIcon,
+  ForgotPasswordText,
+  ForgotPasswordTouchable,
   FormSection,
   Input,
   InputField,
   InputsContainer,
   PrimaryButton,
   PrimaryButtonText,
-  RequirementsText
+  RequirementsText,
+  StatusContainer,
+  StatusText
 } from './AuthForm.styles'
 
 interface AuthFormProps {
@@ -36,12 +39,19 @@ export const AuthForm = ({
   setFormData,
   setAuthState
 }: AuthFormProps) => {
+  const isLoginMode = authState.mode === 'login'
+  const isRegisterMode = authState.mode === 'register'
+
   const { setUserData, setIsRegistering } = useUser()
 
-  // Refs for TextInputs to manage focus
   const emailInputRef = useRef<TextInput>(null)
   const passwordInputRef = useRef<TextInput>(null)
   const confirmPasswordInputRef = useRef<TextInput>(null)
+  const [forgotPasswordSuccess, setForgotPasswordSuccess] = useState(false)
+
+  useEffect(() => {
+    if (authState.mode === 'register') setForgotPasswordSuccess(false)
+  }, [authState.mode])
 
   const updateFormData = (field: keyof AuthFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -56,7 +66,7 @@ export const AuthForm = ({
       updateAuthState({ error: 'Please enter your email and password' })
       return false
     }
-    if (authState.mode === 'register') {
+    if (isRegisterMode) {
       if (formData.password !== formData.confirmPassword) {
         updateAuthState({ error: 'Passwords don\'t match' })
         return false
@@ -104,7 +114,7 @@ export const AuthForm = ({
     try {
       updateAuthState({ loading: true, error: '' })
 
-      if (authState.mode === 'login') {
+      if (isLoginMode) {
         await handleLogin()
       } else {
         await handleRegister()
@@ -118,33 +128,62 @@ export const AuthForm = ({
     }
   }
 
-  // Handle submit from email field - move to password
   const handleEmailSubmit = () => {
     passwordInputRef.current?.focus()
   }
 
-  // Handle submit from password field
   const handlePasswordSubmit = () => {
-    if (authState.mode === 'register') {
+    if (isRegisterMode) {
       confirmPasswordInputRef.current?.focus()
     } else {
-      // In login mode, submit the form
       handleAuth()
     }
   }
 
-  // Handle submit from confirm password field
   const handleConfirmPasswordSubmit = () => {
     handleAuth()
   }
 
+  const handleForgotPassword = async () => {
+    Keyboard.dismiss()
+    const email = formData.email?.trim()
+    if (!email) {
+      updateAuthState({ error: 'Please enter your email above to receive a password reset link.' })
+      return
+    }
+    setForgotPasswordSuccess(false)
+    updateAuthState({ error: '' })
+    try {
+      updateAuthState({ loading: true })
+      await sendPasswordResetEmailToUser(email)
+      setForgotPasswordSuccess(true)
+      updateAuthState({ error: '' })
+    } catch (err) {
+      updateAuthState({
+        error: (err as Error).message || 'Failed to send reset email'
+      })
+    } finally {
+      updateAuthState({ loading: false })
+    }
+  }
+
+  const statusMessage = authState.error
+    ? { variant: 'error' as const, text: authState.error }
+    : forgotPasswordSuccess
+      ? { variant: 'success' as const, text: 'We’ve sent you an email with a link to reset your password.' }
+      : null
+
   return (
     <FormSection>
-      {authState.error ? (
-        <ErrorContainer>
-          <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-          <ErrorText>{authState.error}</ErrorText>
-        </ErrorContainer>
+      {statusMessage ? (
+        <StatusContainer variant={statusMessage.variant}>
+          <Icon
+            name={statusMessage.variant === 'error' ? 'alert-circle' : 'checkmark-circle'}
+            sizeVariant="xs"
+            colorVariant={statusMessage.variant === 'error' ? 'error' : 'success'}
+          />
+          <StatusText variant={statusMessage.variant}>{statusMessage.text}</StatusText>
+        </StatusContainer>
       ) : null}
 
       <InputsContainer>
@@ -159,9 +198,9 @@ export const AuthForm = ({
             autoCapitalize="none"
             autoCorrect={false}
             textContentType={
-              authState.mode === 'login' ? 'username' : 'emailAddress'
+              isLoginMode ? 'username' : 'emailAddress'
             }
-            autoComplete={authState.mode === 'login' ? 'username' : 'email'}
+            autoComplete={isLoginMode ? 'username' : 'email'}
             returnKeyType="next"
             onSubmitEditing={handleEmailSubmit}
           />
@@ -180,12 +219,12 @@ export const AuthForm = ({
             value={formData.password}
             secureTextEntry={!authState.showPassword}
             textContentType={
-              authState.mode === 'login' ? 'password' : 'newPassword'
+              isLoginMode ? 'password' : 'newPassword'
             }
             autoComplete={
-              authState.mode === 'login' ? 'current-password' : 'new-password'
+              isLoginMode ? 'current-password' : 'new-password'
             }
-            returnKeyType={authState.mode === 'register' ? 'next' : 'done'}
+            returnKeyType={isRegisterMode ? 'next' : 'done'}
             onSubmitEditing={handlePasswordSubmit}
           />
           <EyeIcon
@@ -201,7 +240,16 @@ export const AuthForm = ({
           </EyeIcon>
         </InputField>
 
-        {authState.mode === 'register' && (
+        {isLoginMode && (
+          <ForgotPasswordTouchable
+            onPress={handleForgotPassword}
+            disabled={authState.loading}
+          >
+            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+          </ForgotPasswordTouchable>
+        )}
+
+        {isRegisterMode && (
           <InputField>
             <Icon
               name="lock-closed-outline"
@@ -241,7 +289,7 @@ export const AuthForm = ({
           </InputField>
         )}
 
-        {authState.mode === 'register' && (
+        {isRegisterMode && (
           <RequirementsText>
             Password must be at least 6 characters
           </RequirementsText>
@@ -255,15 +303,15 @@ export const AuthForm = ({
       >
         <PrimaryButtonText>
           {authState.loading
-            ? authState.mode === 'login'
+            ? isLoginMode
               ? 'Signing In...'
               : 'Creating Account...'
-            : authState.mode === 'login'
+            : isLoginMode
               ? 'Sign In'
               : 'Create Account'}
         </PrimaryButtonText>
         <Icon
-          name={authState.mode === 'login' ? 'arrow-forward' : 'person-add'}
+          name={isLoginMode ? 'arrow-forward' : 'person-add'}
           sizeVariant="sm"
           colorVariant="text"
         />

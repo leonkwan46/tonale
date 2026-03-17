@@ -6,7 +6,7 @@ import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPrevi
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
 import { Icon } from '@/sharedComponents/Icon'
 import { Button3D } from '@/sharedComponents/Button3D'
-import { INSTRUMENT, type UserInstrument } from '@types'
+import { GENDER, INSTRUMENT, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
@@ -110,9 +110,9 @@ export const ChangeInstrumentScreen = () => {
       >
         <ScrollContentContainer>
           <AvatarPreview 
-          selectedGender={userData?.gender || 'male'} 
-          selectedInstrument={selectedInstrument}
-        />
+            selectedGender={userData?.gender || GENDER.MALE} 
+            selectedInstrument={selectedInstrument}
+          />
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />

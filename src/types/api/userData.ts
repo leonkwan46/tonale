@@ -1,7 +1,12 @@
 import type { Timestamp } from 'firebase/firestore'
 import type { LessonProgress } from './lessons'
 
-export type UserGender = 'male' | 'female'
+export const GENDER = {
+  MALE: 'male',
+  FEMALE: 'female',
+  NEUTRAL: 'neutral'
+} as const
+export type UserGender = typeof GENDER[keyof typeof GENDER]
 
 export const INSTRUMENT = {
   PIANO: 'piano',
@@ -13,8 +18,9 @@ export const INSTRUMENT = {
 export type UserInstrument = typeof INSTRUMENT[keyof typeof INSTRUMENT]
 
 export interface UserData {
+  firebaseUid: string
   email: string
-  onboardingCompleted?: boolean
+  onboardingCompleted: boolean
   gender?: UserGender
   name?: string
   instrument?: UserInstrument | string // Allow custom instrument strings

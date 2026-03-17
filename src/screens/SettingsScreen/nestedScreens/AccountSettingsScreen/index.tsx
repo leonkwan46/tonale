@@ -2,6 +2,8 @@ import { deleteUserAccount } from '@/config/firebase/auth'
 import { deleteUserData } from '@/config/firebase/functions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useSafeNavigation, useUser } from '@/hooks'
+import { GENDER, type UserGender, INSTRUMENT, type UserInstrument } from '@types'
+import { capitalize } from '@/utils/string'
 import { Alert } from 'react-native'
 
 import { SettingItemHeader } from '../../components/SettingItemHeader'
@@ -72,14 +74,23 @@ export const AccountSettingsScreen = () => {
     }
   }
 
-  const formatInstrument = (instrument: string | undefined): string => {
+  const formatInstrument = (instrument: UserInstrument | string): string => {
     if (!instrument) return 'Not set'
-    return instrument.charAt(0).toUpperCase() + instrument.slice(1)
+    const lower = instrument.toLowerCase()
+
+    if (lower === INSTRUMENT.PIANO) return 'Piano'
+    if (lower === INSTRUMENT.GUITAR) return 'Guitar'
+    if (lower === INSTRUMENT.VIOLIN) return 'Violin'
+    if (lower === INSTRUMENT.VOCAL) return 'Vocal'
+    if (lower === INSTRUMENT.OTHER) return 'Other'
+
+    return capitalize(instrument)
   }
 
-  const formatGender = (gender: string | undefined): string => {
+  const formatGender = (gender: UserGender | null): string => {
     if (!gender) return 'Not set'
-    return gender.charAt(0).toUpperCase() + gender.slice(1)
+    if (gender === GENDER.NEUTRAL) return 'Gender'
+    return capitalize(gender)
   }
 
   return (
@@ -96,14 +107,14 @@ export const AccountSettingsScreen = () => {
                 showSeparator={true}
               />
               <SettingsItem
-                icon="people-outline"
-                label={formatGender(userData?.gender)}
+                icon="male-female-outline"
+                label={formatGender(userData?.gender ?? null)}
                 onPress={handleChangeGender}
                 showSeparator={true}
               />
               <SettingsItem
                 icon="musical-notes-outline"
-                label={formatInstrument(userData?.instrument)}
+                label={formatInstrument(userData?.instrument ?? '')}
                 onPress={handleChangeInstrument}
                 showSeparator={true}
               />

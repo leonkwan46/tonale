@@ -5,6 +5,7 @@ import Entypo from '@expo/vector-icons/Entypo'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { scale } from 'react-native-size-matters'
 import { GenderIconImage } from './OnboardingIcons.styles'
+import { getAvatarHeadSource } from '@/utils/avatarAssets'
 
 /**
  * Maps instrument type to MaterialCommunityIcons icon name
@@ -26,9 +27,7 @@ export const getInstrumentIconName = (instrument: UserInstrument): string => {
  * Renders gender icon (head image) for GridSelection
  */
 export const renderGenderIcon = (gender: UserGender, theme: Theme): React.ReactElement => {
-  const imageSource = gender === 'female'
-    ? require('../../../../../assets/images/girl/girl_head.png')
-    : require('../../../../../assets/images/boy/boy_head.png')
+  const imageSource = getAvatarHeadSource(gender)
   
   return (
     <GenderIconImage
