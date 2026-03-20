@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ScrollViewProps, StyleSheet, View } from 'react-native'
 import {
   Gesture,
@@ -11,59 +11,78 @@ import Animated, {
   useSharedValue,
   withSpring
 } from 'react-native-reanimated'
+import { scheduleOnRN } from 'react-native-worklets'
 
 interface BouncingScrollViewProps extends ScrollViewProps {
   children: React.ReactNode;
+  onBounce?: (direction: 'top' | 'bottom', overscroll: number) => void;
 }
 
 const BouncingScrollView = ({
   children,
+  onBounce,
   ...props
 }: BouncingScrollViewProps) => {
   const translateY = useSharedValue(0)
   const scrollOffset = useSharedValue(0)
-  const [contentHeight, setContentHeight] = useState(0)
-  const [layoutHeight, setLayoutHeight] = useState(0)
+  const contentHeight = useSharedValue(0)
+  const layoutHeight = useSharedValue(0)
 
-  // 1. Capture the scroll position to now when we are at the top/bottom
+  // NOTE: this is to handle the bounce gesture on Android
+  const bounceDirection = useSharedValue(-1)
+  const bounceOverscroll = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollOffset.value = event.contentOffset.y
     }
   })
-
-  // 2. Define the Native Scroll Gesture
   const nativeScroll = Gesture.Native()
-
-  // 3. Define the Bounce (Pan) Gesture
   const bounceGesture = Gesture.Pan()
     .onChange((event) => {
-      const isAtTop = scrollOffset.value <= 0 && event.translationY > 0
+      const maxScroll = Math.max(0, contentHeight.value - layoutHeight.value)
+      const EPS = 2
+      const isAtTop = scrollOffset.value <= EPS && event.translationY > 0
       const isAtBottom =
-        scrollOffset.value >= contentHeight - layoutHeight &&
-        event.translationY < 0
+        scrollOffset.value >= maxScroll - EPS && event.translationY < 0
 
-      if (isAtTop || isAtBottom) {
-        translateY.value = event.translationY * 0.4 // Rubber band effect
+      if (!isAtTop && !isAtBottom) {
+        translateY.value = 0
+        bounceDirection.value = -1
+        bounceOverscroll.value = 0
+        return
       }
+
+      bounceDirection.value = isAtBottom ? 1 : 0
+      const absY = Math.abs(event.translationY)
+      const resisted = (absY * 0.7) / (1 + absY * 0.004)
+      const clamped = Math.min(resisted, 200)
+      bounceOverscroll.value = clamped
+      translateY.value = event.translationY < 0 ? -clamped : clamped
     })
     .onEnd(() => {
-      translateY.value = withSpring(0, { damping: 15 })
+      const direction = bounceDirection.value
+      const overscroll = bounceOverscroll.value
+      translateY.value = withSpring(0, {
+        damping: 10,
+        stiffness: 240,
+        mass: 0.9
+      })
+      if (onBounce && direction !== -1 && overscroll > 0) {
+        scheduleOnRN(onBounce, direction === 1 ? 'bottom' : 'top', overscroll)
+      }
     })
-    // CRITICAL: This allows both to work at the same time
-    .simultaneousWithExternalGesture(nativeScroll)
-
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }]
   }))
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.flexContainer}>
       <View
-        style={styles.container}
-        onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
+        style={styles.flexWhiteContainer}
+        onLayout={(e) => {
+          layoutHeight.value = e.nativeEvent.layout.height
+        }}
       >
-        {/* Wrap in the combined gesture */}
         <GestureDetector
           gesture={Gesture.Simultaneous(bounceGesture, nativeScroll)}
         >
@@ -71,11 +90,15 @@ const BouncingScrollView = ({
             onScroll={scrollHandler}
             scrollEventThrottle={1}
             overScrollMode="never"
-            contentContainerStyle={{ flexGrow: 1 }}
-            onContentSizeChange={(_, h) => setContentHeight(h)}
+            contentContainerStyle={styles.animatedScrollView}
+            onContentSizeChange={(_, h) => {
+              contentHeight.value = h
+            }}
             onScrollEndDrag={props.onScrollEndDrag}
+            // TODO: fix refresh control causing bouncing to fail android
+            // refreshControl={props.refreshControl}
           >
-            <Animated.View style={[animatedStyle, { flex: 1 }]}>
+            <Animated.View style={[animatedStyle, styles.flexContainer]}>
               {children}
             </Animated.View>
           </Animated.ScrollView>
@@ -88,5 +111,7 @@ const BouncingScrollView = ({
 export default BouncingScrollView
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'white' }
+  flexContainer: { flex: 1 },
+  flexWhiteContainer: { flex: 1, backgroundColor: 'white' },
+  animatedScrollView: { flexGrow: 1 }
 })

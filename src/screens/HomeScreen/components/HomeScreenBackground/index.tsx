@@ -8,8 +8,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
-  RefreshControl,
-  ScrollView
+  RefreshControl
 } from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
@@ -45,7 +44,6 @@ export const HomeScreenBackground = ({
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
-  const scrollViewRef = useRef<ScrollView>(null)
   const hasTriggeredRef = useRef(false)
   const pullDistance = useSharedValue(0)
 
@@ -120,34 +118,42 @@ export const HomeScreenBackground = ({
 
   const handleScrollEndDrag = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (hasTriggeredRef.current) return
+      if (Platform.OS !== 'ios' || hasTriggeredRef.current) return
       const { contentOffset, contentSize, layoutMeasurement } =
         event.nativeEvent
       const maxScrollY = contentSize.height - layoutMeasurement.height
       const scrollY = contentOffset.y
-
-
-      if (Platform.OS === 'ios') {
-        if (scrollY > maxScrollY + PULL_THRESHOLD) {
-          hasTriggeredRef.current = true
-          setCelebrationTrigger(true)
-          setMessageIndex((prev) => prev + 1)
-          setTimeout(() => {
-            setCelebrationTrigger(false)
-          }, 1600)
-        }
-      } else {
-        if (scrollY + PULL_THRESHOLD > maxScrollY) {
-          hasTriggeredRef.current = true
-          setCelebrationTrigger(true)
-          setMessageIndex((prev) => prev + 1)
-          setTimeout(() => {
-            setCelebrationTrigger(false)
-          }, 1600)
-        }
+      if (scrollY > maxScrollY + PULL_THRESHOLD) {
+        hasTriggeredRef.current = true
+        setCelebrationTrigger(true)
+        setMessageIndex((prev) => prev + 1)
+        setTimeout(() => {
+          setCelebrationTrigger(false)
+        }, 1600)
       }
     },
     []
+  )
+
+  // NOTE: this function is to handle the bounce gesture on Android
+  const handleBounce = useCallback(
+    (direction: 'top' | 'bottom', overscroll: number) => {
+      if (
+        hasTriggeredRef.current ||
+        Platform.OS !== 'android' ||
+        direction !== 'bottom'
+      )
+        return
+      if (overscroll > PULL_THRESHOLD) {
+        hasTriggeredRef.current = true
+        setCelebrationTrigger(true)
+        setMessageIndex((prev) => prev + 1)
+        setTimeout(() => {
+          setCelebrationTrigger(false)
+        }, 1600)
+      }
+    },
+    [setCelebrationTrigger, setMessageIndex]
   )
 
   return (
@@ -163,6 +169,7 @@ export const HomeScreenBackground = ({
         onScroll={handleScroll}
         scrollEventThrottle={16}
         onScrollEndDrag={handleScrollEndDrag}
+        onBounce={handleBounce}
       >
         <ScrollContentContainer>
           <BackgroundGradient
@@ -185,21 +192,6 @@ export const HomeScreenBackground = ({
           />
         </ScrollContentContainer>
       </BouncingScrollView>
-      {/* <ScrollView
-        ref={scrollViewRef}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        bounces={Platform.OS === 'ios'}
-        alwaysBounceVertical={Platform.OS === 'ios'}
-        overScrollMode={'auto'}
-        showsVerticalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        onScrollEndDrag={handleScrollEndDrag}
-      >
-       
-      </ScrollView> */}
       <ClapCelebration trigger={celebrationTrigger} />
     </HomeScreenContainer>
   )
