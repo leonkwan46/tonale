@@ -5,7 +5,7 @@ import { getCumulativeNoteDefinitions } from '../../curriculum/config/noteRange'
 import { generateQuestionsFromPool } from '../utils/exercise'
 import { generateExplanation } from '../utils/explanation'
 import { calculateAbsoluteSemitone, calculateInterval, extractNotePrefix, getIntervalNameForStage, getNotesForPitches, getStageIntervals } from '../utils/interval'
-import { generateQuestionId, generateWrongChoices } from '../utils/question'
+import { generateQuestionId, generateWrongChoices, THEORY_QUESTION_ID_PREFIX } from '../utils/question'
 
 const CLEFS: ClefType[] = ['treble', 'bass']
 
@@ -47,7 +47,7 @@ export const createIntervalQuestion = (
   }
   
   return {
-    id: generateQuestionId('interval'),
+    id: generateQuestionId(THEORY_QUESTION_ID_PREFIX.INTERVAL),
     question: 'What interval is this above the tonic?',
     correctAnswer,
     choices: generateWrongChoices([...stageIntervals], correctAnswer),

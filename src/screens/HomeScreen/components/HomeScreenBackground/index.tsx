@@ -1,8 +1,9 @@
 import { useWindowDimensions } from '@/hooks'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
 import BouncingScrollView from '@/sharedComponents/BouncingScrollView'
+import { getAvatarFullSource } from '@/utils/avatarAssets'
 import { useTheme } from '@emotion/react'
-import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
+import { GENDER, type UserGender, type UserInstrument } from '@types'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import {
   NativeScrollEvent,
@@ -54,35 +55,7 @@ export const HomeScreenBackground = ({
   }, [isDark])
 
   const avatarImage = useMemo(() => {
-    const isFemale = gender === 'female'
-
-    if (instrument === INSTRUMENT.PIANO) {
-      return isFemale
-        ? require('../../../../../assets/images/girl/girl_piano.png')
-        : require('../../../../../assets/images/boy/boy_piano.png')
-    }
-
-    if (instrument === INSTRUMENT.GUITAR) {
-      return isFemale
-        ? require('../../../../../assets/images/girl/girl_guitar.png')
-        : require('../../../../../assets/images/boy/boy_guitar.png')
-    }
-
-    if (instrument === INSTRUMENT.VIOLIN) {
-      return isFemale
-        ? require('../../../../../assets/images/girl/girl_violin.png')
-        : require('../../../../../assets/images/boy/boy_violin.png')
-    }
-
-    if (instrument === INSTRUMENT.VOCAL) {
-      return isFemale
-        ? require('../../../../../assets/images/girl/girl_vocal.png')
-        : require('../../../../../assets/images/boy/boy_vocal.png')
-    }
-
-    return isFemale
-      ? require('../../../../../assets/images/girl/girl_full.png')
-      : require('../../../../../assets/images/boy/boy_full.png')
+    return getAvatarFullSource(gender || GENDER.MALE, instrument)
   }, [gender, instrument])
 
   const gradientColors = useMemo(() => {

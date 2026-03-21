@@ -97,11 +97,11 @@ const findIncompleteLessonFromIndex = (
     const stageLesson = allStageLessons[i]
     const lesson = getTheoryLessonWithProgress(stageLesson.id, progressData) ?? null
     if (!lesson) continue
-    
+
     const progress = progressData[stageLesson.id]
     if (progress?.isLocked ?? lesson.isLocked ?? false) continue
     if (isLessonComplete(lesson, progress)) continue
-    
+
     return lesson
   }
   return null
@@ -113,19 +113,30 @@ const findLessonToDisplay = (
   allStageLessons: { id: string }[]
 ): Lesson | null => {
   if (lastAccess) {
-    const lesson = getTheoryLessonWithProgress(lastAccess.lessonId, progressData) ?? null
-    if (!lesson) return null
+    const startIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
+    const lessonFromId = getTheoryLessonWithProgress(lastAccess.lessonId, progressData) ?? null
 
-    const progress = progressData[lastAccess.lessonId]
-    if (isLessonComplete(lesson, progress)) {
-      const currentIndex = allStageLessons.findIndex(stageLesson => stageLesson.id === lastAccess.lessonId)
-      if (currentIndex === -1) return null
-      return findIncompleteLessonFromIndex(currentIndex + 1, progressData, allStageLessons)
+    // If lastAccess points to a lesson that no longer exists, or isn't in allStageLessons,
+    // fall back to the first incomplete lesson instead of bailing out.
+    if (!lessonFromId || startIndex === -1) {
+      return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
     }
-    
-    return lesson
+
+    const progress = progressData[lessonFromId.id]
+    if (isLessonComplete(lessonFromId, progress)) {
+      // Try to find the next incomplete lesson after the last accessed one.
+      const nextLesson = findIncompleteLessonFromIndex(startIndex + 1, progressData, allStageLessons)
+      if (nextLesson) {
+        return nextLesson
+      }
+
+      // Wrap around: if there are incomplete lessons before startIndex, pick the first one.
+      return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
+    }
+
+    return lessonFromId
   }
-  
+
   return findIncompleteLessonFromIndex(0, progressData, allStageLessons)
 }
 
@@ -143,7 +154,7 @@ const mergeProgressData = (
   lesson: Lesson,
   progressData: Record<string, ProgressData>
 ): Lesson => {
-  const progress: ProgressData | undefined = progressData[lesson.id]
+  const progress = progressData[lesson.id]
   return {
     ...lesson,
     isLocked: progress?.isLocked ?? lesson.isLocked,

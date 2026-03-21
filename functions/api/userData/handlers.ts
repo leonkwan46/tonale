@@ -20,12 +20,12 @@ export const createUserDataV2 = onCall(async (request) => {
     throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = request.auth.uid
+  const firebaseUid = request.auth.uid
   const userData = request.data
 
   try {
     // Delegate to service layer
-    return await createUserDataService(userId, userData) as CreateUserDataResponse
+    return await createUserDataService(firebaseUid, userData) as CreateUserDataResponse
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     
@@ -49,11 +49,11 @@ export const getUserDataV2 = onCall(async (request) => {
     throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = request.auth.uid
+  const firebaseUid = request.auth.uid
 
   try {
     // Delegate to service layer
-    return await getUserDataService(userId) as GetUserDataResponse
+    return await getUserDataService(firebaseUid) as GetUserDataResponse
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     
@@ -76,12 +76,12 @@ export const updateUserDataV2 = onCall(async (request) => {
     throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = request.auth.uid
+  const firebaseUid = request.auth.uid
   const updates = request.data
 
   try {
     // Delegate to service layer
-    return await updateUserDataService(userId, updates) as UpdateUserDataResponse
+    return await updateUserDataService(firebaseUid, updates) as UpdateUserDataResponse
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     
@@ -106,11 +106,11 @@ export const deleteUserDataV2 = onCall(async (request) => {
     throw new HttpsError('unauthenticated', 'User must be authenticated')
   }
 
-  const userId = request.auth.uid
+  const firebaseUid = request.auth.uid
 
   try {
     // Delegate to service layer (only deletes Firestore data, not Auth account)
-    return await deleteUserDataService(userId) as UserDataSuccessResponse
+    return await deleteUserDataService(firebaseUid) as UserDataSuccessResponse
   } catch (error) {
     console.error('Error deleting user data:', error)
     throw new HttpsError('internal', 'Failed to delete user data')

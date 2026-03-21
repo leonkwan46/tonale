@@ -5,7 +5,7 @@ import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPrevi
 import { GenderSelection } from '@/screens/OnboardingScreen/components/GenderSelection'
 import { Icon } from '@/sharedComponents/Icon'
 import { Button3D } from '@/sharedComponents/Button3D'
-import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
+import { GENDER, INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
@@ -38,7 +38,7 @@ export const ChangeGenderScreen = () => {
   const router = useRouter()
   const scrollViewRef = useRef<ScrollView>(null)
   
-  const currentGender = userData?.gender || 'male'
+  const currentGender = userData?.gender || GENDER.MALE
   const currentInstrument = userData?.instrument
   const initialInstrument = getInstrumentFromValue(currentInstrument)
   
@@ -87,9 +87,9 @@ export const ChangeGenderScreen = () => {
       >
         <ScrollContentContainer>
           <AvatarPreview 
-          selectedGender={selectedGender || 'male'} 
-          selectedInstrument={initialInstrument}
-        />
+            selectedGender={selectedGender || GENDER.MALE} 
+            selectedInstrument={initialInstrument}
+          />
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />

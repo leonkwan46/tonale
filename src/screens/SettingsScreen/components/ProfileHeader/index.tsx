@@ -1,4 +1,5 @@
-import type { UserGender } from '@types'
+import { GENDER, type UserGender } from '@types'
+import { getAvatarHeadSource } from '@/utils/avatarAssets'
 
 import { AvatarContainer, AvatarImage, ProfileName, ProfileSection } from './ProfileHeader.styles'
 
@@ -8,9 +9,7 @@ interface UserDataHeaderProps {
 }
 
 export const ProfileHeader = ({ name, gender }: UserDataHeaderProps) => {
-  const characterImageSource = gender === 'female'
-    ? require('../../../../../assets/images/girl/girl_head.png')
-    : require('../../../../../assets/images/boy/boy_head.png')
+  const characterImageSource = getAvatarHeadSource(gender || GENDER.MALE)
 
   return (
     <ProfileSection>

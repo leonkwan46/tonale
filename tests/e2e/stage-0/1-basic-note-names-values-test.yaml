@@ -9,12 +9,12 @@ appId: com.leonkwan46.tonale
     id: "tab-theory"
 - extendedWaitUntil:
     visible:
-      id: "lesson-title-stage-0-lesson-1"
+      id: "lesson-title-theory-stage-0-lesson-1"
     timeout: 10000
 - assertVisible:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - tapOn:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 
 - assertVisible:
     id: "choice-.*"
@@ -83,9 +83,9 @@ appId: com.leonkwan46.tonale
 - tapOn:
     id: "back-button"
 - assertVisible:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - tapOn:
-    id: "lesson-title-stage-0-lesson-1"
+    id: "lesson-title-theory-stage-0-lesson-1"
 - tapOn:
     id: "back-button"
 

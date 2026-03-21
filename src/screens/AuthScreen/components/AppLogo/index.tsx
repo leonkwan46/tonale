@@ -43,7 +43,7 @@ export const AppLogo = () => {
       <Icon
         name="musical-notes"
         sizeVariant="xl"
-        colorVariant="text"
+        colorVariant="primary"
       />
     </LogoContainer>
   )

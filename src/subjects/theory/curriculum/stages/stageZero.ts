@@ -5,7 +5,7 @@ const stageZero: StageNumber = 0
 
 export const stageZeroLessons: Lesson[] = [
   {
-    id: 'stage-0-lesson-1',
+    id: 'theory-stage-0-lesson-1',
     title: 'Basic Note Names & Values',
     description: 'Identify semibreve, minim, and crotchet notes by name and learn their beat values',
     stars: 0,
@@ -17,7 +17,7 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-lesson-2',
+    id: 'theory-stage-0-lesson-2',
     title: 'Basic Rest Names & Values',
     description: 'Identify semibreve, minim, and crotchet rests by name and learn their beat values',
     stars: 0,
@@ -29,7 +29,7 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-lesson-3',
+    id: 'theory-stage-0-lesson-3',
     title: 'Accidentals',
     description: 'Identify sharp, flat, and natural symbols',
     stars: 0,
@@ -41,7 +41,7 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-lesson-4',
+    id: 'theory-stage-0-lesson-4',
     title: 'Treble Clef Basics',
     description: 'Learn note names in the treble clef from C4 to G4',
     stars: 0,
@@ -53,7 +53,7 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-lesson-5',
+    id: 'theory-stage-0-lesson-5',
     title: 'Bass Clef Basics',
     description: 'Learn note names in the bass clef from F3 to C4',
     stars: 0,
@@ -65,7 +65,7 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-lesson-6',
+    id: 'theory-stage-0-lesson-6',
     title: 'Simple Time Signatures',
     description: 'Understand 2/4, 3/4, 4/4, and common time',
     stars: 0,
@@ -77,7 +77,7 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-lesson-7',
+    id: 'theory-stage-0-lesson-7',
     title: 'Dynamics & Articulation',
     description: 'Identify p, f, mf, mp, staccato, and legato',
     stars: 0,
@@ -89,13 +89,13 @@ export const stageZeroLessons: Lesson[] = [
     }
   },
   {
-    id: 'stage-0-final',
+    id: 'theory-stage-0-final',
     title: 'Stage 0 Test',
     description: 'Review all Stage 0 concepts',
     isFinalTest: true,
     isPassed: false,
     exerciseConfig: {
-      generatorType: 'stage-0-final',
+      generatorType: 'theory-stage-0-final',
       questionsCount: 20,
       stage: stageZero,
       answerLayoutType: 'row'
@@ -104,9 +104,9 @@ export const stageZeroLessons: Lesson[] = [
 ]
 
 export const stage0: Stage = {
-  id: 'stage-0',
+  id: 'theory-stage-0',
   title: 'Pre-Grade Introduction',
-  lessons: stageZeroLessons.map(lesson => ({ ...lesson, stageId: 'stage-0' } as StageLesson)),
+  lessons: stageZeroLessons.map(lesson => ({ ...lesson, stageId: 'theory-stage-0' } as StageLesson)),
   order: 0,
   isUnlocked: true,
   ...calculateStageStats(stageZeroLessons)
