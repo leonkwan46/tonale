@@ -1,5 +1,11 @@
 import React from 'react'
-import { ScrollViewProps, StyleSheet, View } from 'react-native'
+import {
+  Platform,
+  ScrollView,
+  ScrollViewProps,
+  StyleSheet,
+  View
+} from 'react-native'
 import {
   Gesture,
   GestureDetector,
@@ -36,8 +42,32 @@ const BouncingScrollView = ({
       scrollOffset.value = event.contentOffset.y
     }
   })
+  // This is used to calculate the scroll direction to determine manual activation needs
+  const startY = useSharedValue(0)
   const nativeScroll = Gesture.Native()
   const bounceGesture = Gesture.Pan()
+
+    .manualActivation(true) // This is to prevent Pan Gesture automatically take over Native control
+    .onTouchesDown((e, state) => {
+      startY.value = e.allTouches[0].absoluteY
+    })
+    .onTouchesMove((e, state) => {
+      const currentY = e.allTouches[0].absoluteY
+      const deltaY = currentY - startY.value
+
+      const maxScroll = Math.max(0, contentHeight.value - layoutHeight.value)
+      const isAtTop = scrollOffset.value <= 2
+      const isAtBottom = scrollOffset.value >= maxScroll - 2
+
+      // This is to activate the Pan gesture when it is needed
+      if (isAtTop && deltaY > 5) {
+        state.activate()
+      } else if (isAtBottom && deltaY < -5) {
+        state.activate()
+      } else {
+        state.fail()
+      }
+    })
     .onChange((event) => {
       const maxScroll = Math.max(0, contentHeight.value - layoutHeight.value)
       const EPS = 2
@@ -47,17 +77,16 @@ const BouncingScrollView = ({
 
       if (!isAtTop && !isAtBottom) {
         translateY.value = 0
-        bounceDirection.value = -1
-        bounceOverscroll.value = 0
-        return
       }
 
-      bounceDirection.value = isAtBottom ? 1 : 0
-      const absY = Math.abs(event.translationY)
-      const resisted = (absY * 0.7) / (1 + absY * 0.004)
-      const clamped = Math.min(resisted, 200)
-      bounceOverscroll.value = clamped
-      translateY.value = event.translationY < 0 ? -clamped : clamped
+      if (isAtBottom) {
+        bounceDirection.value = isAtBottom ? 1 : 0
+        const absY = Math.abs(event.translationY)
+        const resisted = (absY * 0.7) / (1 + absY * 0.004)
+        const clamped = Math.min(resisted, 200)
+        bounceOverscroll.value = clamped
+        translateY.value = event.translationY < 0 ? -clamped : clamped
+      }
     })
     .onEnd(() => {
       const direction = bounceDirection.value
@@ -75,6 +104,10 @@ const BouncingScrollView = ({
     transform: [{ translateY: translateY.value }]
   }))
 
+  if (Platform.OS === 'ios') {
+    return <ScrollView {...props}>{children}</ScrollView>
+  }
+
   return (
     <GestureHandlerRootView style={styles.flexContainer}>
       <View
@@ -84,7 +117,7 @@ const BouncingScrollView = ({
         }}
       >
         <GestureDetector
-          gesture={Gesture.Simultaneous(bounceGesture, nativeScroll)}
+          gesture={Gesture.Simultaneous(nativeScroll, bounceGesture)}
         >
           <Animated.ScrollView
             onScroll={scrollHandler}
@@ -95,8 +128,7 @@ const BouncingScrollView = ({
               contentHeight.value = h
             }}
             onScrollEndDrag={props.onScrollEndDrag}
-            // TODO: fix refresh control causing bouncing to fail android
-            // refreshControl={props.refreshControl}
+            refreshControl={props.refreshControl}
           >
             <Animated.View style={[animatedStyle, styles.flexContainer]}>
               {children}
