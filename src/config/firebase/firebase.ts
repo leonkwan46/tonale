@@ -35,14 +35,12 @@ const withTimeout = async <T>(promise: Promise<T>, ms: number): Promise<T> => {
   ])
 }
 
-const warnIfEmulatorUnavailable = async (name: string, url: string) => {
+const isEmulatorAvailable = async (url: string): Promise<boolean> => {
   try {
     const response = await withTimeout(fetch(url), 1500)
-    if (!response.ok) {
-      console.warn(`[Firebase] ${name} emulator may be unavailable. Check local emulator startup.`)
-    }
+    return response.ok
   } catch {
-    console.warn(`[Firebase] ${name} emulator is not running. Start Firebase emulators for local development.`)
+    return false
   }
 }
 
@@ -53,9 +51,18 @@ if (__DEV__) {
   connectFunctionsEmulator(functions, host, 5001)
   connectFirestoreEmulator(db, host, 8080)
 
-  void Promise.all([
-    warnIfEmulatorUnavailable('Auth', `http://${host}:9099/`),
-    warnIfEmulatorUnavailable('Functions', `http://${host}:5001/`),
-    warnIfEmulatorUnavailable('Firestore', `http://${host}:8080/`)
-  ])
+  void (async () => {
+    const localSetupHint =
+      'Ensure **tonale-api** (https://github.com/leonkwan46/tonale-api/pull/1) is cloned and running locally.'
+
+    const checks = await Promise.all([
+      isEmulatorAvailable(`http://${host}:9099/`),
+      isEmulatorAvailable(`http://${host}:5001/`),
+      isEmulatorAvailable(`http://${host}:8080/`)
+    ])
+
+    if (checks.some((isAvailable) => !isAvailable)) {
+      console.warn(`[Firebase] One or more local emulators are not running. ${localSetupHint}`)
+    }
+  })()
 }
