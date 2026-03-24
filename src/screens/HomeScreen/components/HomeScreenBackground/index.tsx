@@ -102,6 +102,7 @@ export const HomeScreenBackground = ({
         setMessageIndex((prev) => prev + 1)
         setTimeout(() => {
           setCelebrationTrigger(false)
+          hasTriggeredRef.current = false
         }, 1600)
       }
     },
@@ -123,6 +124,7 @@ export const HomeScreenBackground = ({
         setMessageIndex((prev) => prev + 1)
         setTimeout(() => {
           setCelebrationTrigger(false)
+          hasTriggeredRef.current = false
         }, 1600)
       }
     },
@@ -143,6 +145,7 @@ export const HomeScreenBackground = ({
         scrollEventThrottle={16}
         onScrollEndDrag={handleScrollEndDrag}
         onBounce={handleBounce}
+        pullProgress={pullDistance}
       >
         <ScrollContentContainer>
           <BackgroundGradient
