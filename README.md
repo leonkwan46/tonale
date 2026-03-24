@@ -149,7 +149,6 @@ E2E tests require a running device/simulator and the emulators from step 5.
 | [App Stage Syllabus](./docs/App-Stage-Syllabus.md) | Full lesson breakdown per stage and grade |
 | [Grade Syllabus](./docs/Grade-Syllabus.md) | ABRSM Grade 1–3 curriculum reference |
 | [Aural Exercise System](./docs/AURAL-EXERCISE-SYSTEM.md) | How aural generators and rhythm playback work |
-| [Privacy Compliance](./docs/PRIVACY_COMPLIANCE_REPORT.md) | GDPR, App Store, Play Store compliance notes |
 
 ---
 
