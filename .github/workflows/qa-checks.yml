@@ -17,6 +17,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Checkout backend functions repo
+      uses: actions/checkout@v4
+      with:
+        repository: leonkwan46/tonale-api
+        path: tonale-api
+        token: ${{ secrets.LK_PACKAGE_TOKEN }}
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -45,9 +52,9 @@ jobs:
       run: npm test
       
     - name: Install functions dependencies
-      working-directory: ./functions
+      working-directory: ./tonale-api/functions
       run: npm ci
       
     - name: Type check functions
-      working-directory: ./functions
+      working-directory: ./tonale-api/functions
       run: npx tsc --noEmit
