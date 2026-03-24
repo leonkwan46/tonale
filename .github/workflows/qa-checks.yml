@@ -13,6 +13,10 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: read
     
     steps:
     - name: Checkout code
@@ -30,14 +34,16 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
+        cache-dependency-path: |
+          package-lock.json
+          tonale-api/functions/package-lock.json
+        registry-url: https://npm.pkg.github.com
+        scope: '@leonkwan46'
         
     - name: Install dependencies
       env:
         NODE_AUTH_TOKEN: ${{ secrets.LK_PACKAGE_TOKEN }}
-      run: |
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.LK_PACKAGE_TOKEN }}" > ~/.npmrc
-        echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
-        npm ci
+      run: npm ci
         
     - name: Check for case-sensitivity issues
       run: ./scripts/check-case-sensitivity.sh
@@ -53,6 +59,8 @@ jobs:
       
     - name: Install functions dependencies
       working-directory: ./tonale-api/functions
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.LK_PACKAGE_TOKEN }}
       run: npm ci
       
     - name: Type check functions
