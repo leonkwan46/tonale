@@ -37,9 +37,9 @@ jobs:
         
     - name: Install dependencies
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.MUSIC_NOTATION_SECRET_KEY }}
+        NODE_AUTH_TOKEN: ${{ secrets.LK_PACKAGE_TOKEN }}
       run: |
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.MUSIC_NOTATION_SECRET_KEY }}" > ~/.npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.LK_PACKAGE_TOKEN }}" > ~/.npmrc
         echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
         npm ci
       
