@@ -63,6 +63,8 @@ cd tonale
 ### 2 — Secrets and config
 
 Contact [@leonkwan46](https://github.com/leonkwan46) to get:
+- Invited to the Firebase Tonalè project
+- Added to the Tonalè GitHub organisation
 
 - **`.env`** — placed in the project root, loaded automatically by Expo. Contains:
 
