@@ -1,8 +1,10 @@
 # Tonale
+<img width="19%" height="461" alt="2" src="https://github.com/user-attachments/assets/8c4b0380-2b6f-4c5a-aeb8-fb1f9893bf39" />
+<img width="19%" height="461" alt="4" src="https://github.com/user-attachments/assets/e67930b0-6677-4370-ae1c-31e4ccdc5da9" />
+<img width="19%" height="461" alt="3" src="https://github.com/user-attachments/assets/da6f3f85-0917-4d08-9c2b-4d36b411d069" />
+<img width="19%" height="461" alt="1" src="https://github.com/user-attachments/assets/6a1812ed-0aaf-43bc-a2df-a7a27d00c92c" />
+<img width="19%" height="460" alt="5" src="https://github.com/user-attachments/assets/a5c8a96b-9890-40f2-82d2-c3a66460abdc" />
 
-<img src="https://github.com/user-attachments/assets/adf7b1bd-b176-4f02-8b03-eca0bec0aba1" style="width: 30%; height: auto;" />
-<img src="https://github.com/user-attachments/assets/e3136e28-3e0d-4ed4-9acb-c3edf6181be7" style="width: 30%; height: auto;" />
-<img src="https://github.com/user-attachments/assets/fb2805de-08c0-42ad-9443-c48d219e7489" style="width: 30%; height: auto;" />
 
 A React Native app that teaches music theory, aligned to the **ABRSM Grade 1–5 curriculum**. Built with Expo and TypeScript.
 
