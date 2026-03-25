@@ -14,8 +14,7 @@
     "test:e2e": "./scripts/run-e2e-tests.sh",
     "test:e2e:stage0": "./scripts/run-e2e-tests.sh stage-0",
     "test:e2e:stage1": "./scripts/run-e2e-tests.sh stage-1",
-    "test:e2e:stage2": "./scripts/run-e2e-tests.sh stage-2",
-    "firebase": "firebase emulators:start"
+    "test:e2e:stage2": "./scripts/run-e2e-tests.sh stage-2"
   },
   "dependencies": {
     "@emotion/native": "^11.11.0",
@@ -23,16 +22,17 @@
     "@expo/metro-runtime": "~6.1.2",
     "@expo/vector-icons": "^15.0.2",
     "@gorhom/bottom-sheet": "^5.2.8",
+    "@leonkwan46/functions": "^1.0.0",
     "@leonkwan46/music-notation": "^1.5.0",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/netinfo": "11.4.1",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
-    "@react-navigation/native": "^7.1.6",
+    "@react-navigation/native": "^7.1.8",
     "expo": "~54.0.33",
     "expo-asset": "~12.0.12",
     "expo-audio": "~1.1.1",
-    "expo-blur": "~15.0.7",
+    "expo-blur": "~15.0.8",
     "expo-constants": "~18.0.9",
     "expo-crypto": "~15.0.7",
     "expo-font": "~14.0.9",
@@ -70,7 +70,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^24.7.2",
     "@types/react": "~19.1.10",
-    "babel-jest": "^29.7.0",
+    "babel-jest": "^30.3.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -80,7 +80,8 @@
   },
   "overrides": {
     "js-yaml": ">=4.1.1",
-    "fast-xml-parser": "5.4.2",
+    "fast-xml-parser": "5.5.9",
+    "flatted": "3.4.2",
     "@tootallnate/once": "3.0.1"
   },
   "private": true

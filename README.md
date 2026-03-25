@@ -1,278 +1,157 @@
 # Tonale
-<img src="https://github.com/user-attachments/assets/adf7b1bd-b176-4f02-8b03-eca0bec0aba1" style="width: 30%; height: auto;" />
-<img src="https://github.com/user-attachments/assets/e3136e28-3e0d-4ed4-9acb-c3edf6181be7" style="width: 30%; height: auto;" />
-<img src="https://github.com/user-attachments/assets/fb2805de-08c0-42ad-9443-c48d219e7489" style="width: 30%; height: auto;" />
+<img width="19%" height="461" alt="2" src="https://github.com/user-attachments/assets/8c4b0380-2b6f-4c5a-aeb8-fb1f9893bf39" />
+<img width="19%" height="461" alt="4" src="https://github.com/user-attachments/assets/e67930b0-6677-4370-ae1c-31e4ccdc5da9" />
+<img width="19%" height="461" alt="3" src="https://github.com/user-attachments/assets/da6f3f85-0917-4d08-9c2b-4d36b411d069" />
+<img width="19%" height="461" alt="1" src="https://github.com/user-attachments/assets/6a1812ed-0aaf-43bc-a2df-a7a27d00c92c" />
+<img width="19%" height="460" alt="5" src="https://github.com/user-attachments/assets/a5c8a96b-9890-40f2-82d2-c3a66460abdc" />
 
-A React Native music theory learning application built with Expo.
 
-**Design:** [Figma Design](https://www.figma.com/design/e7W92MCER7LJqvN32p9iL6/Tonale?node-id=0-1&p=f&t=iZkiu1O4a1c1hPtY-0)
+A React Native app that teaches music theory, aligned to the **ABRSM Grade 1–5 curriculum**. Built with Expo and TypeScript.
 
-## Overview
+**[Figma Design](https://www.figma.com/design/e7W92MCER7LJqvN32p9iL6/Tonale?node-id=0-1&p=f&t=iZkiu1O4a1c1hPtY-0)**
 
-Tonale is a music theory learning platform that provides structured lessons aligned with ABRSM Grade 1-5 curriculum. The application features interactive question generation, visual music notation rendering, and progress tracking.
+---
 
-### Key Features
+## What makes it stand out
 
-- Three stages with 24+ lessons (Pre-Grade Introduction, Foundation, Complete Grade 1)
-- Question types: multiple choice, true/false, key press
-- Custom music notation rendering (`@leonkwan46/music-notation`)
-- Lesson progress tracking with star ratings
-- Light/dark mode support
-- Unit tests (Jest) and E2E tests (Maestro)
+**Structured ABRSM curriculum** — lessons are organised across three stages (Pre-Grade, Grade 1, Grade 2+) so learners follow a real exam path, not a random topic list.
+
+**Custom music notation** — `@leonkwan46/music-notation` renders staves, notes, rests, key/time signatures, and articulation marks natively inside React Native; no web view, no images.
+
+**Two subject tracks** — Theory (15 question generators covering everything from note values to triads) and Aural (rhythm playback with a native tap interface). Each has its own curriculum, generators, and lesson flow.
+
+**Smart revision** — wrong answers are captured and resurfaced as dedicated revision sessions so learners revisit exactly what they struggled with.
+
+**Star-based progress** — lessons unlock progressively, and each one grades you with 1–3 stars stored in Firestore via Cloud Functions.
+
+**Fully tested** — 15 Jest-tested question generators and 23 Maestro E2E flows covering every lesson stage end-to-end.
+
+---
+
+## Feature overview
+
+| Feature | Detail |
+|---|---|
+| Lessons | 24+ across Stages 0–2 (Pre-Grade → Grade 1 complete) |
+| Question types | Multiple choice, True/False, Key press |
+| Subjects | Theory + Aural (rhythm playback) |
+| Notation | Custom `@leonkwan46/music-notation` library |
+| Progress | Star ratings, per-lesson and final-test tracking |
+| Revision mode | Stores wrong answers and surfaces them for replay |
+| Auth | Firebase Auth (email/password, with email action links) |
+| Themes | Light + dark mode |
+| Testing | Jest (unit) + Maestro (E2E) |
+| Backend | Separate [tonale-api](https://github.com/leonkwan46/tonale-api) repo (Cloud Functions + Firestore) |
+
+---
+
+## Getting started
+
+### Prerequisites
+
+- **Node 22** — matches CI and the `@leonkwan46/functions` engine. Use [nvm](https://github.com/nvm-sh/nvm): `nvm use` (`.nvmrc` is in the repo root).
+- **npm** — lockfile is `package-lock.json`.
+- **Expo CLI** — `npm install -g @expo/cli` (or use `npx expo`).
+
+### 1 — Clone
+
+```bash
+git clone https://github.com/leonkwan46/tonale.git
+cd tonale
+```
+
+### 2 — Secrets and config
+
+Contact [@leonkwan46](https://github.com/leonkwan46) to get:
+- Invited to the Firebase Tonalè project
+- Added to the Tonalè GitHub organisation
+
+- **`.env`** — placed in the project root, loaded automatically by Expo. Contains:
+
+  ```
+  EXPO_PUBLIC_FIREBASE_API_KEY
+  EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN
+  EXPO_PUBLIC_FIREBASE_PROJECT_ID
+  EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET
+  EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+  EXPO_PUBLIC_FIREBASE_APP_ID
+  EXPO_PUBLIC_AUTH_ACTION_URL
+  ```
+
+- **`google-services.json`** (Android) and **`GoogleService-Info.plist`** (iOS) — only needed when doing native builds.
+
+### 3 — GitHub Packages auth
+
+`@leonkwan46/*` packages are hosted on GitHub Packages. Add these to `~/.npmrc`:
+
+```bash
+echo "//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN" >> ~/.npmrc
+echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
+```
+
+Your token needs **`read:packages`** scope.
+
+### 4 — Install
+
+```bash
+npm install
+```
+
+### 5 — Start the local backend (Firebase emulators)
+
+This app connects to Firebase emulators in `__DEV__` mode — **Auth on 9099**, **Functions on 5001**, **Firestore on 8080**. The emulators are managed by the backend repo:
+
+```bash
+# In a separate terminal — clone and follow the README in that repo
+git clone https://github.com/leonkwan46/tonale-api
+```
+
+Android uses host `10.0.2.2`; iOS Simulator uses `localhost`. The app still runs without emulators, but backend calls will fail gracefully with a console warning.
+
+Install the Firebase CLI if you haven't already:
+
+```bash
+npm install -g firebase-tools
+```
+
+### 6 — Run
+
+```bash
+npm start          # Expo dev server (scan QR or press i/a)
+npm run ios        # iOS Simulator
+npm run android    # Android Emulator
+```
+
+---
+
+## Testing
+
+```bash
+npm test                  # Jest unit tests (all generators)
+npm run test:watch        # Watch mode
+npm run test:coverage     # Coverage report
+
+npm run test:e2e          # All Maestro E2E stages
+npm run test:e2e:stage0   # Pre-grade lessons only
+npm run test:e2e:stage1   # Stage 1 lessons only
+npm run test:e2e:stage2   # Stage 2 lessons only
+```
+
+E2E tests require a running device/simulator and the emulators from step 5.
+
+---
 
 ## Documentation
 
-### 📚 Curriculum Documentation
-
-Available in the [`docs/`](./docs/) folder:
-
-- **[Grade-Syllabus.md](./docs/Grade-Syllabus.md)** - ABRSM-style summary of Grades 1–3 curriculum requirements, covering terms, signs, clefs, time signatures, pitches, scales, intervals, triads, and more
-- **[App-Stage-Syllabus.md](./docs/App-Stage-Syllabus.md)** - Detailed application stage syllabus with lesson breakdowns organised by stages (Pre-Grade, Grade 1, Grade 2, Grade 3)
-- **[Stage-Syllabus-Gap-Analysis.md](./docs/Stage-Syllabus-Gap-Analysis.md)** - Comprehensive analysis identifying missing topics compared to ABRSM requirements, with priority recommendations
-- **[Music_Theory_Qual_Spec_April_2023_2023_rebrand.pdf](./docs/Music_Theory_Qual_Spec_April_2023_2023_rebrand.pdf)** - Official ABRSM Music Theory Qualification Specification reference document
-
-### 🎨 Design System & UX
-
-Complete design and UX documentation in [`_bmad-output/design-system/`](./_bmad-output/design-system/):
-
-- **[UX Audit Report](./_bmad-output/design-system/ux-audit-report-2026-01-30.md)** - Comprehensive app UX review, user journey analysis, priority fixes
-- **[UX Content Audit](./_bmad-output/design-system/ux-content-audit-2026-01-30.md)** - Complete text/microcopy review, clarity issues, style guide (NEW!)
-- **[Design System Overview](./_bmad-output/design-system/README.md)** - Design principles, quick reference, and navigation hub
-- **[Color System](./_bmad-output/design-system/colors.md)** - Complete palette, semantic meanings, usage guidelines
-- **[WCAG Accessibility](./_bmad-output/design-system/wcag-accessibility.md)** - Accessibility audit, compliance fixes, color contrast ratios
-- **[Typography System](./_bmad-output/design-system/typography.md)** - Font scales, weights, usage patterns
-- **[Spacing System](./_bmad-output/design-system/spacing.md)** - Layout spacing, component padding guidelines
-- **[Design Tokens](./_bmad-output/design-system/design-tokens.md)** - Quick reference for all design values
-
-### 🏗️ Architecture & Planning
-
-Development and architecture documentation in [`_bmad-output/planning-artifacts/`](./_bmad-output/planning-artifacts/):
-
-- **[Codebase Structure Guide](./_bmad-output/planning-artifacts/codebase-structure-guide-2026-01-29.md)** - Complete folder structure, where to add new code
-- **[Architecture Assessment](./_bmad-output/planning-artifacts/architecture-assessment-b2c-v1-2026-01-29.md)** - Technical architecture review for B2C launch
-- **[B2C Launch Checklist](./_bmad-output/planning-artifacts/b2c-launch-checklist-2026-01-29.md)** - Pre-launch tasks and verification
-- **[Technical Concerns Decision Log](./_bmad-output/planning-artifacts/technical-concerns-decision-log-2026-01-29.md)** - Answers to technical "what if" scenarios
-
-## Architecture Overview
-
-```mermaid
-graph TB
-    subgraph "Tonale Application"
-        A[Screens] --> B[Theory Screen]
-        A --> C[Lesson Screen]
-        A --> D[Auth Screen]
-        
-        E[Question Generators] --> F[generateLessonQuestions]
-        F --> C
-        
-        C --> G[Answer Interface]
-        C --> H[Lesson Helpers]
-        H --> I[updateLessonProgress]
-        H --> J[updateFinalTestProgress]
-        
-        K[Context Providers] --> L[UserProvider]
-        K --> M[Theme Provider]
-        
-        L --> N[getUserData]
-        L --> O[initialiseUserProgress]
-    end
-    
-    subgraph "Firebase Services"
-        P[Firebase Auth]
-        Q[Cloud Functions]
-        R[Firestore]
-    end
-    
-    I --> Q
-    J --> Q
-    N --> Q
-    O --> Q
-    L --> P
-    
-    Q --> R
-    R --> Q
-    
-    style A fill:#1E40AF
-    style E fill:#3B82F6
-    style K fill:#6D28D9
-    style P fill:#C2410C
-    style Q fill:#15803D
-    style R fill:#1E3A8A
-```
-
-## Tech Stack
-
-**Core Technologies:**
-- **React Native** + **Expo** - Cross-platform mobile development
-- **TypeScript** - Type-safe development with strict mode
-- **Firebase** - Authentication, Firestore, and Cloud Functions
-- **Expo Router** - File-based routing with type-safe navigation
-
-**Testing:**
-- **Jest** - Unit testing for exercise generators and music theory utilities
-- **Maestro** - E2E testing for complete user flows
-
-
-**Music Notation (Custom Implementation):**
-- **@leonkwan46/music-notation** - Custom music notation rendering library for React Native
-- Enables rendering of music staffs, notes, rests, time signatures, key signatures, and articulation marks
-
-**Example Usage:**
-```typescript
-import { MusicStaff, NoteType } from '@leonkwan46/music-notation'
-
-// Render a treble clef staff with few crotchet notes
-<MusicStaff
-  clef="treble"
-  timeSignature={{ numerator: 4, denominator: 4 }}
-  keyName="C"
-  size="med"
-  elements={[
-    [{ pitch: 'C4', type: NoteType.CROTCHET }],
-    [{ pitch: 'D4', type: NoteType.CROTCHET }],
-    [{ pitch: 'E4', type: NoteType.CROTCHET }],
-    [{ pitch: 'F4', type: NoteType.CROTCHET }],
-  ]}
-  showStaff={true}
-/>
-```
-
-
-## Project Structure
-
-### Key Directories
-
-- **`app/`** - Expo Router file-based routing structure
-  - `(auth)/` - Authentication flow screens
-  - `(tabs)/` - Main application tabs (Home, Theory, Aural, Settings)
-  - `lesson.tsx` - Dynamic lesson screen route
-
-- **`src/screens/`** - Screen components organised by feature
-  - Each screen has its own directory with `index.tsx` and `.styles.ts` files
-  - Follows separation of concerns with components in subdirectories
-
-- **`src/theory/`** - Core music theory logic
-  - `curriculum/` - Lesson definitions and stage configurations
-  - `exercises/generators/` - Question generation algorithms
-  - `exercises/custom/` - Specialised question types
-  - `utils/` - Music theory utilities (scales, intervals, triads)
-
-- **`src/sharedComponents/`** - Reusable UI components
-  - `containers/` - Context providers and layout components
-  - Individual component directories with styles
-
-- **`src/config/`** - Configuration files
-  - `firebase/` - Firebase initialization and function wrappers
-  - `gradeSyllabus/` - ABRSM curriculum data
-
-- **`functions/`** - Firebase Cloud Functions
-  - `lessonProgress/` - Lesson progress CRUD operations
-  - `userData/` - User profile management
-
-- **`tests/`** - Test suites
-  - `unit/` - Jest unit tests for exercise generators
-  - `e2e/` - Maestro E2E test flows
-
-## Development Setup
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/leonkwan46/tonale.git
-   cd tonale
-   ```
-
-2. **Required Configuration Files & Credentials**
-   
-   Contact **[leonkwan46](https://github.com/leonkwan46)** to obtain:
-   - **Firebase configuration files**: `google-services.json` (Android), `GoogleService-Info.plist` (iOS)
-   - **`.env` file** with Firebase environment variables
-   
-   Configure npm authentication:
-   ```bash
-   echo "//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN" >> ~/.npmrc
-   echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
-   ```
-
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-4. **Start Firebase Emulators** (for local development)
-   ```bash
-   npm run firebase
-   ```
-   Starts Firebase Auth (port 9099), Firestore (port 8080), and Functions (port 5001) emulators.
-
-   If you are getting `'firebase' is not recognized as an internal or external command, operable program or batch file.` Error, please run the following:
-   ```bash
-   npm install -g firebase-tools
-   ```
-
-6. **Start Development Server**
-   ```bash
-   npm start
-   ```
-
-## Architecture Deep Dive
-
-### Lesson Execution Flow
-
-```mermaid
-graph TD
-    A[User Selects Lesson] --> B[LessonScreen Loads]
-    B --> C[Load Lesson Config]
-    C --> D[Initialise Question Generator]
-    D --> E[Generate Question Set]
-    E --> F[Display First Question]
-    
-    F --> G{Question Type}
-    G -->|Visual| H[Render Music Staff]
-    G -->|Text| I[Display Text Question]
-    
-    H --> J[VisualQuestion Component]
-    I --> K[Text Question Display]
-    
-    J --> L[AnswerInterface]
-    K --> L
-    
-    L --> M{Answer Type}
-    M -->|Multiple Choice| N[MultipleChoice Component]
-    M -->|True/False| O[TrueFalse Component]
-    M -->|Key Press| P[KeyPress Component]
-    
-    N --> Q[User Submits Answer]
-    O --> Q
-    P --> Q
-    
-    Q --> R{Validate Answer}
-    R -->|Correct| S[Update Progress]
-    R -->|Incorrect| T[Show Feedback]
-    
-    S --> U{More Questions?}
-    T --> U
-    
-    U -->|Yes| F
-    U -->|No| V[Calculate Stars]
-    V --> W[Save Progress to Firebase]
-    W --> X[Show Completion Modal]
-    
-    style A fill:#3B82F6
-    style D fill:#1E40AF
-    style R fill:#15803D
-    style W fill:#C2410C
-```
-
-**Question Generation:**
-- Generators in `src/theory/exercises/generators/` create questions based on lesson type
-- Each generator implements a consistent interface returning `Question` objects
-- Visual components render music notation using `@leonkwan46/music-notation` library
-- Answer validation happens client-side with server-side progress tracking
+| Doc | What it covers |
+|---|---|
+| [Architecture](./docs/ARCHITECTURE.md) | Tech stack, project layout, lesson flow, notation, Firebase wiring |
+| [App Stage Syllabus](./docs/App-Stage-Syllabus.md) | Full lesson breakdown per stage and grade |
+| [Grade Syllabus](./docs/Grade-Syllabus.md) | ABRSM Grade 1–3 curriculum reference |
+| [Aural Exercise System](./docs/AURAL-EXERCISE-SYSTEM.md) | How aural generators and rhythm playback work |
 
 ---
 
 ## License
 
-Private project - All rights reserved
+Private project — all rights reserved.

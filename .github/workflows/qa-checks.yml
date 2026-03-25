@@ -13,24 +13,37 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: read
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Checkout backend functions repo
+      uses: actions/checkout@v4
+      with:
+        repository: leonkwan46/tonale-api
+        path: tonale-api
+        token: ${{ secrets.LK_PACKAGE_TOKEN }}
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '22'
         cache: 'npm'
+        cache-dependency-path: |
+          package-lock.json
+          tonale-api/functions/package-lock.json
+        registry-url: https://npm.pkg.github.com
+        scope: '@leonkwan46'
         
     - name: Install dependencies
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.MUSIC_NOTATION_SECRET_KEY }}
-      run: |
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.MUSIC_NOTATION_SECRET_KEY }}" > ~/.npmrc
-        echo "@leonkwan46:registry=https://npm.pkg.github.com" >> ~/.npmrc
-        npm ci
+        NODE_AUTH_TOKEN: ${{ secrets.LK_PACKAGE_TOKEN }}
+      run: npm ci
         
     - name: Check for case-sensitivity issues
       run: ./scripts/check-case-sensitivity.sh
@@ -45,9 +58,11 @@ jobs:
       run: npm test
       
     - name: Install functions dependencies
-      working-directory: ./functions
+      working-directory: ./tonale-api/functions
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.LK_PACKAGE_TOKEN }}
       run: npm ci
       
     - name: Type check functions
-      working-directory: ./functions
+      working-directory: ./tonale-api/functions
       run: npx tsc --noEmit
