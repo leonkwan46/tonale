@@ -1,4 +1,7 @@
+import { useRouter } from 'expo-router'
 import { Component, ReactNode } from 'react'
+
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import {
   ErrorText,
   Message,
@@ -36,15 +39,19 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('🚨 Error Boundary caught an error:', error)
-    console.error('🚨 Error Info:', errorInfo)
-    console.error('🚨 Stack Trace:', error.stack)
+    if (__DEV__) {
+      console.error('ErrorBoundary caught an error:', error)
+      console.error('ErrorBoundary errorInfo:', errorInfo)
+      console.error('ErrorBoundary stack:', error.stack)
+    }
     this.setState({ errorInfo })
   }
 
   render() {
     if (this.state.hasError) {
-      return <ErrorFallback error={this.state.error} errorInfo={this.state.errorInfo} />
+      return (
+        <ErrorFallback error={this.state.error} errorInfo={this.state.errorInfo} />
+      )
     }
 
     return this.props.children
@@ -52,46 +59,52 @@ class ErrorBoundaryClass extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 }
 
 const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorInfo }) => {
+  const router = useRouter()
+
+  const goHome = () => {
+    router.replace('/')
+  }
+
   return (
-    <ScrollContainer>
-      <Title>Oops! Something went wrong</Title>
-      <Message>
-        The app ran into a problem. Try restarting the app.
-      </Message>
+    <ScreenContainer includeBottomPadding>
+      <ScrollContainer>
+        <Title>Something went wrong</Title>
+        <Message>
+          Tonale hit a snag and couldn&apos;t finish what you were doing. Please try again.
+        </Message>
 
-      {error && (
-        <>
-          <SectionTitle>Error Message:</SectionTitle>
-          <ErrorText>
-            {error.message}
-          </ErrorText>
+        {__DEV__ && error && (
+          <>
+            <SectionTitle>Error Message:</SectionTitle>
+            <ErrorText>
+              {error.message}
+            </ErrorText>
 
-          {error.stack && (
-            <>
-              <SectionTitle>Stack Trace:</SectionTitle>
-              <StackText>
-                {error.stack}
-              </StackText>
-            </>
-          )}
-        </>
-      )}
+            {error.stack && (
+              <>
+                <SectionTitle>Stack Trace:</SectionTitle>
+                <StackText>
+                  {error.stack}
+                </StackText>
+              </>
+            )}
+          </>
+        )}
 
-      {errorInfo && errorInfo.componentStack && (
-        <>
-          <SectionTitle>Component Stack:</SectionTitle>
-          <StackText>
-            {errorInfo.componentStack}
-          </StackText>
-        </>
-      )}
+        {__DEV__ && errorInfo && errorInfo.componentStack && (
+          <>
+            <SectionTitle>Component Stack:</SectionTitle>
+            <StackText>
+              {errorInfo.componentStack}
+            </StackText>
+          </>
+        )}
 
-      <ReloadButton>
-        <ReloadText>
-          Check Metro terminal for more details
-        </ReloadText>
-      </ReloadButton>
-    </ScrollContainer>
+        <ReloadButton onTouchEnd={goHome}>
+          <ReloadText>Go to Home</ReloadText>
+        </ReloadButton>
+      </ScrollContainer>
+    </ScreenContainer>
   )
 }
 

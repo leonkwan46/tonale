@@ -53,7 +53,7 @@ export const StackText = styled.Text(({ theme }) => ({
   opacity: 0.8
 }))
 
-export const ReloadButton = styled.View(({ theme }) => ({
+export const ReloadButton = styled.Pressable(({ theme }) => ({
   backgroundColor: theme.colors.primary,
   padding: theme.spacing.md,
   borderRadius: theme.borderRadius.sm,

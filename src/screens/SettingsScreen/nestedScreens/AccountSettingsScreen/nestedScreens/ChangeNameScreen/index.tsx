@@ -5,6 +5,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Icon } from '@/sharedComponents/Icon'
 import { Button3D } from '@/sharedComponents/Button3D'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Keyboard } from 'react-native'
@@ -67,8 +68,9 @@ export const ChangeNameScreen = () => {
         router.back()
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update name'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(err, 'Couldn’t update your name. Please try again.')
+      )
     } finally {
       setLoading(false)
     }

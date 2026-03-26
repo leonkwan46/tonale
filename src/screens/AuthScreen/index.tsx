@@ -2,7 +2,7 @@ import { auth } from '@/config/firebase/firebase'
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useTheme } from '@emotion/react'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { signInAnonymously } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native'
@@ -33,9 +33,10 @@ export interface AuthState {
 }
 
 export const AuthScreen = () => {
-  const theme = useTheme()
   const { height: windowHeight } = useWindowDimensions()
-  const topSpacerRatio = theme.device.isTablet ? 0.05 : 0.1
+  const { width: windowWidth } = useWindowDimensions()
+  const isTablet = Math.min(windowWidth, windowHeight) >= 768
+  const topSpacerRatio = isTablet ? 0.05 : 0.1
 
   // Form state
   const [formData, setFormData] = useState<AuthFormData>({
@@ -63,7 +64,13 @@ export const AuthScreen = () => {
       setAuthState(prev => ({ ...prev, loading: true, error: '' }))
       await signInAnonymously(auth)
     } catch (err) {
-      setAuthState(prev => ({ ...prev, error: (err as Error).message || 'Failed to login as guest' }))
+      setAuthState((prev) => ({
+        ...prev,
+        error: getUserFacingErrorMessage(
+          err,
+          'Couldn’t sign in as a guest. Please try again.'
+        )
+      }))
     } finally {
       setAuthState(prev => ({ ...prev, loading: false }))
     }
