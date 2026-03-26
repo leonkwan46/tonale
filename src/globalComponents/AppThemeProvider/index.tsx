@@ -1,9 +1,8 @@
-import { darkTheme, lightTheme, navigationDarkTheme, navigationLightTheme } from '@/config/theme/theme'
+import { darkTheme, lightTheme } from '@/config/theme/theme'
 import { DEVICE } from '@/constants/device'
 import { useWindowDimensions } from '@/hooks'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react'
-import { ThemeProvider } from '@react-navigation/native'
 import { type ReactNode, useMemo } from 'react'
 
 interface AppThemeProviderProps {
@@ -32,10 +31,8 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
   }), [isDark, deviceInfo])
 
   return (
-    <ThemeProvider value={isDark ? navigationDarkTheme : navigationLightTheme}>
-      <EmotionThemeProvider theme={extendedTheme}>
-        {children}
-      </EmotionThemeProvider>
-    </ThemeProvider>
+    <EmotionThemeProvider theme={extendedTheme}>
+      {children}
+    </EmotionThemeProvider>
   )
 }
