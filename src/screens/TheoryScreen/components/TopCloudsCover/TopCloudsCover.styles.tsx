@@ -3,7 +3,6 @@ import styled from '@emotion/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useMemo } from 'react'
 import { Animated, Dimensions } from 'react-native'
-import { scale } from 'react-native-size-matters'
 
 const { width: screenWidth } = Dimensions.get('window')
 
