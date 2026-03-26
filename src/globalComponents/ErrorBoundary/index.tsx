@@ -3,11 +3,11 @@ import { Component, ReactNode } from 'react'
 
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import {
+  ErrorBoundaryScroll,
   ErrorText,
   Message,
   ReloadButton,
   ReloadText,
-  ScrollContainer,
   SectionTitle,
   StackText,
   Title
@@ -67,7 +67,7 @@ const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
 
   return (
     <ScreenContainer includeBottomPadding>
-      <ScrollContainer>
+      <ErrorBoundaryScroll>
         <Title>Something went wrong</Title>
         <Message>
           Tonale hit a snag and couldn&apos;t finish what you were doing. Please try again.
@@ -103,7 +103,7 @@ const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
         <ReloadButton onTouchEnd={goHome}>
           <ReloadText>Go to Home</ReloadText>
         </ReloadButton>
-      </ScrollContainer>
+      </ErrorBoundaryScroll>
     </ScreenContainer>
   )
 }
