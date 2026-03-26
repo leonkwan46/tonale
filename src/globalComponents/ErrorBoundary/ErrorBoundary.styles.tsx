@@ -12,7 +12,7 @@ export const Title = styled.Text(({ theme }) => ({
   color: theme.colors.error,
   marginBottom: theme.spacing.md,
   textAlign: 'center',
-  fontFamily: getSourGummyFontFamily('bold')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 export const Message = styled.Text(({ theme }) => ({
@@ -21,7 +21,7 @@ export const Message = styled.Text(({ theme }) => ({
   textAlign: 'center',
   marginBottom: theme.spacing.lg,
   opacity: 0.8,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const SectionTitle = styled.Text(({ theme }) => ({
@@ -29,13 +29,13 @@ export const SectionTitle = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   marginTop: theme.spacing.md,
   marginBottom: theme.spacing.sm,
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const ErrorText = styled.Text(({ theme }) => ({
   fontSize: theme.typography.sm,
   color: theme.colors.error,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   backgroundColor: theme.colors.surface,
   padding: theme.spacing.sm,
   borderRadius: theme.borderRadius.sm,
@@ -45,7 +45,7 @@ export const ErrorText = styled.Text(({ theme }) => ({
 export const StackText = styled.Text(({ theme }) => ({
   fontSize: theme.typography.sm,
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   backgroundColor: theme.colors.surface,
   padding: theme.spacing.sm,
   borderRadius: theme.borderRadius.sm,
@@ -62,7 +62,7 @@ export const ReloadButton = styled.View(({ theme }) => ({
 }))
 
 export const ReloadText = styled.Text(({ theme }) => ({
-  color: theme.colors.background,
+  color: theme.colors.primaryContrast,
   fontSize: theme.typography.base,
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))

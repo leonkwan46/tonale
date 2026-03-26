@@ -11,7 +11,7 @@ export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: theme.colors.modalMask,
+  backgroundColor: theme.components.modal.mask,
   justifyContent: 'center',
   alignItems: 'center',
   zIndex: 1000
@@ -23,7 +23,7 @@ export const ModalContainer = styled(View, {
   ({ theme, width, variant }) => ({
     backgroundColor:
       variant === 'light'
-        ? theme.colors.displayCard.background
+        ? theme.components.displayCard.background
         : theme.colors.surface,
     borderRadius: scale(theme.borderRadius.xl),
     padding: theme.device.isTablet
@@ -36,7 +36,7 @@ export const ModalContainer = styled(View, {
       : scale(theme.spacing.xl),
     borderWidth: 1,
     borderColor:
-      variant === 'light' ? theme.colors.displayCard.text : theme.colors.border
+      variant === 'light' ? theme.components.notation.text : theme.colors.border
   })
 )
 
@@ -46,7 +46,7 @@ export const TitleText = styled.Text(({ theme }) => ({
     : scale(theme.typography.xl),
   color: theme.colors.text,
   textAlign: 'center',
-  fontFamily: getSourGummyFontFamily('bold')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 export const DescriptionText = styled.Text(({ theme }) => ({
@@ -56,7 +56,7 @@ export const DescriptionText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   textAlign: 'center',
   opacity: 0.8,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const ButtonContainer = styled.View<{ singleButton?: boolean }>(
@@ -97,7 +97,7 @@ export const ModalButtonText = styled.Text<{ variant: 'filled' | 'outlined' }>(
       ? scale(theme.typography.sm)
       : scale(theme.typography.base),
     color:
-      variant === 'filled' ? theme.colors.background : theme.colors.primary,
-    fontFamily: getSourGummyFontFamily('600')
+      variant === 'filled' ? theme.colors.primaryContrast : theme.colors.primary,
+    fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
   })
 )

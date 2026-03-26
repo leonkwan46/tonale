@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -17,15 +16,11 @@ export const SuccessContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
-export const SuccessIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
-}))
-
 export const SuccessText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
@@ -40,7 +35,7 @@ export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
+  color: theme.colors.primaryContrast,
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))

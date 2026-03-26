@@ -25,8 +25,8 @@ export const ToggleButton = styled(TouchableOpacity)<{ isActive: boolean }>(({ t
 
 export const ToggleText = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: theme.colors.text,
+  color: isActive ? theme.colors.primaryContrast : theme.colors.text,
   opacity: isActive ? 1 : 0.7,
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 

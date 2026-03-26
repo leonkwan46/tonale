@@ -30,7 +30,7 @@ const Title = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   textAlign: 'center',
   marginBottom: theme.spacing.md,
-  fontFamily: getSourGummyFontFamily('bold')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 const StyledLink = styled(Link)(({ theme }) => ({
@@ -42,5 +42,5 @@ const LinkText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
   fontSize: theme.typography.base,
   textDecorationLine: 'underline',
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))

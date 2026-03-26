@@ -13,8 +13,8 @@ export const InputField = styled.View(({ theme }) => ({
   paddingTop: theme.device.isTablet ? scale(12) : scale(16),
   paddingBottom: theme.device.isTablet ? scale(12) : scale(16),
   minHeight: theme.device.isTablet ? scale(120) : scale(160),
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.border,
+  backgroundColor: theme.components.input.background,
+  borderColor: theme.components.input.border,
   gap: theme.device.isTablet ? scale(6) : scale(8)
 }))
 
@@ -25,8 +25,8 @@ export const EmailInputField = styled.View(({ theme }) => ({
   borderRadius: scale(12),
   paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
   height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.border,
+  backgroundColor: theme.components.input.background,
+  borderColor: theme.components.input.border,
   gap: theme.device.isTablet ? scale(6) : scale(8)
 }))
 
@@ -34,18 +34,18 @@ export const EmailInput = styled.TextInput(({ theme }) => ({
   flex: 1,
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   height: '100%',
-  color: theme.colors.text,
-  placeholderTextColor: theme.colors.placeholderText,
-  fontFamily: getSourGummyFontFamily('400')
+  color: theme.components.input.text,
+  placeholderTextColor: theme.components.input.placeholder,
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const FeedbackInput = styled.TextInput(({ theme }) => ({
   flex: 1,
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   minHeight: theme.device.isTablet ? scale(100) : scale(130),
-  color: theme.colors.text,
-  placeholderTextColor: theme.colors.placeholderText,
-  fontFamily: getSourGummyFontFamily('400'),
+  color: theme.components.input.text,
+  placeholderTextColor: theme.components.input.placeholder,
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(18) : scale(20)
 }))
 
@@ -65,7 +65,7 @@ export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
   fontSize: theme.device.isTablet ? scale(10) : scale(12),
   flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const SuccessContainer = styled.View(({ theme }) => ({
@@ -84,7 +84,7 @@ export const SuccessText = styled.Text(({ theme }) => ({
   color: theme.colors.success,
   fontSize: theme.device.isTablet ? scale(10) : scale(12),
   flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
@@ -98,9 +98,9 @@ export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
+  color: theme.colors.primaryContrast,
   fontSize: theme.device.isTablet ? scale(12) : scale(16),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const ScrollContentContainer = styled.View({
@@ -122,13 +122,14 @@ export const ConsentText = styled.Text(({ theme }) => ({
   flex: 1,
   fontSize: theme.device.isTablet ? scale(11) : scale(12),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(16) : scale(18)
 }))
 
 export const PrivacyNoticeText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(10) : scale(11),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
+  color: theme.colors.text,
+  opacity: 0.65,
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(14) : scale(16)
 }))

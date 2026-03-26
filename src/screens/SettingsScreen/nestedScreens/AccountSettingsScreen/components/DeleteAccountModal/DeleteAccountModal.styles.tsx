@@ -10,7 +10,7 @@ export const ModalMask = styled(Modal)({})
 
 export const ModalMaskContainer = styled.View(({ theme }) => ({
   flex: 1,
-  backgroundColor: theme.colors.modalMask,
+  backgroundColor: theme.components.modal.mask,
   justifyContent: 'center',
   padding: scale(theme.spacing.lg)
 }))
@@ -32,15 +32,15 @@ export const TitleText = styled.Text(({ theme }) => ({
 export const BodyText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   fontSize: scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const InputField = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
-  backgroundColor: theme.colors.surface,
+  backgroundColor: theme.components.input.background,
   borderWidth: scale(1),
-  borderColor: theme.colors.border,
+  borderColor: theme.components.input.border,
   borderRadius: scale(theme.borderRadius.md),
   paddingHorizontal: scale(theme.spacing.md),
   height: theme.device.isTablet ? scale(40) : scale(56),
@@ -51,8 +51,8 @@ const BaseInput = styled(TextInput)(({ theme }) => ({
   flex: 1,
   fontSize: scale(theme.typography.sm),
   height: '100%',
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
+  color: theme.components.input.text,
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const Input = forwardRef<TextInput, TextInputProps>(
@@ -61,7 +61,7 @@ export const Input = forwardRef<TextInput, TextInputProps>(
     return (
       <BaseInput
         ref={ref}
-        placeholderTextColor={theme.colors.placeholderText}
+        placeholderTextColor={theme.components.input.placeholder}
         {...props}
       />
     )
@@ -88,7 +88,7 @@ export const StatusText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
   fontSize: scale(theme.typography.sm),
   flex: 1,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const ActionsRow = styled.View(({ theme }) => ({
@@ -121,7 +121,7 @@ export const ConfirmButton = styled.Pressable(({ theme }) => ({
 }))
 
 export const ConfirmButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.overlayText,
+  color: theme.colors.errorContrast,
   fontSize: scale(theme.typography.base),
   fontWeight: theme.fontWeight.bold,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)

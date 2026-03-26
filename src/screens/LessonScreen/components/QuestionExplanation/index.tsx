@@ -4,6 +4,7 @@ import {
   getExplanationFormattingConfig,
   shouldShowVisualInExplanation
 } from '@/subjects/theory/exercises/utils/explanation'
+import { fontWeight } from '@/config/theme/tokens/typography'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
 import type { ReactNode } from 'react'
@@ -55,7 +56,7 @@ function formatExplanationWithBoldAnswer(text: string, correctAnswer: string): R
   while ((match = regex.exec(text)) !== null) {
     if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index))
     parts.push(
-      createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily('700') } }, match[0])
+      createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily(fontWeight.bold) } }, match[0])
     )
     lastIndex = regex.lastIndex
   }

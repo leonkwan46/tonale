@@ -16,7 +16,7 @@ export const TitleText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   flexWrap: 'wrap',
   width: '100%',
-  fontFamily: getSourGummyFontFamily('bold')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 export const DescriptionText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? theme.typography['2xl'] : theme.typography.base,
@@ -24,5 +24,5 @@ export const DescriptionText = styled.Text(({ theme }) => ({
   flexWrap: 'wrap',
   width: '100%',
   flexShrink: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))

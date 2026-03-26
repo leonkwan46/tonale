@@ -47,7 +47,7 @@ export const XMarksContainer = styled.View(({ theme }) => ({
 
 export const XMark = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
-  color: isActive ? theme.colors.error : theme.colors.secondary,
+  color: isActive ? theme.colors.error : theme.colors.text,
   opacity: isActive ? 1 : 0.3,
   fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))

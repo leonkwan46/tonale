@@ -3,10 +3,10 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 export const DisplayCardContainer = styled.View<{ minHeight?: number }>(({ theme, minHeight = 200 }) => ({
-  backgroundColor: theme.colors.displayCard.background,
+  backgroundColor: theme.components.displayCard.background,
   borderRadius: theme.borderRadius.lg,
   borderWidth: 1,
-  borderColor: theme.colors.displayCard.text,
+  borderColor: theme.components.notation.text,
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',

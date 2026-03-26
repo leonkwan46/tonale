@@ -193,7 +193,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
         height={buttonHeight}
       >
         {() => (
-          <TapButtonText isTablet={isTablet}>
+          <TapButtonText isTablet={isTablet} buttonColor={getButtonColor(buttonState)}>
             Tap
           </TapButtonText>
         )}

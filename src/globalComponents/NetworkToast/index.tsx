@@ -158,7 +158,7 @@ export const NetworkToast = () => {
     <ToastContainer topInset={top} style={animatedStyle}>
       <ToastMessage variant={variant}>
         <ToastRow>
-          <ToastIcon name={iconName} />
+          <ToastIcon name={iconName} variant={variant} />
           <ToastText>{message}</ToastText>
         </ToastRow>
       </ToastMessage>

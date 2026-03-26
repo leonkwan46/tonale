@@ -12,7 +12,7 @@ export const AppNameText = styled.Text(({ theme }) => ({
   marginBottom: scale(theme.spacing.sm),
   letterSpacing: scale(-0.5),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('700')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 export const TaglineContainer = styled(Animated.View)(() => ({}))
@@ -24,6 +24,6 @@ export const TaglineText = styled.Text(({ theme }) => ({
   lineHeight: scale(22),
   opacity: 0.8,
   color: theme.colors.icon,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 

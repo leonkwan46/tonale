@@ -28,7 +28,7 @@ export const DividerText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.base),
   opacity: 0.6,
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
@@ -45,7 +45,7 @@ export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(
 export const SecondaryButtonText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily('500')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const ButtonIcon = styled.View(({ theme }) => ({

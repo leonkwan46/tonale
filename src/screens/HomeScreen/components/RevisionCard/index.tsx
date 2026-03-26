@@ -16,7 +16,7 @@ export const RevisionCard = () => {
   const { revisionQuestions, revisionQuestionsLoading, progressDataLoading, progressDataInitialized } = useProgress()
   const { isNavigating, navigate } = useSafeNavigation()
   const theme = useTheme()
-  const cardSize = theme.components.cardButton.size
+  const cardSize = theme.dimensions.cardButtonSize
 
   const handleStartRevision = () => {
     navigate('/revision')

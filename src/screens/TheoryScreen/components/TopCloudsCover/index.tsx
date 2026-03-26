@@ -1,8 +1,5 @@
-import { useTheme } from '@emotion/react'
-import styled from '@emotion/native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { useEffect, useMemo, useRef } from 'react'
-import { Animated, Dimensions, Easing } from 'react-native'
+import { useEffect, useRef } from 'react'
+import { Animated, Easing } from 'react-native'
 import { scale } from 'react-native-size-matters'
 import {
   MessageContainer,
@@ -11,7 +8,12 @@ import {
   SpacerView
 } from '@/screens/TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
 
-const { width: screenWidth } = Dimensions.get('window')
+import {
+  CloudLayer,
+  CloudsContainer,
+  GradientOverlay,
+  useTopCloudsCoverCloudShapes
+} from './TopCloudsCover.styles'
 
 interface TopCloudsCoverProps {
   coverHeight?: number
@@ -19,74 +21,12 @@ interface TopCloudsCoverProps {
   reserveLayoutSpace?: boolean
 }
 
-interface CloudColors {
-  light1: string
-  light2: string
-  light3: string
-  light4: string
-  light5: string
-  light6: string
-  light7: string
-  light8: string
-}
-
-const CloudsContainer = styled.View<{ coverHeight: number }>(({ coverHeight }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  height: coverHeight,
-  zIndex: 10,
-  overflow: 'hidden'
-}))
-
-const CloudLayer = styled(Animated.View)<{
-  backgroundColor: string
-  height: number
-  borderRadius: number
-}>(({ backgroundColor, height, borderRadius }) => ({
-  position: 'absolute',
-  backgroundColor,
-  height,
-  borderRadius,
-  opacity: 0.8
-}))
-
-const GradientOverlay = styled(LinearGradient)<{ coverHeight: number }>(({ coverHeight }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  height: coverHeight,
-  zIndex: 1
-}))
-
-const getCloudShapes = (cloudColors: CloudColors) => [
-  { width: screenWidth * 0.4, left: -25, top: 5, color: cloudColors.light1 },
-  { width: screenWidth * 0.65, left: screenWidth * 0.25, top: 10, color: cloudColors.light2 },
-  { width: screenWidth * 0.5, left: screenWidth * 0.7, top: 15, color: cloudColors.light3 },
-  { width: screenWidth * 0.7, left: -30, top: 35, color: cloudColors.light4 },
-  { width: screenWidth * 0.6, left: screenWidth * 0.1, top: 30, color: cloudColors.light5 },
-  { width: screenWidth * 0.45, left: screenWidth * 0.6, top: 40, color: cloudColors.light2 },
-  { width: screenWidth * 0.5, left: -20, top: 60, color: cloudColors.light6 },
-  { width: screenWidth * 0.55, left: screenWidth * 0.3, top: 55, color: cloudColors.light3 },
-  { width: screenWidth * 0.3, left: screenWidth * 0.75, top: 65, color: cloudColors.light4 },
-  { width: screenWidth * 0.6, left: -30, top: 85, color: cloudColors.light7 },
-  { width: screenWidth * 0.7, left: screenWidth * 0.15, top: 80, color: cloudColors.light6 },
-  { width: screenWidth * 0.4, left: screenWidth * 0.05, top: 100, color: cloudColors.light2 },
-  { width: screenWidth * 0.3, left: screenWidth * 0.7, top: 105, color: cloudColors.light3 },
-  { width: screenWidth * 0.4, left: 10, top: 120, color: cloudColors.light5 },
-  { width: screenWidth * 0.6, left: screenWidth * 0.3, top: 110, color: cloudColors.light8 },
-  { width: screenWidth * 0.4, left: screenWidth * 0.8, top: 130, color: cloudColors.light5 }
-]
-
 export const TopCloudsCover = ({
   coverHeight = scale(180),
   message = null,
   reserveLayoutSpace = false
 }: TopCloudsCoverProps) => {
-  const theme = useTheme()
-  const cloudShapes = useMemo(() => getCloudShapes(theme.colors.clouds), [theme.colors.clouds])
+  const cloudShapes = useTopCloudsCoverCloudShapes()
   const cloudAnimations = useRef(
     cloudShapes.map(() => new Animated.Value(Math.random()))
   ).current

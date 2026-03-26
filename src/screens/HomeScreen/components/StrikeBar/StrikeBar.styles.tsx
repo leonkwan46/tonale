@@ -13,10 +13,6 @@ export const StrikeBarContainer = styled(View)(({ theme }) => ({
   alignSelf: 'center'
 }))
 
-export const StrikeBarCardContainer = styled(View)({
-  position: 'relative'
-})
-
 export const DayLabel = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.sm),
   color: theme.colors.text,

@@ -33,7 +33,7 @@ const getDepthColor = (
 ): string => {
   if (customStyles?.depthColor) return customStyles.depthColor
   if (variant === 'outlined') return 'transparent'
-  return color ? theme.colors.choiceButtonDepth[color] : 'transparent'
+  return color ? theme.components.button[color].depth : 'transparent'
 }
 
 const hasCustomDimensions = (customStyles: CardCustomStyles | undefined): boolean => {
@@ -89,7 +89,7 @@ const getContentBackgroundColor = (
 ): string => {
   if (customStyles?.backgroundColor) return customStyles.backgroundColor
   if (variant === 'outlined') return 'transparent'
-  return color ? theme.colors.choiceButton[color] : 'transparent'
+  return color ? theme.components.button[color].color : 'transparent'
 }
 
 const getContentBorderColor = (
@@ -99,7 +99,7 @@ const getContentBorderColor = (
   theme: AppTheme
 ): string => {
   if (customStyles?.borderColor) return customStyles.borderColor
-  if (variant === 'outlined' && color) return theme.colors.choiceButton[color]
+  if (variant === 'outlined' && color) return theme.components.button[color].color
   return 'transparent'
 }
 

@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -11,8 +10,8 @@ export const InputField = styled.View(({ theme }) => ({
   borderRadius: scale(12),
   paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
   height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.border,
+  backgroundColor: theme.components.input.background,
+  borderColor: theme.components.input.border,
   gap: theme.device.isTablet ? scale(6) : scale(8)
 }))
 
@@ -20,9 +19,9 @@ export const Input = styled.TextInput(({ theme }) => ({
   flex: 1,
   fontSize: theme.device.isTablet ? scale(12) : scale(14),
   height: '100%',
-  color: theme.colors.text,
-  placeholderTextColor: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400')
+  color: theme.components.input.text,
+  placeholderTextColor: theme.components.input.placeholder,
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const ErrorContainer = styled.View(({ theme }) => ({
@@ -41,13 +40,13 @@ export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
   fontSize: theme.device.isTablet ? scale(10) : scale(12),
   flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
+  color: theme.colors.primaryContrast,
   fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const SaveButtonContent = styled.View(({ theme }) => ({
@@ -56,14 +55,6 @@ export const SaveButtonContent = styled.View(({ theme }) => ({
   justifyContent: 'center',
   paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
   width: '100%'
-}))
-
-export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.error
-}))
-
-export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
 }))
 
 export const ScrollContentContainer = styled.View({
