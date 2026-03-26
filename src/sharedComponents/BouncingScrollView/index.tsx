@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react'
 import React from 'react'
 import {
   Platform,
@@ -32,6 +33,7 @@ const BouncingScrollView = ({
   pullProgress,
   ...props
 }: BouncingScrollViewProps) => {
+  const theme = useTheme()
   const translateY = useSharedValue(0)
   const scrollOffset = useSharedValue(0)
   const contentHeight = useSharedValue(0)
@@ -112,7 +114,7 @@ const BouncingScrollView = ({
   return (
     <GestureHandlerRootView style={styles.flexContainer}>
       <View
-        style={styles.flexWhiteContainer}
+        style={[styles.flexFill, { backgroundColor: theme.colors.background }]}
         onLayout={(e) => {
           layoutHeight.value = e.nativeEvent.layout.height
         }}
@@ -145,6 +147,6 @@ export default BouncingScrollView
 
 const styles = StyleSheet.create({
   flexContainer: { flex: 1 },
-  flexWhiteContainer: { flex: 1, backgroundColor: 'white' },
+  flexFill: { flex: 1 },
   animatedScrollView: { flexGrow: 1 }
 })

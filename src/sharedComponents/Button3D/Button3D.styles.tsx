@@ -23,7 +23,7 @@ const getDepthColor = (
   theme: AppTheme
 ): string => {
   if (customStyles?.depthColor) return customStyles.depthColor
-  return color ? theme.colors.choiceButtonDepth[color] : 'transparent'
+  return color ? theme.components.button[color].depth : 'transparent'
 }
 
 const getBackgroundColor = (
@@ -32,7 +32,7 @@ const getBackgroundColor = (
   theme: AppTheme
 ): string => {
   if (customStyles?.backgroundColor) return customStyles.backgroundColor
-  return color ? theme.colors.choiceButton[color] : 'transparent'
+  return color ? theme.components.button[color].color : 'transparent'
 }
 
 
