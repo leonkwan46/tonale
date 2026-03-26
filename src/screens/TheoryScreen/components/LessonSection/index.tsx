@@ -21,7 +21,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
   const { isNavigating, navigate } = useSafeNavigation()
   const [showWarningModal, setShowWarningModal] = useState(false)
   const theme = useTheme()
-  const cardSize = theme.components.cardButton.size
+  const cardSize = theme.dimensions.cardButtonSize
   const cardColor = lesson.isLocked ? 'grey' : 'blue'
   
   const renderCard = () => (

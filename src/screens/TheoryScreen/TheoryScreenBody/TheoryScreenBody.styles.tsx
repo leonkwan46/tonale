@@ -63,7 +63,7 @@ export const MessageContainer = styled.View(({ theme }) => ({
 export const MessageText = styled.Text(({ theme }) => ({
   color: theme.colors.overlayText,
   fontSize: scale(theme.typography.sm),
-  fontFamily: getSourGummyFontFamily('500'),
+  fontFamily: getSourGummyFontFamily(),
   textAlign: 'center'
 }))
 
