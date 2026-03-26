@@ -17,8 +17,9 @@ export const ScrollContentContainer = styled(View)(({ theme }) => ({
 
 export const LastUpdatedText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(11) : scale(12),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
+  color: theme.colors.text,
+  opacity: 0.65,
+  fontFamily: getSourGummyFontFamily(),
   marginBottom: theme.device.isTablet ? scale(20) : scale(16)
 }))
 
@@ -37,14 +38,14 @@ export const SectionTitleFirst = styled(SectionTitleWrapper)(() => ({
 export const SectionTitle = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(19) : scale(18),
   color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily('700'),
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
   letterSpacing: 0.3
 }))
 
 export const Paragraph = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(13) : scale(14),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(22) : scale(20),
   marginBottom: theme.device.isTablet ? scale(12) : scale(10)
 }))
@@ -52,27 +53,27 @@ export const Paragraph = styled.Text(({ theme }) => ({
 export const ParagraphPlain = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(13) : scale(14),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(22) : scale(20)
 }))
 
 export const ParagraphBold = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(13) : scale(14),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('600'),
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
   lineHeight: theme.device.isTablet ? scale(22) : scale(20)
 }))
 
 export const ParagraphItalic = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(13) : scale(14),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400', true),
+  fontFamily: getSourGummyFontFamily(undefined, true),
   lineHeight: theme.device.isTablet ? scale(22) : scale(20)
 }))
 
 export const ParagraphHighlight = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(13) : scale(14),
   color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily('600'),
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
   lineHeight: theme.device.isTablet ? scale(22) : scale(20)
 }))

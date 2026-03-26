@@ -23,7 +23,7 @@ export const SettingsItemLabel = styled.Text<{ variant?: 'default' | 'red' }>(({
   flex: 1,
   fontSize: scale(theme.typography.base),
   color: variant === 'red' ? theme.colors.error : theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const Separator = styled(View)(({ theme }) => ({

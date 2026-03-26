@@ -29,6 +29,6 @@ export const BackButton = styled(TouchableOpacity)(({ theme }) => ({
 export const Title = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.lg || 20),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold || '700')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 

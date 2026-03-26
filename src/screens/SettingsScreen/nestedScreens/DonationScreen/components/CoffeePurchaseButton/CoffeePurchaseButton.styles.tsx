@@ -26,11 +26,11 @@ export const ButtonDescription = styled(Text)(({ theme }) => ({
   flex: 1,
   fontSize: theme.device.isTablet ? scale(14) : scale(16),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const PriceText = styled(Text)(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(16) : scale(18),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('bold')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))

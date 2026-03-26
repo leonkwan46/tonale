@@ -30,13 +30,13 @@ export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
+  color: theme.colors.primaryContrast,
   fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const SaveButtonContent = styled.View(({ theme }) => ({

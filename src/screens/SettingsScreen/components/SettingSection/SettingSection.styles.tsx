@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 export const Container = styled.View<{ variant: 'list' | 'form' }>(({ theme, variant }) => ({
-  backgroundColor: theme.colors.card,
+  backgroundColor: theme.colors.settingSection,
   borderRadius: scale(theme.borderRadius.md),
   ...(variant === 'list'
     ? {

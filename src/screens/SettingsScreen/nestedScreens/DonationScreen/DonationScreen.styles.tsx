@@ -33,7 +33,7 @@ export const NarrativeLine = styled.View(({ theme }) => ({
 export const NarrativeText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(18) : scale(16),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(26) : scale(22)
 }))
 

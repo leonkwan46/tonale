@@ -13,7 +13,7 @@ export const Container = styled.View({
 export const DescriptionText = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.base),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: scale(theme.typography.xl),
   textAlign: 'center'
 }))
