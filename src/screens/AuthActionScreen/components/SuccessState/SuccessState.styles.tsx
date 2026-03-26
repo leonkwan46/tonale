@@ -25,7 +25,7 @@ export const SuccessText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
@@ -40,7 +40,7 @@ export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({
 }))
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
+  color: theme.colors.primaryContrast,
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))

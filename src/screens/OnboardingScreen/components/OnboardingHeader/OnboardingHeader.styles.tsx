@@ -19,7 +19,7 @@ export const Title = styled.Text(({ theme }) => ({
 export const Subtitle = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal),
+  fontFamily: getSourGummyFontFamily(),
   textAlign: 'center',
   opacity: 0.7
 }))

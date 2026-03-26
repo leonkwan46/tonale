@@ -58,7 +58,7 @@ export const MessageContainer = styled.View(({ theme }) => ({
 }))
 
 export const MessageText = styled.Text(({ theme }) => ({
-  color: 'white',
+  color: theme.colors.overlayText,
   fontSize: scale(theme.typography.base),
   textAlign: 'center'
 }))

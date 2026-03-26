@@ -11,12 +11,12 @@ export const ContentWrapper = styled.View(({ theme }) => ({
 export const TopText = styled.Text(({ theme }) => ({
   fontSize: theme.typography.base,
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const BottomText = styled.Text(({ theme }) => ({
   fontSize: theme.typography.base,
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 

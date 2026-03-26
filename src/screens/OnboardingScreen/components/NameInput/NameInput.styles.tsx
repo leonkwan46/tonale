@@ -21,9 +21,10 @@ export const NameInputField = styled(TextInput)(({ theme }) => ({
   borderRadius: scale(theme.borderRadius.md),
   paddingHorizontal: scale(theme.spacing.md),
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: theme.colors.text,
+  color: theme.components.input.text,
+  backgroundColor: theme.components.input.background,
   borderColor: theme.colors.primary,
-  placeholderTextColor: theme.colors.placeholderText,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
+  placeholderTextColor: theme.components.input.placeholder,
+  fontFamily: getSourGummyFontFamily()
 }))
 

@@ -22,11 +22,11 @@ const StyledTextInput = styled(TextInput)(({ theme }) => ({
   borderRadius: scale(theme.borderRadius.md),
   paddingHorizontal: scale(theme.spacing.md),
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: theme.colors.text,
-  backgroundColor: theme.colors.surface,
+  color: theme.components.input.text,
+  backgroundColor: theme.components.input.background,
   borderColor: theme.colors.primary,
-  placeholderTextColor: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
+  placeholderTextColor: theme.components.input.placeholder,
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const CustomInstrumentInput = React.forwardRef<TextInput, React.ComponentProps<typeof StyledTextInput>>(

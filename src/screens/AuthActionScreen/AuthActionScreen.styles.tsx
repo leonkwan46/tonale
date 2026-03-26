@@ -27,13 +27,14 @@ export const RefreshButton = styled(TouchableOpacity)(({ theme }) => ({
 export const RefreshButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
   fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const DebugText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.xs),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
+  color: theme.colors.text,
+  opacity: 0.65,
+  fontFamily: getSourGummyFontFamily(),
   textAlign: 'center',
   marginBottom: scale(theme.spacing.sm),
   padding: scale(theme.spacing.sm),

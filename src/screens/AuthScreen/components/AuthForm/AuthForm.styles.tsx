@@ -42,7 +42,7 @@ export const StatusText = styled.Text<{ variant: 'error' | 'success' }>(
       ? scale(theme.typography.xs)
       : scale(theme.typography.sm),
     flex: 1,
-    fontFamily: getSourGummyFontFamily('400')
+    fontFamily: getSourGummyFontFamily()
   })
 )
 
@@ -63,8 +63,8 @@ export const InputField = styled.View(({ theme }) => ({
     ? scale(theme.spacing.sm)
     : scale(theme.spacing.md),
   height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.border,
+  backgroundColor: theme.components.input.background,
+  borderColor: theme.components.input.border,
   gap: theme.device.isTablet
     ? scale(theme.spacing.xs)
     : scale(theme.spacing.sm)
@@ -76,8 +76,8 @@ const BaseInput = styled(TextInput)(({ theme }) => ({
     ? scale(theme.typography.sm)
     : scale(theme.typography.sm),
   height: '100%',
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400')
+  color: theme.components.input.text,
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const Input = forwardRef<TextInput, TextInputProps>(
@@ -86,7 +86,7 @@ export const Input = forwardRef<TextInput, TextInputProps>(
     return (
       <BaseInput
         ref={ref}
-        placeholderTextColor={theme.colors.placeholderText}
+        placeholderTextColor={theme.components.input.placeholder}
         {...props}
       />
     )
@@ -103,7 +103,7 @@ export const RequirementsText = styled.Text(({ theme }) => ({
     : scale(theme.typography.sm),
   textAlign: 'center',
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const ForgotPasswordTouchable = styled(TouchableOpacity)(
@@ -119,7 +119,7 @@ export const ForgotPasswordText = styled.Text(({ theme }) => ({
     ? scale(theme.typography.xs)
     : scale(theme.typography.sm),
   color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
 
 export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(
@@ -140,12 +140,12 @@ export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(
 )
 
 export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
+  color: theme.colors.primaryContrast,
   fontSize: theme.device.isTablet
     ? scale(theme.typography.sm)
     : scale(theme.typography.base),
   marginRight: theme.device.isTablet
     ? scale(theme.spacing.xs)
     : scale(theme.spacing.sm),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
