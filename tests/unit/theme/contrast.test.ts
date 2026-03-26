@@ -15,24 +15,26 @@ describe('theme color contrast (WCAG AA normal text)', () => {
     expect(contrastRatio(c.text, c.surface)).toBeGreaterThanOrEqual(AA_NORMAL)
     expect(
       contrastRatio(
-        compositeForegroundOnBackground(c.textPlaceholder, c.inputBackground),
-        c.inputBackground
+        compositeForegroundOnBackground(
+          lightTheme.components.input.placeholder,
+          lightTheme.components.input.background
+        ),
+        lightTheme.components.input.background
       )
     ).toBeGreaterThanOrEqual(AA_NORMAL)
     expect(contrastRatio(c.primaryContrast, c.primary)).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
     expect(contrastRatio(c.errorContrast, c.error)).toBeGreaterThanOrEqual(AA_NORMAL)
-    expect(contrastRatio(c.accentContrast, c.accent)).toBeGreaterThanOrEqual(
-      AA_NORMAL
-    )
     expect(contrastRatio(c.successContrast, c.success)).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
     expect(contrastRatio(c.warningContrast, c.warning)).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
-    expect(contrastRatio(c.text, c.settingSection)).toBeGreaterThanOrEqual(
+    expect(
+      contrastRatio(c.text, lightTheme.components.settings.sectionBackground)
+    ).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
   })
@@ -45,24 +47,26 @@ describe('theme color contrast (WCAG AA normal text)', () => {
     expect(contrastRatio(c.text, c.surface)).toBeGreaterThanOrEqual(AA_NORMAL)
     expect(
       contrastRatio(
-        compositeForegroundOnBackground(c.textPlaceholder, c.inputBackground),
-        c.inputBackground
+        compositeForegroundOnBackground(
+          darkTheme.components.input.placeholder,
+          darkTheme.components.input.background
+        ),
+        darkTheme.components.input.background
       )
     ).toBeGreaterThanOrEqual(AA_NORMAL)
     expect(contrastRatio(c.primaryContrast, c.primary)).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
     expect(contrastRatio(c.errorContrast, c.error)).toBeGreaterThanOrEqual(AA_NORMAL)
-    expect(contrastRatio(c.accentContrast, c.accent)).toBeGreaterThanOrEqual(
-      AA_NORMAL
-    )
     expect(contrastRatio(c.successContrast, c.success)).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
     expect(contrastRatio(c.warningContrast, c.warning)).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
-    expect(contrastRatio(c.text, c.settingSection)).toBeGreaterThanOrEqual(
+    expect(
+      contrastRatio(c.text, darkTheme.components.settings.sectionBackground)
+    ).toBeGreaterThanOrEqual(
       AA_NORMAL
     )
   })

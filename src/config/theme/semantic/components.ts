@@ -75,6 +75,36 @@ export const lightComponentColors = {
     border: palette.gray400,
     text: palette.gray975,
     placeholder: palette.gray500
+  },
+
+  tabBar: {
+    active: palette.blue600,
+    inactive: palette.gray400
+  },
+
+  modal: {
+    mask: palette.modalMask,
+    overlayText: palette.white
+  },
+
+  settings: {
+    sectionBackground: palette.gray100
+  },
+
+  notation: {
+    text: palette.black
+  },
+
+  achievement: {
+    gold: palette.gold400
+  },
+
+  stage: {
+    cleared: palette.green500,
+    perfect: palette.gold400,
+    perfectBorder: palette.gold500,
+    textOnCleared: palette.gray975,
+    textOnPerfect: palette.black
   }
 }
 
@@ -153,5 +183,35 @@ export const darkComponentColors = {
     border: palette.gray800,
     text: palette.gray100,
     placeholder: palette.gray100
+  },
+
+  tabBar: {
+    active: palette.white,
+    inactive: palette.gray600
+  },
+
+  modal: {
+    mask: palette.modalMask,
+    overlayText: palette.white
+  },
+
+  settings: {
+    sectionBackground: palette.gray850
+  },
+
+  notation: {
+    text: palette.black
+  },
+
+  achievement: {
+    gold: palette.gold700
+  },
+
+  stage: {
+    cleared: palette.green400,
+    perfect: palette.gold700,
+    perfectBorder: palette.gold600,
+    textOnCleared: palette.gray975,
+    textOnPerfect: palette.black
   }
 }

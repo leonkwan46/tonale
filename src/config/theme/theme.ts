@@ -17,8 +17,6 @@ import { fontWeight, typography } from './tokens/typography'
 export type IconColorVariant =
   | 'primary'
   | 'primaryContrast'
-  | 'accent'
-  | 'accentContrast'
   | 'success'
   | 'successContrast'
   | 'warning'

@@ -1,3 +1,3 @@
 export { darkComponentColors, lightComponentColors } from './components'
-export type { ThemeSemanticColors } from './semanticColors'
-export { darkSemanticColors, lightSemanticColors } from './semanticColors'
+export { darkSemanticColors, lightSemanticColors } from './global'
+export type { ThemeSemanticColors } from './global'

@@ -5,9 +5,11 @@ import {
 import { darkTheme, lightTheme, type AppTheme } from './theme'
 
 const runSemanticContrastChecks = (
-  colors: AppTheme['colors'],
+  theme: AppTheme,
   label: string
 ): void => {
+  const { colors, components } = theme
+
   assertContrastInDev(
     colors.text,
     colors.background,
@@ -22,12 +24,12 @@ const runSemanticContrastChecks = (
   )
   assertContrastInDev(
     compositeForegroundOnBackground(
-      colors.textPlaceholder,
-      colors.inputBackground
+      components.input.placeholder,
+      components.input.background
     ),
-    colors.inputBackground,
+    components.input.background,
     4.5,
-    `${label} textPlaceholder/inputBackground`
+    `${label} input.placeholder/input.background`
   )
   assertContrastInDev(
     colors.primaryContrast,
@@ -40,12 +42,6 @@ const runSemanticContrastChecks = (
     colors.error,
     4.5,
     `${label} errorContrast/error`
-  )
-  assertContrastInDev(
-    colors.accentContrast,
-    colors.accent,
-    4.5,
-    `${label} accentContrast/accent`
   )
   assertContrastInDev(
     colors.successContrast,
@@ -61,9 +57,9 @@ const runSemanticContrastChecks = (
   )
   assertContrastInDev(
     colors.text,
-    colors.settingSection,
+    components.settings.sectionBackground,
     4.5,
-    `${label} text/settingSection`
+    `${label} text/settings.sectionBackground`
   )
 }
 
@@ -82,8 +78,8 @@ export const runDevThemeContrastChecks = (
 ): void => {
   if (typeof __DEV__ === 'undefined' || !__DEV__) return
 
-  runSemanticContrastChecks(light.colors, 'light')
-  runSemanticContrastChecks(dark.colors, 'dark')
+  runSemanticContrastChecks(light, 'light')
+  runSemanticContrastChecks(dark, 'dark')
   assertButtonContrast('light', light.components.button)
   assertButtonContrast('dark', dark.components.button)
 }
