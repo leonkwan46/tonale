@@ -14,11 +14,17 @@ import { AnimatedFlameContainer } from './AnimatedFlame.styles'
 
 interface AnimatedFlameProps {
   color: string
+  opacity?: number
   size: number
   isActive: boolean
 }
 
-export const AnimatedFlame = ({ color, size, isActive }: AnimatedFlameProps) => {
+export const AnimatedFlame = ({
+  color,
+  opacity = 1,
+  size,
+  isActive
+}: AnimatedFlameProps) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
   const rotation = useSharedValue(0)
@@ -110,11 +116,7 @@ export const AnimatedFlame = ({ color, size, isActive }: AnimatedFlameProps) => 
 
   return (
     <AnimatedFlameContainer size={size} style={animatedStyle}>
-      <Ionicons
-        name="flame"
-        size={size}
-        color={color}
-      />
+      <Ionicons name="flame" size={size} color={color} style={{ opacity }} />
     </AnimatedFlameContainer>
   )
 }

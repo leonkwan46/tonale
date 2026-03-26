@@ -24,5 +24,5 @@ export const PullIndicatorMessage = styled(Text)(({ theme }) => ({
   textAlign: 'center',
   marginTop: scale(8),
   opacity: 0.8,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))

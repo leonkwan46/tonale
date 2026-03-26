@@ -28,15 +28,16 @@ export const SkeletonContentSection = styled.View(({ theme }) => ({
 export const ContinueButtonText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
   color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('bold'),
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
   paddingVertical: scale(theme.spacing.sm),
   textAlign: 'center'
 }))
 
 export const NoLessonText = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.base),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
+  color: theme.colors.text,
+  opacity: 0.65,
+  fontFamily: getSourGummyFontFamily(),
   textAlign: 'center',
   paddingVertical: scale(theme.spacing.lg)
 }))

@@ -60,10 +60,10 @@ export const HomeScreenBackground = ({
 
   const gradientColors = useMemo(() => {
     const colors = isDark
-      ? theme.colors.homeScreen.gradient.dark
-      : theme.colors.homeScreen.gradient.light
+      ? theme.components.homeScreen.gradient.dark
+      : theme.components.homeScreen.gradient.light
     return colors as unknown as readonly [string, string, ...string[]]
-  }, [isDark, theme.colors.homeScreen.gradient])
+  }, [isDark, theme.components.homeScreen.gradient])
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
   // Need to implement gesture-based solution for Android if cross-platform support is required.

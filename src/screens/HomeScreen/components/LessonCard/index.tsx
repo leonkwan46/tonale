@@ -14,7 +14,7 @@ export const LessonCard = () => {
   const { isNavigating, navigate } = useSafeNavigation()
   const isTablet = useDevice().isTablet
   const theme = useTheme()
-  const cardSize = theme.components.cardButton.size
+  const cardSize = theme.dimensions.cardButtonSize
 
   if (loading) {
     return (
