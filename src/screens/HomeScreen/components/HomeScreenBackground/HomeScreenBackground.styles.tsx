@@ -12,10 +12,6 @@ export const ScrollContentContainer = styled.View(() => ({
   flexGrow: 1
 }))
 
-export const HomeScreenBackgroundContainer = styled(View)({
-  flex: 1
-})
-
 export const ImageContainer = styled(View)({
   flex: 1,
   justifyContent: 'flex-end',
@@ -40,10 +36,4 @@ export const AvatarImage = styled(Image)<{ screenWidth: number }>(({ screenWidth
 
 export const BackgroundGradient = styled(LinearGradient)(({ theme }) => ({
   paddingBottom: scale(100)
-}))
-
-export const ContentContainer = styled(View)(({ theme }) => ({
-  padding: scale(theme.spacing.sm),
-  gap: scale(theme.spacing.lg),
-  alignItems: 'center'
 }))

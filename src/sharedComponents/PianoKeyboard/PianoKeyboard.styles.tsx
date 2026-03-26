@@ -1,11 +1,11 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-export const WHITE_KEY_HEIGHT = scale(145)
+const WHITE_KEY_HEIGHT = scale(145)
 export const WHITE_KEY_WIDTH = scale(42)
 export const WHITE_KEY_MARGIN = scale(1)
-export const BLACK_KEY_HEIGHT = scale(80)
-export const BLACK_KEY_WIDTH = scale(35)
+const BLACK_KEY_HEIGHT = scale(80)
+const BLACK_KEY_WIDTH = scale(35)
 export const BLACK_KEY_OFFSET = WHITE_KEY_WIDTH / 2 - BLACK_KEY_WIDTH / 2 + scale(23)
 
 export const KeyboardContainer = styled.View(({ theme }) => ({

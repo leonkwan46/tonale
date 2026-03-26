@@ -1,8 +1,5 @@
 import styled from '@emotion/native'
-import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const Card = styled.View(({ theme }) => ({
   flex: 1,
@@ -11,34 +8,3 @@ export const Card = styled.View(({ theme }) => ({
   justifyContent: 'center',
   gap: scale(theme.spacing.lg)
 }))
-
-export const RefreshButton = styled(TouchableOpacity)(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm),
-  borderRadius: scale(theme.borderRadius.md),
-  borderWidth: 1,
-  borderColor: theme.colors.primary,
-  backgroundColor: 'transparent',
-  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm)
-}))
-
-export const RefreshButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primary,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const DebugText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.xs),
-  color: theme.colors.text,
-  opacity: 0.65,
-  fontFamily: getSourGummyFontFamily(),
-  textAlign: 'center',
-  marginBottom: scale(theme.spacing.sm),
-  padding: scale(theme.spacing.sm),
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(theme.borderRadius.xs)
-}))
-

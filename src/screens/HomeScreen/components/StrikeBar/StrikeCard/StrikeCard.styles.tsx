@@ -3,12 +3,12 @@ import styled from '@emotion/native'
 import { Dimensions, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export type StrikeCardColorState = {
+type StrikeCardColorState = {
   isEmpty: boolean
   isActive: boolean
 }
 
-export type StrikeCardFlameProps = {
+type StrikeCardFlameProps = {
   color: string
   opacity: number
 }

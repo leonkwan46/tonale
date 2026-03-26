@@ -18,7 +18,7 @@ export const ToastContainer = styled(Animated.View)<{
   elevation: 99
 }))
 
-export type ToastVariant = 'error' | 'warning' | 'success';
+export type ToastVariant = 'error' | 'warning' | 'success'
 
 export const ToastMessage = styled.View<{ variant: ToastVariant }>(
   ({ theme, variant }) => ({

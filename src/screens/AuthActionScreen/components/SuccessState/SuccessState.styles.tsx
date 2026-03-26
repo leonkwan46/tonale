@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -15,10 +14,6 @@ export const SuccessContainer = styled.View(({ theme }) => ({
   paddingVertical: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
-}))
-
-export const SuccessIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
 }))
 
 export const SuccessText = styled.Text(({ theme }) => ({

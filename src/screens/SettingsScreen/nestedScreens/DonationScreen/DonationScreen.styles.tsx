@@ -1,6 +1,5 @@
 import styled from '@emotion/native'
 import { Image, ScrollView } from 'react-native'
-import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -42,5 +41,3 @@ export const ButtonsContainer = styled.View(({ theme }) => ({
   paddingHorizontal: theme.device.isTablet ? scale(24) : scale(20),
   paddingBottom: theme.device.isTablet ? scale(32) : scale(24)
 }))
-
-export const AnimatedButtonsContainer = Animated.createAnimatedComponent(ButtonsContainer)

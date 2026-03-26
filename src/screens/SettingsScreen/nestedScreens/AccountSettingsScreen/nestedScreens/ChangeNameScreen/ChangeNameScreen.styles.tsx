@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -56,14 +55,6 @@ export const SaveButtonContent = styled.View(({ theme }) => ({
   justifyContent: 'center',
   paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
   width: '100%'
-}))
-
-export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.error
-}))
-
-export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
 }))
 
 export const ScrollContentContainer = styled.View({

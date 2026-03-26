@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -14,10 +13,6 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   paddingVertical: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
-}))
-
-export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.error
 }))
 
 export const ErrorText = styled.Text(({ theme }) => ({

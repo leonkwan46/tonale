@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { TextInput, TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -21,10 +20,6 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   paddingVertical: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
-}))
-
-export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.error
 }))
 
 export const ErrorText = styled.Text(({ theme }) => ({
@@ -53,10 +48,6 @@ export const Input = styled(TextInput)(({ theme }) => ({
   color: theme.components.input.text,
   placeholderTextColor: theme.components.input.placeholder,
   fontFamily: getSourGummyFontFamily()
-}))
-
-export const PrimaryIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
 }))
 
 export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
