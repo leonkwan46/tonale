@@ -39,7 +39,7 @@ export const ChoiceText = styled.Text<{ layoutType: LayoutType }>(({ theme, layo
     fontSize: getFontSize(),
     color: theme.colors.text,
     textAlign: 'center',
-    fontFamily: getSourGummyFontFamily('600'),
+    fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
     width: '100%'
   }
 })

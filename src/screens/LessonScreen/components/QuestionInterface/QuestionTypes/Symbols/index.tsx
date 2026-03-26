@@ -1,6 +1,6 @@
 import type { VisualComponent } from '@types'
 import { renderTermAndSign } from '../../../../utils/visualRender'
-import { VisualQuestionContainer } from '../../../VisualQuestion/VisualQuestion.styles'
+import { QuestionContainer } from '../../QuestionContainer.styles'
 
 interface SymbolsProps {
   visualComponent: VisualComponent
@@ -12,12 +12,12 @@ export const Symbols = ({ visualComponent }: SymbolsProps) => {
   }
 
   return (
-    <VisualQuestionContainer>
+    <QuestionContainer>
       {renderTermAndSign(
         visualComponent.symbolType,
         visualComponent.renderAsSymbol,
         visualComponent.enableTTS
       )}
-    </VisualQuestionContainer>
+    </QuestionContainer>
   )
 }

@@ -21,7 +21,7 @@ export const TTSButton = ({ symbolType }: TTSButtonProps) => {
       <Icon
         name={isPlaying ? 'pause' : 'volume-high'}
         sizeVariant="md"
-        colorVariant="text"
+        colorVariant="primaryContrast"
       />
     </TTSButtonRoot>
   )

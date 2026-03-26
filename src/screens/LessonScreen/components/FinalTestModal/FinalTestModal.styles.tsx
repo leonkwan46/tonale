@@ -28,5 +28,5 @@ export const ButtonContent = styled(View)(({ theme }) => ({
 export const ButtonText = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   fontSize: theme.device.isTablet ? scale(14) : scale(18),
-  fontFamily: getSourGummyFontFamily('600')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))

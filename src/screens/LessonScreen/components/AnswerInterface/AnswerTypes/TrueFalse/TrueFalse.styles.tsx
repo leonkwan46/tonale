@@ -28,6 +28,6 @@ export const ChoiceText = styled.Text(({ theme }) => {
     fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
     color: theme.colors.text,
     textAlign: 'center',
-    fontFamily: getSourGummyFontFamily('600')
+    fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
   }
 })

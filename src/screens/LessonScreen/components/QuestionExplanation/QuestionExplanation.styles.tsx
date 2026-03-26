@@ -5,17 +5,17 @@ import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const ExplanationText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(14) : scale(16),
-  color: theme.colors.displayCard.text,
+  color: theme.colors.cardText,
   textAlign: 'center',
-  fontFamily: getSourGummyFontFamily('400'),
+  fontFamily: getSourGummyFontFamily(),
   lineHeight: theme.device.isTablet ? scale(20) : scale(24)
 }))
 
 export const ContinueButtonText = styled.Text(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(13) : scale(16),
-  color: theme.colors.background,
+  color: theme.colors.primaryContrast,
   textAlign: 'center',
-  fontFamily: getSourGummyFontFamily('600'),
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
   paddingVertical: theme.device.isTablet ? scale(8) : scale(12),
   paddingHorizontal: theme.device.isTablet ? scale(16) : scale(20)
 }))

@@ -55,6 +55,11 @@ export const Playback: FC<PlaybackProps> = ({
 
   const isCurrentlyPlaying = isPlaying || isPlayingClaps || isPlayingAudioFile
 
+  const playButtonDisabled =
+    isCurrentlyPlaying ||
+    isAnswering ||
+    (!onPlaybackPress && !questionInterface.rhythm && !questionInterface.audioFile)
+
   const { ripples, removeRipple } = usePlaybackRipples({
     isPlaying: isCurrentlyPlaying,
     rhythm: questionInterface.rhythm
@@ -98,10 +103,10 @@ export const Playback: FC<PlaybackProps> = ({
           isPlaying={isCurrentlyPlaying}
           onPlaybackPress={handlePlaybackPressInternal}
           onPress={handlePlaybackPressInternal}
-          disabled={isCurrentlyPlaying || isAnswering || (!onPlaybackPress && !questionInterface.rhythm && !questionInterface.audioFile)}
+          disabled={playButtonDisabled}
         >
           <PlayIcon
-            isTablet={isTablet}
+            disabled={playButtonDisabled}
             name={isCurrentlyPlaying ? 'pause' : 'play'}
             size={getPlayIconSize(isTablet)}
           />

@@ -1,4 +1,5 @@
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createForwardProps } from '@/utils/styledProps'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
@@ -27,7 +28,7 @@ export const PlaybackText = styled.Text<{ isTablet: boolean }>(({ theme, isTable
   fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
   color: theme.colors.text,
   textAlign: 'center',
-  fontFamily: getSourGummyFontFamily('700')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
@@ -58,8 +59,10 @@ export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying
   }
 })
 
-export const PlayIcon = styled(Ionicons)<{ isTablet: boolean }>(({ theme }) => ({
-  color: theme.colors.background
+export const PlayIcon = styled(Ionicons, {
+  shouldForwardProp: createForwardProps(['disabled'])
+})<{ disabled: boolean }>(({ theme, disabled }) => ({
+  color: disabled ? theme.colors.icon : theme.colors.primaryContrast
 }))
 
 export const getPlayIconSize = (isTablet: boolean): number => {
