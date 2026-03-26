@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const FormCard = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.settingSection,
+  backgroundColor: theme.components.settings.sectionBackground,
   borderRadius: scale(theme.borderRadius.md),
   padding: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
   gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)

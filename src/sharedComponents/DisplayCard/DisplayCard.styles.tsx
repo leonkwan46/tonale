@@ -6,7 +6,7 @@ export const DisplayCardContainer = styled.View<{ minHeight?: number }>(({ theme
   backgroundColor: theme.components.displayCard.background,
   borderRadius: theme.borderRadius.lg,
   borderWidth: 1,
-  borderColor: theme.colors.cardText,
+  borderColor: theme.components.notation.text,
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',

@@ -54,7 +54,7 @@ export const TabLabel = styled.Text<{
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ focused, theme, config }) => ({
   fontSize: theme.device.isTablet ? config.fontSize : scale(config.fontSize),
-  color: focused ? theme.colors.tint : theme.colors.tabIconDefault,
+  color: focused ? theme.components.tabBar.active : theme.components.tabBar.inactive,
   marginTop: 4,
   fontFamily: getSourGummyFontFamily()
 }))
@@ -63,5 +63,5 @@ export const TabIcon = styled(Ionicons)<{
   focused: boolean
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ focused, theme, config }) => ({
-  color: focused ? theme.colors.tint : theme.colors.tabIconDefault
+  color: focused ? theme.components.tabBar.active : theme.components.tabBar.inactive
 }))

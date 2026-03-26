@@ -53,7 +53,7 @@ export const MessageOverlay = styled.View(({ theme }) => ({
 }))
 
 export const MessageContainer = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.modalMask,
+  backgroundColor: theme.components.modal.mask,
   padding: scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),
   maxWidth: scale(280),
@@ -61,7 +61,7 @@ export const MessageContainer = styled.View(({ theme }) => ({
 }))
 
 export const MessageText = styled.Text(({ theme }) => ({
-  color: theme.colors.overlayText,
+  color: theme.components.modal.overlayText,
   fontSize: scale(theme.typography.sm),
   fontFamily: getSourGummyFontFamily(),
   textAlign: 'center'

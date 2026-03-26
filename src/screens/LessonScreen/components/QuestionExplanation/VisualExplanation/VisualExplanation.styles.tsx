@@ -5,7 +5,7 @@ export const ExplanationCard = styled.View(({ theme }) => ({
   backgroundColor: theme.components.displayCard.background,
   borderRadius: scale(theme.borderRadius.lg),
   borderWidth: scale(1),
-  borderColor: theme.colors.cardText,
+  borderColor: theme.components.notation.text,
   width: '100%',
   minHeight: theme.device.isTablet ? scale(115) : scale(135),
   position: 'relative'
@@ -27,7 +27,7 @@ export const ExplanationSymbolText = styled.Text<{ isTextTerm?: boolean; isWideD
     : (theme.device.isTablet ? scale(24) : scale(40)),
   fontStyle: isTextTerm ? 'italic' : 'normal',
   fontWeight: isTextTerm ? '500' : 'normal',
-  color: theme.colors.cardText,
+  color: theme.components.notation.text,
   textAlign: 'center',
   textAlignVertical: 'center',
   paddingHorizontal: scale(15),

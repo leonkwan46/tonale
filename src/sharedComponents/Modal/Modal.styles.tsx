@@ -11,7 +11,7 @@ export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: theme.colors.modalMask,
+  backgroundColor: theme.components.modal.mask,
   justifyContent: 'center',
   alignItems: 'center',
   zIndex: 1000
@@ -36,7 +36,7 @@ export const ModalContainer = styled(View, {
       : scale(theme.spacing.xl),
     borderWidth: 1,
     borderColor:
-      variant === 'light' ? theme.colors.cardText : theme.colors.border
+      variant === 'light' ? theme.components.notation.text : theme.colors.border
   })
 )
 

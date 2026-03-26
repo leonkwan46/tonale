@@ -11,15 +11,19 @@ export const HeaderContainer = styled(Pressable)<{ isPerfect?: boolean }>(({ the
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: scale(16),
-  backgroundColor: isPerfect ? theme.colors.gold : theme.colors.success,
+  backgroundColor: isPerfect
+    ? theme.components.stage.perfect
+    : theme.components.stage.cleared,
   borderRadius: scale(12),
   borderWidth: isPerfect ? 2 : 0,
-  borderColor: isPerfect ? theme.colors.warning : 'transparent'
+  borderColor: isPerfect ? theme.components.stage.perfectBorder : 'transparent'
 }))
 
 export const StageTitle = styled.Text<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
   fontSize: scale(18),
-  color: isPerfect ? theme.colors.cardText : theme.colors.successContrast,
+  color: isPerfect
+    ? theme.components.stage.textOnPerfect
+    : theme.components.stage.textOnCleared,
   marginBottom: scale(4),
   fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
 }))
@@ -42,7 +46,9 @@ export const StageStats = styled.View({
 
 export const StatsText = styled.Text<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
   fontSize: scale(12),
-  color: isPerfect ? theme.colors.cardText : theme.colors.successContrast,
+  color: isPerfect
+    ? theme.components.stage.textOnPerfect
+    : theme.components.stage.textOnCleared,
   opacity: 0.85,
   fontFamily: getSourGummyFontFamily()
 }))
@@ -62,7 +68,9 @@ export const ProgressTrack = styled.View<{ isPerfect?: boolean }>(({ theme, isPe
   right: 0,
   top: 0,
   bottom: 0,
-  backgroundColor: isPerfect ? theme.colors.cardText : theme.colors.successContrast,
+  backgroundColor: isPerfect
+    ? theme.components.stage.textOnPerfect
+    : theme.components.stage.textOnCleared,
   opacity: 0.35,
   borderRadius: scale(2)
 }))
@@ -73,7 +81,9 @@ export const ProgressFill = styled.View<{ width: string; isPerfect?: boolean }>(
   top: 0,
   bottom: 0,
   width: width as `${number}%`,
-  backgroundColor: isPerfect ? theme.colors.cardText : theme.colors.successContrast,
+  backgroundColor: isPerfect
+    ? theme.components.stage.textOnPerfect
+    : theme.components.stage.textOnCleared,
   borderRadius: scale(2),
   zIndex: 1
 }))
@@ -83,12 +93,16 @@ export const ChevronIcon = styled(Animated.View)<{ isCollapsed: boolean; isPerfe
   height: scale(12),
   borderTopWidth: 2,
   borderRightWidth: 2,
-  borderColor: isPerfect ? theme.colors.cardText : theme.colors.successContrast,
+  borderColor: isPerfect
+    ? theme.components.stage.textOnPerfect
+    : theme.components.stage.textOnCleared,
   transform: [{ rotate: isCollapsed ? '135deg' : '-45deg' }]
 }))
 
 export function StageHeaderStarLogo({ isPerfect, size = 16 }: { isPerfect: boolean; size?: number }) {
   const theme = useTheme()
-  const color = isPerfect ? theme.colors.cardText : theme.colors.successContrast
+  const color = isPerfect
+    ? theme.components.stage.textOnPerfect
+    : theme.components.stage.textOnCleared
   return <StarLogo filled size={size} color={color} />
 }

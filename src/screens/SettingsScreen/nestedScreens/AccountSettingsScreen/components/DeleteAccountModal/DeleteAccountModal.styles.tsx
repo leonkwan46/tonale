@@ -10,7 +10,7 @@ export const ModalMask = styled(Modal)({})
 
 export const ModalMaskContainer = styled.View(({ theme }) => ({
   flex: 1,
-  backgroundColor: theme.colors.modalMask,
+  backgroundColor: theme.components.modal.mask,
   justifyContent: 'center',
   padding: scale(theme.spacing.lg)
 }))
