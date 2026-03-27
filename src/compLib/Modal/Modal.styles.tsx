@@ -1,11 +1,12 @@
 import styled from '@emotion/native'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
 
-export const ModalOverlay = styled.TouchableOpacity(({ theme }) => ({
+export const ModalOverlay = styled(PressableFeedback)(({ theme }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -69,35 +70,5 @@ export const ButtonContainer = styled.View<{ singleButton?: boolean }>(
     gap: theme.device.isTablet
       ? scale(theme.spacing.sm)
       : scale(theme.spacing.sm)
-  })
-)
-
-export const ModalButton = styled(TouchableOpacity, {
-  shouldForwardProp: createForwardProps(['variant', 'singleButton'])
-})<{
-  variant: 'filled' | 'outlined';
-  singleButton?: boolean;
-}>(({ theme, variant, singleButton }) => ({
-  flex: singleButton ? 0 : 1,
-  paddingVertical: theme.device.isTablet
-    ? scale(theme.spacing.sm)
-    : scale(theme.spacing.sm),
-  borderRadius: scale(theme.borderRadius.sm),
-  backgroundColor: variant === 'filled' ? theme.colors.primary : 'transparent',
-  borderWidth: variant === 'outlined' ? 1 : 0,
-  borderColor: theme.colors.primary,
-  alignItems: 'center',
-  justifyContent: 'center',
-  alignSelf: singleButton ? 'center' : 'stretch'
-}))
-
-export const ModalButtonText = styled.Text<{ variant: 'filled' | 'outlined' }>(
-  ({ theme, variant }) => ({
-    fontSize: theme.device.isTablet
-      ? scale(theme.typography.sm)
-      : scale(theme.typography.base),
-    color:
-      variant === 'filled' ? theme.colors.primaryContrast : theme.colors.primary,
-    fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
   })
 )

@@ -2,6 +2,8 @@ import type { AppTheme } from '@/config/theme/theme'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
+import { PressableFeedback } from '@/utils/PressableFeedback'
+
 const getFlexibleDepthOffsets = (isTablet: boolean) => ({
   top: scale(2),
   left: isTablet ? scale(2) : scale(1),
@@ -9,17 +11,17 @@ const getFlexibleDepthOffsets = (isTablet: boolean) => ({
   bottom: isTablet ? scale(-3) : scale(-4)
 })
 
-export type ButtonColor = 'blue' | 'red' | 'green' | 'yellow' | 'grey' | 'finalTest'
+export type Depth3DColor = 'blue' | 'red' | 'green' | 'yellow' | 'grey' | 'finalTest'
 export type LayoutType = 'grid' | 'row'
 
-export interface Button3DCustomStyles {
+export interface Depth3DCustomStyles {
   backgroundColor?: string
   depthColor?: string
 }
 
 const getDepthColor = (
-  customStyles: Button3DCustomStyles | undefined,
-  color: ButtonColor | undefined,
+  customStyles: Depth3DCustomStyles | undefined,
+  color: Depth3DColor | undefined,
   theme: AppTheme
 ): string => {
   if (customStyles?.depthColor) return customStyles.depthColor
@@ -27,23 +29,28 @@ const getDepthColor = (
 }
 
 const getBackgroundColor = (
-  customStyles: Button3DCustomStyles | undefined,
-  color: ButtonColor | undefined,
+  customStyles: Depth3DCustomStyles | undefined,
+  color: Depth3DColor | undefined,
   theme: AppTheme
 ): string => {
   if (customStyles?.backgroundColor) return customStyles.backgroundColor
   return color ? theme.components.button[color].color : 'transparent'
 }
 
-
 const getContentWidth = (
   layoutType: LayoutType | undefined,
   fullWidth: boolean | undefined
 ): '100%' | undefined => {
-  return (layoutType === 'row' || layoutType === 'grid' || fullWidth) ? '100%' : undefined
+  return layoutType === 'row' || layoutType === 'grid' || fullWidth ? '100%' : undefined
 }
 
-export const Button3DContainer = styled.TouchableOpacity<{ isPressed: boolean; layoutType?: LayoutType; fullWidth?: boolean; width?: number; height?: number }>(({ isPressed, layoutType, fullWidth, width, height }) => {
+export const Depth3DContainer = styled(PressableFeedback)<{
+  isPressed: boolean
+  layoutType?: LayoutType
+  fullWidth?: boolean
+  width?: number
+  height?: number
+}>(({ isPressed, layoutType, fullWidth, width, height }) => {
   const getWidth = () => {
     if (width !== undefined) return width
     if (fullWidth) return '100%'
@@ -54,24 +61,22 @@ export const Button3DContainer = styled.TouchableOpacity<{ isPressed: boolean; l
 
   return {
     position: 'relative',
-    alignSelf: (layoutType === 'row' || fullWidth) ? 'stretch' : 'center',
+    alignSelf: layoutType === 'row' || fullWidth ? 'stretch' : 'center',
     width: getWidth(),
     height,
-    transform: [{ scale: isPressed ? 0.95 : 1 }],
-    activeOpacity: 1
+    transform: [{ scale: isPressed ? 0.95 : 1 }]
   }
 })
 
-export const Button3DDepth = styled.View<{
-  color?: ButtonColor
-  customStyles?: Button3DCustomStyles
+export const Depth3DDepth = styled.View<{
+  color?: Depth3DColor
+  customStyles?: Depth3DCustomStyles
 }>(({ theme, color, customStyles }) => {
   const depthColor = getDepthColor(customStyles, color, theme)
   const isTablet = theme.device.isTablet
   const offsets = getFlexibleDepthOffsets(isTablet)
-  const borderRadius = color === 'finalTest' 
-    ? scale(theme.borderRadius['2xl'])
-    : scale(theme.borderRadius.lg)
+  const borderRadius =
+    color === 'finalTest' ? scale(theme.borderRadius['2xl']) : scale(theme.borderRadius.lg)
 
   return {
     position: 'absolute' as const,
@@ -84,18 +89,17 @@ export const Button3DDepth = styled.View<{
   }
 })
 
-export const Button3DContent = styled.View<{
-  color?: ButtonColor
+export const Depth3DContent = styled.View<{
+  color?: Depth3DColor
   layoutType?: LayoutType
   fullWidth?: boolean
   height?: number
-  customStyles?: Button3DCustomStyles
+  customStyles?: Depth3DCustomStyles
   isPressed?: boolean
 }>(({ theme, color, layoutType, fullWidth, height, customStyles, isPressed }) => {
   const backgroundColor = getBackgroundColor(customStyles, color, theme)
-  const borderRadius = color === 'finalTest'
-    ? scale(theme.borderRadius['2xl'])
-    : scale(theme.borderRadius.lg)
+  const borderRadius =
+    color === 'finalTest' ? scale(theme.borderRadius['2xl']) : scale(theme.borderRadius.lg)
   const opacity = color === 'finalTest' && isPressed ? 0.8 : 1
 
   return {

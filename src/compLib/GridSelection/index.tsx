@@ -1,5 +1,5 @@
 import { useWindowDimensions } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Depth3D } from '@/compLib/Depth3D'
 import { useMemo, useState } from 'react'
 import {
   GAP_SIZE,
@@ -65,7 +65,7 @@ export const GridSelection = <T extends string>({
         const displayLabel = getDisplayLabel ? getDisplayLabel(option) : option
 
         return (
-          <Button3D
+          <Depth3D
             key={option}
             onPress={() => onSelect(option)}
             testID={isSelected ? `selected-${option}` : `option-${option}`}
@@ -80,7 +80,7 @@ export const GridSelection = <T extends string>({
                 <GridSelectionText>{displayLabel}</GridSelectionText>
               </GridSelectionContent>
             )}
-          </Button3D>
+          </Depth3D>
         )
       })}
     </GridSelectionContainer>

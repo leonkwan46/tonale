@@ -114,7 +114,6 @@ export const PianoKeyboard = ({
         isSelected={isSelected}
         isCorrect={isCorrect}
         isIncorrect={isIncorrect}
-        activeOpacity={0.95}
         onPressIn={() => handleKeyPressIn(noteName)}
         onPressOut={() => handleKeyPressOut(noteName)}
         onPress={() => handleKeyPress(noteName)}

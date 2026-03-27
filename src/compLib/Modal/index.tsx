@@ -36,7 +36,7 @@ export const Modal = ({
       animationType={animationType}
       onRequestClose={onRequestClose}
     >
-      <ModalOverlay activeOpacity={1} onPress={onRequestClose}>
+      <ModalOverlay onPress={onRequestClose}>
         <ModalContainer
           testID={testID}
           width={modalWidth}
