@@ -1,5 +1,5 @@
 import styled from '@emotion/native'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
@@ -21,6 +21,11 @@ export function resolveButtonPaletteKey(color: ButtonColor): Depth3DColor {
   if (color === 'primary') return 'blue'
   if (color === 'error') return 'red'
   return color
+}
+
+/** More than one word → use compact label typography (not the large md depth track). */
+export function isMultiWordLabel(label: string): boolean {
+  return label.trim().split(/\s+/).filter(Boolean).length > 1
 }
 
 function isSemanticColor(color: ButtonColor): color is 'primary' | 'error' {
@@ -103,22 +108,33 @@ export const ButtonRoot = styled(PressableOpacity07)<RootProps & { disabled?: bo
   }
 )
 
-export const ButtonLabel = styled.Text<{
+export const ButtonLabel = styled(Text, {
+  shouldForwardProp: createForwardProps([
+    'variant',
+    'color',
+    'size',
+    'multiWordLabel',
+    'labelWeight',
+    'ghostTint'
+  ])
+})<{
   variant: ButtonVariant
   color: ButtonColor
   size: ButtonSize
+  /** When true, label uses compact `typography.sm` (not tied to button `size`). */
+  multiWordLabel: boolean
   labelWeight: 'semibold' | 'bold'
   ghostTint?: 'neutral' | 'primary'
-}>(({ theme, variant, color, size, labelWeight, ghostTint }) => {
+}>(({ theme, variant, color, size, multiWordLabel, labelWeight, ghostTint }) => {
   const isTablet = theme.device.isTablet
-  const fontSize =
-    size === 'sm'
-      ? isTablet
-        ? scale(theme.typography.sm)
-        : scale(theme.typography.base)
-      : isTablet
-        ? scale(theme.typography.sm)
-        : scale(theme.typography.base)
+  let fontSize: number
+  if (multiWordLabel) {
+    fontSize = scale(theme.typography.sm)
+  } else if (size === 'sm') {
+    fontSize = isTablet ? scale(theme.typography.sm) : scale(theme.typography.base)
+  } else {
+    fontSize = isTablet ? scale(theme.typography.sm) : scale(theme.typography.base)
+  }
 
   let textColor = theme.colors.text
   if (variant === 'filled') {
@@ -140,6 +156,8 @@ export const ButtonLabel = styled.Text<{
   return {
     color: textColor,
     fontSize,
+    flexShrink: multiWordLabel ? 1 : undefined,
+    textAlign: multiWordLabel ? 'center' : undefined,
     fontFamily: getSourGummyFontFamily(
       labelWeight === 'bold' ? theme.fontWeight.bold : theme.fontWeight.semibold
     )
@@ -152,34 +170,27 @@ export const IconSlot = styled.View<{ edge: 'left' | 'right' }>(({ theme, edge }
 }))
 
 /** Inner row for `Button` when `depth` is true (inside Depth3D content). */
-export const DepthButtonInner = styled(View, {
-  shouldForwardProp: createForwardProps(['size'])
-})<{ size: ButtonSize }>(({ theme, size }) => {
-  const isTablet = theme.device.isTablet
-  const paddingVertical =
-    size === 'sm'
-      ? scale(theme.spacing.sm)
-      : isTablet
-        ? scale(theme.spacing.sm)
-        : scale(theme.spacing.md)
-  return {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: scale(theme.spacing.sm),
-    paddingVertical,
-    width: '100%'
-  }
-})
+export const DepthButtonInner = styled.View(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: scale(theme.spacing.sm),
+  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
+  width: '100%'
+}))
 
-export const DepthButtonLabel = styled.Text<{
+export const DepthButtonLabel = styled(Text, {
+  shouldForwardProp: createForwardProps(['paletteKey', 'size', 'multiWordLabel', 'labelWeight'])
+})<{
   paletteKey: Depth3DColor
   size: ButtonSize
+  multiWordLabel: boolean
   labelWeight: 'semibold' | 'bold'
-}>(({ theme, paletteKey, size, labelWeight }) => {
+}>(({ theme, paletteKey, size, multiWordLabel, labelWeight }) => {
   const isTablet = theme.device.isTablet
+  const depthSizeForType: ButtonSize = multiWordLabel ? 'sm' : size
   const fontSize =
-    size === 'sm'
+    depthSizeForType === 'sm'
       ? isTablet
         ? scale(theme.typography.sm)
         : scale(theme.typography.base)
@@ -190,6 +201,7 @@ export const DepthButtonLabel = styled.Text<{
   return {
     color: theme.components.button[paletteKey].text,
     fontSize,
+    flexShrink: multiWordLabel ? 1 : undefined,
     textAlign: 'center',
     fontFamily: getSourGummyFontFamily(
       labelWeight === 'bold' ? theme.fontWeight.bold : theme.fontWeight.semibold

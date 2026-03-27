@@ -11,6 +11,7 @@ import {
   DepthButtonInner,
   DepthButtonLabel,
   IconSlot,
+  isMultiWordLabel,
   resolveButtonPaletteKey,
   type ButtonColor,
   type ButtonRowLayout,
@@ -19,33 +20,33 @@ import {
 } from './Button.styles'
 
 export type ButtonProps = {
-  variant: ButtonVariant
-  color?: ButtonColor
-  size?: ButtonSize
-  fullWidth?: boolean
+  variant: ButtonVariant;
+  color?: ButtonColor;
+  size?: ButtonSize;
+  fullWidth?: boolean;
   /** Modal row: two buttons share width (`pair`) or single centered (`solo`). */
-  rowLayout?: ButtonRowLayout
+  rowLayout?: ButtonRowLayout;
   /** Adds top margin (auth form primary). */
-  withTopSpacing?: boolean
+  withTopSpacing?: boolean;
   /** Destructive confirm uses bold label. */
-  labelWeight?: 'semibold' | 'bold'
+  labelWeight?: 'semibold' | 'bold';
   /** Ghost only: `primary` matches link-style text (e.g. Forgot password). */
-  ghostTint?: 'neutral' | 'primary'
+  ghostTint?: 'neutral' | 'primary';
   /** Renders with 3D depth (see `Depth3D`). Ignores flat `variant` chrome. */
-  depth?: boolean
+  depth?: boolean;
   /** When `depth` is true: forwarded to `Depth3D` (`row` for full-width bars). */
-  depthLayout?: LayoutType
+  depthLayout?: LayoutType;
   /** When `depth` is true: forwarded to `Depth3D`. */
-  depthWidth?: number
-  depthHeight?: number
-  disabled?: boolean
-  loading?: boolean
-  onPress: () => void
-  testID?: string
-  label: string
-  leftIcon?: IconName
-  rightIcon?: IconName
-}
+  depthWidth?: number;
+  depthHeight?: number;
+  disabled?: boolean;
+  loading?: boolean;
+  onPress: () => void;
+  testID?: string;
+  label: string;
+  leftIcon?: IconName;
+  rightIcon?: IconName;
+};
 
 function isSemanticColor(color: ButtonColor): color is 'primary' | 'error' {
   return color === 'primary' || color === 'error'
@@ -134,7 +135,8 @@ export const Button = ({
   const isDisabled = disabled || loading
   const paletteKey = resolveButtonPaletteKey(color)
   const iconProps = getIconProps(variant, color, theme)
-  const sizeVariant = size === 'sm' ? 'sm' : 'md'
+  const multiWordLabel = isMultiWordLabel(label)
+  const iconSizeVariant = multiWordLabel || size === 'sm' ? 'sm' : 'md'
 
   const spinnerColor = getSpinnerColor(variant, color, theme)
 
@@ -151,27 +153,35 @@ export const Button = ({
         onPress={onPress}
       >
         {() => (
-          <DepthButtonInner size={size}>
+          <DepthButtonInner>
             {loading && (
-              <ActivityIndicator size="small" color={theme.components.button[paletteKey].text} />
+              <ActivityIndicator
+                size="small"
+                color={theme.components.button[paletteKey].text}
+              />
             )}
             {!loading && leftIcon && (
               <IconSlot edge="left">
                 <Icon
                   name={leftIcon}
-                  sizeVariant={sizeVariant}
+                  sizeVariant={iconSizeVariant}
                   color={theme.components.button[paletteKey].text}
                 />
               </IconSlot>
             )}
-            <DepthButtonLabel paletteKey={paletteKey} size={size} labelWeight={labelWeight}>
+            <DepthButtonLabel
+              paletteKey={paletteKey}
+              size={size}
+              multiWordLabel={multiWordLabel}
+              labelWeight={labelWeight}
+            >
               {label}
             </DepthButtonLabel>
             {!loading && rightIcon && (
               <IconSlot edge="right">
                 <Icon
                   name={rightIcon}
-                  sizeVariant={sizeVariant}
+                  sizeVariant={iconSizeVariant}
                   color={theme.components.button[paletteKey].text}
                 />
               </IconSlot>
@@ -194,25 +204,17 @@ export const Button = ({
       disabled={isDisabled}
       onPress={onPress}
     >
-      {loading && (
-        <ActivityIndicator
-          size="small"
-          color={spinnerColor}
-        />
-      )}
+      {loading && <ActivityIndicator size="small" color={spinnerColor} />}
       {!loading && leftIcon && (
         <IconSlot edge="left">
-          <Icon
-            name={leftIcon}
-            sizeVariant={sizeVariant}
-            {...iconProps}
-          />
+          <Icon name={leftIcon} sizeVariant={iconSizeVariant} {...iconProps} />
         </IconSlot>
       )}
       <ButtonLabel
         variant={variant}
         color={color}
         size={size}
+        multiWordLabel={multiWordLabel}
         labelWeight={labelWeight}
         ghostTint={ghostTint}
       >
@@ -220,11 +222,7 @@ export const Button = ({
       </ButtonLabel>
       {!loading && rightIcon && (
         <IconSlot edge="right">
-          <Icon
-            name={rightIcon}
-            sizeVariant={sizeVariant}
-            {...iconProps}
-          />
+          <Icon name={rightIcon} sizeVariant={iconSizeVariant} {...iconProps} />
         </IconSlot>
       )}
     </ButtonRoot>
