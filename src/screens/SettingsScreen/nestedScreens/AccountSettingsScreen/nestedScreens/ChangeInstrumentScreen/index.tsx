@@ -6,6 +6,7 @@ import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPrevi
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
 import { Icon } from '@/sharedComponents/Icon'
 import { Button3D } from '@/sharedComponents/Button3D'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { GENDER, INSTRUMENT, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
@@ -90,8 +91,12 @@ export const ChangeInstrumentScreen = () => {
         router.back()
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update instrument'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t update your instrument. Please try again.'
+        )
+      )
     } finally {
       setLoading(false)
     }

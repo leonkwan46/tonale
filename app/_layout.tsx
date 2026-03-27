@@ -16,6 +16,21 @@ import { ThemeModeProvider } from '@/hooks/useThemeModeContext'
 import { UserProvider } from '@/hooks/useUserContext'
 import { SplashScreen } from '@/screens/SplashScreen'
 
+if (!__DEV__) {
+  console.log = () => {}
+  console.warn = () => {}
+  console.error = () => {}
+  console.info = () => {}
+  console.debug = () => {}
+}
+
+const DevErrorBoundaryTrigger = () => {
+  if (__DEV__ && process.env.EXPO_PUBLIC_FORCE_ERROR_BOUNDARY === '1') {
+    throw new Error('Test ErrorBoundary')
+  }
+  return null
+}
+
 export default function RootLayout() {  
   const [showSplash, setShowSplash] = useState(true)
 
@@ -25,6 +40,7 @@ export default function RootLayout() {
         <ThemeModeProvider>
           <AppThemeProvider>
             <ErrorBoundary>
+              <DevErrorBoundaryTrigger />
               <NetworkNotificationProvider>
                 <UserProvider>
                   <ProgressProvider>

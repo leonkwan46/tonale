@@ -3,6 +3,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useSafeNavigation, useUser } from '@/hooks'
 import { Button3D } from '@/sharedComponents/Button3D'
 import { Icon } from '@/sharedComponents/Icon'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -45,8 +46,12 @@ export const EmailScreen = () => {
       await sendEmailVerificationToUser()
       setVerifySuccess(true)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to send verification email'
-      setVerifyError(errorMessage)
+      setVerifyError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t send the verification email. Please try again.'
+        )
+      )
     } finally {
       setVerifyLoading(false)
     }
