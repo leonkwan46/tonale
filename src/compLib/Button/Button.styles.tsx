@@ -1,5 +1,5 @@
 import styled from '@emotion/native'
-import { Text, View } from 'react-native'
+import { Text } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
