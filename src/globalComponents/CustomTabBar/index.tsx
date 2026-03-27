@@ -85,7 +85,6 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
             key={route.key}
             testID={`tab-${route.name}`}
             onPress={onPress}
-            activeOpacity={0.7}
             config={config}
           >
             <TabIcon

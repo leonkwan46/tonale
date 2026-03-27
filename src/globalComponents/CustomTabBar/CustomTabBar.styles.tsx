@@ -1,10 +1,13 @@
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
-import { Platform, TouchableOpacity } from 'react-native'
+import { Platform } from 'react-native'
 import { scale, verticalScale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
+
+const TabPressable = createPressableWithOpacity(0.7)
 
 export const TAB_CONFIG = {
   PHONE: {
@@ -38,7 +41,7 @@ export const TabBarContainer = styled.View<{
   ...theme.shadows.lg
 }))
 
-export const TabButton = styled(TouchableOpacity, {
+export const TabButton = styled(TabPressable, {
   shouldForwardProp: createForwardProps(['config'])
 })<{
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET

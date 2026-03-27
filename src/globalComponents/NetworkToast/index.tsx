@@ -1,33 +1,33 @@
+import { ICONS } from '@/compLib/Icon'
 import { useNetworkNotification } from '@/hooks/useNetworkNotificationContext'
-import { ICONS } from '@/sharedComponents/Icon'
 import {
-    type NetInfoState,
-    NetInfoStateType
+  type NetInfoState,
+  NetInfoStateType
 } from '@react-native-community/netinfo'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Dimensions } from 'react-native'
 import {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withTiming
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
-    ToastContainer,
-    ToastIcon,
-    ToastMessage,
-    ToastRow,
-    ToastText,
-    type ToastVariant
+  ToastContainer,
+  ToastIcon,
+  ToastMessage,
+  ToastRow,
+  ToastText,
+  type ToastVariant
 } from './NetworkToast.styles'
 
 // ============================================================================
 // TYPES & CONSTANTS
 // ============================================================================
 
-type ToastStatus = 'no-internet' | 'back-online' | null
+type ToastStatus = 'no-internet' | 'back-online' | null;
 
 const TOAST_DISMISS_MS = 3000
 const SLIDE_DURATION_IN = 300
@@ -156,10 +156,10 @@ export const NetworkToast = () => {
 
   return (
     <ToastContainer topInset={top} style={animatedStyle}>
-      <ToastMessage variant={variant}>
+      <ToastMessage>
         <ToastRow>
           <ToastIcon name={iconName} variant={variant} />
-          <ToastText>{message}</ToastText>
+          <ToastText variant={variant}>{message}</ToastText>
         </ToastRow>
       </ToastMessage>
     </ToastContainer>
