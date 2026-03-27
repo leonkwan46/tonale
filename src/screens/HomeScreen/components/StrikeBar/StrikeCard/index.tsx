@@ -1,4 +1,4 @@
-import { Card } from '@/sharedComponents/Card'
+import { Card } from '@/compLib/Card'
 import { useTheme } from '@emotion/react'
 import React from 'react'
 import { scale } from 'react-native-size-matters'

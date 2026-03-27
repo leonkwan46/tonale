@@ -37,11 +37,3 @@ export const RevisionText = styled(Text)(({ theme }) => ({
   lineHeight: scale(theme.typography.xl)
 }))
 
-export const StartButtonText = styled(Text)(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm),
-  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
-  textAlign: 'center'
-}))

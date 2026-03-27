@@ -1,15 +1,14 @@
 import { useProgress, useSafeNavigation } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Card } from '@/sharedComponents/Card'
-import { Skeleton } from '@/sharedComponents/Skeleton'
+import { Button } from '@/compLib/Button'
+import { Card } from '@/compLib/Card'
+import { Skeleton } from '@/compLib/Skeleton'
 import { useTheme } from '@emotion/react'
 import {
   ContentSection,
   IconText,
   RevisionCardContainer,
   RevisionCardContent,
-  RevisionText,
-  StartButtonText
+  RevisionText
 } from './RevisionCard.styles'
 
 export const RevisionCard = () => {
@@ -49,17 +48,18 @@ export const RevisionCard = () => {
           {hasRevisionQuestions ? (
             <>
               <RevisionText testID="revision-card-text">You have {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
-              <Button3D
-                onPress={handleStartRevision}
-                disabled={isNavigating}
-                testID="start-revision-button"
-                fullWidth={true}
+              <Button
+                variant="filled"
                 color="red"
-              >
-                {() => (
-                  <StartButtonText>Start Revision</StartButtonText>
-                )}
-              </Button3D>
+                depth
+                fullWidth
+                disabled={isNavigating}
+                loading={isNavigating}
+                testID="start-revision-button"
+                onPress={handleStartRevision}
+                label={isNavigating ? 'Opening…' : 'Start Revision'}
+                labelWeight="bold"
+              />
             </>
           ) : (
             <RevisionText testID="revision-card-completion-text">{'Well done!\nYou\'ve completed all your revision!'}</RevisionText>
