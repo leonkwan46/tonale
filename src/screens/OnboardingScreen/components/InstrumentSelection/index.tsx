@@ -1,4 +1,4 @@
-import { GridSelection } from '@/sharedComponents/GridSelection'
+import { GridSelection } from '@/compLib/GridSelection'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { capitalize } from '@/utils/string'

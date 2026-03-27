@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { GridSelection } from '@/sharedComponents/GridSelection'
+import { GridSelection } from '@/compLib/GridSelection'
 import { useTheme } from '@emotion/react'
 import { GENDER, type UserGender } from '@types'
 import { getGenderDisplayLabel } from '@/utils/avatarAssets'

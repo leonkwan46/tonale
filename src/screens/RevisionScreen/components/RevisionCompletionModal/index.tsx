@@ -1,11 +1,10 @@
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
   ButtonContainer,
   DescriptionText,
-  ModalButton,
-  ModalButtonText,
   TitleText
-} from '@/sharedComponents/Modal/Modal.styles'
+} from '@/compLib/Modal/Modal.styles'
 
 interface RevisionCompletionModalProps {
   visible: boolean
@@ -34,36 +33,32 @@ export const RevisionCompletionModal = ({
       </DescriptionText>
       <ButtonContainer singleButton={isAllComplete}>
         {isAllComplete ? (
-          <ModalButton
+          <Button
             testID="done-button"
             variant="filled"
-            singleButton={true}
+            size="sm"
+            rowLayout="solo"
             onPress={onExit}
-          >
-            <ModalButtonText variant="filled">
-              Done!
-            </ModalButtonText>
-          </ModalButton>
+            label="Done!"
+          />
         ) : (
           <>
-            <ModalButton
+            <Button
               testID="exit-button"
               variant="outlined"
+              size="sm"
+              rowLayout="pair"
               onPress={onExit}
-            >
-              <ModalButtonText variant="outlined">
-                Exit
-              </ModalButtonText>
-            </ModalButton>
-            <ModalButton
+              label="Exit"
+            />
+            <Button
               testID="revise-button"
               variant="filled"
+              size="sm"
+              rowLayout="pair"
               onPress={onRevise}
-            >
-              <ModalButtonText variant="filled">
-                Revise
-              </ModalButtonText>
-            </ModalButton>
+              label="Revise"
+            />
           </>
         )}
       </ButtonContainer>
