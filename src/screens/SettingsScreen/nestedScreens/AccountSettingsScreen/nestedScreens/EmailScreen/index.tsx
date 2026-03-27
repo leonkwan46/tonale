@@ -91,7 +91,6 @@ It won't be shared with others.`}
                 <Button
                   variant="filled"
                   color="primary"
-                  size="sm"
                   depth
                   depthLayout="row"
                   fullWidth
