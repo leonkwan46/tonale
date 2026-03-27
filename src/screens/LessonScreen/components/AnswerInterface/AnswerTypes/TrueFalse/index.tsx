@@ -1,5 +1,5 @@
-import { Button3D } from '@/sharedComponents/Button3D'
-import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import { Depth3D } from '@/compLib/Depth3D'
+import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, TrueFalseButtonContainer } from './TrueFalse.styles'
 
 interface TrueFalseProps {
@@ -22,7 +22,7 @@ export const TrueFalse = ({
 }: TrueFalseProps) => {
   const trueFalseChoices = choices.slice(0, 2) as ('True' | 'False')[]
 
-  const getButtonColor = (choice: 'True' | 'False', isSelected: boolean, isCorrect: boolean, isIncorrect: boolean, shouldShowNeutral: boolean): ButtonColor => {
+  const getButtonColor = (choice: 'True' | 'False', isSelected: boolean, isCorrect: boolean, isIncorrect: boolean, shouldShowNeutral: boolean): Depth3DColor => {
     if (showResult) {
       if (isCorrect) return 'green'
       if (shouldShowNeutral) return 'grey'
@@ -43,7 +43,7 @@ export const TrueFalse = ({
           const color = getButtonColor(choice, isSelected, isCorrect, isIncorrect, shouldShowNeutral)
           
           return (
-            <Button3D
+            <Depth3D
               key={choice}
               onPress={() => onChoiceSelect(choice)}
               disabled={selectedAnswer !== null}
@@ -57,7 +57,7 @@ export const TrueFalse = ({
                   </ChoiceText>
                 </TrueFalseButtonContainer>
               )}
-            </Button3D>
+            </Depth3D>
           )
         })}
       </ChoiceRow>

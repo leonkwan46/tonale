@@ -1,6 +1,6 @@
 import { useDevice, useMetronome } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import { Depth3D } from '@/compLib/Depth3D'
+import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import type { QuestionInterface } from '@/types/lesson'
 import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { createAudioPlayer } from 'expo-audio'
@@ -41,8 +41,8 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
   const hasSubmittedRef = useRef<boolean>(false)
   const tapTimestampsRef = useRef<number[]>([])
 
-  // Map button state to ButtonColor
-  const getButtonColor = (state: 'default' | 'correct' | 'incorrect'): ButtonColor => {
+  // Map button state to Depth3DColor
+  const getButtonColor = (state: 'default' | 'correct' | 'incorrect'): Depth3DColor => {
     switch (state) {
       case 'correct':
         return 'green'
@@ -185,7 +185,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
 
   return (
     <Container>
-      <Button3D
+      <Depth3D
         onPress={handleTapIn}
         disabled={isButtonDisabled}
         color={getButtonColor(buttonState)}
@@ -197,7 +197,7 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
             Tap
           </TapButtonText>
         )}
-      </Button3D>
+      </Depth3D>
     </Container>
   )
 }

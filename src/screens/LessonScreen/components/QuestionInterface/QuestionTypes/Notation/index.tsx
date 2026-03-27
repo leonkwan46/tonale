@@ -1,4 +1,4 @@
-import { DisplayCard } from '@/sharedComponents/DisplayCard'
+import { DisplayCard } from '@/compLib/DisplayCard'
 import { NoteType } from '@leonkwan46/music-notation'
 import type { StageNumber, VisualComponent } from '@types'
 import {

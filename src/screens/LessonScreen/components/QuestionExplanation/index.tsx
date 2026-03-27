@@ -1,5 +1,5 @@
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
   getExplanationFormattingConfig,
   shouldShowVisualInExplanation
@@ -10,7 +10,7 @@ import type { Explanation, VisualComponent } from '@types'
 import type { ReactNode } from 'react'
 import { createElement } from 'react'
 import { Text } from 'react-native'
-import { ContinueButtonText, ExplanationText } from './QuestionExplanation.styles'
+import { ExplanationText } from './QuestionExplanation.styles'
 import { VisualExplanation } from './VisualExplanation'
 
 interface QuestionExplanationProps {
@@ -87,9 +87,15 @@ export function QuestionExplanation({
         <VisualExplanation visualComponent={displayVisualComponent} />
       )}
       {formattedText && <ExplanationText>{formattedText}</ExplanationText>}
-      <Button3D onPress={onContinue} fullWidth testID="question-explanation-continue-button">
-        {() => <ContinueButtonText>Continue</ContinueButtonText>}
-      </Button3D>
+      <Button
+        variant="filled"
+        color="primary"
+        depth
+        fullWidth
+        testID="question-explanation-continue-button"
+        onPress={onContinue}
+        label="Continue"
+      />
     </Modal>
   )
 }

@@ -1,11 +1,10 @@
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
   ButtonContainer,
   DescriptionText,
-  ModalButton,
-  ModalButtonText,
   TitleText
-} from '@/sharedComponents/Modal/Modal.styles'
+} from '@/compLib/Modal/Modal.styles'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
 import { useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
@@ -119,21 +118,23 @@ export const LessonCompleteModal = ({
       </DescriptionText>
 
       <ButtonContainer>
-        <ModalButton
+        <Button
           testID="lesson-complete-modal-retry-button"
           variant="outlined"
+          size="sm"
+          rowLayout="pair"
           onPress={onRetry}
-        >
-          <ModalButtonText variant="outlined">Retry</ModalButtonText>
-        </ModalButton>
+          label="Retry"
+        />
 
-        <ModalButton
+        <Button
           testID="lesson-complete-modal-continue-button"
           variant="filled"
+          size="sm"
+          rowLayout="pair"
           onPress={onContinue}
-        >
-          <ModalButtonText variant="filled">Continue</ModalButtonText>
-        </ModalButton>
+          label="Continue"
+        />
       </ButtonContainer>
     </Modal>
   )

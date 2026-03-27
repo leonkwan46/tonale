@@ -2,6 +2,9 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+
+const PressableOpacity07 = createPressableWithOpacity(0.7)
 
 export const Header = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -14,7 +17,7 @@ export const Header = styled.View(({ theme }) => ({
   position: 'relative'
 }))
 
-export const BackButton = styled.TouchableOpacity(({ theme }) => ({
+export const BackButton = styled(PressableOpacity07)(({ theme }) => ({
   position: 'absolute',
   left: scale(theme.spacing.lg),
   width: scale(theme.spacing.xl),

@@ -1,5 +1,5 @@
-import { Button3D } from '@/sharedComponents/Button3D'
-import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import { Depth3D } from '@/compLib/Depth3D'
+import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, LayoutType, MultipleChoiceButtonContainer } from './MultipleChoice.styles'
 
 interface MultipleChoiceProps {
@@ -21,7 +21,7 @@ export const MultipleChoice = ({
   type = 'grid',
   testID
 }: MultipleChoiceProps) => {
-  const getButtonColor = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): ButtonColor => {
+  const getButtonColor = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): Depth3DColor => {
     if (showResult) {
       if (isCorrect) return 'green'
       if (isIncorrect) return 'red'
@@ -56,7 +56,7 @@ export const MultipleChoice = ({
             const color = getButtonColor(isSelected, isCorrect, isIncorrect)
 
             return (
-              <Button3D
+              <Depth3D
                 key={index}
                 onPress={() => onChoiceSelect(choice)}
                 disabled={selectedAnswer !== null}
@@ -76,7 +76,7 @@ export const MultipleChoice = ({
                     </ChoiceText>
                   </MultipleChoiceButtonContainer>
                 )}
-              </Button3D>
+              </Depth3D>
             )
           })}
         </ChoiceRow>

@@ -1,4 +1,4 @@
-import { PianoKeyboard } from '@/sharedComponents/PianoKeyboard'
+import { PianoKeyboard } from '@/compLib/PianoKeyboard'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { useState } from 'react'
 import {

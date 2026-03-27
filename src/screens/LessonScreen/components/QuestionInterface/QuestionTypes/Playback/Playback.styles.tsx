@@ -1,8 +1,12 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-import { createForwardProps } from '@/utils/styledProps'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
+
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { createForwardProps } from '@/utils/styledProps'
+
+const PressableOpacity08 = createPressableWithOpacity(0.8)
 
 const PLAYBACK_CARD_MAX_WIDTH_TABLET = 400
 const PLAYBACK_CARD_MAX_WIDTH_PHONE = 320
@@ -42,7 +46,7 @@ export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ theme, i
   zIndex: 1
 }))
 
-export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => {
+export const PlayButton = styled(PressableOpacity08)<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => {
   const buttonSize = isTablet ? scale(80) : scale(100)
   return {
     width: buttonSize,
@@ -52,7 +56,6 @@ export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: isPlaying ? 0 : scale(theme.spacing.xs),
-    activeOpacity: 0.8,
     overflow: 'hidden',
     opacity: (isPlaying || !onPlaybackPress) ? 0.6 : (disabled ? 0.5 : 1),
     zIndex: 10

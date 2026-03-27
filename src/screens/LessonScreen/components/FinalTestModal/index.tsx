@@ -1,14 +1,10 @@
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
   ButtonContainer,
-  DescriptionText,
-  ModalButton,
-  ModalButtonText
-} from '@/sharedComponents/Modal/Modal.styles'
+  DescriptionText
+} from '@/compLib/Modal/Modal.styles'
 import {
-  ButtonContent,
-  ButtonText,
   ErrorTitleText,
   ModalIcon,
   SuccessTitleText
@@ -64,35 +60,34 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
 
       {variant === 'success' ? (
         <ButtonContainer singleButton={true}>
-          <Button3D
+          <Button
             testID="continue-button"
-            color="blue"
+            variant="filled"
+            color="primary"
+            depth
             fullWidth
             onPress={props.onContinue}
-          >
-            {() => (
-              <ButtonContent>
-                <ButtonText>Continue</ButtonText>
-              </ButtonContent>
-            )}
-          </Button3D>
+            label="Continue"
+          />
         </ButtonContainer>
       ) : (
         <ButtonContainer>
-          <ModalButton
+          <Button
             testID="exit-button"
             variant="outlined"
+            size="sm"
+            rowLayout="pair"
             onPress={props.onExit}
-          >
-            <ModalButtonText variant="outlined">Exit</ModalButtonText>
-          </ModalButton>
-          <ModalButton
+            label="Exit"
+          />
+          <Button
             testID="retry-test-button"
             variant="filled"
+            size="sm"
+            rowLayout="pair"
             onPress={props.onRetry}
-          >
-            <ModalButtonText variant="filled">Retry Test</ModalButtonText>
-          </ModalButton>
+            label="Retry Test"
+          />
         </ButtonContainer>
       )}
     </Modal>

@@ -1,4 +1,4 @@
-import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
@@ -9,7 +9,7 @@ export const Container = styled.View({
   width: '100%'
 })
 
-export const TapButtonText = styled.Text<{ isTablet: boolean; buttonColor: ButtonColor }>(
+export const TapButtonText = styled.Text<{ isTablet: boolean; buttonColor: Depth3DColor }>(
   ({ theme, isTablet, buttonColor }) => ({
     color: theme.components.button[buttonColor].text,
     fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
