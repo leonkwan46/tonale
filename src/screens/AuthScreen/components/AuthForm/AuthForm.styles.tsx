@@ -2,11 +2,14 @@ import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
 import { forwardRef } from 'react'
 import type { TextInputProps } from 'react-native'
-import { TextInput, TouchableOpacity } from 'react-native'
+import { TextInput } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+
+const PressableOpacity07 = createPressableWithOpacity(0.7)
 
 export const FormSection = styled(Animated.View)(({ theme }) => ({
   minHeight: theme.device.isTablet ? scale(100) : scale(200),
@@ -93,7 +96,7 @@ export const Input = forwardRef<TextInput, TextInputProps>(
   }
 )
 
-export const EyeIcon = styled(TouchableOpacity)(({ theme }) => ({
+export const EyeIcon = styled(PressableOpacity07)(({ theme }) => ({
   padding: scale(theme.spacing.xs)
 }))
 
@@ -106,46 +109,6 @@ export const RequirementsText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily()
 }))
 
-export const ForgotPasswordTouchable = styled(TouchableOpacity)(
-  ({ theme }) => ({
-    alignSelf: 'flex-end',
-    paddingVertical: scale(theme.spacing.xs),
-    paddingHorizontal: scale(theme.spacing.xs)
-  })
-)
-
-export const ForgotPasswordText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet
-    ? scale(theme.typography.xs)
-    : scale(theme.typography.sm),
-  color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(
-  ({ theme, disabled }) => ({
-    backgroundColor: theme.colors.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: theme.device.isTablet
-      ? scale(theme.spacing.sm)
-      : scale(theme.spacing.md),
-    borderRadius: scale(theme.borderRadius.md),
-    opacity: disabled ? 0.7 : 1,
-    marginTop: theme.device.isTablet
-      ? scale(theme.spacing.sm)
-      : scale(theme.spacing.md)
-  })
-)
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.device.isTablet
-    ? scale(theme.typography.sm)
-    : scale(theme.typography.base),
-  marginRight: theme.device.isTablet
-    ? scale(theme.spacing.xs)
-    : scale(theme.spacing.sm),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
+export const ForgotPasswordWrap = styled.View(() => ({
+  alignSelf: 'flex-end'
 }))

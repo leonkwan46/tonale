@@ -2,7 +2,8 @@ import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
@@ -13,14 +14,11 @@ import { Keyboard, TextInput } from 'react-native'
 import type { AuthFormData, AuthState } from '../../index'
 import {
   EyeIcon,
-  ForgotPasswordText,
-  ForgotPasswordTouchable,
+  ForgotPasswordWrap,
   FormSection,
   Input,
   InputField,
   InputsContainer,
-  PrimaryButton,
-  PrimaryButtonText,
   RequirementsText,
   StatusContainer,
   StatusText
@@ -241,12 +239,16 @@ export const AuthForm = ({
         </InputField>
 
         {isLoginMode && (
-          <ForgotPasswordTouchable
-            onPress={handleForgotPassword}
-            disabled={authState.loading}
-          >
-            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-          </ForgotPasswordTouchable>
+          <ForgotPasswordWrap>
+            <Button
+              variant="ghost"
+              size="sm"
+              ghostTint="primary"
+              onPress={handleForgotPassword}
+              disabled={authState.loading}
+              label="Forgot password?"
+            />
+          </ForgotPasswordWrap>
         )}
 
         {isRegisterMode && (
@@ -296,26 +298,26 @@ export const AuthForm = ({
         )}
       </InputsContainer>
 
-      <PrimaryButton
+      <Button
         testID="auth-submit-button"
+        variant="filled"
+        size="md"
+        fullWidth
+        withTopSpacing
         onPress={handleAuth}
         disabled={authState.loading}
-      >
-        <PrimaryButtonText>
-          {authState.loading
+        loading={authState.loading}
+        rightIcon={isLoginMode ? 'arrow-forward' : 'person-add'}
+        label={
+          authState.loading
             ? isLoginMode
-              ? 'Signing In...'
-              : 'Creating Account...'
+              ? 'Signing in…'
+              : 'Creating your account…'
             : isLoginMode
               ? 'Sign In'
-              : 'Create Account'}
-        </PrimaryButtonText>
-        <Icon
-          name={isLoginMode ? 'arrow-forward' : 'person-add'}
-          sizeVariant="sm"
-          colorVariant="text"
-        />
-      </PrimaryButton>
+              : 'Create Account'
+        }
+      />
     </FormSection>
   )
 }

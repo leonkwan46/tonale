@@ -3,15 +3,14 @@ import { Keyboard, TextInput } from 'react-native'
 
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenIntroHeader } from '@/screens/SettingsScreen/components/ScreenIntroHeader'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 
 import {
   ErrorContainer,
   ErrorText,
   Input,
   InputField,
-  PrimaryButton,
-  PrimaryButtonText,
   ScrollContainer
 } from './PasswordResetForm.styles'
 
@@ -115,15 +114,16 @@ export const PasswordResetForm = ({
           />
         </InputField>
 
-        <PrimaryButton
+        <Button
+          variant="filled"
+          size="md"
+          fullWidth
+          withTopSpacing
           disabled={isLoading || !newPassword || !confirmPassword}
+          loading={isLoading}
           onPress={handleSubmit}
-          activeOpacity={0.7}
-        >
-          <PrimaryButtonText>
-            {isLoading ? 'Resetting...' : 'Reset Password'}
-          </PrimaryButtonText>
-        </PrimaryButton>
+          label={isLoading ? 'Resetting password…' : 'Reset Password'}
+        />
       </ScrollContainer>
     </KeyboardAwareScrollView>
   )

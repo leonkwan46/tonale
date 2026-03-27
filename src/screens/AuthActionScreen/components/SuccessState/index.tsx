@@ -1,14 +1,10 @@
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { useRouter } from 'expo-router'
 
 import { AuthActionMode } from '../../AuthActionScreen.types'
 import { getHandler } from '../../handlers/AuthActionHandlerRegistry'
-import {
-  PrimaryButton,
-  PrimaryButtonText,
-  SuccessContainer,
-  SuccessText
-} from './SuccessState.styles'
+import { SuccessContainer, SuccessText } from './SuccessState.styles'
 
 interface SuccessStateProps {
   mode: AuthActionMode
@@ -42,11 +38,14 @@ export const SuccessState = ({ mode, onContinue }: SuccessStateProps) => {
         <Icon name="checkmark-circle" sizeVariant="lg" colorVariant="success" />
         <SuccessText>{message}</SuccessText>
       </SuccessContainer>
-      <PrimaryButton onPress={handleContinue} activeOpacity={0.7}>
-        <PrimaryButtonText>
-          {mode === 'verifyEmail' ? 'Continue' : 'Go to Sign In'}
-        </PrimaryButtonText>
-      </PrimaryButton>
+      <Button
+        variant="filled"
+        size="md"
+        fullWidth
+        withTopSpacing
+        onPress={handleContinue}
+        label={mode === 'verifyEmail' ? 'Continue' : 'Go to Sign In'}
+      />
     </>
   )
 }

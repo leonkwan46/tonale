@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -23,19 +22,3 @@ export const SuccessText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily()
 }))
 
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  backgroundColor: theme.colors.primary,
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  borderRadius: scale(theme.borderRadius.md),
-  opacity: disabled ? 0.7 : 1,
-  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
-}))
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))

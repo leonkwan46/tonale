@@ -1,14 +1,12 @@
+import { Button } from '@/compLib/Button'
+
 import {
-  ButtonIcon,
   Divider,
   DividerContainer,
   DividerText,
   GuestLoginContainer,
-  GuestLoginWrapper,
-  SecondaryButton,
-  SecondaryButtonText
+  GuestLoginWrapper
 } from './GuestLogin.styles'
-import { PersonIcon } from './PersonIcon'
 
 interface GuestLoginProps {
   loading: boolean
@@ -29,17 +27,16 @@ export const GuestLogin = ({
         <DividerText>or</DividerText>
         <Divider />
       </DividerContainer>
-      <SecondaryButton
+      <Button
+        variant="outlined"
+        size="md"
+        fullWidth
+        leftIcon="person-outline"
         onPress={onGuestLogin}
         disabled={loading}
-      >
-        <ButtonIcon>
-          <PersonIcon name="person-outline" sizeVariant="sm" />
-        </ButtonIcon>
-        <SecondaryButtonText>
-          Continue as Guest
-        </SecondaryButtonText>
-      </SecondaryButton>
+        loading={loading}
+        label={loading ? 'Continuing as guest…' : 'Continue as Guest'}
+      />
     </GuestLoginContainer>
   </GuestLoginWrapper>
   )
