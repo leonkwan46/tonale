@@ -1,5 +1,5 @@
 import { useSafeNavigation } from '@/hooks'
-import { Card } from '@/sharedComponents/Card'
+import { Card } from '@/compLib/Card'
 import { useTheme } from '@emotion/react'
 import type { Lesson } from '@types'
 import { useState } from 'react'

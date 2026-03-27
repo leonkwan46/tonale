@@ -1,4 +1,4 @@
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Depth3D } from '@/compLib/Depth3D'
 import {
   FinalTestButtonContainer,
   FinalTestContentContainer,
@@ -29,7 +29,7 @@ export const FinalTestButton = ({
   return (
     <FinalTestWrapper>
       <FinalTestButtonContainer>
-        <Button3D
+        <Depth3D
           onPress={onPress}
           disabled={disabled}
           testID={testID}
@@ -48,7 +48,7 @@ export const FinalTestButton = ({
               </FinalTestTextWrapper>
             </FinalTestContentContainer>
           )}
-        </Button3D>
+        </Depth3D>
       </FinalTestButtonContainer>
     </FinalTestWrapper>
   )

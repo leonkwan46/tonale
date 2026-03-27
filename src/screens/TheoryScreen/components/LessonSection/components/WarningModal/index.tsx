@@ -1,11 +1,10 @@
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
   ButtonContainer,
   DescriptionText,
-  ModalButton,
-  ModalButtonText,
   TitleText
-} from '@/sharedComponents/Modal/Modal.styles'
+} from '@/compLib/Modal/Modal.styles'
 import { WarningIcon } from './WarningModal.styles'
 
 interface WarningModalProps {
@@ -39,23 +38,21 @@ export const WarningModal = ({
       </DescriptionText>
       
       <ButtonContainer>
-        <ModalButton
+        <Button
           variant="outlined"
+          size="sm"
+          rowLayout="pair"
           onPress={onCancel}
-        >
-          <ModalButtonText variant="outlined">
-            Cancel
-          </ModalButtonText>
-        </ModalButton>
-        
-        <ModalButton
+          label="Cancel"
+        />
+
+        <Button
           variant="filled"
+          size="sm"
+          rowLayout="pair"
           onPress={onContinue}
-        >
-          <ModalButtonText variant="filled">
-            Continue
-          </ModalButtonText>
-        </ModalButton>
+          label="Continue"
+        />
       </ButtonContainer>
     </Modal>
   )

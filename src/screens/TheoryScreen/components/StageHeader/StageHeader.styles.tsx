@@ -1,12 +1,15 @@
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/native'
-import { Animated, Pressable } from 'react-native'
+import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 import { StarLogo } from '../LessonSection/components/Logo/StarLogo'
 
-export const HeaderContainer = styled(Pressable)<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
+const PressableOpacity07 = createPressableWithOpacity(0.7)
+
+export const HeaderContainer = styled(PressableOpacity07)<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
