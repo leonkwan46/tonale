@@ -6,6 +6,10 @@ import type { TextInputProps } from 'react-native'
 import { Modal, TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+
+const PressableOpacity07 = createPressableWithOpacity(0.7)
+
 export const ModalMask = styled(Modal)({})
 
 export const ModalMaskContainer = styled.View(({ theme }) => ({
@@ -68,7 +72,7 @@ export const Input = forwardRef<TextInput, TextInputProps>(
   }
 )
 
-export const EyeButton = styled.Pressable(({ theme }) => ({
+export const EyeButton = styled(PressableOpacity07)(({ theme }) => ({
   paddingVertical: scale(theme.spacing.xs),
   paddingHorizontal: scale(theme.spacing.xs)
 }))
@@ -97,33 +101,3 @@ export const ActionsRow = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.md),
   alignItems: 'center'
 }))
-
-export const CancelButton = styled.Pressable(({ theme }) => ({
-  paddingVertical: scale(theme.spacing.sm),
-  paddingHorizontal: scale(theme.spacing.md)
-}))
-
-export const CancelButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: scale(theme.typography.base),
-  fontWeight: theme.fontWeight.semibold,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const ConfirmButton = styled.Pressable(({ theme }) => ({
-  paddingVertical: scale(theme.spacing.sm),
-  paddingHorizontal: scale(theme.spacing.md),
-  backgroundColor: theme.colors.error,
-  borderRadius: scale(theme.borderRadius.sm),
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: scale(theme.spacing.sm)
-}))
-
-export const ConfirmButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.errorContrast,
-  fontSize: scale(theme.typography.base),
-  fontWeight: theme.fontWeight.bold,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
-

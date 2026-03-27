@@ -1,8 +1,8 @@
 import { updateUserEmailAddress } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
 
@@ -15,8 +15,6 @@ import {
   FormCard,
   Input,
   InputField,
-  PrimaryButtonText,
-  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './ChangeEmailScreen.styles'
@@ -118,19 +116,17 @@ export const ChangeEmailScreen = () => {
                   onSubmitEditing={handleConfirm}
                 />
               </InputField>
-              <Button3D
-                disabled={loading}
-                onPress={handleConfirm}
-                color="blue"
-                layoutType="row"
+              <Button
+                variant="filled"
+                color="primary"
+                depth
+                depthLayout="row"
                 fullWidth
-              >
-                {() => (
-                  <SaveButtonContent>
-                    <PrimaryButtonText>{loading ? 'Confirming...' : 'Confirm'}</PrimaryButtonText>
-                  </SaveButtonContent>
-                )}
-              </Button3D>
+                disabled={loading}
+                loading={loading}
+                onPress={handleConfirm}
+                label={loading ? 'Updating email…' : 'Confirm'}
+              />
             </FormCard>
           )}
         </ContentContainer>

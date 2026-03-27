@@ -3,8 +3,8 @@ import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Keyboard } from 'react-native'
@@ -17,8 +17,6 @@ import {
   ErrorText,
   Input,
   InputField,
-  PrimaryButtonText,
-  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeNameScreen.styles'
 
@@ -108,19 +106,17 @@ export const ChangeNameScreen = () => {
             />
           </InputField>
 
-          <Button3D
-            disabled={loading || !name.trim()}
-            onPress={handleSave}
-            color="blue"
-            layoutType="row"
+          <Button
+            variant="filled"
+            color="primary"
+            depth
+            depthLayout="row"
             fullWidth
-          >
-            {() => (
-              <SaveButtonContent>
-                <PrimaryButtonText>Save</PrimaryButtonText>
-              </SaveButtonContent>
-            )}
-          </Button3D>
+            disabled={loading || !name.trim()}
+            loading={loading}
+            onPress={handleSave}
+            label={loading ? 'Saving…' : 'Save'}
+          />
         </SettingSection>
         </ScrollContentContainer>
       </KeyboardAwareScrollView>

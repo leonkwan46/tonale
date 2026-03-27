@@ -22,20 +22,6 @@ export const ErrorText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily()
 }))
 
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const SaveButtonContent = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  width: '100%'
-}))
-
 export const ScrollContentContainer = styled.View(({ theme }) => ({
   alignItems: 'center',
   flexGrow: 1,

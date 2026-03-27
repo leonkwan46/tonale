@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser'
 import { useEffect, useRef, useState } from 'react'
 
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { Typewriter } from '@/sharedComponents/Typewriter'
+import { Typewriter } from '@/compLib/Typewriter'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { ContentContainer } from '../../SettingsScreen.styles'
 import { CoffeePurchaseButton } from './components/CoffeePurchaseButton'

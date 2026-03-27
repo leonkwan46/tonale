@@ -1,10 +1,13 @@
 import styled from '@emotion/native'
-import { TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
-export const SettingsItemContainer = styled(TouchableOpacity)(({ theme }) => ({
+const PressableOpacity07 = createPressableWithOpacity(0.7)
+
+export const SettingsItemContainer = styled(PressableOpacity07)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: scale(theme.spacing.sm),

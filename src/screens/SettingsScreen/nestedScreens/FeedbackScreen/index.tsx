@@ -2,7 +2,8 @@ import { db } from '@/config/firebase/firebase'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import Constants from 'expo-constants'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useState } from 'react'
@@ -21,8 +22,6 @@ import {
   ErrorText,
   FeedbackInput,
   InputField,
-  PrimaryButton,
-  PrimaryButtonText,
   PrivacyNoticeText,
   ScrollContentContainer,
   SuccessContainer,
@@ -139,7 +138,6 @@ export const FeedbackScreen = () => {
                     setConsentGiven(!consentGiven)
                     setError('')
                   }}
-                  activeOpacity={0.7}
                 >
                   <Icon
                     name={consentGiven ? 'checkbox' : 'checkbox-outline'}
@@ -155,15 +153,15 @@ export const FeedbackScreen = () => {
                   We collect your message, email (if provided), device type, and app version so we can review feedback and improve the app. We may contact you by email if needed.
                 </PrivacyNoticeText>
 
-                <PrimaryButton
+                <Button
+                  variant="filled"
+                  size="md"
+                  fullWidth
                   disabled={loading || !feedback.trim() || !consentGiven}
+                  loading={loading}
                   onPress={handleSubmit}
-                  activeOpacity={0.7}
-                >
-                  <PrimaryButtonText>
-                    {loading ? 'Submitting...' : 'Submit Feedback'}
-                  </PrimaryButtonText>
-                </PrimaryButton>
+                  label={loading ? 'Sending feedback…' : 'Submit Feedback'}
+                />
               </SettingSection>
             )}
           </ContentWrapper>

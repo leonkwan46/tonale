@@ -2,6 +2,10 @@ import styled from '@emotion/native'
 import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+
+const PressableOpacity08 = createPressableWithOpacity(0.8)
+
 const TRACK_WIDTH = scale(56)
 const TRACK_HEIGHT = scale(30)
 const THUMB_SIZE = scale(26)
@@ -14,7 +18,7 @@ export const TOGGLE_CONSTANTS = {
   SLIDE_DISTANCE: TRACK_WIDTH - THUMB_SIZE - TRACK_PADDING * 2
 }
 
-export const Track = styled.TouchableOpacity(({ theme }) => ({
+export const Track = styled(PressableOpacity08)(({ theme }) => ({
   width: TRACK_WIDTH,
   height: TRACK_HEIGHT,
   borderRadius: TRACK_HEIGHT / 2,

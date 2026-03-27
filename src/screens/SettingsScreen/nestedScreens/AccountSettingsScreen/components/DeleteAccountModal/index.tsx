@@ -1,13 +1,11 @@
-import { ActivityIndicator } from 'react-native'
 import { useState } from 'react'
+
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 
 import {
   ActionsRow,
   BodyText,
-  CancelButton,
-  CancelButtonText,
-  ConfirmButton,
-  ConfirmButtonText,
   EyeButton,
   Input,
   InputField,
@@ -18,7 +16,6 @@ import {
   StatusText,
   TitleText
 } from './DeleteAccountModal.styles'
-import { Icon } from '@/sharedComponents/Icon'
 
 type DeleteAccountModalProps = {
   visible: boolean
@@ -94,14 +91,24 @@ export const DeleteAccountModal = ({
           )}
 
           <ActionsRow>
-            <CancelButton onPress={onCancel} disabled={isLoading}>
-              <CancelButtonText>Cancel</CancelButtonText>
-            </CancelButton>
+            <Button
+              variant="ghost"
+              size="md"
+              onPress={onCancel}
+              disabled={isLoading}
+              label="Cancel"
+            />
 
-            <ConfirmButton onPress={onConfirm} disabled={isLoading}>
-              {isLoading && <ActivityIndicator color="white" />}
-              <ConfirmButtonText>Delete</ConfirmButtonText>
-            </ConfirmButton>
+            <Button
+              variant="filled"
+              color="error"
+              size="md"
+              labelWeight="bold"
+              onPress={onConfirm}
+              loading={isLoading}
+              disabled={isLoading}
+              label="Delete"
+            />
           </ActionsRow>
         </ModalCard>
       </ModalMaskContainer>

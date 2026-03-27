@@ -63,20 +63,6 @@ export const ErrorText = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily()
 }))
 
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const SaveButtonContent = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  width: '100%'
-}))
-
 export const SuccessContainer = styled.View(({ theme }) => ({
   backgroundColor: 'transparent',
   borderRadius: scale(theme.borderRadius.md),

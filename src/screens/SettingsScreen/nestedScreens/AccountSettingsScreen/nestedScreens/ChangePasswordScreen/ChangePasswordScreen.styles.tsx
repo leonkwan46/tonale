@@ -40,18 +40,3 @@ export const SuccessText = styled.Text(({ theme }) => ({
   flex: 1,
   fontFamily: getSourGummyFontFamily()
 }))
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const SaveButtonContent = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
-  width: '100%'
-}))
-

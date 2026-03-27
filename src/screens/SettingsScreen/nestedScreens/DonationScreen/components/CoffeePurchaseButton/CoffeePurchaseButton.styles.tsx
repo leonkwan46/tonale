@@ -1,10 +1,13 @@
 import styled from '@emotion/native'
-import { Image, Text, View } from 'react-native'
+import { Image, Text } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
-export const PurchaseButtonContainer = styled(View)(({ theme }) => ({
+const PressableOpacity07 = createPressableWithOpacity(0.7)
+
+export const PurchaseButtonContainer = styled(PressableOpacity07)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: theme.colors.surface,

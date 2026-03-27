@@ -3,8 +3,8 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { GenderSelection } from '@/screens/OnboardingScreen/components/GenderSelection'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { GENDER, INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
@@ -14,8 +14,6 @@ import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
   ErrorContainer,
   ErrorText,
-  PrimaryButtonText,
-  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeGenderScreen.styles'
 
@@ -102,19 +100,17 @@ export const ChangeGenderScreen = () => {
             onSelect={setSelectedGender}
           />
 
-          <Button3D
-            disabled={!canSave}
-            onPress={handleSave}
-            color="blue"
-            layoutType="row"
+          <Button
+            variant="filled"
+            color="primary"
+            depth
+            depthLayout="row"
             fullWidth
-          >
-            {() => (
-              <SaveButtonContent>
-                <PrimaryButtonText>Save</PrimaryButtonText>
-              </SaveButtonContent>
-            )}
-          </Button3D>
+            disabled={!canSave}
+            loading={loading}
+            onPress={handleSave}
+            label={loading ? 'Saving…' : 'Save'}
+          />
         </ScrollContentContainer>
       </ScrollView>
     </ScreenContainer>

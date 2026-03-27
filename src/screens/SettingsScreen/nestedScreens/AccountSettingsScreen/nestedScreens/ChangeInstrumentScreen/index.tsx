@@ -4,8 +4,8 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { GENDER, INSTRUMENT, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
@@ -15,8 +15,6 @@ import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
   ErrorContainer,
   ErrorText,
-  PrimaryButtonText,
-  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeInstrumentScreen.styles'
 
@@ -128,19 +126,17 @@ export const ChangeInstrumentScreen = () => {
             onScrollToBottom={handleScrollToBottom}
           />
 
-          <Button3D
-            disabled={!canSave}
-            onPress={handleSave}
-            color="blue"
-            layoutType="row"
+          <Button
+            variant="filled"
+            color="primary"
+            depth
+            depthLayout="row"
             fullWidth
-          >
-            {() => (
-              <SaveButtonContent>
-                <PrimaryButtonText>Save</PrimaryButtonText>
-              </SaveButtonContent>
-            )}
-          </Button3D>
+            disabled={!canSave}
+            loading={loading}
+            onPress={handleSave}
+            label={loading ? 'Saving…' : 'Save'}
+          />
         </ScrollContentContainer>
       </KeyboardAwareScrollView>
     </ScreenContainer>

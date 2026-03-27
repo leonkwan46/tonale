@@ -1,8 +1,8 @@
 import { sendEmailVerificationToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useSafeNavigation, useUser } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -17,8 +17,6 @@ import {
   ErrorContainer,
   ErrorText,
   MessageText,
-  PrimaryButtonText,
-  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './EmailScreen.styles'
@@ -90,21 +88,18 @@ It won't be shared with others.`}
                     <ErrorText>{verifyError}</ErrorText>
                   </ErrorContainer>
                 ) : null}
-                <Button3D
-                  disabled={verifyLoading}
-                  onPress={handleSendVerification}
-                  color="blue"
-                  layoutType="row"
+                <Button
+                  variant="filled"
+                  color="primary"
+                  size="sm"
+                  depth
+                  depthLayout="row"
                   fullWidth
-                >
-                  {() => (
-                    <SaveButtonContent>
-                      <PrimaryButtonText>
-                        {verifyLoading ? 'Sending...' : 'Send verification email'}
-                      </PrimaryButtonText>
-                    </SaveButtonContent>
-                  )}
-                </Button3D>
+                  disabled={verifyLoading}
+                  loading={verifyLoading}
+                  onPress={handleSendVerification}
+                  label={verifyLoading ? 'Sending verification email…' : 'Send verification email'}
+                />
               </SettingSection>
             ))}
 

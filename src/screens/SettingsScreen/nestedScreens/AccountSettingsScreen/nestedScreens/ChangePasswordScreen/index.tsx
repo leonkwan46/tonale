@@ -1,8 +1,8 @@
 import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -12,8 +12,6 @@ import { ContentContainer } from '../../../../SettingsScreen.styles'
 import {
   ErrorContainer,
   ErrorText,
-  PrimaryButtonText,
-  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './ChangePasswordScreen.styles'
@@ -64,21 +62,17 @@ export const ChangePasswordScreen = () => {
               </SuccessText>
             </SuccessContainer>
           ) : (
-            <Button3D
-              disabled={loading}
-              onPress={handleSendResetEmail}
-              color="blue"
-              layoutType="row"
+            <Button
+              variant="filled"
+              color="primary"
+              depth
+              depthLayout="row"
               fullWidth
-            >
-              {() => (
-                <SaveButtonContent>
-                  <PrimaryButtonText>
-                    {loading ? 'Sending...' : 'Send Password Reset Email'}
-                  </PrimaryButtonText>
-                </SaveButtonContent>
-              )}
-            </Button3D>
+              disabled={loading}
+              loading={loading}
+              onPress={handleSendResetEmail}
+              label={loading ? 'Sending reset link…' : 'Send Password Reset Email'}
+            />
           )}
         </ContentContainer>
       </ScrollView>
