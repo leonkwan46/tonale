@@ -4,6 +4,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import Constants from 'expo-constants'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { useState } from 'react'
@@ -73,8 +74,12 @@ export const FeedbackScreen = () => {
       setSuccess(true)
       setFeedback('')
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to submit feedback'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t submit your feedback. Please try again.'
+        )
+      )
     } finally {
       setLoading(false)
     }

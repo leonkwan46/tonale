@@ -5,6 +5,7 @@ import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPrevi
 import { GenderSelection } from '@/screens/OnboardingScreen/components/GenderSelection'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { GENDER, INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
@@ -67,8 +68,12 @@ export const ChangeGenderScreen = () => {
         router.back()
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update gender'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t update your gender. Please try again.'
+        )
+      )
     } finally {
       setLoading(false)
     }

@@ -4,6 +4,7 @@ import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
@@ -119,7 +120,12 @@ export const AuthForm = ({
       }
     } catch (err) {
       updateAuthState({
-        error: (err as Error).message || `Failed to ${authState.mode}`
+        error: getUserFacingErrorMessage(
+          err,
+          isLoginMode
+            ? 'Couldn’t sign in. Please try again.'
+            : 'Couldn’t create your account. Please try again.'
+        )
       })
     } finally {
       updateAuthState({ loading: false })
@@ -158,7 +164,10 @@ export const AuthForm = ({
       updateAuthState({ error: '' })
     } catch (err) {
       updateAuthState({
-        error: (err as Error).message || 'Failed to send reset email'
+        error: getUserFacingErrorMessage(
+          err,
+          'Couldn’t send the reset email. Please try again.'
+        )
       })
     } finally {
       updateAuthState({ loading: false })

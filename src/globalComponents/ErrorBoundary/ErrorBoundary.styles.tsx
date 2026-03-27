@@ -1,10 +1,27 @@
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/native'
+import { ScrollView } from 'react-native'
 
-export const ScrollContainer = styled.ScrollView(({ theme }) => ({
+export const ErrorBoundaryScroll = ({ children }: { children: React.ReactNode }) => {
+  const theme = useTheme()
+  return (
+    <ScrollContainer
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'center',
+        paddingHorizontal: theme.spacing.lg,
+        paddingVertical: theme.spacing.lg
+      }}
+    >
+      {children}
+    </ScrollContainer>
+  )
+}
+
+const ScrollContainer = styled(ScrollView)(({ theme }) => ({
   flex: 1,
-  backgroundColor: theme.colors.background,
-  padding: theme.spacing.lg
+  backgroundColor: theme.colors.background
 }))
 
 export const Title = styled.Text(({ theme }) => ({
@@ -53,7 +70,7 @@ export const StackText = styled.Text(({ theme }) => ({
   opacity: 0.8
 }))
 
-export const ReloadButton = styled.View(({ theme }) => ({
+export const ReloadButton = styled.Pressable(({ theme }) => ({
   backgroundColor: theme.colors.primary,
   padding: theme.spacing.md,
   borderRadius: theme.borderRadius.sm,

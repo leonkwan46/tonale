@@ -3,6 +3,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
 
@@ -54,8 +55,12 @@ export const ChangeEmailScreen = () => {
       setNewEmail('')
       setPassword('')
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update email'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t update your email. Please try again.'
+        )
+      )
     } finally {
       setLoading(false)
     }
