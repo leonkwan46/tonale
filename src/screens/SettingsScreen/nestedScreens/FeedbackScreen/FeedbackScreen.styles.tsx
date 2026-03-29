@@ -6,51 +6,6 @@ import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
 const PressableOpacity07 = createPressableWithOpacity(0.7)
 
-export const InputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  borderWidth: 1,
-  borderRadius: scale(12),
-  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
-  paddingTop: theme.device.isTablet ? scale(12) : scale(16),
-  paddingBottom: theme.device.isTablet ? scale(12) : scale(16),
-  minHeight: theme.device.isTablet ? scale(120) : scale(160),
-  backgroundColor: theme.components.input.background,
-  borderColor: theme.components.input.border,
-  gap: theme.device.isTablet ? scale(6) : scale(8)
-}))
-
-export const EmailInputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderWidth: 1,
-  borderRadius: scale(12),
-  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
-  height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.components.input.background,
-  borderColor: theme.components.input.border,
-  gap: theme.device.isTablet ? scale(6) : scale(8)
-}))
-
-export const EmailInput = styled.TextInput(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(12) : scale(14),
-  height: '100%',
-  color: theme.components.input.text,
-  placeholderTextColor: theme.components.input.placeholder,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const FeedbackInput = styled.TextInput(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(12) : scale(14),
-  minHeight: theme.device.isTablet ? scale(100) : scale(130),
-  color: theme.components.input.text,
-  placeholderTextColor: theme.components.input.placeholder,
-  fontFamily: getSourGummyFontFamily(),
-  lineHeight: theme.device.isTablet ? scale(18) : scale(20)
-}))
-
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',

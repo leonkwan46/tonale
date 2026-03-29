@@ -3,6 +3,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
@@ -14,8 +15,6 @@ import {
   ErrorContainer,
   ErrorText,
   FormCard,
-  Input,
-  InputField,
   SuccessContainer,
   SuccessText
 } from './ChangeEmailScreen.styles'
@@ -91,36 +90,32 @@ export const ChangeEmailScreen = () => {
                 </ErrorContainer>
               ) : null}
 
-              <InputField disabled={loading}>
-                <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-                <Input
-                  placeholder="New Email"
-                  value={newEmail}
-                  onChangeText={setNewEmail}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  autoComplete="email"
-                  editable={!loading}
-                  returnKeyType="next"
-                />
-              </InputField>
+              <InputField
+                leftIcon="mail-outline"
+                placeholder="New Email"
+                value={newEmail}
+                onChangeText={setNewEmail}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                autoComplete="email"
+                disabled={loading}
+                returnKeyType="next"
+              />
 
-              <InputField disabled={loading}>
-                <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
-                <Input
-                  placeholder="Current Password"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  editable={!loading}
-                  returnKeyType="done"
-                  onSubmitEditing={handleConfirm}
-                />
-              </InputField>
+              <InputField
+                leftIcon="lock-closed-outline"
+                placeholder="Current Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                disabled={loading}
+                returnKeyType="done"
+                onSubmitEditing={handleConfirm}
+              />
               <Button
                 variant="filled"
                 color="primary"

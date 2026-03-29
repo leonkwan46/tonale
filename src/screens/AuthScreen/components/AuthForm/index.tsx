@@ -4,6 +4,7 @@ import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import {
   createUserWithEmailAndPassword,
@@ -17,8 +18,6 @@ import {
   EyeIcon,
   ForgotPasswordWrap,
   FormSection,
-  Input,
-  InputField,
   InputsContainer,
   RequirementsText,
   StatusContainer,
@@ -194,58 +193,46 @@ export const AuthForm = ({
       ) : null}
 
       <InputsContainer>
-        <InputField>
-          <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-          <Input
-            ref={emailInputRef}
-            placeholder="Email"
-            onChangeText={(text: string) => updateFormData('email', text)}
-            value={formData.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            textContentType={
-              isLoginMode ? 'username' : 'emailAddress'
-            }
-            autoComplete={isLoginMode ? 'username' : 'email'}
-            returnKeyType="next"
-            onSubmitEditing={handleEmailSubmit}
-          />
-        </InputField>
+        <InputField
+          ref={emailInputRef}
+          leftIcon="mail-outline"
+          placeholder="Email"
+          onChangeText={(text: string) => updateFormData('email', text)}
+          value={formData.email}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType={isLoginMode ? 'username' : 'emailAddress'}
+          autoComplete={isLoginMode ? 'username' : 'email'}
+          returnKeyType="next"
+          onSubmitEditing={handleEmailSubmit}
+        />
 
-        <InputField>
-          <Icon
-            name="lock-closed-outline"
-            sizeVariant="sm"
-            colorVariant="primary"
-          />
-          <Input
-            ref={passwordInputRef}
-            placeholder="Password"
-            onChangeText={(text: string) => updateFormData('password', text)}
-            value={formData.password}
-            secureTextEntry={!authState.showPassword}
-            textContentType={
-              isLoginMode ? 'password' : 'newPassword'
-            }
-            autoComplete={
-              isLoginMode ? 'current-password' : 'new-password'
-            }
-            returnKeyType={isRegisterMode ? 'next' : 'done'}
-            onSubmitEditing={handlePasswordSubmit}
-          />
-          <EyeIcon
-            onPress={() =>
-              updateAuthState({ showPassword: !authState.showPassword })
-            }
-          >
-            <Icon
-              name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'}
-              sizeVariant="sm"
-              colorVariant="primary"
-            />
-          </EyeIcon>
-        </InputField>
+        <InputField
+          ref={passwordInputRef}
+          leftIcon="lock-closed-outline"
+          placeholder="Password"
+          onChangeText={(text: string) => updateFormData('password', text)}
+          value={formData.password}
+          secureTextEntry={!authState.showPassword}
+          textContentType={isLoginMode ? 'password' : 'newPassword'}
+          autoComplete={isLoginMode ? 'current-password' : 'new-password'}
+          returnKeyType={isRegisterMode ? 'next' : 'done'}
+          onSubmitEditing={handlePasswordSubmit}
+          rightSlot={
+            <EyeIcon
+              onPress={() =>
+                updateAuthState({ showPassword: !authState.showPassword })
+              }
+            >
+              <Icon
+                name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'}
+                sizeVariant="sm"
+                colorVariant="primary"
+              />
+            </EyeIcon>
+          }
+        />
 
         {isLoginMode && (
           <ForgotPasswordWrap>
@@ -261,43 +248,39 @@ export const AuthForm = ({
         )}
 
         {isRegisterMode && (
-          <InputField>
-            <Icon
-              name="lock-closed-outline"
-              sizeVariant="sm"
-              colorVariant="primary"
-            />
-            <Input
-              ref={confirmPasswordInputRef}
-              placeholder="Confirm Password"
-              onChangeText={(text: string) =>
-                updateFormData('confirmPassword', text)
-              }
-              value={formData.confirmPassword}
-              secureTextEntry={!authState.showConfirmPassword}
-              textContentType="newPassword"
-              autoComplete="new-password"
-              returnKeyType="done"
-              onSubmitEditing={handleConfirmPasswordSubmit}
-            />
-            <EyeIcon
-              onPress={() =>
-                updateAuthState({
-                  showConfirmPassword: !authState.showConfirmPassword
-                })
-              }
-            >
-              <Icon
-                name={
-                  authState.showConfirmPassword
-                    ? 'eye-outline'
-                    : 'eye-off-outline'
+          <InputField
+            ref={confirmPasswordInputRef}
+            leftIcon="lock-closed-outline"
+            placeholder="Confirm Password"
+            onChangeText={(text: string) =>
+              updateFormData('confirmPassword', text)
+            }
+            value={formData.confirmPassword}
+            secureTextEntry={!authState.showConfirmPassword}
+            textContentType="newPassword"
+            autoComplete="new-password"
+            returnKeyType="done"
+            onSubmitEditing={handleConfirmPasswordSubmit}
+            rightSlot={
+              <EyeIcon
+                onPress={() =>
+                  updateAuthState({
+                    showConfirmPassword: !authState.showConfirmPassword
+                  })
                 }
-                sizeVariant="sm"
-                colorVariant="primary"
-              />
-            </EyeIcon>
-          </InputField>
+              >
+                <Icon
+                  name={
+                    authState.showConfirmPassword
+                      ? 'eye-outline'
+                      : 'eye-off-outline'
+                  }
+                  sizeVariant="sm"
+                  colorVariant="primary"
+                />
+              </EyeIcon>
+            }
+          />
         )}
 
         {isRegisterMode && (

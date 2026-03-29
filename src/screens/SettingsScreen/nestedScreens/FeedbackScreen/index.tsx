@@ -4,6 +4,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import Constants from 'expo-constants'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
@@ -17,12 +18,8 @@ import {
   ConsentContainer,
   ConsentText,
   ContentWrapper,
-  EmailInput,
-  EmailInputField,
   ErrorContainer,
   ErrorText,
-  FeedbackInput,
-  InputField,
   PrivacyNoticeText,
   ScrollContentContainer,
   SuccessContainer,
@@ -111,32 +108,28 @@ export const FeedbackScreen = () => {
                   </ErrorContainer>
                 ) : null}
 
-                <InputField>
-                  <FeedbackInput
-                    placeholder="Tell us what you think..."
-                    onChangeText={setFeedback}
-                    value={feedback}
-                    multiline
-                    numberOfLines={6}
-                    textAlignVertical="top"
-                    autoCapitalize="sentences"
-                    autoCorrect={true}
-                    editable={!loading}
-                  />
-                </InputField>
+                <InputField
+                  placeholder="Tell us what you think..."
+                  onChangeText={setFeedback}
+                  value={feedback}
+                  multiline
+                  numberOfLines={6}
+                  textAlignVertical="top"
+                  autoCapitalize="sentences"
+                  autoCorrect={true}
+                  disabled={loading}
+                />
 
-                <EmailInputField>
-                  <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-                  <EmailInput
-                    placeholder="Email (optional)"
-                    onChangeText={setEmail}
-                    value={email}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    editable={!loading}
-                  />
-                </EmailInputField>
+                <InputField
+                  leftIcon="mail-outline"
+                  placeholder="Email (optional)"
+                  onChangeText={setEmail}
+                  value={email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  disabled={loading}
+                />
 
                 <ConsentContainer
                   onPress={() => {

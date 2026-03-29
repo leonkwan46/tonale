@@ -1,8 +1,4 @@
 import styled from '@emotion/native'
-import { useTheme } from '@emotion/react'
-import { forwardRef } from 'react'
-import type { TextInputProps } from 'react-native'
-import { TextInput } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
@@ -56,45 +52,6 @@ export const InputsContainer = styled.View(({ theme }) => ({
     : scale(theme.spacing.sm),
   width: '100%'
 }))
-
-export const InputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderWidth: 1,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: theme.device.isTablet
-    ? scale(theme.spacing.sm)
-    : scale(theme.spacing.md),
-  height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.components.input.background,
-  borderColor: theme.components.input.border,
-  gap: theme.device.isTablet
-    ? scale(theme.spacing.xs)
-    : scale(theme.spacing.sm)
-}))
-
-const BaseInput = styled(TextInput)(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet
-    ? scale(theme.typography.sm)
-    : scale(theme.typography.sm),
-  height: '100%',
-  color: theme.components.input.text,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const Input = forwardRef<TextInput, TextInputProps>(
-  function AuthInput(props, ref) {
-    const theme = useTheme()
-    return (
-      <BaseInput
-        ref={ref}
-        placeholderTextColor={theme.components.input.placeholder}
-        {...props}
-      />
-    )
-  }
-)
 
 export const EyeIcon = styled(PressableOpacity07)(({ theme }) => ({
   padding: scale(theme.spacing.xs)

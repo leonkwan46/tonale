@@ -5,6 +5,7 @@ import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
@@ -16,8 +17,6 @@ import { SettingSection } from '../../../../components/SettingSection'
 import {
   ErrorContainer,
   ErrorText,
-  Input,
-  InputField,
   ScrollContentContainer
 } from './ChangeNameScreen.styles'
 
@@ -94,19 +93,17 @@ export const ChangeNameScreen = () => {
             </ErrorContainer>
           ) : null}
 
-          <InputField>
-            <Icon name="person-outline" sizeVariant="sm" colorVariant="primary" />
-            <Input
-              placeholder="Enter your name"
-              onChangeText={handleNameChange}
-              value={name}
-              autoCapitalize="words"
-              autoCorrect={false}
-              returnKeyType="done"
-              onSubmitEditing={handleSave}
-              editable={!loading}
-            />
-          </InputField>
+          <InputField
+            leftIcon="person-outline"
+            placeholder="Enter your name"
+            onChangeText={handleNameChange}
+            value={name}
+            autoCapitalize="words"
+            autoCorrect={false}
+            returnKeyType="done"
+            onSubmitEditing={handleSave}
+            disabled={loading}
+          />
 
           <Button
             variant="filled"

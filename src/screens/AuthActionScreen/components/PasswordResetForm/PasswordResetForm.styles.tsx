@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -26,27 +25,6 @@ export const ErrorText = styled.Text(({ theme }) => ({
   color: theme.colors.error,
   fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
   flex: 1,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const InputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderWidth: 1,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.components.input.background,
-  borderColor: theme.components.input.border,
-  gap: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm)
-}))
-
-export const Input = styled(TextInput)(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  height: '100%',
-  color: theme.components.input.text,
-  placeholderTextColor: theme.components.input.placeholder,
   fontFamily: getSourGummyFontFamily()
 }))
 

@@ -1,9 +1,6 @@
 import styled from '@emotion/native'
-import { useTheme } from '@emotion/react'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
-import { forwardRef } from 'react'
-import type { TextInputProps } from 'react-native'
-import { Modal, TextInput } from 'react-native'
+import { Modal } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { createPressableWithOpacity } from '@/utils/PressableFeedback'
@@ -38,39 +35,6 @@ export const BodyText = styled.Text(({ theme }) => ({
   fontSize: scale(theme.typography.base),
   fontFamily: getSourGummyFontFamily()
 }))
-
-export const InputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: theme.components.input.background,
-  borderWidth: scale(1),
-  borderColor: theme.components.input.border,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: scale(theme.spacing.md),
-  height: theme.device.isTablet ? scale(40) : scale(56),
-  gap: theme.device.isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm)
-}))
-
-const BaseInput = styled(TextInput)(({ theme }) => ({
-  flex: 1,
-  fontSize: scale(theme.typography.sm),
-  height: '100%',
-  color: theme.components.input.text,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const Input = forwardRef<TextInput, TextInputProps>(
-  function DeleteAccountPasswordInput(props, ref) {
-    const theme = useTheme()
-    return (
-      <BaseInput
-        ref={ref}
-        placeholderTextColor={theme.components.input.placeholder}
-        {...props}
-      />
-    )
-  }
-)
 
 export const EyeButton = styled(PressableOpacity07)(({ theme }) => ({
   paddingVertical: scale(theme.spacing.xs),

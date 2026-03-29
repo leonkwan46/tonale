@@ -1,7 +1,4 @@
 import styled from '@emotion/native'
-import { useTheme } from '@emotion/react'
-import type { TextInputProps } from 'react-native'
-import { TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
@@ -12,37 +9,6 @@ export const FormCard = styled.View(({ theme }) => ({
   padding: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.lg),
   gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
-
-export const InputField = styled.View<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderWidth: 1,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  height: theme.device.isTablet ? scale(theme.spacing.xxl) : scale(theme.spacing.xxxl),
-  backgroundColor: theme.components.input.background,
-  borderColor: theme.components.input.border,
-  opacity: disabled ? 0.6 : 1,
-  gap: theme.device.isTablet ? scale(6) : scale(theme.spacing.sm)
-}))
-
-const BaseInput = styled(TextInput)(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  height: '100%',
-  color: theme.components.input.text,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const Input = (props: TextInputProps) => {
-  const theme = useTheme()
-  return (
-    <BaseInput
-      {...props}
-      placeholderTextColor={theme.components.input.placeholder}
-    />
-  )
-}
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',

@@ -2,13 +2,12 @@ import { useState } from 'react'
 
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 
 import {
   ActionsRow,
   BodyText,
   EyeButton,
-  Input,
-  InputField,
   ModalCard,
   ModalMask,
   ModalMaskContainer,
@@ -62,32 +61,28 @@ export const DeleteAccountModal = ({
           )}
 
           {canReauthenticateWithPassword && (
-            <InputField>
-              <Icon
-                name="lock-closed-outline"
-                sizeVariant="sm"
-                colorVariant="primary"
-              />
-              <Input
-                value={password}
-                onChangeText={onChangePassword}
-                placeholder="Password"
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                editable={!isLoading}
-                returnKeyType="done"
-              />
-              <EyeButton
-                onPress={() => setShowPassword((prev) => !prev)}
-                disabled={isLoading}
-              >
-                <Icon
-                  name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                  sizeVariant="sm"
-                  colorVariant="primary"
-                />
-              </EyeButton>
-            </InputField>
+            <InputField
+              leftIcon="lock-closed-outline"
+              value={password}
+              onChangeText={onChangePassword}
+              placeholder="Password"
+              secureTextEntry={!showPassword}
+              autoCapitalize="none"
+              disabled={isLoading}
+              returnKeyType="done"
+              rightSlot={
+                <EyeButton
+                  onPress={() => setShowPassword((prev) => !prev)}
+                  disabled={isLoading}
+                >
+                  <Icon
+                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    sizeVariant="sm"
+                    colorVariant="primary"
+                  />
+                </EyeButton>
+              }
+            />
           )}
 
           <ActionsRow>

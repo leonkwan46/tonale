@@ -1,5 +1,6 @@
+import { InputField } from '@/compLib/InputField'
 import * as React from 'react'
-import { NameInputField, SectionContainer, SectionTitle } from './NameInput.styles'
+import { SectionContainer, SectionTitle } from './NameInput.styles'
 
 interface NameInputProps {
   name: string
@@ -11,7 +12,6 @@ const NameInputComponent = ({
   onNameChange
 }: NameInputProps) => {
   const validateName = (text: string): string => {
-    // Remove all spaces and special characters, keep only letters (a-z, A-Z) and hyphens (-)
     return text.replace(/[^a-zA-Z-]/g, '')
   }
 
@@ -23,7 +23,8 @@ const NameInputComponent = ({
   return (
     <SectionContainer>
       <SectionTitle>Name</SectionTitle>
-      <NameInputField
+      <InputField
+        variant="primary"
         placeholder="Enter your name"
         keyboardType="default"
         value={name}
