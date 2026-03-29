@@ -22,7 +22,9 @@ const NameInputComponent = ({
 
   return (
     <SectionContainer>
-      <SectionTitle>Name</SectionTitle>
+      <SectionTitle size="md" weight="semibold">
+        Name
+      </SectionTitle>
       <InputField
         placeholder="Enter your name"
         keyboardType="default"

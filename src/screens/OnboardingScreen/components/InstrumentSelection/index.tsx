@@ -42,7 +42,9 @@ const InstrumentSelectionComponent = ({
 
   return (
     <SectionContainer>
-      <SectionTitle>Instrument</SectionTitle>
+      <SectionTitle size="md" weight="semibold">
+        Instrument
+      </SectionTitle>
       <GridSelection
         options={INSTRUMENT_OPTIONS}
         selectedOption={selectedInstrument}

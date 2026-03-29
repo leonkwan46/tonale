@@ -1,4 +1,4 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
@@ -7,9 +7,5 @@ export const SectionContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
-export const SectionTitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.base),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const SectionTitle = styled(Typography)(() => ({}))
 

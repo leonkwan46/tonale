@@ -25,7 +25,9 @@ const GenderSelectionComponent = ({
 
   return (
     <SectionContainer>
-      <SectionTitle>Gender</SectionTitle>
+      <SectionTitle size="md" weight="semibold">
+        Gender
+      </SectionTitle>
       <GridSelection
         options={GENDER_OPTIONS}
         selectedOption={selectedGender}
