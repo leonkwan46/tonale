@@ -17,20 +17,18 @@ export type ButtonSize = 'sm' | 'md'
 
 export type ButtonRowLayout = 'pair' | 'solo'
 
-export function resolveButtonPaletteKey(color: ButtonColor): Depth3DColor {
+export const resolveButtonPaletteKey = (color: ButtonColor): Depth3DColor => {
   if (color === 'primary') return 'blue'
   if (color === 'error') return 'red'
   return color
 }
 
 /** More than one word → use compact label typography (not the large md depth track). */
-export function isMultiWordLabel(label: string): boolean {
-  return label.trim().split(/\s+/).filter(Boolean).length > 1
-}
+export const isMultiWordLabel = (label: string): boolean =>
+  label.trim().split(/\s+/).filter(Boolean).length > 1
 
-function isSemanticColor(color: ButtonColor): color is 'primary' | 'error' {
-  return color === 'primary' || color === 'error'
-}
+const isSemanticColor = (color: ButtonColor): color is 'primary' | 'error' =>
+  color === 'primary' || color === 'error'
 
 type RootProps = {
   variant: ButtonVariant

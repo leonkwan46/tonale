@@ -48,14 +48,13 @@ export type ButtonProps = {
   rightIcon?: IconName;
 };
 
-function isSemanticColor(color: ButtonColor): color is 'primary' | 'error' {
-  return color === 'primary' || color === 'error'
-}
+const isSemanticColor = (color: ButtonColor): color is 'primary' | 'error' =>
+  color === 'primary' || color === 'error'
 
-function iconColorVariant(
+const iconColorVariant = (
   variant: ButtonVariant,
   color: ButtonColor
-): IconColorVariant {
+): IconColorVariant => {
   if (variant === 'filled') {
     if (isSemanticColor(color)) {
       return color === 'error' ? 'errorContrast' : 'primaryContrast'
@@ -71,11 +70,11 @@ function iconColorVariant(
   return 'text'
 }
 
-function getIconProps(
+const getIconProps = (
   variant: ButtonVariant,
   color: ButtonColor,
   theme: AppTheme
-): { colorVariant?: IconColorVariant; color?: string } {
+): { colorVariant?: IconColorVariant; color?: string } => {
   if (!isSemanticColor(color)) {
     const pk = resolveButtonPaletteKey(color)
     if (variant === 'filled') {
@@ -89,11 +88,11 @@ function getIconProps(
   return { colorVariant: iconColorVariant(variant, color) }
 }
 
-function getSpinnerColor(
+const getSpinnerColor = (
   variant: ButtonVariant,
   color: ButtonColor,
   theme: AppTheme
-): string {
+): string => {
   if (!isSemanticColor(color)) {
     const pk = resolveButtonPaletteKey(color)
     if (variant === 'filled') {
