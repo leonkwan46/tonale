@@ -1,3 +1,4 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { Animated, ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
@@ -57,10 +58,8 @@ export const MessageContainer = styled.View(({ theme }) => ({
   borderRadius: scale(theme.borderRadius.sm)
 }))
 
-export const MessageText = styled.Text(({ theme }) => ({
-  color: theme.components.modal.overlayText,
-  fontSize: scale(theme.typography.base),
-  textAlign: 'center'
+export const MessageText = styled(Typography)(({ theme }) => ({
+  color: theme.components.modal.overlayText
 }))
 
 export const SpacerView = styled.View(() => ({
