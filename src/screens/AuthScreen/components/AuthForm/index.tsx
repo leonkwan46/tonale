@@ -10,8 +10,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
 } from 'firebase/auth'
-import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { Keyboard, TextInput } from 'react-native'
 import type { AuthFormData, AuthState } from '../../index'
 import {
@@ -25,10 +25,10 @@ import {
 } from './AuthForm.styles'
 
 interface AuthFormProps {
-  authState: AuthState;
-  formData: AuthFormData;
-  setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>;
-  setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
+  authState: AuthState
+  formData: AuthFormData
+  setFormData: Dispatch<SetStateAction<AuthFormData>>
+  setAuthState: Dispatch<SetStateAction<AuthState>>
 }
 
 export const AuthForm = ({

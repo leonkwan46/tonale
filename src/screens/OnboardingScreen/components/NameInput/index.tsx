@@ -1,5 +1,5 @@
 import { InputField } from '@/compLib/InputField'
-import * as React from 'react'
+import { memo } from 'react'
 import { SectionContainer, SectionTitle } from './NameInput.styles'
 
 interface NameInputProps {
@@ -24,7 +24,6 @@ const NameInputComponent = ({
     <SectionContainer>
       <SectionTitle>Name</SectionTitle>
       <InputField
-        variant="primary"
         placeholder="Enter your name"
         keyboardType="default"
         value={name}
@@ -36,5 +35,5 @@ const NameInputComponent = ({
   )
 }
 
-export const NameInput = React.memo(NameInputComponent)
+export const NameInput = memo(NameInputComponent)
 

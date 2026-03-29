@@ -3,7 +3,7 @@ import { InputField } from '@/compLib/InputField'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { capitalize } from '@/utils/string'
-import * as React from 'react'
+import { memo } from 'react'
 import { renderInstrumentIcon } from '../OnboardingIcons'
 import { SectionContainer, SectionTitle } from './InstrumentSelection.styles'
 
@@ -53,7 +53,6 @@ const InstrumentSelectionComponent = ({
       />
       {selectedInstrument === INSTRUMENT.OTHER && (
         <InputField
-          variant="primary"
           placeholder="Enter your instrument"
           keyboardType="default"
           value={customInstrument}
@@ -73,5 +72,5 @@ const InstrumentSelectionComponent = ({
   )
 }
 
-export const InstrumentSelection = React.memo(InstrumentSelectionComponent)
+export const InstrumentSelection = memo(InstrumentSelectionComponent)
 
