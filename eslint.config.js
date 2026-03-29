@@ -43,6 +43,7 @@ module.exports = defineConfig([
       // Prevent React namespace usage for hooks
       'react/jsx-no-undef': 'error',
       'react/react-in-jsx-scope': 'off',
+      'react/display-name': 'off',
       // Custom rule to prevent React namespace usage
       'no-restricted-syntax': [
         'error',
