@@ -1,8 +1,6 @@
 import { Icon, type IconName } from '@/compLib/Icon'
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-import { createForwardProps } from '@/utils/styledProps'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import { Text } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 export const ToastContainer = styled(Animated.View)<{
@@ -44,10 +42,4 @@ export const ToastIcon = ({
   return <Icon name={name} colorVariant={variant} sizeVariant="md" />
 }
 
-export const ToastText = styled(Text, {
-  shouldForwardProp: createForwardProps(['variant'])
-})<{ variant: ToastVariant }>(({ theme, variant }) => ({
-  color: theme.colors[variant],
-  fontSize: theme.typography.sm,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const ToastText = styled(Typography)(() => ({}))

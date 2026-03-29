@@ -159,7 +159,13 @@ export const NetworkToast = () => {
       <ToastMessage>
         <ToastRow>
           <ToastIcon name={iconName} variant={variant} />
-          <ToastText variant={variant}>{message}</ToastText>
+          <ToastText
+            size="sm"
+            weight="semibold"
+            colorVariant={variant}
+          >
+            {message}
+          </ToastText>
         </ToastRow>
       </ToastMessage>
     </ToastContainer>
