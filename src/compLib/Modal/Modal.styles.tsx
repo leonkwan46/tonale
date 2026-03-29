@@ -1,8 +1,11 @@
 import styled from '@emotion/native'
+import { forwardRef } from 'react'
+import type { ComponentProps } from 'react'
+import type { Text } from 'react-native'
 import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { PressableFeedback } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
 
@@ -41,24 +44,24 @@ export const ModalContainer = styled(View, {
   })
 )
 
-export const TitleText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet
-    ? scale(theme.typography.lg)
-    : scale(theme.typography.xl),
-  color: theme.colors.text,
-  textAlign: 'center',
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+type TypographyProps = ComponentProps<typeof Typography>
 
-export const DescriptionText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet
-    ? scale(theme.typography.base)
-    : scale(theme.typography.base),
-  color: theme.colors.text,
-  textAlign: 'center',
-  opacity: 0.8,
-  fontFamily: getSourGummyFontFamily()
-}))
+export const TitleText = forwardRef<Text, TypographyProps>(function TitleText(
+  props,
+  ref
+) {
+  return (
+    <Typography ref={ref} size="xl" weight="bold" align="center" {...props} />
+  )
+})
+
+export const DescriptionText = forwardRef<Text, TypographyProps>(
+  function DescriptionText(props, ref) {
+    return (
+      <Typography ref={ref} size="md" align="center" muted {...props} />
+    )
+  }
+)
 
 export const ButtonContainer = styled.View<{ singleButton?: boolean }>(
   ({ theme, singleButton }) => ({
