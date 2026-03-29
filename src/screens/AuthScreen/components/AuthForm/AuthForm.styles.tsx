@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
 const PressableOpacity07 = createPressableWithOpacity(0.7)
@@ -34,16 +34,9 @@ export const StatusContainer = styled.View<{ variant: 'error' | 'success' }>(
   })
 )
 
-export const StatusText = styled.Text<{ variant: 'error' | 'success' }>(
-  ({ theme, variant }) => ({
-    color: variant === 'error' ? theme.colors.error : theme.colors.success,
-    fontSize: theme.device.isTablet
-      ? scale(theme.typography.xs)
-      : scale(theme.typography.sm),
-    flex: 1,
-    fontFamily: getSourGummyFontFamily()
-  })
-)
+export const StatusText = styled(Typography)(() => ({
+  flex: 1
+}))
 
 export const InputsContainer = styled.View(({ theme }) => ({
   flexDirection: 'column',
@@ -57,14 +50,7 @@ export const EyeIcon = styled(PressableOpacity07)(({ theme }) => ({
   padding: scale(theme.spacing.xs)
 }))
 
-export const RequirementsText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet
-    ? scale(theme.typography.xs)
-    : scale(theme.typography.sm),
-  textAlign: 'center',
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
-}))
+export const RequirementsText = styled(Typography)(() => ({}))
 
 export const ForgotPasswordWrap = styled.View(() => ({
   alignSelf: 'flex-end'

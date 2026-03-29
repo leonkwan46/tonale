@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
 const PressableOpacity07 = createPressableWithOpacity(0.7)
@@ -25,10 +25,5 @@ export const ToggleButton = styled(PressableOpacity07)<{ isActive: boolean }>(({
   backgroundColor: isActive ? theme.colors.primary : 'transparent'
 }))
 
-export const ToggleText = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: isActive ? theme.colors.primaryContrast : theme.colors.text,
-  opacity: isActive ? 1 : 0.7,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const ToggleText = styled(Typography)(() => ({}))
 

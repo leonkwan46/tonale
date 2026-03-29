@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const HeaderContainer = styled.View(({ theme }) => ({
   alignItems: 'center',
@@ -14,18 +14,7 @@ export const TitlesContainer = styled.View(() => ({
   width: '100%'
 }))
 
-export const Title = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.xl) : scale(theme.typography['2xl']),
-  textAlign: 'center',
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+export const Title = styled(Typography)(() => ({}))
 
-export const Subtitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  opacity: 0.8,
-  textAlign: 'center',
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
-}))
+export const Subtitle = styled(Typography)(() => ({}))
 

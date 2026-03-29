@@ -27,7 +27,14 @@ export const ModeToggle = ({
         isActive={authState.mode === 'login'}
         onPress={() => setMode('login')}
       >
-        <ToggleText isActive={authState.mode === 'login'}>
+        <ToggleText
+          size="md"
+          weight="semibold"
+          colorVariant={
+            authState.mode === 'login' ? 'primaryContrast' : 'text'
+          }
+          muted={authState.mode !== 'login'}
+        >
           Sign In
         </ToggleText>
       </ToggleButton>
@@ -35,7 +42,14 @@ export const ModeToggle = ({
         isActive={authState.mode === 'register'}
         onPress={() => setMode('register')}
       >
-        <ToggleText isActive={authState.mode === 'register'}>
+        <ToggleText
+          size="md"
+          weight="semibold"
+          colorVariant={
+            authState.mode === 'register' ? 'primaryContrast' : 'text'
+          }
+          muted={authState.mode !== 'register'}
+        >
           Create Account
         </ToggleText>
       </ToggleButton>

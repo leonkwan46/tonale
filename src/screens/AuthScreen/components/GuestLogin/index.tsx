@@ -24,7 +24,9 @@ export const GuestLogin = ({
     <GuestLoginContainer>
       <DividerContainer>
         <Divider />
-        <DividerText>or</DividerText>
+        <DividerText size="sm" muted>
+          or
+        </DividerText>
         <Divider />
       </DividerContainer>
       <Button

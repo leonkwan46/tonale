@@ -188,7 +188,14 @@ export const AuthForm = ({
             sizeVariant="xs"
             colorVariant={statusMessage.variant === 'error' ? 'error' : 'success'}
           />
-          <StatusText variant={statusMessage.variant}>{statusMessage.text}</StatusText>
+          <StatusText
+            size="xs"
+            colorVariant={
+              statusMessage.variant === 'error' ? 'error' : 'success'
+            }
+          >
+            {statusMessage.text}
+          </StatusText>
         </StatusContainer>
       ) : null}
 
@@ -284,7 +291,7 @@ export const AuthForm = ({
         )}
 
         {isRegisterMode && (
-          <RequirementsText>
+          <RequirementsText size="xs" align="center">
             Password must be at least 6 characters
           </RequirementsText>
         )}
