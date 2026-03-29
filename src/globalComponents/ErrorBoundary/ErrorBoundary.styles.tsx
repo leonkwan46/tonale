@@ -1,4 +1,4 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/native'
 import { ScrollView } from 'react-native'
@@ -24,50 +24,31 @@ const ScrollContainer = styled(ScrollView)(({ theme }) => ({
   backgroundColor: theme.colors.background
 }))
 
-export const Title = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.xl,
-  color: theme.colors.error,
-  marginBottom: theme.spacing.md,
-  textAlign: 'center',
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
+export const Title = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing.md
 }))
 
-export const Message = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.base,
-  color: theme.colors.text,
-  textAlign: 'center',
-  marginBottom: theme.spacing.lg,
-  opacity: 0.8,
-  fontFamily: getSourGummyFontFamily()
+export const Message = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing.lg
 }))
 
-export const SectionTitle = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.lg,
-  color: theme.colors.text,
+export const SectionTitle = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing.md,
-  marginBottom: theme.spacing.sm,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
+  marginBottom: theme.spacing.sm
 }))
 
-export const ErrorText = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.sm,
-  color: theme.colors.error,
-  fontFamily: getSourGummyFontFamily(),
+export const ErrorText = styled(Typography)(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   padding: theme.spacing.sm,
   borderRadius: theme.borderRadius.sm,
   marginBottom: theme.spacing.md
 }))
 
-export const StackText = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.sm,
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(),
+export const StackText = styled(Typography)(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   padding: theme.spacing.sm,
   borderRadius: theme.borderRadius.sm,
-  marginBottom: theme.spacing.md,
-  opacity: 0.8
+  marginBottom: theme.spacing.md
 }))
 
 export const ReloadButton = styled.Pressable(({ theme }) => ({
@@ -78,8 +59,4 @@ export const ReloadButton = styled.Pressable(({ theme }) => ({
   alignItems: 'center'
 }))
 
-export const ReloadText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.typography.base,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const ReloadText = styled(Typography)(() => ({}))
