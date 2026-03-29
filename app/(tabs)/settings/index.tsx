@@ -1,6 +1,6 @@
 import { SettingsScreen } from '@/screens/SettingsScreen'
 
-export default function SettingsTabScreen() {
-  return <SettingsScreen />
-}
+const SettingsTabScreen = () => <SettingsScreen />
+
+export default SettingsTabScreen
 
