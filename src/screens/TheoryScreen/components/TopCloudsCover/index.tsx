@@ -116,7 +116,9 @@ export const TopCloudsCover = ({
         {message != null && message !== '' && (
           <MessageOverlay>
             <MessageContainer>
-              <MessageText>{message}</MessageText>
+              <MessageText size="sm" align="center">
+                {message}
+              </MessageText>
             </MessageContainer>
           </MessageOverlay>
         )}

@@ -1,3 +1,5 @@
+import { useDevice } from '@/hooks'
+
 import { DescriptionText, DescriptionTextContainer, TitleText } from './Description.styles'
 
 interface DescriptionProps {
@@ -7,10 +9,19 @@ interface DescriptionProps {
 }
 
 export const Description = ({ title, description, testID }: DescriptionProps) => {
+  const { isTablet } = useDevice()
   return (
     <DescriptionTextContainer>
-        <TitleText testID={testID}>{title}</TitleText>
-        <DescriptionText>{description}</DescriptionText>
+      <TitleText
+        testID={testID}
+        size={isTablet ? 'xxl' : 'lg'}
+        weight="bold"
+      >
+        {title}
+      </TitleText>
+      <DescriptionText size={isTablet ? 'xl' : 'md'}>
+        {description}
+      </DescriptionText>
     </DescriptionTextContainer>
   )
 }

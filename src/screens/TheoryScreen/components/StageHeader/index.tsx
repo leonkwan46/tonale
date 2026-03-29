@@ -39,12 +39,14 @@ export const StageHeader = ({
       onPress={showToggle ? onToggle : undefined}
       disabled={!showToggle}
     >
-      <StageTitle isPerfect={isPerfect}>Stage {stage.order}</StageTitle>
+      <StageTitle isPerfect={isPerfect} size="lg" weight="semibold">
+        Stage {stage.order}
+      </StageTitle>
 
       <LeftContentContainer>
         <StageStats>
           <TextContainer>
-            <StatsText isPerfect={isPerfect}>
+            <StatsText isPerfect={isPerfect} size="xs">
               {totalStars}/{maxStars}
             </StatsText>
             <StageHeaderStarLogo isPerfect={isPerfect} />

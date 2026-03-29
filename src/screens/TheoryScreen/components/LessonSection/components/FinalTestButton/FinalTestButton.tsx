@@ -43,8 +43,14 @@ export const FinalTestButton = ({
                 <ScrollIcon size={24} />
               </FinalTestIconContainer>
               <FinalTestTextWrapper>
-                <FinalTestTitle>{title}</FinalTestTitle>
-                {description && <FinalTestDescription>{description}</FinalTestDescription>}
+                <FinalTestTitle size="lg" weight="bold">
+                  {title}
+                </FinalTestTitle>
+                {description && (
+                  <FinalTestDescription size="sm" weight="semibold">
+                    {description}
+                  </FinalTestDescription>
+                )}
               </FinalTestTextWrapper>
             </FinalTestContentContainer>
           )}
