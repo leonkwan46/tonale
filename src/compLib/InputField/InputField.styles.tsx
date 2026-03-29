@@ -1,41 +1,33 @@
+import { getInputTypographyStyle } from '@/compLib/Typography'
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/native'
 import { forwardRef } from 'react'
 import { TextInput, type TextInputProps } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-
 const forwardAllNativeInputProps = () => true
 
 const StyledTextInput = styled(TextInput, {
   shouldForwardProp: forwardAllNativeInputProps
 })(({ theme }) => {
-  const isTablet = theme.device.isTablet
+  const typo = getInputTypographyStyle(theme)
   return {
     flex: 1,
-    fontSize: isTablet
-      ? scale(theme.typography.sm)
-      : scale(theme.typography.base),
+    ...typo,
     height: '100%',
-    color: theme.components.input.text,
-    fontFamily: getSourGummyFontFamily()
+    color: theme.components.input.text
   }
 })
 
 const StyledMultilineInput = styled(TextInput, {
   shouldForwardProp: forwardAllNativeInputProps
 })(({ theme }) => {
-  const isTablet = theme.device.isTablet
+  const typo = getInputTypographyStyle(theme, { multiline: true })
   return {
     flex: 1,
-    fontSize: isTablet
-      ? scale(theme.typography.sm)
-      : scale(theme.typography.base),
-    minHeight: isTablet ? scale(100) : scale(130),
-    color: theme.components.input.text,
-    fontFamily: getSourGummyFontFamily(),
-    lineHeight: isTablet ? scale(18) : scale(20)
+    ...typo,
+    minHeight: theme.device.isTablet ? scale(100) : scale(130),
+    color: theme.components.input.text
   }
 })
 
