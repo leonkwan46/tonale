@@ -34,7 +34,9 @@ export const PullIndicator: FC<PullIndicatorProps> = ({ pullDistance, messageInd
     <Animated.View style={animatedStyle}>
       <PullIndicatorContainer>
         <PullIndicatorEmoji>👏</PullIndicatorEmoji>
-        <PullIndicatorMessage>{message}</PullIndicatorMessage>
+        <PullIndicatorMessage size="sm" align="center" muted>
+          {message}
+        </PullIndicatorMessage>
       </PullIndicatorContainer>
     </Animated.View>
   )

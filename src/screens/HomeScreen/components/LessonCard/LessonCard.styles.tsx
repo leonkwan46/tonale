@@ -1,4 +1,4 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
@@ -25,12 +25,7 @@ export const SkeletonContentSection = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.sm)
 }))
 
-export const NoLessonText = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.base),
-  color: theme.colors.text,
-  opacity: 0.65,
-  fontFamily: getSourGummyFontFamily(),
-  textAlign: 'center',
+export const NoLessonText = styled(Typography)(({ theme }) => ({
   paddingVertical: scale(theme.spacing.lg)
 }))
 

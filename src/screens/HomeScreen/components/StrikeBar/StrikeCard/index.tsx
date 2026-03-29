@@ -50,7 +50,9 @@ export const StrikeCard = ({ day, currentDay, index }: StrikeCardProps) => {
       >
         {!isEmpty && (
           <>
-            <DayLabel>DAY {day}</DayLabel>
+            <DayLabel size="sm" weight="semibold">
+              DAY {day}
+            </DayLabel>
             <FlameIconContainer>
               <AnimatedFlame
                 color={flame.color}

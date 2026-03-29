@@ -47,7 +47,15 @@ export const RevisionCard = () => {
         <ContentSection>
           {hasRevisionQuestions ? (
             <>
-              <RevisionText testID="revision-card-text">You have {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
+              <RevisionText
+                testID="revision-card-text"
+                size="md"
+                weight="semibold"
+              >
+                You have {revisionQuestions.length}{' '}
+                {revisionQuestions.length === 1 ? 'question' : 'questions'} to
+                revise!
+              </RevisionText>
               <Button
                 variant="filled"
                 color="red"
@@ -62,7 +70,13 @@ export const RevisionCard = () => {
               />
             </>
           ) : (
-            <RevisionText testID="revision-card-completion-text">{'Well done!\nYou\'ve completed all your revision!'}</RevisionText>
+            <RevisionText
+              testID="revision-card-completion-text"
+              size="md"
+              weight="semibold"
+            >
+              {'Well done!\nYou\'ve completed all your revision!'}
+            </RevisionText>
           )}
         </ContentSection>
       </RevisionCardContent>

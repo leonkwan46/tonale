@@ -1,4 +1,4 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
@@ -30,10 +30,7 @@ export const ContentSection = styled(View)(({ theme }) => ({
   gap: scale(theme.spacing.sm)
 }))
 
-export const RevisionText = styled(Text)(({ theme }) => ({
-  fontSize: scale(theme.typography.base),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
+export const RevisionText = styled(Typography)(({ theme }) => ({
   lineHeight: scale(theme.typography.xl)
 }))
 

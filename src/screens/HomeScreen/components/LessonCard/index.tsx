@@ -54,7 +54,9 @@ export const LessonCard = () => {
     return (
       <LessonCardContainer>
         <CardContentContainer>
-          <NoLessonText>No lessons available right now</NoLessonText>
+          <NoLessonText size="md" muted align="center">
+            No lessons available right now
+          </NoLessonText>
         </CardContentContainer>
       </LessonCardContainer>
     )
