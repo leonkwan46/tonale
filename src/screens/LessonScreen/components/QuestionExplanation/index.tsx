@@ -20,10 +20,10 @@ interface QuestionExplanationProps {
   onContinue: () => void
 }
 
-function mergeVisualComponent(
+const mergeVisualComponent = (
   fromExplanation?: VisualComponent,
   fromQuestion?: VisualComponent
-): VisualComponent | undefined {
+): VisualComponent | undefined => {
   if (!fromExplanation) return fromQuestion
   if (!fromQuestion) return fromExplanation
   return {
@@ -35,7 +35,7 @@ function mergeVisualComponent(
   }
 }
 
-function getStringsToBold(correctAnswer: string): string[] {
+const getStringsToBold = (correctAnswer: string): string[] => {
   const config = getExplanationFormattingConfig()
   const out: string[] = []
   if (config.boldPatterns.correctAnswer) out.push(correctAnswer)
@@ -44,7 +44,7 @@ function getStringsToBold(correctAnswer: string): string[] {
   return out
 }
 
-function formatExplanationWithBoldAnswer(text: string, correctAnswer: string): ReactNode {
+const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): ReactNode => {
   if (!text) return null
   const stringsToBold = getStringsToBold(correctAnswer)
   if (stringsToBold.length === 0) return <>{text}</>
@@ -64,12 +64,12 @@ function formatExplanationWithBoldAnswer(text: string, correctAnswer: string): R
   return <>{parts}</>
 }
 
-export function QuestionExplanation({
+export const QuestionExplanation = ({
   explanation,
   correctAnswer,
   visualComponent,
   onContinue
-}: QuestionExplanationProps) {
+}: QuestionExplanationProps) => {
   const displayVisualComponent = mergeVisualComponent(explanation?.visualComponent, visualComponent)
   const showVisual = shouldShowVisualInExplanation(displayVisualComponent, explanation)
   const displayText = explanation?.text ?? `The correct answer is ${correctAnswer}.`

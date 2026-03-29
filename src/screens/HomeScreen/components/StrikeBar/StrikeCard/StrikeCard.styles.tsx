@@ -4,14 +4,14 @@ import { Dimensions, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 type StrikeCardColorState = {
-  isEmpty: boolean
-  isActive: boolean
-}
+  isEmpty: boolean;
+  isActive: boolean;
+};
 
 type StrikeCardFlameProps = {
-  color: string
-  opacity: number
-}
+  color: string;
+  opacity: number;
+};
 
 const CARD_COUNT = 5
 const CONTENT_PADDING = scale(10) * 2
@@ -31,7 +31,9 @@ export const getStrikeCardColors = (
   theme: AppTheme,
   { isEmpty, isActive }: StrikeCardColorState
 ) => {
-  const backgroundColor = isEmpty ? 'transparent' : theme.components.flame.cardFill
+  const backgroundColor = isEmpty
+    ? 'transparent'
+    : theme.components.flame.cardFill
   const depthColor = isEmpty
     ? 'transparent'
     : isActive

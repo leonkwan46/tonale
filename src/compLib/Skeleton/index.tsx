@@ -1,13 +1,23 @@
-import { useEffect } from 'react'
-import { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
-import { scale } from 'react-native-size-matters'
-import { SkeletonBase, SkeletonContainer, SkeletonGradient } from './Skeleton.styles'
 import { useTheme } from '@emotion/react'
+import { useEffect } from 'react'
+import {
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withRepeat,
+    withTiming
+} from 'react-native-reanimated'
+import { scale } from 'react-native-size-matters'
+import {
+    SkeletonBase,
+    SkeletonContainer,
+    SkeletonGradient
+} from './Skeleton.styles'
 
 interface SkeletonProps {
-  variant: 'square' | 'rectangle'
-  width?: number
-  height?: number
+  variant: 'square' | 'rectangle';
+  width?: number;
+  height?: number;
 }
 
 export const Skeleton = ({ variant, width, height }: SkeletonProps) => {
@@ -33,14 +43,31 @@ export const Skeleton = ({ variant, width, height }: SkeletonProps) => {
     switch (variant) {
       case 'square':
         return {
-          width: scale(width ?? width !== undefined ? width : theme.device.isTablet ? 35 : 100),
-          height: scale(height ?? height !== undefined ? height : theme.device.isTablet ? 35 : 100),
+          width: scale(
+            (width ?? width !== undefined)
+              ? width
+              : theme.device.isTablet
+                ? 35
+                : 100
+          ),
+          height: scale(
+            (height ?? height !== undefined)
+              ? height
+              : theme.device.isTablet
+                ? 35
+                : 100
+          ),
           borderRadius: scale(15)
         }
       case 'rectangle':
         return {
           width: width !== undefined ? scale(width) : '100%',
-          height: height !== undefined ? scale(height) : theme.device.isTablet ? scale(10) : scale(40),
+          height:
+            height !== undefined
+              ? scale(height)
+              : theme.device.isTablet
+                ? scale(10)
+                : scale(40),
           borderRadius: scale(15)
         }
       default:

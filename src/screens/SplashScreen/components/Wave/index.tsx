@@ -1,16 +1,16 @@
 import { useTheme } from '@emotion/react'
 import { useEffect } from 'react'
 import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming
 } from 'react-native-reanimated'
 import { Bar } from './Wave.styles'
 
 interface WaveProps {
-  delay: number
-  isTransitioning: boolean
+  delay: number;
+  isTransitioning: boolean;
 }
 
 export const Wave = ({ delay, isTransitioning }: WaveProps) => {
@@ -24,7 +24,7 @@ export const Wave = ({ delay, isTransitioning }: WaveProps) => {
         duration: 400,
         easing: Easing.out(Easing.ease)
       })
-      
+
       animateHeight()
     }, delay * 1000)
 
@@ -55,8 +55,5 @@ export const Wave = ({ delay, isTransitioning }: WaveProps) => {
     opacity: isTransitioning ? withTiming(0, { duration: 500 }) : opacity.value
   }))
 
-  return (
-    <Bar style={barStyle} />
-  )
+  return <Bar style={barStyle} />
 }
-

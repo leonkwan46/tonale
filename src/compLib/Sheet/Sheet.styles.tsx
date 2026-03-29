@@ -25,7 +25,10 @@ export const sheetViewStyle = {
   flex: 1
 }
 
-export const handleIndicatorStyle: { backgroundColor: string; display: 'none' } = {
+export const handleIndicatorStyle: {
+  backgroundColor: string;
+  display: 'none';
+} = {
   backgroundColor: 'transparent',
   display: 'none'
 }

@@ -8,7 +8,7 @@ interface ScrollIconProps {
   size?: number
 }
 
-export function ScrollIcon({ size = 24 }: ScrollIconProps) {
+export const ScrollIcon = ({ size = 24 }: ScrollIconProps) => {
   const theme = useTheme()
   const scaledSize = scale(size)
   const strokeColor = theme.colors.warningContrast

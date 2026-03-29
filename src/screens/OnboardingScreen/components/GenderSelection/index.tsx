@@ -1,16 +1,20 @@
-import * as React from 'react'
 import { GridSelection } from '@/compLib/GridSelection'
+import { getGenderDisplayLabel } from '@/utils/avatarAssets'
 import { useTheme } from '@emotion/react'
 import { GENDER, type UserGender } from '@types'
-import { getGenderDisplayLabel } from '@/utils/avatarAssets'
+import * as React from 'react'
 import { renderGenderIcon } from '../OnboardingIcons'
 import { SectionContainer, SectionTitle } from './GenderSelection.styles'
 
-const GENDER_OPTIONS: UserGender[] = [GENDER.MALE, GENDER.FEMALE, GENDER.NEUTRAL]
+const GENDER_OPTIONS: UserGender[] = [
+  GENDER.MALE,
+  GENDER.FEMALE,
+  GENDER.NEUTRAL
+]
 
 interface GenderSelectionProps {
-  selectedGender: UserGender | null
-  onSelect: (gender: UserGender) => void
+  selectedGender: UserGender | null;
+  onSelect: (gender: UserGender) => void;
 }
 
 const GenderSelectionComponent = ({
@@ -27,7 +31,9 @@ const GenderSelectionComponent = ({
         selectedOption={selectedGender}
         onSelect={onSelect}
         getDisplayLabel={(value) => getGenderDisplayLabel(value as UserGender)}
-        renderIcon={(option, isSelected) => renderGenderIcon(option as UserGender, theme)}
+        renderIcon={(option, isSelected) =>
+          renderGenderIcon(option as UserGender, theme)
+        }
         testID="gender-selection"
       />
     </SectionContainer>
@@ -35,4 +41,3 @@ const GenderSelectionComponent = ({
 }
 
 export const GenderSelection = React.memo(GenderSelectionComponent)
-

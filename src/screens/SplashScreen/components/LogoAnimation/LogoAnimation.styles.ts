@@ -47,4 +47,3 @@ export const MusicIcon = styled(Ionicons)(({ theme }) => ({
   textShadowRadius: scale(2),
   textShadowColor: 'rgba(0, 0, 0, 0.2)'
 }))
-

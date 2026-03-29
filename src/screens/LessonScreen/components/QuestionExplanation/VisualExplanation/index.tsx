@@ -20,7 +20,7 @@ interface VisualExplanationProps {
 
 const WIDE_DYNAMIC_SYMBOLS = ['crescendo', 'decrescendo', 'diminuendo', 'cresc.', 'decresc.', 'dim.'] as const
 
-function getSymbolText(symbolType: string | undefined, renderAsSymbol: boolean): string {
+const getSymbolText = (symbolType: string | undefined, renderAsSymbol: boolean): string => {
   if (!symbolType || !renderAsSymbol) return ''
   return (
     GRADE_ONE_DYNAMIC_SYMBOLS[symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS] ||
@@ -30,7 +30,7 @@ function getSymbolText(symbolType: string | undefined, renderAsSymbol: boolean):
   )
 }
 
-function isTextTerm(symbolType: string | undefined, renderAsSymbol: boolean): boolean {
+const isTextTerm = (symbolType: string | undefined, renderAsSymbol: boolean): boolean => {
   if (!symbolType || !renderAsSymbol) return false
   return (
     !(symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) &&
@@ -39,23 +39,23 @@ function isTextTerm(symbolType: string | undefined, renderAsSymbol: boolean): bo
   )
 }
 
-function getDisplayText(symbolType: string | undefined): string {
+const getDisplayText = (symbolType: string | undefined): string => {
   return symbolType ? (TERM_DISPLAY_NAMES[symbolType as keyof typeof TERM_DISPLAY_NAMES] || symbolType) : ''
 }
 
-function isWideDynamic(symbolType: string | undefined): boolean {
+const isWideDynamic = (symbolType: string | undefined): boolean => {
   return Boolean(symbolType && WIDE_DYNAMIC_SYMBOLS.includes(symbolType as (typeof WIDE_DYNAMIC_SYMBOLS)[number]))
 }
 
-function formatMusicStaffElements(
+const formatMusicStaffElements = (
   elements: MusicElementData[] | undefined,
   isChord: boolean | undefined
-): MusicElementData[][] {
+): MusicElementData[][] => {
   if (!elements) return []
   return isChord ? [elements] : elements.map((el) => [el])
 }
 
-export function VisualExplanation({ visualComponent }: VisualExplanationProps) {
+export const VisualExplanation = ({ visualComponent }: VisualExplanationProps) => {
   const hasMusicStaff =
     Boolean(visualComponent.elements?.length) && (visualComponent.clef || visualComponent.timeSignature)
 
