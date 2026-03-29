@@ -50,6 +50,7 @@
 - Use typed callable functions with proper TypeScript interfaces
 
 ## Naming Conventions
+- Never use shortform: avoid abbreviated identifiers — use full, descriptive words (`PressableWithFixedOpacity` not `Cmp`, `message` not `msg`, `button` not `btn`, `error` not `err`)
 - Components: PascalCase (`ChangeNameScreen`)
 - Functions/variables: camelCase (`handleSave`, `userData`)
 - Constants: UPPER_SNAKE_CASE (`INSTRUMENT.PIANO`)
