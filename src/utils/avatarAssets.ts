@@ -1,12 +1,12 @@
 import { GENDER, INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { capitalize } from '@/utils/string'
 
-export function getGenderDisplayLabel(gender: UserGender): string {
+export const getGenderDisplayLabel = (gender: UserGender): string => {
   if (gender === GENDER.NEUTRAL) return 'Prefer not to say'
   return capitalize(gender)
 }
 
-export function getAvatarHeadSource(gender: UserGender) {
+export const getAvatarHeadSource = (gender: UserGender) => {
   if (gender === GENDER.FEMALE) {
     return require('../../assets/images/girl/girl_head.png')
   }
@@ -16,7 +16,10 @@ export function getAvatarHeadSource(gender: UserGender) {
   return require('../../assets/images/boy/boy_head.png')
 }
 
-export function getAvatarFullSource(gender: UserGender, instrument?: UserInstrument | string | null) {
+export const getAvatarFullSource = (
+  gender: UserGender,
+  instrument?: UserInstrument | string | null
+) => {
   const baseFull =
     gender === GENDER.FEMALE
       ? require('../../assets/images/girl/girl_full.png')
