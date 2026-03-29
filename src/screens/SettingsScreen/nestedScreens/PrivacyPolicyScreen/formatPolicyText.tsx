@@ -54,24 +54,48 @@ export const renderFormattedSegments = (
   return segments.map((seg, i) => {
     const key = `${keyPrefix}-${i}`
     if (seg.type === 'bold') {
-      return <ParagraphBold key={key}>{seg.text}</ParagraphBold>
+      return (
+        <ParagraphBold key={key} size="sm" weight="semibold">
+          {seg.text}
+        </ParagraphBold>
+      )
     }
     if (seg.type === 'italic') {
-      return <ParagraphItalic key={key}>{seg.text}</ParagraphItalic>
+      return (
+        <ParagraphItalic key={key} size="sm" italic>
+          {seg.text}
+        </ParagraphItalic>
+      )
     }
     if (seg.type === 'highlight') {
       if (looksLikeEmail(seg.text)) {
         return (
           <ParagraphHighlight
             key={key}
+            size="sm"
+            weight="semibold"
+            colorVariant="primary"
             onPress={() => Linking.openURL(`mailto:${seg.text}`)}
           >
             {seg.text}
           </ParagraphHighlight>
         )
       }
-      return <ParagraphHighlight key={key}>{seg.text}</ParagraphHighlight>
+      return (
+        <ParagraphHighlight
+          key={key}
+          size="sm"
+          weight="semibold"
+          colorVariant="primary"
+        >
+          {seg.text}
+        </ParagraphHighlight>
+      )
     }
-    return <ParagraphPlain key={key}>{seg.text}</ParagraphPlain>
+    return (
+      <ParagraphPlain key={key} size="sm">
+        {seg.text}
+      </ParagraphPlain>
+    )
   })
 }

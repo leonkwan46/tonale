@@ -1,7 +1,6 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const Container = styled.View({
   alignItems: 'center',
@@ -9,10 +8,7 @@ export const Container = styled.View({
   width: '100%'
 })
 
-export const DescriptionText = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.base),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(),
-  lineHeight: scale(theme.typography.xl),
-  textAlign: 'center'
+export const DescriptionText = styled(Typography)(({ theme }) => ({
+  textAlign: 'center',
+  lineHeight: scale(theme.typography.xl)
 }))

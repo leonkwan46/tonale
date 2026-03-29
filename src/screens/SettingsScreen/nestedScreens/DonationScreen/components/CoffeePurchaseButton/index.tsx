@@ -1,3 +1,4 @@
+import { useDevice } from '@/hooks'
 import React from 'react'
 import { ImageSourcePropType } from 'react-native'
 
@@ -21,11 +22,16 @@ export const CoffeePurchaseButton = ({
   price,
   onPress
 }: CoffeePurchaseButtonProps) => {
+  const { isTablet } = useDevice()
   return (
     <PurchaseButtonContainer onPress={onPress}>
       <CoffeeIcon source={iconSource} />
-      <ButtonDescription>{description}</ButtonDescription>
-      <PriceText>{price}</PriceText>
+      <ButtonDescription size={isTablet ? 'sm' : 'md'}>
+        {description}
+      </ButtonDescription>
+      <PriceText size={isTablet ? 'md' : 'lg'} weight="bold">
+        {price}
+      </PriceText>
     </PurchaseButtonContainer>
   )
 }

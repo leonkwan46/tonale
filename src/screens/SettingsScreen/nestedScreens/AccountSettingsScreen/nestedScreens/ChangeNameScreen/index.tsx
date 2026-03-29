@@ -2,7 +2,7 @@ import { updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useDevice, useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
@@ -21,6 +21,7 @@ import {
 } from './ChangeNameScreen.styles'
 
 export const ChangeNameScreen = () => {
+  const { isTablet } = useDevice()
   const { userData, setUserData } = useUser()
   const router = useRouter()
   const [name, setName] = useState(userData?.name || '')
@@ -89,7 +90,12 @@ export const ChangeNameScreen = () => {
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <ErrorText>{error}</ErrorText>
+              <ErrorText
+                size={isTablet ? 'xxs' : 'xs'}
+                colorVariant="error"
+              >
+                {error}
+              </ErrorText>
             </ErrorContainer>
           ) : null}
 

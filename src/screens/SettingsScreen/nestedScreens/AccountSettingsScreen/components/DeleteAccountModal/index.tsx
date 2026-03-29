@@ -50,13 +50,20 @@ export const DeleteAccountModal = ({
     >
       <ModalMaskContainer>
         <ModalCard>
-          <TitleText>Confirm deletion</TitleText>
-          <BodyText>This will permanently delete your account and progress. This cannot be undone.</BodyText>
+          <TitleText size="lg" weight="semibold">
+            Confirm deletion
+          </TitleText>
+          <BodyText size="md">
+            This will permanently delete your account and progress. This cannot be
+            undone.
+          </BodyText>
 
           {!!error && (
             <StatusContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <StatusText>{error}</StatusText>
+              <StatusText size="sm" colorVariant="error">
+                {error}
+              </StatusText>
             </StatusContainer>
           )}
 

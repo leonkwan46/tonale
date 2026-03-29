@@ -97,14 +97,18 @@ export const FeedbackScreen = () => {
             {success ? (
               <SuccessContainer>
                 <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
-                <SuccessText>Thanks for your feedback! It helps us make the app better.</SuccessText>
+                <SuccessText size="xs" colorVariant="success">
+                  Thanks for your feedback! It helps us make the app better.
+                </SuccessText>
               </SuccessContainer>
             ) : (
               <SettingSection>
                 {error ? (
                   <ErrorContainer>
                     <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                    <ErrorText>{error}</ErrorText>
+                    <ErrorText size="xs" colorVariant="error">
+                      {error}
+                    </ErrorText>
                   </ErrorContainer>
                 ) : null}
 
@@ -142,13 +146,15 @@ export const FeedbackScreen = () => {
                     sizeVariant="sm"
                     colorVariant={consentGiven ? 'primary' : 'icon'}
                   />
-                  <ConsentText>
+                  <ConsentText size="xs">
                     I agree to share my feedback to help improve the app.
                   </ConsentText>
                 </ConsentContainer>
 
-                <PrivacyNoticeText>
-                  We collect your message, email (if provided), device type, and app version so we can review feedback and improve the app. We may contact you by email if needed.
+                <PrivacyNoticeText size="xxs" muted>
+                  We collect your message, email (if provided), device type, and app
+                  version so we can review feedback and improve the app. We may contact
+                  you by email if needed.
                 </PrivacyNoticeText>
 
                 <Button

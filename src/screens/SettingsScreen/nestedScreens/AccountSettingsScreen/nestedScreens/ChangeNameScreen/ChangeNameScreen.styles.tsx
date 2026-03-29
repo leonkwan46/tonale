@@ -1,7 +1,6 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -15,11 +14,8 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(8)
 }))
 
-export const ErrorText = styled.Text(({ theme }) => ({
-  color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily()
+export const ErrorText = styled(Typography)(() => ({
+  flex: 1
 }))
 
 export const ScrollContentContainer = styled.View({

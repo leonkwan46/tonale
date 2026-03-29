@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
 const PressableOpacity07 = createPressableWithOpacity(0.7)
@@ -22,11 +22,8 @@ export const IconContainer = styled(View)<{ type?: 'filled' | 'outlined' }>(({ t
   alignItems: 'center'
 }))
 
-export const SettingsItemLabel = styled.Text<{ variant?: 'default' | 'red' }>(({ theme, variant }) => ({
-  flex: 1,
-  fontSize: scale(theme.typography.base),
-  color: variant === 'red' ? theme.colors.error : theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
+export const SettingsItemLabel = styled(Typography)(() => ({
+  flex: 1
 }))
 
 export const Separator = styled(View)(({ theme }) => ({

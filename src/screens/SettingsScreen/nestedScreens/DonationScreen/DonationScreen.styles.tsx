@@ -1,8 +1,7 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { Image, ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const FullScreenScrollView = styled(ScrollView)({
   flex: 1
@@ -29,10 +28,7 @@ export const NarrativeLine = styled.View(({ theme }) => ({
   marginBottom: theme.device.isTablet ? scale(8) : scale(6)
 }))
 
-export const NarrativeText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(18) : scale(16),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(),
+export const NarrativeText = styled(Typography)(({ theme }) => ({
   lineHeight: theme.device.isTablet ? scale(26) : scale(22)
 }))
 

@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 
 const PressableOpacity07 = createPressableWithOpacity(0.7)
@@ -28,9 +28,5 @@ export const BackButton = styled(PressableOpacity07)(({ theme }) => ({
   justifyContent: 'center'
 }))
 
-export const Title = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.lg || 20),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+export const Title = styled(Typography)(() => ({}))
 

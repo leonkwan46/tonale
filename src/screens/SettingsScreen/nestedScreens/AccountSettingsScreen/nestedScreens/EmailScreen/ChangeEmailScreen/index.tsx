@@ -1,6 +1,6 @@
 import { updateUserEmailAddress } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useDevice, useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
@@ -20,6 +20,7 @@ import {
 } from './ChangeEmailScreen.styles'
 
 export const ChangeEmailScreen = () => {
+  const { isTablet } = useDevice()
   const { authUser } = useUser()
 
   const [newEmail, setNewEmail] = useState('')
@@ -77,7 +78,11 @@ export const ChangeEmailScreen = () => {
 
           {success ? (
             <SuccessContainer>
-              <SuccessText>
+              <SuccessText
+                size={isTablet ? 'sm' : 'md'}
+                colorVariant="success"
+                align="center"
+              >
                 A verification link has been sent to your new email address.
               </SuccessText>
             </SuccessContainer>
@@ -86,7 +91,12 @@ export const ChangeEmailScreen = () => {
               {error ? (
                 <ErrorContainer>
                   <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                  <ErrorText>{error}</ErrorText>
+                  <ErrorText
+                    size={isTablet ? 'xs' : 'sm'}
+                    colorVariant="error"
+                  >
+                    {error}
+                  </ErrorText>
                 </ErrorContainer>
               ) : null}
 

@@ -1,6 +1,6 @@
 import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useDevice, useUser } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
@@ -18,6 +18,7 @@ import {
 } from './ChangePasswordScreen.styles'
 
 export const ChangePasswordScreen = () => {
+  const { isTablet } = useDevice()
   const { authUser } = useUser()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -55,14 +56,22 @@ export const ChangePasswordScreen = () => {
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <ErrorText>{error}</ErrorText>
+              <ErrorText
+                size={isTablet ? 'xs' : 'sm'}
+                colorVariant="error"
+              >
+                {error}
+              </ErrorText>
             </ErrorContainer>
           ) : null}
 
           {success ? (
             <SuccessContainer>
               <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
-              <SuccessText>
+              <SuccessText
+                size={isTablet ? 'xs' : 'sm'}
+                colorVariant="success"
+              >
                 Password reset email sent! Check your email at {authUser?.email}.
               </SuccessText>
             </SuccessContainer>

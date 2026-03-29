@@ -48,7 +48,12 @@ export const SettingsItem = ({
         <IconContainer type={type}>
           <Icon name={icon} sizeVariant="lg" colorVariant={iconColor} />
         </IconContainer>
-        <SettingsItemLabel variant={variant}>{label}</SettingsItemLabel>
+        <SettingsItemLabel
+          size="md"
+          colorVariant={variant === 'red' ? 'error' : 'text'}
+        >
+          {label}
+        </SettingsItemLabel>
         {showVerifyIcon && (
           <VerifyIconContainer>
             <Icon
