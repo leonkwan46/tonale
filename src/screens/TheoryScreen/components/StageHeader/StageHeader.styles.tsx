@@ -102,7 +102,13 @@ export const ChevronIcon = styled(Animated.View)<{ isCollapsed: boolean; isPerfe
   transform: [{ rotate: isCollapsed ? '135deg' : '-45deg' }]
 }))
 
-export function StageHeaderStarLogo({ isPerfect, size = 16 }: { isPerfect: boolean; size?: number }) {
+export const StageHeaderStarLogo = ({
+  isPerfect,
+  size = 16
+}: {
+  isPerfect: boolean
+  size?: number
+}) => {
   const theme = useTheme()
   const color = isPerfect
     ? theme.components.stage.textOnPerfect
