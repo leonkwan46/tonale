@@ -2,8 +2,6 @@ import styled from '@emotion/native'
 import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-
 export const GAP_SIZE = scale(10)
 
 export const GridSelectionContainer = styled(View)(({ theme }) => ({
@@ -22,12 +20,7 @@ export const GridSelectionContent = styled(View)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   gap: scale(theme.spacing.sm),
-  minHeight: scale(80)
-}))
-
-export const GridSelectionText = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.sm),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
-  textAlign: 'center'
+  minHeight: scale(80),
+  width: '100%',
+  minWidth: 0
 }))

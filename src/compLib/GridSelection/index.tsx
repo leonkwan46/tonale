@@ -1,11 +1,11 @@
 import { useWindowDimensions } from '@/hooks'
 import { Depth3D } from '@/compLib/Depth3D'
+import { Typography, type TypographySize } from '@/compLib/Typography'
 import { useMemo, useState } from 'react'
 import {
   GAP_SIZE,
   GridSelectionContainer,
-  GridSelectionContent,
-  GridSelectionText
+  GridSelectionContent
 } from './GridSelection.styles'
 
 interface GridSelectionProps<T extends string> {
@@ -16,6 +16,8 @@ interface GridSelectionProps<T extends string> {
   getDisplayLabel?: (option: T) => string;
   renderIcon?: (option: T, isSelected: boolean) => React.ReactElement | null;
   columns?: number;
+  labelSize?: TypographySize;
+  labelMinimumScale?: number;
 }
 
 const DEFAULT_COLUMNS = 2
@@ -27,7 +29,9 @@ export const GridSelection = <T extends string>({
   testID,
   getDisplayLabel,
   renderIcon,
-  columns = DEFAULT_COLUMNS
+  columns = DEFAULT_COLUMNS,
+  labelSize = 'sm',
+  labelMinimumScale = 0.65
 }: GridSelectionProps<T>): React.ReactElement => {
   const { width: screenWidth } = useWindowDimensions()
   const [containerWidth, setContainerWidth] = useState<number | null>(null)
@@ -44,7 +48,6 @@ export const GridSelection = <T extends string>({
       return 0
     }
 
-    // Account for gaps between columns: (columns - 1) gaps
     const totalGaps = GAP_SIZE * (columns - 1)
     const availableWidth = baseWidth - totalGaps
     return availableWidth / columns
@@ -77,7 +80,17 @@ export const GridSelection = <T extends string>({
             {() => (
               <GridSelectionContent>
                 {renderIcon && renderIcon(option, isSelected)}
-                <GridSelectionText>{displayLabel}</GridSelectionText>
+                <Typography
+                  size={labelSize}
+                  weight="semibold"
+                  align="center"
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={labelMinimumScale}
+                  style={{ width: '100%' }}
+                >
+                  {displayLabel}
+                </Typography>
               </GridSelectionContent>
             )}
           </Depth3D>
