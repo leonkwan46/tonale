@@ -77,7 +77,9 @@ export const PasswordResetForm = ({
         {displayError ? (
           <ErrorContainer>
             <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-            <ErrorText>{displayError}</ErrorText>
+            <ErrorText size="xs" colorVariant="error">
+              {displayError}
+            </ErrorText>
           </ErrorContainer>
         ) : null}
 

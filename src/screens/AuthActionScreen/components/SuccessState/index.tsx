@@ -36,7 +36,9 @@ export const SuccessState = ({ mode, onContinue }: SuccessStateProps) => {
     <>
       <SuccessContainer>
         <Icon name="checkmark-circle" sizeVariant="lg" colorVariant="success" />
-        <SuccessText>{message}</SuccessText>
+        <SuccessText size="xs" colorVariant="primary">
+          {message}
+        </SuccessText>
       </SuccessContainer>
       <Button
         variant="filled"

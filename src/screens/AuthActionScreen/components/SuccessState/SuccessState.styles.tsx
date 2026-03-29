@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const SuccessContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -15,10 +15,7 @@ export const SuccessContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
-export const SuccessText = styled.Text(({ theme }) => ({
-  color: theme.colors.primary,
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily()
+export const SuccessText = styled(Typography)(() => ({
+  flex: 1
 }))
 
