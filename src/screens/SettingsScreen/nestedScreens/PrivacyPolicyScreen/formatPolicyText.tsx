@@ -17,7 +17,7 @@ export type FormattedSegment = {
  * Parses policy text with **bold**, *italic*, and ==highlight== (primary colour) markup.
  * Uses lazy .*? for robustness (e.g. **text with * inside**).
  */
-export function parseFormattedText(text: string): FormattedSegment[] {
+export const parseFormattedText = (text: string): FormattedSegment[] => {
   const segments: FormattedSegment[] = []
   let lastIndex = 0
   const combinedRegex = /\*\*(.*?)\*\*|\*(.*?)\*|==(.*?)==/g
@@ -44,11 +44,13 @@ export function parseFormattedText(text: string): FormattedSegment[] {
   return segments.length > 0 ? segments : [{ type: 'normal', text }]
 }
 
-function looksLikeEmail(text: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.trim())
-}
+const looksLikeEmail = (text: string): boolean =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.trim())
 
-export function renderFormattedSegments(segments: FormattedSegment[], keyPrefix: string): ReactNode[] {
+export const renderFormattedSegments = (
+  segments: FormattedSegment[],
+  keyPrefix: string
+): ReactNode[] => {
   return segments.map((seg, i) => {
     const key = `${keyPrefix}-${i}`
     if (seg.type === 'bold') {
