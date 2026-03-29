@@ -57,7 +57,7 @@ export const PrivacyPolicyScreen = () => {
   )
 }
 
-function SectionBlock({
+const SectionBlock = ({
   title,
   paragraphs,
   isFirst
@@ -65,7 +65,7 @@ function SectionBlock({
   title: string
   paragraphs: ParsedParagraph[]
   isFirst: boolean
-}) {
+}) => {
   const WrapperComponent = isFirst ? SectionTitleFirst : SectionTitleWrapper
 
   return (
