@@ -4,12 +4,12 @@ type PianoKey = 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F' | 'F#' | 'G' | 'G#' | 'A' | 
 
 const PIANO_KEYS: PianoKey[] = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
-function getNoteFrequency(noteName: string): number | null {
+const getNoteFrequency = (noteName: string): number | null => {
   const trimmed = noteName.trim()
   return NOTE_NAME_TO_FREQ[trimmed] ?? null
 }
 
-function getPianoKeyForFrequency(frequency: number): PianoKey | null {
+const getPianoKeyForFrequency = (frequency: number): PianoKey | null => {
   for (const key of PIANO_KEYS) {
     const keyFreq = NOTE_NAME_TO_FREQ[key]
     if (keyFreq !== undefined && keyFreq === frequency) {
@@ -19,16 +19,16 @@ function getPianoKeyForFrequency(frequency: number): PianoKey | null {
   return null
 }
 
-function getPianoKeyForNote(noteName: string): PianoKey | null {
+const getPianoKeyForNote = (noteName: string): PianoKey | null => {
   if (!noteName) return null
-  
+
   const frequency = getNoteFrequency(noteName)
   if (frequency === null) return null
-  
+
   return getPianoKeyForFrequency(frequency)
 }
 
-export function isEnharmonicEquivalent(noteName1: string, noteName2: string): boolean {
+export const isEnharmonicEquivalent = (noteName1: string, noteName2: string): boolean => {
   const key1 = getPianoKeyForNote(noteName1)
   const key2 = getPianoKeyForNote(noteName2)
   
