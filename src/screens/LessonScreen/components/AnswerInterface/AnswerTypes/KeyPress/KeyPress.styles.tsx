@@ -1,8 +1,9 @@
 import styled from '@emotion/native'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
+import { createForwardProps } from '@/utils/styledProps'
 
 export const Container = styled(View)(({ theme }) => ({
     flex: 1,
@@ -15,8 +16,6 @@ export const FeedbackContainer = styled(View)(({ theme }) => ({
     alignItems: 'center'
 }))
 
-export const FeedbackText = styled(Text)<{ isCorrect: boolean }>(({ theme, isCorrect }) => ({
-  fontSize: scale(theme.typography.base),
-  color: isCorrect ? theme.colors.success : theme.colors.error,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+export const FeedbackText = styled(Typography, {
+  shouldForwardProp: createForwardProps(['isCorrect'])
+})<{ isCorrect: boolean }>(() => ({}))

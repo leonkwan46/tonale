@@ -1,3 +1,4 @@
+import { useDevice } from '@/hooks'
 import { Depth3D } from '@/compLib/Depth3D'
 import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, TrueFalseButtonContainer } from './TrueFalse.styles'
@@ -20,6 +21,7 @@ export const TrueFalse = ({
   onChoiceSelect,
   testID
 }: TrueFalseProps) => {
+  const { isTablet } = useDevice()
   const trueFalseChoices = choices.slice(0, 2) as ('True' | 'False')[]
 
   const getButtonColor = (choice: 'True' | 'False', isSelected: boolean, isCorrect: boolean, isIncorrect: boolean, shouldShowNeutral: boolean): Depth3DColor => {
@@ -52,7 +54,11 @@ export const TrueFalse = ({
             >
               {() => (
                 <TrueFalseButtonContainer>
-                  <ChoiceText>
+                  <ChoiceText
+                    size={isTablet ? 'md' : 'lg'}
+                    weight="semibold"
+                    align="center"
+                  >
                     {choice}
                   </ChoiceText>
                 </TrueFalseButtonContainer>

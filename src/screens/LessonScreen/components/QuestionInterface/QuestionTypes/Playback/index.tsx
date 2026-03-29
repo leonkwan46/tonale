@@ -87,7 +87,11 @@ export const Playback: FC<PlaybackProps> = ({
 
   return (
     <PlaybackCard isTablet={isTablet}>
-      <PlaybackText isTablet={isTablet}>
+      <PlaybackText
+        size={isTablet ? 'lg' : 'xl'}
+        weight="bold"
+        align="center"
+      >
         Listen to the question
       </PlaybackText>
       <AnimationContainer isTablet={isTablet}>

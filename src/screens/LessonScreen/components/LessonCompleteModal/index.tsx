@@ -1,3 +1,4 @@
+import { useDevice } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
 import {
@@ -31,6 +32,7 @@ export const LessonCompleteModal = ({
   onContinue,
   onRetry
 }: LessonCompleteModalProps) => {
+  const { isTablet } = useDevice()
   const [animatedStars, setAnimatedStars] = useState(0)
   const starAnimations = useRef([
     new Animated.Value(0),
@@ -95,7 +97,11 @@ export const LessonCompleteModal = ({
             }]
           }}
         >
-          <StarIcon filled={isFilled}>
+          <StarIcon
+            filled={isFilled}
+            size={isTablet ? 'xl' : 'xxl'}
+            align="center"
+          >
             {isFilled ? '⭐' : '☆'}
           </StarIcon>
         </AnimatedStarContainer>

@@ -1,3 +1,4 @@
+import { useDevice } from '@/hooks'
 import { Depth3D } from '@/compLib/Depth3D'
 import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import { ChoiceRow, ChoicesContainer, ChoiceText, LayoutType, MultipleChoiceButtonContainer } from './MultipleChoice.styles'
@@ -21,6 +22,16 @@ export const MultipleChoice = ({
   type = 'grid',
   testID
 }: MultipleChoiceProps) => {
+  const { isTablet } = useDevice()
+  const choiceSize =
+    type === 'grid'
+      ? isTablet
+        ? 'lg'
+        : 'xl'
+      : isTablet
+        ? 'sm'
+        : 'md'
+
   const getButtonColor = (isSelected: boolean, isCorrect: boolean, isIncorrect: boolean): Depth3DColor => {
     if (showResult) {
       if (isCorrect) return 'green'
@@ -66,8 +77,10 @@ export const MultipleChoice = ({
               >
                 {() => (
                   <MultipleChoiceButtonContainer layoutType={type}>
-                    <ChoiceText 
-                      layoutType={type}
+                    <ChoiceText
+                      size={choiceSize}
+                      weight="semibold"
+                      align="center"
                       numberOfLines={1}
                       adjustsFontSizeToFit={true}
                       minimumFontScale={0.5}

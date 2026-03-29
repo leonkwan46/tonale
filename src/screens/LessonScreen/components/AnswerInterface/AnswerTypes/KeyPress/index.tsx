@@ -56,7 +56,12 @@ export const KeyPress = ({
 
       {hasFeedback && (
         <FeedbackContainer>
-          <FeedbackText isCorrect={isCorrect}>
+          <FeedbackText
+            isCorrect={isCorrect}
+            size="md"
+            weight="bold"
+            colorVariant={isCorrect ? 'success' : 'error'}
+          >
             {isCorrect ? '✅ Correct!' : '❌ Try again'}
           </FeedbackText>
         </FeedbackContainer>

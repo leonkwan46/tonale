@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import { createPressableWithOpacity } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
 
@@ -28,12 +28,7 @@ export const PlaybackCard = styled.View<{ isTablet: boolean }>(({ theme, isTable
   alignSelf: 'center'
 }))
 
-export const PlaybackText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
-  color: theme.colors.text,
-  textAlign: 'center',
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+export const PlaybackText = styled(Typography)(() => ({}))
 
 export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
   position: 'absolute',

@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const ChoicesContainer = styled.View`
   align-items: center;
@@ -23,11 +23,4 @@ export const TrueFalseButtonContainer = styled.View(({ theme }) => ({
   alignItems: 'center'
 }))
 
-export const ChoiceText = styled.Text(({ theme }) => {
-  return {
-    fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-    color: theme.colors.text,
-    textAlign: 'center',
-    fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-  }
-})
+export const ChoiceText = styled(Typography)(() => ({}))

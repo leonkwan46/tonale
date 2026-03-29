@@ -86,7 +86,11 @@ export const QuestionExplanation = ({
       {showVisual && displayVisualComponent && (
         <VisualExplanation visualComponent={displayVisualComponent} />
       )}
-      {formattedText && <ExplanationText>{formattedText}</ExplanationText>}
+      {formattedText && (
+        <ExplanationText size="md" align="center">
+          {formattedText}
+        </ExplanationText>
+      )}
       <Button
         variant="filled"
         color="primary"
