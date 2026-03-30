@@ -3,215 +3,215 @@ import { palette } from '../tokens/palette'
 export const lightComponentColors = {
   button: {
     blue: {
-      color: palette.blue600,
-      depth: palette.blue700,
-      text: palette.white
+      color: palette.blue[600],
+      depth: palette.blue[700],
+      text: palette.base.white
     },
     red: {
-      color: palette.coral400,
-      depth: palette.coral600,
-      text: palette.gray975
+      color: palette.coral[400],
+      depth: palette.coral[600],
+      text: palette.gray[950]
     },
     green: {
-      color: palette.green500,
-      depth: palette.green700,
-      text: palette.gray975
+      color: palette.green[500],
+      depth: palette.green[700],
+      text: palette.gray[950]
     },
     yellow: {
-      color: palette.yellow400,
-      depth: palette.yellow400,
-      text: palette.gray975
+      color: palette.yellow[400],
+      depth: palette.yellow[400],
+      text: palette.gray[950]
     },
     grey: {
-      color: palette.gray400,
-      depth: palette.gray700,
-      text: palette.gray975
+      color: palette.gray[400],
+      depth: palette.gray[700],
+      text: palette.gray[950]
     },
     finalTest: {
-      color: palette.yellow400,
-      depth: palette.crimson900,
-      text: palette.gray975
+      color: palette.yellow[400],
+      depth: palette.accent.crimson[900],
+      text: palette.gray[950]
     }
   },
 
   flame: {
-    active: palette.orange500,
-    activeDepth: palette.orange700,
-    upcoming: palette.orange400,
-    empty: palette.salmon300,
-    cardFill: palette.gray50,
-    cardDepth: palette.gray100
+    active: palette.orange[500],
+    activeDepth: palette.orange[700],
+    upcoming: palette.orange[400],
+    empty: palette.accent.salmon[300],
+    cardFill: palette.gray[50],
+    cardDepth: palette.gray[100]
   },
 
   homeScreen: {
     gradient: {
-      dark: palette.homeGradientDark,
-      light: palette.homeGradientLight
+      dark: palette.gradients.homeDark,
+      light: palette.gradients.homeLight
     }
   },
 
   finalTest: {
-    gradient: palette.finalTestGradient
+    gradient: palette.gradients.finalTest
   },
 
   clouds: {
-    sky50: palette.sky50,
-    sky100: palette.sky100,
-    sky200: palette.sky200,
-    sky300: palette.sky300
+    sky50: palette.accent.sky[50],
+    sky100: palette.accent.sky[100],
+    sky200: palette.accent.sky[200],
+    sky300: palette.accent.sky[300]
   },
 
   displayCard: {
-    background: palette.white
+    background: palette.base.white
   },
 
   playback: {
-    rippleWater: palette.rippleWater,
-    rippleCircleBorder: palette.rippleCircleBorder
+    rippleWater: palette.effects.rippleWater,
+    rippleCircleBorder: palette.effects.rippleCircleBorder
   },
 
   input: {
-    background: palette.gray50,
-    border: palette.gray400,
-    text: palette.gray975,
-    placeholder: palette.gray500
+    background: palette.gray[50],
+    border: palette.gray[400],
+    text: palette.gray[950],
+    placeholder: palette.gray[500]
   },
 
   tabBar: {
-    active: palette.blue600,
-    inactive: palette.gray400
+    active: palette.blue[600],
+    inactive: palette.gray[400]
   },
 
   modal: {
-    mask: palette.modalMask,
-    overlayText: palette.white
+    mask: palette.effects.modalMask,
+    overlayText: palette.base.white
   },
 
   settings: {
-    sectionBackground: palette.gray100
+    sectionBackground: palette.gray[100]
   },
 
   notation: {
-    text: palette.black
+    text: palette.base.black
   },
 
   achievement: {
-    gold: palette.gold400
+    gold: palette.gold[400]
   },
 
   stage: {
-    cleared: palette.green500,
-    perfect: palette.gold400,
-    perfectBorder: palette.gold500,
-    textOnCleared: palette.gray975,
-    textOnPerfect: palette.black
+    cleared: palette.green[500],
+    perfect: palette.gold[400],
+    perfectBorder: palette.gold[500],
+    textOnCleared: palette.gray[950],
+    textOnPerfect: palette.base.black
   }
 }
 
 export const darkComponentColors = {
   button: {
     blue: {
-      color: palette.blue400,
-      depth: palette.blue700,
-      text: palette.gray975
+      color: palette.blue[400],
+      depth: palette.blue[700],
+      text: palette.gray[950]
     },
     red: {
-      color: palette.coral400,
-      depth: palette.coral600,
-      text: palette.gray975
+      color: palette.coral[400],
+      depth: palette.coral[600],
+      text: palette.gray[950]
     },
     green: {
-      color: palette.green400,
-      depth: palette.green700,
-      text: palette.gray975
+      color: palette.green[400],
+      depth: palette.green[700],
+      text: palette.gray[950]
     },
     yellow: {
-      color: palette.yellow300,
-      depth: palette.yellow300,
-      text: palette.gray975
+      color: palette.yellow[300],
+      depth: palette.yellow[300],
+      text: palette.gray[950]
     },
     grey: {
-      color: palette.gray800,
-      depth: palette.gray950,
-      text: palette.gray100
+      color: palette.gray[700],
+      depth: palette.gray[800],
+      text: palette.gray[100]
     },
     finalTest: {
-      color: palette.yellow300,
-      depth: palette.crimson900,
-      text: palette.gray975
+      color: palette.yellow[300],
+      depth: palette.accent.crimson[900],
+      text: palette.gray[950]
     }
   },
 
   flame: {
-    active: palette.orange500,
-    activeDepth: palette.orange700,
-    upcoming: palette.orange400,
-    empty: palette.salmon300,
-    cardFill: palette.gray850,
-    cardDepth: palette.gray950
+    active: palette.orange[500],
+    activeDepth: palette.orange[700],
+    upcoming: palette.orange[400],
+    empty: palette.accent.salmon[300],
+    cardFill: palette.gray[800],
+    cardDepth: palette.gray[950]
   },
 
   homeScreen: {
     gradient: {
-      dark: palette.homeGradientDark,
-      light: palette.homeGradientLight
+      dark: palette.gradients.homeDark,
+      light: palette.gradients.homeLight
     }
   },
 
   finalTest: {
-    gradient: palette.finalTestGradient
+    gradient: palette.gradients.finalTest
   },
 
   clouds: {
-    sky50: palette.sky50,
-    sky100: palette.sky100,
-    sky200: palette.sky200,
-    sky300: palette.sky300
+    sky50: palette.accent.sky[50],
+    sky100: palette.accent.sky[100],
+    sky200: palette.accent.sky[200],
+    sky300: palette.accent.sky[300]
   },
 
   displayCard: {
-    background: palette.white
+    background: palette.base.white
   },
 
   playback: {
-    rippleWater: palette.rippleWater,
-    rippleCircleBorder: palette.rippleCircleBorder
+    rippleWater: palette.effects.rippleWater,
+    rippleCircleBorder: palette.effects.rippleCircleBorder
   },
 
   input: {
-    background: palette.gray950,
-    border: palette.gray800,
-    text: palette.gray100,
-    placeholder: palette.gray100
+    background: palette.gray[950],
+    border: palette.gray[800],
+    text: palette.gray[100],
+    placeholder: palette.gray[100]
   },
 
   tabBar: {
-    active: palette.white,
-    inactive: palette.gray600
+    active: palette.base.white,
+    inactive: palette.gray[600]
   },
 
   modal: {
-    mask: palette.modalMask,
-    overlayText: palette.white
+    mask: palette.effects.modalMask,
+    overlayText: palette.base.white
   },
 
   settings: {
-    sectionBackground: palette.gray850
+    sectionBackground: palette.blueGray[800]
   },
 
   notation: {
-    text: palette.black
+    text: palette.base.black
   },
 
   achievement: {
-    gold: palette.gold700
+    gold: palette.gold[700]
   },
 
   stage: {
-    cleared: palette.green400,
-    perfect: palette.gold700,
-    perfectBorder: palette.gold600,
-    textOnCleared: palette.gray975,
-    textOnPerfect: palette.black
+    cleared: palette.green[400],
+    perfect: palette.gold[700],
+    perfectBorder: palette.gold[600],
+    textOnCleared: palette.gray[950],
+    textOnPerfect: palette.base.black
   }
 }

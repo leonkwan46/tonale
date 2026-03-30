@@ -17,33 +17,33 @@ export type ThemeSemanticColors = {
 }
 
 export const lightSemanticColors: ThemeSemanticColors = {
-  text: palette.gray975,
-  background: palette.white,
-  primary: palette.blue600,
-  primaryContrast: palette.white,
-  success: palette.green500,
-  successContrast: palette.gray975,
-  warning: palette.yellow400,
-  warningContrast: palette.gray975,
-  error: palette.red500,
-  errorContrast: palette.gray975,
-  surface: palette.gray50,
-  border: palette.gray400,
-  icon: palette.gray400
+  text: palette.gray[950],
+  background: palette.base.white,
+  primary: palette.blue[600],
+  primaryContrast: palette.base.white,
+  success: palette.green[500],
+  successContrast: palette.gray[950],
+  warning: palette.yellow[400],
+  warningContrast: palette.gray[950],
+  error: palette.red[500],
+  errorContrast: palette.gray[950],
+  surface: palette.gray[50],
+  border: palette.gray[400],
+  icon: palette.gray[400]
 }
 
 export const darkSemanticColors: ThemeSemanticColors = {
-  text: palette.gray100,
-  background: palette.gray950,
-  primary: palette.blue400,
-  primaryContrast: palette.gray975,
-  success: palette.green400,
-  successContrast: palette.gray975,
-  warning: palette.yellow300,
-  warningContrast: palette.gray975,
-  error: palette.red400,
-  errorContrast: palette.gray975,
-  surface: palette.gray850,
-  border: palette.gray800,
-  icon: palette.gray600
+  text: palette.gray[100],
+  background: palette.gray[950],
+  primary: palette.blue[400],
+  primaryContrast: palette.gray[950],
+  success: palette.green[400],
+  successContrast: palette.gray[950],
+  warning: palette.yellow[300],
+  warningContrast: palette.gray[950],
+  error: palette.red[400],
+  errorContrast: palette.gray[950],
+  surface: palette.gray[800],
+  border: palette.gray[800],
+  icon: palette.gray[600]
 }
