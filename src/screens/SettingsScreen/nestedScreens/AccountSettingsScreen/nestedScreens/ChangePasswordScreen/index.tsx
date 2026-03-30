@@ -79,9 +79,6 @@ export const ChangePasswordScreen = () => {
             <Button
               variant="filled"
               color="primary"
-              depth
-              depthLayout="row"
-              fullWidth
               disabled={loading}
               loading={loading}
               onPress={handleSendResetEmail}

@@ -3,9 +3,7 @@ import styled from '@emotion/native'
 import { Modal } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
-
-const PressableOpacity07 = createPressableWithOpacity(0.7)
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export const ModalMask = styled(Modal)({})
 
@@ -27,7 +25,7 @@ export const TitleText = styled(Typography)(() => ({}))
 
 export const BodyText = styled(Typography)(() => ({}))
 
-export const EyeButton = styled(PressableOpacity07)(({ theme }) => ({
+export const EyeButton = styled(PressableFeedback)(({ theme }) => ({
   paddingVertical: scale(theme.spacing.xs),
   paddingHorizontal: scale(theme.spacing.xs)
 }))

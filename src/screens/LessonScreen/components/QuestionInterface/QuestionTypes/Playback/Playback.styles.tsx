@@ -3,10 +3,8 @@ import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
-
-const PressableOpacity08 = createPressableWithOpacity(0.8)
 
 const PLAYBACK_CARD_MAX_WIDTH_TABLET = 400
 const PLAYBACK_CARD_MAX_WIDTH_PHONE = 320
@@ -41,7 +39,7 @@ export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ theme, i
   zIndex: 1
 }))
 
-export const PlayButton = styled(PressableOpacity08)<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => {
+export const PlayButton = styled(PressableFeedback)<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => {
   const buttonSize = isTablet ? scale(80) : scale(100)
   return {
     width: buttonSize,

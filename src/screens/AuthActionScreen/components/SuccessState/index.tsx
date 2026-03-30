@@ -43,8 +43,6 @@ export const SuccessState = ({ mode, onContinue }: SuccessStateProps) => {
       <Button
         variant="filled"
         size="md"
-        fullWidth
-        withTopSpacing
         onPress={handleContinue}
         label={mode === 'verifyEmail' ? 'Continue' : 'Go to Sign In'}
       />

@@ -114,9 +114,6 @@ export const ChangeGenderScreen = () => {
           <Button
             variant="filled"
             color="primary"
-            depth
-            depthLayout="row"
-            fullWidth
             disabled={!canSave}
             loading={loading}
             onPress={handleSave}

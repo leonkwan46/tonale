@@ -160,7 +160,6 @@ export const FeedbackScreen = () => {
                 <Button
                   variant="filled"
                   size="md"
-                  fullWidth
                   disabled={loading || !feedback.trim() || !consentGiven}
                   loading={loading}
                   onPress={handleSubmit}

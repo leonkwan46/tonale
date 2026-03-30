@@ -4,13 +4,11 @@ import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
 import { StarLogo } from '../LessonSection/components/Logo/StarLogo'
 
-const PressableOpacity07 = createPressableWithOpacity(0.7)
-
-export const HeaderContainer = styled(PressableOpacity07)<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
+export const HeaderContainer = styled(PressableFeedback)<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',

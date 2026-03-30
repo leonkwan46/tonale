@@ -94,7 +94,7 @@ export const DeleteAccountModal = ({
 
           <ActionsRow>
             <Button
-              variant="ghost"
+              variant="link"
               size="md"
               onPress={onCancel}
               disabled={isLoading}
@@ -105,7 +105,6 @@ export const DeleteAccountModal = ({
               variant="filled"
               color="error"
               size="md"
-              labelWeight="bold"
               onPress={onConfirm}
               loading={isLoading}
               disabled={isLoading}

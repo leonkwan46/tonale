@@ -2,9 +2,7 @@ import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
-
-const PressableOpacity07 = createPressableWithOpacity(0.7)
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -47,7 +45,7 @@ export const ContentWrapper = styled.View({
   gap: scale(20)
 })
 
-export const ConsentContainer = styled(PressableOpacity07)(({ theme }) => ({
+export const ConsentContainer = styled(PressableFeedback)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: theme.device.isTablet ? scale(8) : scale(12)

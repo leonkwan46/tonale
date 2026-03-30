@@ -111,9 +111,6 @@ It won't be shared with others.`}
                 <Button
                   variant="filled"
                   color="primary"
-                  depth
-                  depthLayout="row"
-                  fullWidth
                   disabled={verifyLoading}
                   loading={verifyLoading}
                   onPress={handleSendVerification}

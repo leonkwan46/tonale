@@ -19,3 +19,7 @@ export const SuccessText = styled(Typography)(() => ({
   flex: 1
 }))
 
+export const ContinueButtonWrap = styled.View(({ theme }) => ({
+  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
+}))
+

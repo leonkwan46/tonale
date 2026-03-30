@@ -32,7 +32,6 @@ export const GuestLogin = ({
       <Button
         variant="outlined"
         size="md"
-        fullWidth
         leftIcon="person-outline"
         onPress={onGuestLogin}
         disabled={loading}

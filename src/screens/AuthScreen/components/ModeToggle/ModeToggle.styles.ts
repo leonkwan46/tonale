@@ -2,9 +2,7 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
-
-const PressableOpacity07 = createPressableWithOpacity(0.7)
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export const ToggleContainer = styled.View(() => ({
   width: '100%'
@@ -17,7 +15,7 @@ export const ToggleBackground = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface
 }))
 
-export const ToggleButton = styled(PressableOpacity07)<{ isActive: boolean }>(({ theme, isActive }) => ({
+export const ToggleButton = styled(PressableFeedback)<{ isActive: boolean }>(({ theme, isActive }) => ({
   flex: 1,
   paddingVertical: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),

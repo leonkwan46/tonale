@@ -58,15 +58,12 @@ export const RevisionCard = () => {
               </RevisionText>
               <Button
                 variant="filled"
-                color="red"
-                depth
-                fullWidth
+                color="error"
                 disabled={isNavigating}
                 loading={isNavigating}
                 testID="start-revision-button"
                 onPress={handleStartRevision}
                 label={isNavigating ? 'Opening…' : 'Start Revision'}
-                labelWeight="bold"
               />
             </>
           ) : (

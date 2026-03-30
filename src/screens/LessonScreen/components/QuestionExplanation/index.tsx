@@ -94,8 +94,6 @@ export const QuestionExplanation = ({
       <Button
         variant="filled"
         color="primary"
-        depth
-        fullWidth
         testID="question-explanation-continue-button"
         onPress={onContinue}
         label="Continue"

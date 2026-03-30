@@ -18,9 +18,6 @@ const OnboardingButtonComponent = ({
       <Button
         variant="filled"
         color="primary"
-        depth
-        depthLayout="row"
-        fullWidth
         disabled={!isEnabled}
         loading={isCompleting}
         onPress={onPress}

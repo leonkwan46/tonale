@@ -33,7 +33,7 @@ export const FinalTestButton = ({
           onPress={onPress}
           disabled={disabled}
           testID={testID}
-          fullWidth={true}
+          layoutType="row"
           color="finalTest"
         >
           {() => (

@@ -244,9 +244,8 @@ export const AuthForm = ({
         {isLoginMode && (
           <ForgotPasswordWrap>
             <Button
-              variant="ghost"
+              variant="link"
               size="sm"
-              ghostTint="primary"
               onPress={handleForgotPassword}
               disabled={authState.loading}
               label="Forgot password?"
@@ -301,8 +300,6 @@ export const AuthForm = ({
         testID="auth-submit-button"
         variant="filled"
         size="md"
-        fullWidth
-        withTopSpacing
         onPress={handleAuth}
         disabled={authState.loading}
         loading={authState.loading}

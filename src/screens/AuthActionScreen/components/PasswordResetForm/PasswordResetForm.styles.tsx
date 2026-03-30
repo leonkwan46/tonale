@@ -25,3 +25,7 @@ export const ErrorText = styled(Typography)(() => ({
   flex: 1
 }))
 
+export const SubmitButtonWrap = styled.View(({ theme }) => ({
+  marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
+}))
+

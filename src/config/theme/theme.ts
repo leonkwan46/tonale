@@ -23,6 +23,7 @@ export type IconColorVariant =
   | 'warningContrast'
   | 'error'
   | 'errorContrast'
+  | 'border'
   | 'text'
   | 'icon'
 

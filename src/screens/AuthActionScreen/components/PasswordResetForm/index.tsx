@@ -114,8 +114,6 @@ export const PasswordResetForm = ({
         <Button
           variant="filled"
           size="md"
-          fullWidth
-          withTopSpacing
           disabled={isLoading || !newPassword || !confirmPassword}
           loading={isLoading}
           onPress={handleSubmit}

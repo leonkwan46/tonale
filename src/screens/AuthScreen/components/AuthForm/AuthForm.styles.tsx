@@ -3,9 +3,7 @@ import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
-
-const PressableOpacity07 = createPressableWithOpacity(0.7)
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export const FormSection = styled(Animated.View)(({ theme }) => ({
   minHeight: theme.device.isTablet ? scale(100) : scale(200),
@@ -46,7 +44,7 @@ export const InputsContainer = styled.View(({ theme }) => ({
   width: '100%'
 }))
 
-export const EyeIcon = styled(PressableOpacity07)(({ theme }) => ({
+export const EyeIcon = styled(PressableFeedback)(({ theme }) => ({
   padding: scale(theme.spacing.xs)
 }))
 

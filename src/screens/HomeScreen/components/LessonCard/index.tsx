@@ -90,14 +90,11 @@ export const LessonCard = () => {
       <Button
         variant="filled"
         color="primary"
-        depth
-        fullWidth
         disabled={isNavigating || lesson.isLocked}
         loading={isNavigating}
         testID="continue-lesson-button"
         onPress={handleContinuePress}
         label={isNavigating ? 'Opening lesson…' : 'Continue Lesson'}
-        labelWeight="bold"
       />
     </LessonCardContainer>
   )

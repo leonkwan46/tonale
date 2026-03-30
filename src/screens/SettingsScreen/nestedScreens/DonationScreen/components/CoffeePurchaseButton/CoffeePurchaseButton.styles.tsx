@@ -3,11 +3,9 @@ import styled from '@emotion/native'
 import { Image } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
-const PressableOpacity07 = createPressableWithOpacity(0.7)
-
-export const PurchaseButtonContainer = styled(PressableOpacity07)(({ theme }) => ({
+export const PurchaseButtonContainer = styled(PressableFeedback)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: theme.colors.surface,

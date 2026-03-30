@@ -3,11 +3,9 @@ import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
-const PressableOpacity07 = createPressableWithOpacity(0.7)
-
-export const SettingsItemContainer = styled(PressableOpacity07)(({ theme }) => ({
+export const SettingsItemContainer = styled(PressableFeedback)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: scale(theme.spacing.sm),

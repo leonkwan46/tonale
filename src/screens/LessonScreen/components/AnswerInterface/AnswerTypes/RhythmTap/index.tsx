@@ -5,7 +5,6 @@ import type { QuestionInterface } from '@/types/lesson'
 import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { scale } from 'react-native-size-matters'
 import { Container, TapButtonText } from './RhythmTap.styles'
 
 const CLAP_SOUND = require('../../../../../../../assets/sounds/clap.mp3')
@@ -179,18 +178,13 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
 
   const isButtonDisabled = disabled || isTimeWindowExpired || hasSubmittedRef.current
 
-  // Button dimensions
-  const buttonHeight = isTablet ? scale(120) : scale(160)
-  const buttonWidth = isTablet ? scale(240) : scale(280)
-
   return (
     <Container>
       <Depth3D
         onPress={handleTapIn}
         disabled={isButtonDisabled}
         color={getButtonColor(buttonState)}
-        width={buttonWidth}
-        height={buttonHeight}
+        sizeVariant="pad"
       >
         {() => (
           <TapButtonText

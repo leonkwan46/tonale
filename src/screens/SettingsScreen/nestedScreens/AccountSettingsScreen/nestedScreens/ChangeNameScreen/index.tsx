@@ -114,9 +114,6 @@ export const ChangeNameScreen = () => {
           <Button
             variant="filled"
             color="primary"
-            depth
-            depthLayout="row"
-            fullWidth
             disabled={loading || !name.trim()}
             loading={loading}
             onPress={handleSave}

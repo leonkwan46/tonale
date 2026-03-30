@@ -2,9 +2,13 @@ import styled from '@emotion/native'
 import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { forwardRef } from 'react'
+import type { View } from 'react-native'
+import { PressableFeedback, type PressableFeedbackProps } from '@/utils/PressableFeedback'
 
-const PressableOpacity08 = createPressableWithOpacity(0.8)
+const PressableOpacity08 = forwardRef<View, PressableFeedbackProps>((props, ref) => (
+  <PressableFeedback ref={ref} pressOpacity={0.8} {...props} />
+))
 
 const TRACK_WIDTH = scale(56)
 const TRACK_HEIGHT = scale(30)
