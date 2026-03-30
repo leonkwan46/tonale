@@ -1,11 +1,12 @@
-import { Modal } from '@/sharedComponents/Modal'
+import { useDevice } from '@/hooks'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
   DescriptionText,
-  ModalButton,
-  ModalButtonText,
   TitleText
-} from '@/sharedComponents/Modal/Modal.styles'
+} from '@/compLib/Modal/Modal.styles'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
 import { useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
@@ -32,6 +33,7 @@ export const LessonCompleteModal = ({
   onContinue,
   onRetry
 }: LessonCompleteModalProps) => {
+  const { isTablet } = useDevice()
   const [animatedStars, setAnimatedStars] = useState(0)
   const starAnimations = useRef([
     new Animated.Value(0),
@@ -96,7 +98,11 @@ export const LessonCompleteModal = ({
             }]
           }}
         >
-          <StarIcon filled={isFilled}>
+          <StarIcon
+            filled={isFilled}
+            size={isTablet ? 'xl' : 'xxl'}
+            align="center"
+          >
             {isFilled ? '⭐' : '☆'}
           </StarIcon>
         </AnimatedStarContainer>
@@ -119,21 +125,25 @@ export const LessonCompleteModal = ({
       </DescriptionText>
 
       <ButtonContainer>
-        <ModalButton
-          testID="lesson-complete-modal-retry-button"
-          variant="outlined"
-          onPress={onRetry}
-        >
-          <ModalButtonText variant="outlined">Retry</ModalButtonText>
-        </ModalButton>
+        <ButtonItem grow>
+          <Button
+            testID="lesson-complete-modal-retry-button"
+            variant="outlined"
+            size="sm"
+            onPress={onRetry}
+            label="Retry"
+          />
+        </ButtonItem>
 
-        <ModalButton
-          testID="lesson-complete-modal-continue-button"
-          variant="filled"
-          onPress={onContinue}
-        >
-          <ModalButtonText variant="filled">Continue</ModalButtonText>
-        </ModalButton>
+        <ButtonItem grow>
+          <Button
+            testID="lesson-complete-modal-continue-button"
+            variant="filled"
+            size="sm"
+            onPress={onContinue}
+            label="Continue"
+          />
+        </ButtonItem>
       </ButtonContainer>
     </Modal>
   )

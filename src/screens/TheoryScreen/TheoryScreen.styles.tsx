@@ -1,6 +1,5 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const ContentWrapper = styled.View(({ theme }) => ({
   flex: 1,
@@ -8,14 +7,6 @@ export const ContentWrapper = styled.View(({ theme }) => ({
   alignItems: 'center'
 }))
 
-export const TopText = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.base,
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
-}))
+export const TopText = styled(Typography)(() => ({}))
 
-export const BottomText = styled.Text(({ theme }) => ({
-  fontSize: theme.typography.base,
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
-}))
+export const BottomText = styled(Typography)(() => ({}))

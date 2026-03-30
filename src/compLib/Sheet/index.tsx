@@ -1,6 +1,10 @@
 import { useTheme } from '@emotion/react'
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
+import {
+    BottomSheetBackdrop,
+    BottomSheetModal,
+    BottomSheetView
+} from '@gorhom/bottom-sheet'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import {
@@ -11,25 +15,25 @@ import {
     sheetViewStyle
 } from './Sheet.styles'
 
-export type SheetSize = 'small' | 'medium' | 'large' | 'full'
+export type SheetSize = 'small' | 'medium' | 'large' | 'full';
 
 export interface SheetProps {
-  visible: boolean
-  onDismiss: () => void
-  children: React.ReactNode
-  size?: SheetSize
-  snapPoints?: (string | number)[]
-  enablePanDownToClose?: boolean
-  enableDismissOnClose?: boolean
-  backdropOpacity?: number
-  showHandle?: boolean
+  visible: boolean;
+  onDismiss: () => void;
+  children: React.ReactNode;
+  size?: SheetSize;
+  snapPoints?: (string | number)[];
+  enablePanDownToClose?: boolean;
+  enableDismissOnClose?: boolean;
+  backdropOpacity?: number;
+  showHandle?: boolean;
 }
 
 const SIZE_MAP: Record<SheetSize, string> = {
-  'small': '25%',
-  'medium': '50%',
-  'large': '75%',
-  'full': '95%'
+  small: '25%',
+  medium: '50%',
+  large: '75%',
+  full: '95%'
 } as const
 
 const getSnapPointsFromSize = (size?: SheetSize): string[] => {
@@ -63,21 +67,27 @@ export const Sheet = ({
     }
   }, [visible])
 
-  const handleSheetChanges = useCallback((index: number) => {
-    if (index === -1 && enableDismissOnClose) {
-      onDismiss()
-    }
-  }, [enableDismissOnClose, onDismiss])
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === -1 && enableDismissOnClose) {
+        onDismiss()
+      }
+    },
+    [enableDismissOnClose, onDismiss]
+  )
 
-  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => (
-    <BottomSheetBackdrop
-      {...props}
-      disappearsOnIndex={-1}
-      appearsOnIndex={0}
-      opacity={backdropOpacity}
-      pressBehavior="close"
-    />
-  ), [backdropOpacity])
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={backdropOpacity}
+        pressBehavior="close"
+      />
+    ),
+    [backdropOpacity]
+  )
 
   const backgroundStyle = getBackgroundStyle(theme)
 

@@ -2,7 +2,7 @@ import { useUser } from '@/hooks'
 import { Stack, useRouter } from 'expo-router'
 import { useEffect } from 'react'
 
-export default function AuthLayout() {
+const AuthLayout = () => {
   const { authUser, userData, loading } = useUser()
   const router = useRouter()
   
@@ -29,4 +29,4 @@ export default function AuthLayout() {
   )
 }
 
-
+export default AuthLayout

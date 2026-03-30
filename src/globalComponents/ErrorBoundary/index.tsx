@@ -68,22 +68,29 @@ const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
   return (
     <ScreenContainer includeBottomPadding>
       <ErrorBoundaryScroll>
-        <Title>Something went wrong</Title>
-        <Message>
-          Tonale hit a snag and couldn&apos;t finish what you were doing. Please try again.
+        <Title size="xl" weight="bold" align="center" colorVariant="error">
+          Something went wrong
+        </Title>
+        <Message size="md" align="center" muted>
+          Tonale hit a snag and couldn&apos;t finish what you were doing. Please try
+          again.
         </Message>
 
         {__DEV__ && error && (
           <>
-            <SectionTitle>Error Message:</SectionTitle>
-            <ErrorText>
+            <SectionTitle size="lg" weight="semibold">
+              Error Message:
+            </SectionTitle>
+            <ErrorText size="sm" colorVariant="error">
               {error.message}
             </ErrorText>
 
             {error.stack && (
               <>
-                <SectionTitle>Stack Trace:</SectionTitle>
-                <StackText>
+                <SectionTitle size="lg" weight="semibold">
+                  Stack Trace:
+                </SectionTitle>
+                <StackText size="sm" muted>
                   {error.stack}
                 </StackText>
               </>
@@ -93,15 +100,19 @@ const ErrorFallback = ({ error, errorInfo }: { error?: Error, errorInfo?: ErrorI
 
         {__DEV__ && errorInfo && errorInfo.componentStack && (
           <>
-            <SectionTitle>Component Stack:</SectionTitle>
-            <StackText>
+            <SectionTitle size="lg" weight="semibold">
+              Component Stack:
+            </SectionTitle>
+            <StackText size="sm" muted>
               {errorInfo.componentStack}
             </StackText>
           </>
         )}
 
         <ReloadButton onTouchEnd={goHome}>
-          <ReloadText>Go to Home</ReloadText>
+          <ReloadText size="md" weight="semibold" colorVariant="primaryContrast">
+            Go to Home
+          </ReloadText>
         </ReloadButton>
       </ErrorBoundaryScroll>
     </ScreenContainer>

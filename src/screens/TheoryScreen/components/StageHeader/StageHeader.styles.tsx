@@ -1,12 +1,14 @@
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/native'
-import { Animated, Pressable } from 'react-native'
+import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
+import { PressableFeedback } from '@/utils/PressableFeedback'
+import { createForwardProps } from '@/utils/styledProps'
 import { StarLogo } from '../LessonSection/components/Logo/StarLogo'
 
-export const HeaderContainer = styled(Pressable)<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
+export const HeaderContainer = styled(PressableFeedback)<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -19,13 +21,13 @@ export const HeaderContainer = styled(Pressable)<{ isPerfect?: boolean }>(({ the
   borderColor: isPerfect ? theme.components.stage.perfectBorder : 'transparent'
 }))
 
-export const StageTitle = styled.Text<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
-  fontSize: scale(18),
+export const StageTitle = styled(Typography, {
+  shouldForwardProp: createForwardProps(['isPerfect'])
+})<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
+  marginBottom: scale(4),
   color: isPerfect
     ? theme.components.stage.textOnPerfect
-    : theme.components.stage.textOnCleared,
-  marginBottom: scale(4),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
+    : theme.components.stage.textOnCleared
 }))
 
 export const LeftContentContainer = styled.View({
@@ -44,13 +46,13 @@ export const StageStats = styled.View({
   alignItems: 'flex-end'
 })
 
-export const StatsText = styled.Text<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
-  fontSize: scale(12),
+export const StatsText = styled(Typography, {
+  shouldForwardProp: createForwardProps(['isPerfect'])
+})<{ isPerfect?: boolean }>(({ theme, isPerfect }) => ({
   color: isPerfect
     ? theme.components.stage.textOnPerfect
     : theme.components.stage.textOnCleared,
-  opacity: 0.85,
-  fontFamily: getSourGummyFontFamily()
+  opacity: 0.85
 }))
 
 export const ProgressBarWrapper = styled.View(() => ({
@@ -99,7 +101,13 @@ export const ChevronIcon = styled(Animated.View)<{ isCollapsed: boolean; isPerfe
   transform: [{ rotate: isCollapsed ? '135deg' : '-45deg' }]
 }))
 
-export function StageHeaderStarLogo({ isPerfect, size = 16 }: { isPerfect: boolean; size?: number }) {
+export const StageHeaderStarLogo = ({
+  isPerfect,
+  size = 16
+}: {
+  isPerfect: boolean
+  size?: number
+}) => {
   const theme = useTheme()
   const color = isPerfect
     ? theme.components.stage.textOnPerfect

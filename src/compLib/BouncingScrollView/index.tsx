@@ -1,23 +1,23 @@
 import { useTheme } from '@emotion/react'
 import React from 'react'
 import {
-  Platform,
-  ScrollView,
-  ScrollViewProps,
-  StyleSheet,
-  View
+    Platform,
+    ScrollView,
+    ScrollViewProps,
+    StyleSheet,
+    View
 } from 'react-native'
 import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView
+    Gesture,
+    GestureDetector,
+    GestureHandlerRootView
 } from 'react-native-gesture-handler'
 import Animated, {
-  type SharedValue,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring
+    type SharedValue,
+    useAnimatedScrollHandler,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring
 } from 'react-native-reanimated'
 import { scheduleOnRN } from 'react-native-worklets'
 

@@ -1,5 +1,5 @@
 import { AuthScreen } from '@/screens/AuthScreen'
 
-export default function AuthPage() {
-  return <AuthScreen />
-}
+const AuthPage = () => <AuthScreen />
+
+export default AuthPage

@@ -2,7 +2,9 @@ import { db } from '@/config/firebase/firebase'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import Constants from 'expo-constants'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
@@ -16,14 +18,8 @@ import {
   ConsentContainer,
   ConsentText,
   ContentWrapper,
-  EmailInput,
-  EmailInputField,
   ErrorContainer,
   ErrorText,
-  FeedbackInput,
-  InputField,
-  PrimaryButton,
-  PrimaryButtonText,
   PrivacyNoticeText,
   ScrollContentContainer,
   SuccessContainer,
@@ -101,74 +97,74 @@ export const FeedbackScreen = () => {
             {success ? (
               <SuccessContainer>
                 <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
-                <SuccessText>Thanks for your feedback! It helps us make the app better.</SuccessText>
+                <SuccessText size="xs" colorVariant="success">
+                  Thanks for your feedback! It helps us make the app better.
+                </SuccessText>
               </SuccessContainer>
             ) : (
               <SettingSection>
                 {error ? (
                   <ErrorContainer>
                     <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                    <ErrorText>{error}</ErrorText>
+                    <ErrorText size="xs" colorVariant="error">
+                      {error}
+                    </ErrorText>
                   </ErrorContainer>
                 ) : null}
 
-                <InputField>
-                  <FeedbackInput
-                    placeholder="Tell us what you think..."
-                    onChangeText={setFeedback}
-                    value={feedback}
-                    multiline
-                    numberOfLines={6}
-                    textAlignVertical="top"
-                    autoCapitalize="sentences"
-                    autoCorrect={true}
-                    editable={!loading}
-                  />
-                </InputField>
+                <InputField
+                  placeholder="Tell us what you think..."
+                  onChangeText={setFeedback}
+                  value={feedback}
+                  multiline
+                  numberOfLines={6}
+                  textAlignVertical="top"
+                  autoCapitalize="sentences"
+                  autoCorrect={true}
+                  disabled={loading}
+                />
 
-                <EmailInputField>
-                  <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-                  <EmailInput
-                    placeholder="Email (optional)"
-                    onChangeText={setEmail}
-                    value={email}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    editable={!loading}
-                  />
-                </EmailInputField>
+                <InputField
+                  leftIcon="mail-outline"
+                  placeholder="Email (optional)"
+                  onChangeText={setEmail}
+                  value={email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  disabled={loading}
+                />
 
                 <ConsentContainer
                   onPress={() => {
                     setConsentGiven(!consentGiven)
                     setError('')
                   }}
-                  activeOpacity={0.7}
                 >
                   <Icon
                     name={consentGiven ? 'checkbox' : 'checkbox-outline'}
                     sizeVariant="sm"
                     colorVariant={consentGiven ? 'primary' : 'icon'}
                   />
-                  <ConsentText>
+                  <ConsentText size="xs">
                     I agree to share my feedback to help improve the app.
                   </ConsentText>
                 </ConsentContainer>
 
-                <PrivacyNoticeText>
-                  We collect your message, email (if provided), device type, and app version so we can review feedback and improve the app. We may contact you by email if needed.
+                <PrivacyNoticeText size="xxs" muted>
+                  We collect your message, email (if provided), device type, and app
+                  version so we can review feedback and improve the app. We may contact
+                  you by email if needed.
                 </PrivacyNoticeText>
 
-                <PrimaryButton
+                <Button
+                  variant="filled"
+                  size="md"
                   disabled={loading || !feedback.trim() || !consentGiven}
+                  loading={loading}
                   onPress={handleSubmit}
-                  activeOpacity={0.7}
-                >
-                  <PrimaryButtonText>
-                    {loading ? 'Submitting...' : 'Submit Feedback'}
-                  </PrimaryButtonText>
-                </PrimaryButton>
+                  label={loading ? 'Sending feedback…' : 'Submit Feedback'}
+                />
               </SettingSection>
             )}
           </ContentWrapper>

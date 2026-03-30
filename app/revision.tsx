@@ -1,6 +1,6 @@
 import { RevisionScreen } from '@/screens/RevisionScreen'
 
-export default function RevisionRoute() {
-  return <RevisionScreen />
-}
+const RevisionRoute = () => <RevisionScreen />
+
+export default RevisionRoute
 

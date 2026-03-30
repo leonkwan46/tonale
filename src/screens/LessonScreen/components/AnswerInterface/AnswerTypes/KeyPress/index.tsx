@@ -1,4 +1,4 @@
-import { PianoKeyboard } from '@/sharedComponents/PianoKeyboard'
+import { PianoKeyboard } from '@/compLib/PianoKeyboard'
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { useState } from 'react'
 import {
@@ -56,7 +56,12 @@ export const KeyPress = ({
 
       {hasFeedback && (
         <FeedbackContainer>
-          <FeedbackText isCorrect={isCorrect}>
+          <FeedbackText
+            isCorrect={isCorrect}
+            size="md"
+            weight="bold"
+            colorVariant={isCorrect ? 'success' : 'error'}
+          >
             {isCorrect ? '✅ Correct!' : '❌ Try again'}
           </FeedbackText>
         </FeedbackContainer>

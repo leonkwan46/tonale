@@ -1,7 +1,9 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
+import { createForwardProps } from '@/utils/styledProps'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export const Header = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -14,7 +16,7 @@ export const Header = styled.View(({ theme }) => ({
   position: 'relative'
 }))
 
-export const BackButton = styled.TouchableOpacity(({ theme }) => ({
+export const BackButton = styled(PressableFeedback)(({ theme }) => ({
   position: 'absolute',
   left: scale(theme.spacing.lg),
   width: scale(theme.spacing.xl),
@@ -32,11 +34,7 @@ export const ProgressTracker = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.xs)
 }))
 
-export const ProgressText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const ProgressText = styled(Typography)(() => ({}))
 
 export const XMarksContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -45,9 +43,9 @@ export const XMarksContainer = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.sm)
 }))
 
-export const XMark = styled.Text<{ isActive: boolean }>(({ theme, isActive }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
+export const XMark = styled(Typography, {
+  shouldForwardProp: createForwardProps(['isActive'])
+})<{ isActive: boolean }>(({ theme, isActive }) => ({
   color: isActive ? theme.colors.error : theme.colors.text,
-  opacity: isActive ? 1 : 0.3,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
+  opacity: isActive ? 1 : 0.3
 }))

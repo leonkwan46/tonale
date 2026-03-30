@@ -1,7 +1,9 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-export const TTSButtonRoot = styled.TouchableOpacity<{ disabled?: boolean }>(({ theme, disabled }) => ({
+import { PressableFeedback } from '@/utils/PressableFeedback'
+
+export const TTSButtonRoot = styled(PressableFeedback)<{ disabled?: boolean }>(({ theme, disabled }) => ({
   position: 'absolute',
   bottom: scale(8),
   right: scale(8),

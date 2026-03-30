@@ -1,15 +1,15 @@
-import { Card } from '@/sharedComponents/Card'
+import { Card } from '@/compLib/Card'
 import { useTheme } from '@emotion/react'
 import React from 'react'
 import { scale } from 'react-native-size-matters'
 import { AnimatedFlame } from '../AnimatedFlame'
 import { DayLabel, FlameIconContainer } from '../StrikeBar.styles'
 import {
-  getStrikeCardColors,
-  getStrikeCardFlameProps,
-  getStrikeCardWidth,
-  STRIKE_CARD_HEIGHT,
-  StrikeBarCardContainer
+    getStrikeCardColors,
+    getStrikeCardFlameProps,
+    getStrikeCardWidth,
+    STRIKE_CARD_HEIGHT,
+    StrikeBarCardContainer
 } from './StrikeCard.styles'
 
 interface StrikeCardProps {
@@ -50,7 +50,9 @@ export const StrikeCard = ({ day, currentDay, index }: StrikeCardProps) => {
       >
         {!isEmpty && (
           <>
-            <DayLabel>DAY {day}</DayLabel>
+            <DayLabel size="sm" weight="semibold">
+              DAY {day}
+            </DayLabel>
             <FlameIconContainer>
               <AnimatedFlame
                 color={flame.color}

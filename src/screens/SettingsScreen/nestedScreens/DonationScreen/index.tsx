@@ -3,7 +3,8 @@ import * as WebBrowser from 'expo-web-browser'
 import { useEffect, useRef, useState } from 'react'
 
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { Typewriter } from '@/sharedComponents/Typewriter'
+import { useDevice } from '@/hooks'
+import { Typewriter } from '@/compLib/Typewriter'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { ContentContainer } from '../../SettingsScreen.styles'
 import { CoffeePurchaseButton } from './components/CoffeePurchaseButton'
@@ -52,6 +53,7 @@ const PAYMENT_LINK_URL = 'https://buy.stripe.com/test_3cI6ozgIW2yL1IU5Rd9oc00'
 const DONATION_NARRATIVE_PLAYED_KEY = 'donation:narrativePlayed'
 
 export const DonationScreen = () => {
+  const { isTablet } = useDevice()
   const completedLinesCountRef = useRef(0)
   const [hasPlayedNarrative, setHasPlayedNarrative] = useState<boolean>(false)
   const [hydrated, setHydrated] = useState(false)
@@ -116,7 +118,9 @@ export const DonationScreen = () => {
                 if (!shouldAnimateNarrative) {
                   return (
                     <NarrativeLine key={index}>
-                      <NarrativeText>{line}</NarrativeText>
+                      <NarrativeText size={isTablet ? 'lg' : 'md'}>
+                        {line}
+                      </NarrativeText>
                     </NarrativeLine>
                   )
                 }
@@ -128,6 +132,7 @@ export const DonationScreen = () => {
                       speed={TYPEWRITER_SPEED}
                       delay={LINE_DELAYS[index]}
                       onComplete={handleLineComplete}
+                      size={isTablet ? 'lg' : 'md'}
                     />
                   </NarrativeLine>
                 )

@@ -1,5 +1,5 @@
 import { FeedbackScreen } from '@/screens/SettingsScreen/nestedScreens/FeedbackScreen'
 
-export default function FeedbackRoute() {
-  return <FeedbackScreen />
-}
+const FeedbackRoute = () => <FeedbackScreen />
+
+export default FeedbackRoute

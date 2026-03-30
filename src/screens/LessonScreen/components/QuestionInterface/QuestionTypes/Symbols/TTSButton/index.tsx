@@ -1,4 +1,4 @@
-import { Icon } from '@/sharedComponents/Icon'
+import { Icon } from '@/compLib/Icon'
 import { pronounceTerm } from '@/utils/pronounce'
 import { useState } from 'react'
 import { TTSButtonRoot } from './TTSButton.styles'

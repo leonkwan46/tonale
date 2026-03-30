@@ -3,15 +3,13 @@ import { Keyboard, TextInput } from 'react-native'
 
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenIntroHeader } from '@/screens/SettingsScreen/components/ScreenIntroHeader'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 
 import {
   ErrorContainer,
   ErrorText,
-  Input,
-  InputField,
-  PrimaryButton,
-  PrimaryButtonText,
   ScrollContainer
 } from './PasswordResetForm.styles'
 
@@ -79,51 +77,48 @@ export const PasswordResetForm = ({
         {displayError ? (
           <ErrorContainer>
             <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-            <ErrorText>{displayError}</ErrorText>
+            <ErrorText size="xs" colorVariant="error">
+              {displayError}
+            </ErrorText>
           </ErrorContainer>
         ) : null}
 
-        <InputField>
-          <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
-          <Input
-            ref={newPasswordInputRef}
-            placeholder="Enter your new password"
-            secureTextEntry
-            value={newPassword}
-            onChangeText={setNewPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="next"
-            onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
-            editable={!isLoading}
-          />
-        </InputField>
+        <InputField
+          ref={newPasswordInputRef}
+          leftIcon="lock-closed-outline"
+          placeholder="Enter your new password"
+          secureTextEntry
+          value={newPassword}
+          onChangeText={setNewPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="next"
+          onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
+          editable={!isLoading}
+        />
 
-        <InputField>
-          <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
-          <Input
-            ref={confirmPasswordInputRef}
-            placeholder="Confirm your new password"
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="done"
-            onSubmitEditing={handleSubmit}
-            editable={!isLoading}
-          />
-        </InputField>
+        <InputField
+          ref={confirmPasswordInputRef}
+          leftIcon="lock-closed-outline"
+          placeholder="Confirm your new password"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="done"
+          onSubmitEditing={handleSubmit}
+          editable={!isLoading}
+        />
 
-        <PrimaryButton
+        <Button
+          variant="filled"
+          size="md"
           disabled={isLoading || !newPassword || !confirmPassword}
+          loading={isLoading}
           onPress={handleSubmit}
-          activeOpacity={0.7}
-        >
-          <PrimaryButtonText>
-            {isLoading ? 'Resetting...' : 'Reset Password'}
-          </PrimaryButtonText>
-        </PrimaryButton>
+          label={isLoading ? 'Resetting password…' : 'Reset Password'}
+        />
       </ScrollContainer>
     </KeyboardAwareScrollView>
   )

@@ -1,10 +1,18 @@
 import isPropValid from '@emotion/is-prop-valid'
 
-/**
- * Use with styled(Component, { shouldForwardProp }) so testID and standard
- * props reach the native component; custom/style-only props are blocked.
- */
-export function createForwardProps(blockedProps: string[]) {
-  return (prop: string) =>
-    prop === 'testID' || (!blockedProps.includes(prop) && isPropValid(prop))
-}
+export const REACT_NATIVE_TEXT_FORWARD_PROPS = new Set<string>([
+  'allowFontScaling',
+  'adjustsFontSizeToFit',
+  'ellipsizeMode',
+  'maxFontSizeMultiplier',
+  'minimumFontScale',
+  'numberOfLines'
+])
+
+export const createForwardProps = (blockedProps: string[]) => (prop: string) =>
+  prop === 'testID' || (!blockedProps.includes(prop) && isPropValid(prop))
+
+export const createTypographyShouldForwardProp =
+  (blockedProps: string[]) => (prop: string) =>
+    REACT_NATIVE_TEXT_FORWARD_PROPS.has(prop) ||
+    createForwardProps(blockedProps)(prop)

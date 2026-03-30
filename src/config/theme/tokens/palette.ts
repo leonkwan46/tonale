@@ -1,60 +1,104 @@
 export const palette = {
-  white: '#ffffff',
-  black: '#000000',
+  base: {
+    white: '#ffffff',
+    black: '#000000'
+  },
 
-  gray50: '#f8f9fa',
-  gray100: '#ECEDEE',
-  gray400: '#868e96',
-  gray500: '#6b7280',
-  gray600: '#9BA1A6',
-  gray700: '#767676',
-  gray800: '#374151',
-  gray850: '#1f2937',
-  gray950: '#151718',
-  gray975: '#11181C',
+  gray: {
+    50: '#fafafa',
+    100: '#f4f4f5',
+    200: '#e4e4e7',
+    300: '#d4d4d8',
+    400: '#a1a1aa',
+    500: '#71717a',
+    600: '#52525b',
+    700: '#3f3f46',
+    800: '#27272a',
+    900: '#18181b',
+    950: '#09090b'
+  },
 
-  blue600: '#0a7ea4',
-  blue700: '#156382',
-  blue900: '#0a3a4a',
-  blue400: '#4dabf7',
+  blueGray: {
+    50: '#f8fafc',
+    100: '#f1f5f9',
+    200: '#e2e8f0',
+    300: '#cbd5f5',
+    400: '#94a3b8',
+    500: '#64748b',
+    600: '#475569',
+    700: '#334155',
+    800: '#1e293b',
+    900: '#0f172a'
+  },
 
-  green500: '#51cf66',
-  green600: '#4CAF50',
-  green700: '#2a8a3a',
-  green800: '#2E7D32',
-  green400: '#69db7c',
+  blue: {
+    400: '#4dabf7',
+    600: '#0a7ea4',
+    700: '#156382',
+    900: '#0a3a4a'
+  },
 
-  red500: '#ff6b6b',
-  red400: '#ff8787',
-  coral400: '#F58970',
-  coral600: '#DE6B54',
+  green: {
+    400: '#69db7c',
+    500: '#51cf66',
+    600: '#4CAF50',
+    700: '#2a8a3a',
+    800: '#2E7D32'
+  },
 
-  yellow400: '#ffd43b',
-  yellow300: '#ffe066',
-  crimson500: '#FF4500',
-  crimson900: '#8B0000',
+  red: {
+    400: '#ff8787',
+    500: '#ff6b6b'
+  },
 
-  gold400: '#FFD700',
-  gold500: '#FFA500',
-  gold600: '#DAA520',
-  gold700: '#B8860B',
+  coral: {
+    400: '#F58970',
+    600: '#DE6B54'
+  },
 
-  orange500: '#FF6B35',
-  orange400: '#FF8C42',
-  orange700: '#CC562A',
-  salmon300: '#FFA07A',
+  yellow: {
+    300: '#ffe066',
+    400: '#ffd43b'
+  },
 
-  homeGradientDark: ['#2E3237', '#1E252B', '#1A1E22', '#331009'] as const,
-  homeGradientLight: ['#EEEEEE', '#A3C3CA', '#68A9B7', '#BF3713'] as const,
+  orange: {
+    400: '#FF8C42',
+    500: '#FF6B35',
+    700: '#CC562A'
+  },
 
-  sky50: '#f8fcff',
-  sky100: '#f0f8ff',
-  sky200: '#e6f3ff',
-  sky300: '#cce6ff',
+  gold: {
+    400: '#FFD700',
+    500: '#FFA500',
+    600: '#DAA520',
+    700: '#B8860B'
+  },
 
-  modalMask: 'rgba(0, 0, 0, 0.7)',
-  rippleWater: 'rgba(80, 160, 255, 1)',
-  rippleCircleBorder: 'rgba(180, 220, 255, 0.9)',
+  accent: {
+    crimson: {
+      500: '#FF4500',
+      900: '#8B0000'
+    },
+    salmon: {
+      300: '#FFA07A'
+    },
+    sky: {
+      50: '#f8fcff',
+      100: '#f0f8ff',
+      200: '#e6f3ff',
+      300: '#cce6ff'
+    }
+  },
 
-  finalTestGradient: ['#ff6b6b', '#FF4500', '#ffd43b'] as const
+  gradients: {
+    homeDark: ['#2E3237', '#1E252B', '#1A1E22', '#331009'] as const,
+    homeLight: ['#EEEEEE', '#A3C3CA', '#68A9B7', '#BF3713'] as const,
+    finalTest: ['#ff6b6b', '#FF4500', '#ffd43b'] as const
+  },
+
+  effects: {
+    modalMask: 'rgba(0, 0, 0, 0.7)',
+    rippleWater: 'rgba(80, 160, 255, 1)',
+    rippleCircleBorder: 'rgba(180, 220, 255, 0.9)'
+  }
 } as const

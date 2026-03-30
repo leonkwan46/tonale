@@ -1,10 +1,10 @@
 import { updateUserData } from '@/config/firebase/functions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useDevice, useUser } from '@/hooks'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { GenderSelection } from '@/screens/OnboardingScreen/components/GenderSelection'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { GENDER, INSTRUMENT, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
@@ -15,8 +15,6 @@ import { SettingItemHeader } from '../../../../components/SettingItemHeader'
 import {
   ErrorContainer,
   ErrorText,
-  PrimaryButtonText,
-  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeGenderScreen.styles'
 
@@ -35,6 +33,7 @@ const getInstrumentFromValue = (value: string | undefined): UserInstrument | nul
 }
 
 export const ChangeGenderScreen = () => {
+  const { isTablet } = useDevice()
   const { userData, setUserData } = useUser()
   const router = useRouter()
   const scrollViewRef = useRef<ScrollView>(null)
@@ -98,7 +97,12 @@ export const ChangeGenderScreen = () => {
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <ErrorText>{error}</ErrorText>
+              <ErrorText
+                size={isTablet ? 'xs' : 'sm'}
+                colorVariant="error"
+              >
+                {error}
+              </ErrorText>
             </ErrorContainer>
           ) : null}
 
@@ -107,19 +111,14 @@ export const ChangeGenderScreen = () => {
             onSelect={setSelectedGender}
           />
 
-          <Button3D
+          <Button
+            variant="filled"
+            color="primary"
             disabled={!canSave}
+            loading={loading}
             onPress={handleSave}
-            color="blue"
-            layoutType="row"
-            fullWidth
-          >
-            {() => (
-              <SaveButtonContent>
-                <PrimaryButtonText>Save</PrimaryButtonText>
-              </SaveButtonContent>
-            )}
-          </Button3D>
+            label={loading ? 'Saving…' : 'Save'}
+          />
         </ScrollContentContainer>
       </ScrollView>
     </ScreenContainer>

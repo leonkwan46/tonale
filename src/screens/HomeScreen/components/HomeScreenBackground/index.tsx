@@ -1,6 +1,6 @@
+import BouncingScrollView from '@/compLib/BouncingScrollView'
 import { useWindowDimensions } from '@/hooks'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
-import BouncingScrollView from '@/sharedComponents/BouncingScrollView'
 import { getAvatarFullSource } from '@/utils/avatarAssets'
 import { useTheme } from '@emotion/react'
 import { GENDER, type UserGender, type UserInstrument } from '@types'

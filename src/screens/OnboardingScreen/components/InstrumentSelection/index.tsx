@@ -1,10 +1,11 @@
-import { GridSelection } from '@/sharedComponents/GridSelection'
+import { GridSelection } from '@/compLib/GridSelection'
+import { InputField } from '@/compLib/InputField'
 import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { capitalize } from '@/utils/string'
-import * as React from 'react'
+import { memo } from 'react'
 import { renderInstrumentIcon } from '../OnboardingIcons'
-import { CustomInstrumentInput, SectionContainer, SectionTitle } from './InstrumentSelection.styles'
+import { SectionContainer, SectionTitle } from './InstrumentSelection.styles'
 
 const INSTRUMENT_OPTIONS: UserInstrument[] = [
   INSTRUMENT.PIANO,
@@ -41,7 +42,9 @@ const InstrumentSelectionComponent = ({
 
   return (
     <SectionContainer>
-      <SectionTitle>Instrument</SectionTitle>
+      <SectionTitle size="md" weight="semibold">
+        Instrument
+      </SectionTitle>
       <GridSelection
         options={INSTRUMENT_OPTIONS}
         selectedOption={selectedInstrument}
@@ -51,11 +54,13 @@ const InstrumentSelectionComponent = ({
         testID="instrument-selection"
       />
       {selectedInstrument === INSTRUMENT.OTHER && (
-        <CustomInstrumentInput
+        <InputField
           placeholder="Enter your instrument"
           keyboardType="default"
           value={customInstrument}
           onChangeText={onCustomInstrumentChange}
+          autoCapitalize="words"
+          testID="custom-instrument-input"
           onLayout={() => {
             if (!customInstrument && onScrollToBottom) {
               setTimeout(() => {
@@ -63,13 +68,11 @@ const InstrumentSelectionComponent = ({
               }, 100)
             }
           }}
-          autoCapitalize="words"
-          testID="custom-instrument-input"
         />
       )}
     </SectionContainer>
   )
 }
 
-export const InstrumentSelection = React.memo(InstrumentSelectionComponent)
+export const InstrumentSelection = memo(InstrumentSelectionComponent)
 

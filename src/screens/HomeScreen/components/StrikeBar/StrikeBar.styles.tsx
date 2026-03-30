@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const StrikeBarContainer = styled(View)(({ theme }) => ({
   flexDirection: 'row',
@@ -13,11 +13,7 @@ export const StrikeBarContainer = styled(View)(({ theme }) => ({
   alignSelf: 'center'
 }))
 
-export const DayLabel = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.sm),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const DayLabel = styled(Typography)(() => ({}))
 
 export const FlameIconContainer = styled(View)({
   justifyContent: 'center',

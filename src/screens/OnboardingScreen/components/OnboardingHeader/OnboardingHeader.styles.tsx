@@ -1,7 +1,6 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { View } from 'react-native'
-import { scale } from 'react-native-size-matters'
 
 export const HeaderContainer = styled(View)(() => ({
   flexDirection: 'column',
@@ -9,18 +8,7 @@ export const HeaderContainer = styled(View)(() => ({
   width: '100%'
 }))
 
-export const Title = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold),
-  textAlign: 'center'
-}))
+export const Title = styled(Typography)(() => ({}))
 
-export const Subtitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(),
-  textAlign: 'center',
-  opacity: 0.7
-}))
+export const Subtitle = styled(Typography)(() => ({}))
 

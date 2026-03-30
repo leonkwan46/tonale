@@ -31,7 +31,7 @@ const DevErrorBoundaryTrigger = () => {
   return null
 }
 
-export default function RootLayout() {  
+const RootLayout = () => {
   const [showSplash, setShowSplash] = useState(true)
 
   return (
@@ -71,3 +71,5 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   )
 }
+
+export default RootLayout

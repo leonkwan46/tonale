@@ -3,7 +3,7 @@ import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 const FINAL_TEST_HEIGHT = scale(110)
 const FINAL_TEST_WIDTH = '95%'
@@ -49,17 +49,9 @@ export const FinalTestIconContainer = styled.View(({ theme }) => ({
   justifyContent: 'center'
 }))
 
-export const FinalTestTitle = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.lg),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+export const FinalTestTitle = styled(Typography)(() => ({}))
 
-export const FinalTestDescription = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.sm),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const FinalTestDescription = styled(Typography)(() => ({}))
 
 export const FinalTestContentContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',

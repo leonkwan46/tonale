@@ -1,11 +1,10 @@
 import { useDevice, useMetronome } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import type { ButtonColor } from '@/sharedComponents/Button3D/Button3D.styles'
+import { Depth3D } from '@/compLib/Depth3D'
+import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 import type { QuestionInterface } from '@/types/lesson'
 import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { scale } from 'react-native-size-matters'
 import { Container, TapButtonText } from './RhythmTap.styles'
 
 const CLAP_SOUND = require('../../../../../../../assets/sounds/clap.mp3')
@@ -41,8 +40,8 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
   const hasSubmittedRef = useRef<boolean>(false)
   const tapTimestampsRef = useRef<number[]>([])
 
-  // Map button state to ButtonColor
-  const getButtonColor = (state: 'default' | 'correct' | 'incorrect'): ButtonColor => {
+  // Map button state to Depth3DColor
+  const getButtonColor = (state: 'default' | 'correct' | 'incorrect'): Depth3DColor => {
     switch (state) {
       case 'correct':
         return 'green'
@@ -179,25 +178,25 @@ export const RhythmTap: React.FC<RhythmTapProps> = ({
 
   const isButtonDisabled = disabled || isTimeWindowExpired || hasSubmittedRef.current
 
-  // Button dimensions
-  const buttonHeight = isTablet ? scale(120) : scale(160)
-  const buttonWidth = isTablet ? scale(240) : scale(280)
-
   return (
     <Container>
-      <Button3D
+      <Depth3D
         onPress={handleTapIn}
         disabled={isButtonDisabled}
         color={getButtonColor(buttonState)}
-        width={buttonWidth}
-        height={buttonHeight}
+        sizeVariant="pad"
       >
         {() => (
-          <TapButtonText isTablet={isTablet} buttonColor={getButtonColor(buttonState)}>
+          <TapButtonText
+            isTablet={isTablet}
+            buttonColor={getButtonColor(buttonState)}
+            size={isTablet ? 'lg' : 'xl'}
+            weight="bold"
+          >
             Tap
           </TapButtonText>
         )}
-      </Button3D>
+      </Depth3D>
     </Container>
   )
 }

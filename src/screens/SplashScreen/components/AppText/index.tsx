@@ -75,13 +75,13 @@ export const AppText = ({ appName, tagline, isTransitioning }: AppTextProps) => 
   return (
     <>
       <AppNameContainer style={appNameStyle}>
-        <AppNameText>
+        <AppNameText size="xxl" weight="bold" align="center">
           {appName}
         </AppNameText>
       </AppNameContainer>
 
       <TaglineContainer style={taglineStyle}>
-        <TaglineText>
+        <TaglineText size="md" align="center" muted colorVariant="icon">
           {tagline}
         </TaglineText>
       </TaglineContainer>

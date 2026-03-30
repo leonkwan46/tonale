@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { Animated, ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const ContentWrapper = styled(ScrollView)(({ theme }) => ({
   flex: 1,
@@ -60,11 +60,8 @@ export const MessageContainer = styled.View(({ theme }) => ({
   alignSelf: 'center'
 }))
 
-export const MessageText = styled.Text(({ theme }) => ({
-  color: theme.components.modal.overlayText,
-  fontSize: scale(theme.typography.sm),
-  fontFamily: getSourGummyFontFamily(),
-  textAlign: 'center'
+export const MessageText = styled(Typography)(({ theme }) => ({
+  color: theme.components.modal.overlayText
 }))
 
 export const SpacerView = styled.View(() => ({

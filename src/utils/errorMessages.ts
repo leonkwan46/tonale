@@ -23,10 +23,10 @@ const FIREBASE_CODE_TO_MESSAGE: Record<string, string> = {
   'auth/operation-not-allowed': GENERIC_MESSAGE
 }
 
-export function getUserFacingErrorMessage(
+export const getUserFacingErrorMessage = (
   error: unknown,
   fallbackMessage: string = GENERIC_MESSAGE
-): string {
+): string => {
   if (isFirebaseError(error)) {
     return FIREBASE_CODE_TO_MESSAGE[error.code] ?? GENERIC_MESSAGE
   }

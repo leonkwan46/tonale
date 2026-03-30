@@ -1,10 +1,11 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import { Image, Text, View } from 'react-native'
+import { Image } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
-export const PurchaseButtonContainer = styled(View)(({ theme }) => ({
+export const PurchaseButtonContainer = styled(PressableFeedback)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: theme.colors.surface,
@@ -22,15 +23,8 @@ export const CoffeeIcon = styled(Image)(({ theme }) => ({
   resizeMode: 'contain'
 }))
 
-export const ButtonDescription = styled(Text)(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(14) : scale(16),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
+export const ButtonDescription = styled(Typography)(() => ({
+  flex: 1
 }))
 
-export const PriceText = styled(Text)(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(16) : scale(18),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
-}))
+export const PriceText = styled(Typography)(() => ({}))

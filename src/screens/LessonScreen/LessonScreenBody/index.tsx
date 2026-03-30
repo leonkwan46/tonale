@@ -1,3 +1,4 @@
+import { useDevice } from '@/hooks'
 import type { Question } from '@types'
 import { useCallback, useRef, useState } from 'react'
 import { Platform } from 'react-native'
@@ -27,6 +28,7 @@ export const LessonScreenBody = ({
   wrongAnswersCount = 0,
   isFinalTest = false
 }: LessonScreenBodyProps) => {
+  const { isTablet } = useDevice()
   const currentQuestion = questions[currentQuestionIndex]
   const { question, type } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
@@ -60,7 +62,14 @@ export const LessonScreenBody = ({
     >
       <QuestionInterface question={currentQuestion} />
 
-      <QuestionText testID="question-text">{question}</QuestionText>
+      <QuestionText
+        testID="question-text"
+        size={isTablet ? 'md' : 'lg'}
+        weight="semibold"
+        align="center"
+      >
+        {question}
+      </QuestionText>
 
       <AnswerInterface
         key={currentQuestion.id}

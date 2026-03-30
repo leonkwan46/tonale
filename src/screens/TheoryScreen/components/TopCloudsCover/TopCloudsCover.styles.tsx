@@ -66,7 +66,7 @@ const getCloudShapes = (cloudColors: CloudColors) => {
   ]
 }
 
-export function useTopCloudsCoverCloudShapes() {
+export const useTopCloudsCoverCloudShapes = () => {
   const theme = useTheme()
   return useMemo(
     () => getCloudShapes(theme.components.clouds),

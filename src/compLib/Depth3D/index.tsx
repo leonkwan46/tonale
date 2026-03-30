@@ -1,32 +1,52 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { Button3DContainer, Button3DContent, Button3DDepth, type Button3DCustomStyles, type ButtonColor, type LayoutType } from './Button3D.styles'
 
-interface Button3DProps {
+import {
+  Depth3DContainer,
+  Depth3DContent,
+  Depth3DDepth,
+  type Depth3DColor,
+  type Depth3DSizeVariant,
+  type Depth3DCustomStyles,
+  type LayoutType
+} from './Depth3D.styles'
+
+export type {
+  Depth3DColor,
+  Depth3DSizeVariant,
+  Depth3DCustomStyles,
+  LayoutType
+} from './Depth3D.styles'
+
+interface Depth3DProps {
   onPress: () => void
   disabled?: boolean
   testID?: string
-  color?: ButtonColor
+  color?: Depth3DColor
   layoutType?: LayoutType
+  sizeVariant?: Depth3DSizeVariant
+  gridColumns?: number
   fullWidth?: boolean
   width?: number
   height?: number
-  customStyles?: Button3DCustomStyles
-  children: (props: { color: ButtonColor, isPressed: boolean }) => ReactNode
+  customStyles?: Depth3DCustomStyles
+  children: (props: { color: Depth3DColor; isPressed: boolean }) => ReactNode
 }
 
-export const Button3D = ({
+export const Depth3D = ({
   onPress,
   disabled = false,
   testID,
   color = 'blue',
   layoutType,
+  sizeVariant = 'auto',
+  gridColumns,
   fullWidth,
   width,
   height,
   customStyles,
   children
-}: Button3DProps) => {
+}: Depth3DProps) => {
   const [isPressed, setIsPressed] = useState(false)
 
   const handlePressIn = () => {
@@ -42,10 +62,12 @@ export const Button3D = ({
   }
 
   return (
-    <Button3DContainer
+    <Depth3DContainer
       testID={testID}
       isPressed={isPressed}
       layoutType={layoutType}
+      sizeVariant={sizeVariant}
+      gridColumns={gridColumns}
       fullWidth={fullWidth}
       width={width}
       height={height}
@@ -54,20 +76,18 @@ export const Button3D = ({
       onPressOut={handlePressOut}
       disabled={disabled}
     >
-      <Button3DDepth
-        color={color}
-        customStyles={customStyles}
-      />
-      <Button3DContent
+      <Depth3DDepth color={color} customStyles={customStyles} />
+      <Depth3DContent
         color={color}
         layoutType={layoutType}
-        fullWidth={fullWidth}
-        height={height}
+        sizeVariant={sizeVariant}
         customStyles={customStyles}
         isPressed={isPressed}
+        fullWidth={fullWidth}
+        height={height}
       >
         {children({ color, isPressed })}
-      </Button3DContent>
-    </Button3DContainer>
+      </Depth3DContent>
+    </Depth3DContainer>
   )
 }

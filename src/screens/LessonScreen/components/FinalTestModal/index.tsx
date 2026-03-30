@@ -1,14 +1,11 @@
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
-  DescriptionText,
-  ModalButton,
-  ModalButtonText
-} from '@/sharedComponents/Modal/Modal.styles'
+  DescriptionText
+} from '@/compLib/Modal/Modal.styles'
 import {
-  ButtonContent,
-  ButtonText,
   ErrorTitleText,
   ModalIcon,
   SuccessTitleText
@@ -64,35 +61,34 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
 
       {variant === 'success' ? (
         <ButtonContainer singleButton={true}>
-          <Button3D
+          <Button
             testID="continue-button"
-            color="blue"
-            fullWidth
+            variant="filled"
+            color="primary"
             onPress={props.onContinue}
-          >
-            {() => (
-              <ButtonContent>
-                <ButtonText>Continue</ButtonText>
-              </ButtonContent>
-            )}
-          </Button3D>
+            label="Continue"
+          />
         </ButtonContainer>
       ) : (
         <ButtonContainer>
-          <ModalButton
-            testID="exit-button"
-            variant="outlined"
-            onPress={props.onExit}
-          >
-            <ModalButtonText variant="outlined">Exit</ModalButtonText>
-          </ModalButton>
-          <ModalButton
-            testID="retry-test-button"
-            variant="filled"
-            onPress={props.onRetry}
-          >
-            <ModalButtonText variant="filled">Retry Test</ModalButtonText>
-          </ModalButton>
+          <ButtonItem grow>
+            <Button
+              testID="exit-button"
+              variant="outlined"
+              size="sm"
+              onPress={props.onExit}
+              label="Exit"
+            />
+          </ButtonItem>
+          <ButtonItem grow>
+            <Button
+              testID="retry-test-button"
+              variant="filled"
+              size="sm"
+              onPress={props.onRetry}
+              label="Retry Test"
+            />
+          </ButtonItem>
         </ButtonContainer>
       )}
     </Modal>

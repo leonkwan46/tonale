@@ -1,3 +1,4 @@
+import type { TypographySize } from '@/compLib/Typography'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { TypewriterText } from './Typewriter.styles'
@@ -9,6 +10,7 @@ export interface TypewriterProps {
   delay?: number
   showCursor?: boolean
   cursorChar?: string
+  size?: TypographySize
   children?: (displayedText: string, isTyping: boolean) => React.ReactNode
 }
 
@@ -19,6 +21,7 @@ export const Typewriter = ({
   delay = 0,
   showCursor = true,
   cursorChar = '|',
+  size = 'md',
   children
 }: TypewriterProps) => {
   const [displayedText, setDisplayedText] = useState('')
@@ -67,7 +70,7 @@ export const Typewriter = ({
   }
 
   return (
-    <TypewriterText>
+    <TypewriterText size={size}>
       {displayedText}
       {shouldShowCursor && cursorChar}
     </TypewriterText>

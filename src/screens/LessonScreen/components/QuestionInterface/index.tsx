@@ -11,13 +11,14 @@ interface QuestionInterfaceProps {
 }
 
 /** Same rule as curriculum (e.g. musicalTerm generator): termAndSign → symbols, else → notation. */
-function inferInterfaceFromVisual(visual: NonNullable<Question['visualComponent']>): QuestionInterfaceKind {
-  return visual.type === 'termAndSign'
+const inferInterfaceFromVisual = (
+  visual: NonNullable<Question['visualComponent']>
+): QuestionInterfaceKind =>
+  visual.type === 'termAndSign'
     ? { type: QUESTION_TYPE.SYMBOLS }
     : { type: QUESTION_TYPE.NOTATION }
-}
 
-function getEffectiveInterface(question: Question): QuestionInterfaceKind | null {
+const getEffectiveInterface = (question: Question): QuestionInterfaceKind | null => {
   const { questionInterface, visualComponent } = question
   return questionInterface ?? (visualComponent ? inferInterfaceFromVisual(visualComponent) : null)
 }

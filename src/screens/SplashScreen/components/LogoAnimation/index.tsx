@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { useTheme } from '@emotion/react'
+import { useEffect } from 'react'
 import {
     Easing,
     useAnimatedStyle,
@@ -18,12 +18,12 @@ import {
 } from './LogoAnimation.styles'
 
 interface LogoAnimationProps {
-  isTransitioning: boolean
+  isTransitioning: boolean;
 }
 
 export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
   const theme = useTheme()
-  
+
   // Animation values
   const scale = useSharedValue(0.3)
   const opacity = useSharedValue(0)
@@ -35,7 +35,7 @@ export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
       damping: 8,
       stiffness: 100
     })
-    
+
     opacity.value = withTiming(1.0, {
       duration: 800,
       easing: Easing.out(Easing.ease)
@@ -53,10 +53,7 @@ export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
   }, [scale, opacity, rotation])
 
   const logoStyle = useAnimatedStyle(() => ({
-    transform: [
-      { scale: scale.value },
-      { rotate: `${rotation.value}deg` }
-    ],
+    transform: [{ scale: scale.value }, { rotate: `${rotation.value}deg` }],
     opacity: isTransitioning ? withTiming(0, { duration: 500 }) : opacity.value
   }))
 
@@ -74,4 +71,3 @@ export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
     </Container>
   )
 }
-

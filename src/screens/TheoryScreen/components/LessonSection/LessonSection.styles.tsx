@@ -1,8 +1,9 @@
 import styled from '@emotion/native'
-import { Pressable } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-export const LessonSectionContainer = styled(Pressable)(({ theme }) => ({
+import { PressableFeedback } from '@/utils/PressableFeedback'
+
+export const LessonSectionContainer = styled(PressableFeedback)(({ theme }) => ({
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',

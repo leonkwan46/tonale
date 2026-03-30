@@ -42,7 +42,9 @@ export const PrivacyPolicyScreen = () => {
       <SettingItemHeader title="Privacy Policy" />
       <FullScreenScrollView showsVerticalScrollIndicator={false}>
         <ScrollContentContainer>
-          <LastUpdatedText>Last updated: {PRIVACY_POLICY_LAST_UPDATED}</LastUpdatedText>
+          <LastUpdatedText size="xxs" muted>
+            Last updated: {PRIVACY_POLICY_LAST_UPDATED}
+          </LastUpdatedText>
           {parsedSections.map((section, index) => (
             <SectionBlock
               key={section.title}
@@ -57,7 +59,7 @@ export const PrivacyPolicyScreen = () => {
   )
 }
 
-function SectionBlock({
+const SectionBlock = ({
   title,
   paragraphs,
   isFirst
@@ -65,20 +67,22 @@ function SectionBlock({
   title: string
   paragraphs: ParsedParagraph[]
   isFirst: boolean
-}) {
+}) => {
   const WrapperComponent = isFirst ? SectionTitleFirst : SectionTitleWrapper
 
   return (
     <>
       <WrapperComponent>
-        <SectionTitle>{title}</SectionTitle>
+        <SectionTitle size="lg" weight="bold" colorVariant="primary">
+          {title}
+        </SectionTitle>
       </WrapperComponent>
       {paragraphs.map((paragraph, i) => {
         const hasFormatting = paragraph.segments.some(
           (s) => s.type === 'bold' || s.type === 'italic' || s.type === 'highlight'
         )
         return (
-          <Paragraph key={i}>
+          <Paragraph key={i} size="sm">
             {hasFormatting
               ? renderFormattedSegments(paragraph.segments, `${title}-${i}`)
               : paragraph.text}

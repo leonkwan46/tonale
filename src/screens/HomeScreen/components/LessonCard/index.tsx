@@ -3,11 +3,11 @@ import { Description } from '@/screens/TheoryScreen/components/LessonSection/com
 import { BeamedQuaverLogo } from '@/screens/TheoryScreen/components/LessonSection/components/Logo/BeamedQuaverLogo'
 import { LockLogo } from '@/screens/TheoryScreen/components/LessonSection/components/Logo/LockLogo'
 import { StarLogo } from '@/screens/TheoryScreen/components/LessonSection/components/Logo/StarLogo'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Card } from '@/sharedComponents/Card'
-import { Skeleton } from '@/sharedComponents/Skeleton'
+import { Button } from '@/compLib/Button'
+import { Card } from '@/compLib/Card'
+import { Skeleton } from '@/compLib/Skeleton'
 import { useTheme } from '@emotion/react'
-import { CardContentContainer, ContinueButtonText, LessonCardContainer, NoLessonText, SkeletonContentSection, StarContainer } from './LessonCard.styles'
+import { CardContentContainer, LessonCardContainer, NoLessonText, SkeletonContentSection, StarContainer } from './LessonCard.styles'
 
 export const LessonCard = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
@@ -54,7 +54,9 @@ export const LessonCard = () => {
     return (
       <LessonCardContainer>
         <CardContentContainer>
-          <NoLessonText>No lessons available right now</NoLessonText>
+          <NoLessonText size="md" muted align="center">
+            No lessons available right now
+          </NoLessonText>
         </CardContentContainer>
       </LessonCardContainer>
     )
@@ -85,16 +87,15 @@ export const LessonCard = () => {
         </Card>
         <Description title={lesson.title} description={lesson.description} />
       </CardContentContainer>
-      <Button3D
-        onPress={handleContinuePress}
+      <Button
+        variant="filled"
+        color="primary"
         disabled={isNavigating || lesson.isLocked}
+        loading={isNavigating}
         testID="continue-lesson-button"
-        fullWidth={true}
-      >
-        {() => (
-          <ContinueButtonText>Continue Lesson</ContinueButtonText>
-        )}
-      </Button3D>
+        onPress={handleContinuePress}
+        label={isNavigating ? 'Opening lesson…' : 'Continue Lesson'}
+      />
     </LessonCardContainer>
   )
 }

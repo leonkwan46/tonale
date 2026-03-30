@@ -105,7 +105,7 @@ tonale/
 │   │       └── generators/     # Aural-specific question generators
 │   │
 │   ├── screens/                # Screen components (one folder per route)
-│   ├── sharedComponents/       # Reusable UI components
+│   ├── compLib/                # Reusable UI components (Button, Depth3D, Icon, Modal, …)
 │   ├── globalComponents/       # App-wide wrappers (modals, overlays)
 │   ├── config/
 │   │   ├── firebase/           # Firebase client init + emulator wiring (__DEV__)

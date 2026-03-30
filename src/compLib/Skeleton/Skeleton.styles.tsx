@@ -5,17 +5,21 @@ import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
 interface SkeletonDimensionsProps {
-  width?: number | string
-  height?: number | string
-  borderRadius?: number
+  width?: number | string;
+  height?: number | string;
+  borderRadius?: number;
 }
 
-export const SkeletonContainer = styled(View)<SkeletonDimensionsProps>(({ width, height, borderRadius }) => {
+export const SkeletonContainer = styled(View)<SkeletonDimensionsProps>(({
+  width,
+  height,
+  borderRadius
+}) => {
   const style: Record<string, unknown> = {
     overflow: 'hidden',
     position: 'relative'
   }
-  
+
   if (width !== undefined) {
     style.width = typeof width === 'number' ? scale(width) : width
   }
@@ -25,7 +29,7 @@ export const SkeletonContainer = styled(View)<SkeletonDimensionsProps>(({ width,
   if (borderRadius !== undefined) {
     style.borderRadius = borderRadius
   }
-  
+
   return style
 })
 
@@ -40,12 +44,17 @@ export const SkeletonGradient = styled(AnimatedLinearGradient)({
   zIndex: 2
 })
 
-export const SkeletonBase = styled(View)<SkeletonDimensionsProps>(({ theme, width, height, borderRadius }) => {
+export const SkeletonBase = styled(View)<SkeletonDimensionsProps>(({
+  theme,
+  width,
+  height,
+  borderRadius
+}) => {
   const style: Record<string, unknown> = {
     backgroundColor: theme.colors.border,
     opacity: 0.3
   }
-  
+
   if (width !== undefined) {
     style.width = typeof width === 'number' ? scale(width) : width
   }
@@ -55,6 +64,6 @@ export const SkeletonBase = styled(View)<SkeletonDimensionsProps>(({ theme, widt
   if (borderRadius !== undefined) {
     style.borderRadius = borderRadius
   }
-  
+
   return style
 })

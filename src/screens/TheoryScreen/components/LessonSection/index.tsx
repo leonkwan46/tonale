@@ -1,5 +1,5 @@
+import { Card } from '@/compLib/Card'
 import { useSafeNavigation } from '@/hooks'
-import { Card } from '@/sharedComponents/Card'
 import { useTheme } from '@emotion/react'
 import type { Lesson } from '@types'
 import { useState } from 'react'
@@ -12,18 +12,22 @@ import { WarningModal } from './components/WarningModal'
 import { LessonSectionContainer, StarContainer } from './LessonSection.styles'
 
 interface LessonSectionProps {
-  index: number
-  lesson: Lesson
-  allStageLessons?: Lesson[]
+  index: number;
+  lesson: Lesson;
+  allStageLessons?: Lesson[];
 }
 
-export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSectionProps) => {
+export const LessonSection = ({
+  index,
+  lesson,
+  allStageLessons = []
+}: LessonSectionProps) => {
   const { isNavigating, navigate } = useSafeNavigation()
   const [showWarningModal, setShowWarningModal] = useState(false)
   const theme = useTheme()
   const cardSize = theme.dimensions.cardButtonSize
   const cardColor = lesson.isLocked ? 'grey' : 'blue'
-  
+
   const renderCard = () => (
     <Card key="card" color={cardColor} size={cardSize}>
       {lesson.isLocked ? (
@@ -40,26 +44,35 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
       )}
     </Card>
   )
-  
-  const components = (isPressed: boolean) => index % 2 === 0 && !lesson.isFinalTest
-    ? [
-    renderCard(), 
-    <Description key="desc" title={lesson.title} description={lesson.description} />
-    ]
-    : [
-    <Description key="desc" title={lesson.title} description={lesson.description} />, 
-    renderCard()
-    ]
+
+  const components = (isPressed: boolean) =>
+    index % 2 === 0 && !lesson.isFinalTest
+      ? [
+          renderCard(),
+          <Description
+            key="desc"
+            title={lesson.title}
+            description={lesson.description}
+          />
+        ]
+      : [
+          <Description
+            key="desc"
+            title={lesson.title}
+            description={lesson.description}
+          />,
+          renderCard()
+        ]
 
   const checkForZeroStarLessons = () => {
-    return allStageLessons.some(stageLesson => 
-      !stageLesson.isFinalTest && (stageLesson.stars || 0) < 1
+    return allStageLessons.some(
+      (stageLesson) => !stageLesson.isFinalTest && (stageLesson.stars || 0) < 1
     )
   }
 
   const handlePress = () => {
     if (isNavigating) return
-    
+
     if (lesson.isFinalTest) {
       // Check if any lesson in the stage has 0 stars
       if (checkForZeroStarLessons()) {
@@ -94,7 +107,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
           testID={`lesson-title-${lesson.id}`}
         />
       ) : (
-        <LessonSectionContainer 
+        <LessonSectionContainer
           onPress={handlePress}
           testID={`lesson-title-${lesson.id}`}
           accessible={true}
@@ -105,7 +118,7 @@ export const LessonSection = ({ index, lesson, allStageLessons = [] }: LessonSec
           {({ pressed }: { pressed: boolean }) => components(pressed)}
         </LessonSectionContainer>
       )}
-      
+
       <WarningModal
         isVisible={showWarningModal}
         onContinue={handleContinueToFinalTest}

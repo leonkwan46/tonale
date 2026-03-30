@@ -1,9 +1,7 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const GuestLoginContainer = styled.View(({ theme }) => ({
   flexDirection: 'column',
@@ -23,37 +21,10 @@ export const Divider = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.border
 }))
 
-export const DividerText = styled.Text(({ theme }) => ({
-  paddingHorizontal: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.base),
-  opacity: 0.6,
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const SecondaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  borderRadius: scale(theme.borderRadius.md),
-  borderWidth: 2,
-  borderColor: theme.colors.primary,
-  opacity: disabled ? 0.7 : 1
-}))
-
-export const SecondaryButtonText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const ButtonIcon = styled.View(({ theme }) => ({
-  marginLeft: theme.device.isTablet ? scale(3) : scale(theme.spacing.xs)
-}))
-
-export const PersonIconStyled = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
+export const DividerText = styled(Typography)(({ theme }) => ({
+  paddingHorizontal: theme.device.isTablet
+    ? scale(theme.spacing.sm)
+    : scale(theme.spacing.md)
 }))
 
 export const GuestLoginWrapper = styled.View<{ isVisible: boolean }>(({ isVisible }) => ({

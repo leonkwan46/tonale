@@ -1,5 +1,5 @@
 import { LessonScreen } from '@/screens/LessonScreen'
 
-export default function LessonRoute() {
-  return <LessonScreen />
-}
+const LessonRoute = () => <LessonScreen />
+
+export default LessonRoute

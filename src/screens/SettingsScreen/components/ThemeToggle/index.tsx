@@ -25,7 +25,7 @@ export const ThemeToggle = ({ isDark, onToggle }: ThemeToggleProps) => {
   }, [isDark, translateX])
 
   return (
-    <Track onPress={() => onToggle(!isDark)} activeOpacity={0.8}>
+    <Track onPress={() => onToggle(!isDark)}>
       <Thumb style={{ transform: [{ translateX }] }}>
         <Ionicons
           name={isDark ? 'moon' : 'sunny'}

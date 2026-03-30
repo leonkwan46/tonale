@@ -1,6 +1,6 @@
 import { AuralScreen } from '@/screens/AuralScreen'
 
-export default function AuralTabScreen() {
-  return <AuralScreen />
-}
+const AuralTabScreen = () => <AuralScreen />
+
+export default AuralTabScreen
 

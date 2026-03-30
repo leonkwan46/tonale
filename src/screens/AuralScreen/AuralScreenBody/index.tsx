@@ -1,4 +1,4 @@
-import { useProgress } from '@/hooks'
+import { useDevice, useProgress } from '@/hooks'
 import { auralStagesArray } from '@/subjects/aural/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
@@ -11,6 +11,7 @@ import { TopCloudsCover } from '../../TheoryScreen/components/TopCloudsCover'
 import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonContent, MessageContainer, MessageOverlay, MessageText, PartialLessonContainer, SpacerView, StageContainer } from './AuralScreenBody.styles'
 
 export const AuralScreenBody = () => {
+  const { isTablet } = useDevice()
   const { progressData } = useProgress()
 
   // UI Utility Functions for AuralScreenBody
@@ -210,7 +211,10 @@ export const AuralScreenBody = () => {
         {!hasNextStage && (
           <MessageOverlay>
             <MessageContainer>
-              <MessageText>
+              <MessageText
+                size={isTablet ? 'sm' : 'md'}
+                align="center"
+              >
                 Next stage still in progress...
               </MessageText>
             </MessageContainer>

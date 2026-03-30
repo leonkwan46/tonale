@@ -1,10 +1,9 @@
 import { useTheme } from '@emotion/react'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import type { ComponentProps } from 'react'
 import { ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Theme } from '@emotion/react'
 
 const scrollContentContainer = (theme: Theme) => ({
@@ -22,10 +21,6 @@ export const LessonScrollView = (props: ComponentProps<typeof ScrollView>) => {
   )
 }
 
-export const QuestionText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  textAlign: 'center',
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold),
+export const QuestionText = styled(Typography)(({ theme }) => ({
   paddingVertical: scale(theme.spacing.sm)
 }))

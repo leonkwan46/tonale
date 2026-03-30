@@ -1,9 +1,7 @@
-import { Icon, type IconName } from '@/sharedComponents/Icon'
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Icon, type IconName } from '@/compLib/Icon'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import { useTheme } from '@emotion/react'
 import Animated from 'react-native-reanimated'
-import { scale } from 'react-native-size-matters'
 
 export const ToastContainer = styled(Animated.View)<{
   topInset: number;
@@ -18,19 +16,15 @@ export const ToastContainer = styled(Animated.View)<{
   elevation: 99
 }))
 
-export type ToastVariant = 'error' | 'warning' | 'success'
+export type ToastVariant = 'error' | 'warning' | 'success';
 
-export const ToastMessage = styled.View<{ variant: ToastVariant }>(
-  ({ theme, variant }) => ({
-    backgroundColor: theme.colors.surface,
-    borderLeftWidth: scale(4),
-    borderLeftColor: theme.colors[variant],
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-    ...theme.shadows.md
-  })
-)
+export const ToastMessage = styled.View(({ theme }) => ({
+  backgroundColor: theme.colors.surface,
+  paddingVertical: theme.spacing.sm,
+  paddingHorizontal: theme.spacing.md,
+  borderRadius: theme.borderRadius.lg,
+  ...theme.shadows.md
+}))
 
 export const ToastRow = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -45,12 +39,7 @@ export const ToastIcon = ({
   name: IconName;
   variant: ToastVariant;
 }) => {
-  const theme = useTheme()
-  return <Icon name={name} color={theme.colors[variant]} sizeVariant="md" />
+  return <Icon name={name} colorVariant={variant} sizeVariant="md" />
 }
 
-export const ToastText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: theme.typography.sm,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
+export const ToastText = styled(Typography)(() => ({}))

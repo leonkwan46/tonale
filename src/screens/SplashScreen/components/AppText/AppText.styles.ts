@@ -1,29 +1,18 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-
 export const AppNameContainer = styled(Animated.View)(() => ({}))
 
-export const AppNameText = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography['4xl']),
-  textAlign: 'center',
+export const AppNameText = styled(Typography)(({ theme }) => ({
   marginBottom: scale(theme.spacing.sm),
-  letterSpacing: scale(-0.5),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
+  letterSpacing: scale(-0.5)
 }))
 
 export const TaglineContainer = styled(Animated.View)(() => ({}))
 
-export const TaglineText = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography.base),
-  textAlign: 'center',
+export const TaglineText = styled(Typography)(({ theme }) => ({
   marginBottom: scale(theme.spacing.xxl),
-  lineHeight: scale(22),
-  opacity: 0.8,
-  color: theme.colors.icon,
-  fontFamily: getSourGummyFontFamily()
+  lineHeight: scale(22)
 }))
-

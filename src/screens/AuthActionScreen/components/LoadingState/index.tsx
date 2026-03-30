@@ -1,5 +1,12 @@
+import { useDevice } from '@/hooks'
+
 import { MessageText } from './LoadingState.styles'
 
 export const LoadingState = () => {
-  return <MessageText>Processing...</MessageText>
+  const { isTablet } = useDevice()
+  return (
+    <MessageText size={isTablet ? 'sm' : 'md'} align="center">
+      Processing...
+    </MessageText>
+  )
 }

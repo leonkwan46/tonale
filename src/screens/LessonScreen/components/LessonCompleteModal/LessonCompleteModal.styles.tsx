@@ -1,3 +1,5 @@
+import { Typography } from '@/compLib/Typography'
+import { createForwardProps } from '@/utils/styledProps'
 import styled from '@emotion/native'
 import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
@@ -8,8 +10,9 @@ export const StarContainer = styled.View(() => ({
   alignItems: 'center'
 }))
 
-export const StarIcon = styled.Text<{ filled: boolean }>(({ theme, filled }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.xl) : scale(theme.typography['3xl']),
+export const StarIcon = styled(Typography, {
+  shouldForwardProp: createForwardProps(['filled'])
+})<{ filled: boolean }>(({ theme, filled }) => ({
   color: filled ? theme.components.achievement.gold : theme.colors.text,
   opacity: filled ? 1 : 0.4
 }))

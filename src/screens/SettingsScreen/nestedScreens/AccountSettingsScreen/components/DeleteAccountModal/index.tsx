@@ -1,16 +1,13 @@
-import { ActivityIndicator } from 'react-native'
 import { useState } from 'react'
+
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
 
 import {
   ActionsRow,
   BodyText,
-  CancelButton,
-  CancelButtonText,
-  ConfirmButton,
-  ConfirmButtonText,
   EyeButton,
-  Input,
-  InputField,
   ModalCard,
   ModalMask,
   ModalMaskContainer,
@@ -18,7 +15,6 @@ import {
   StatusText,
   TitleText
 } from './DeleteAccountModal.styles'
-import { Icon } from '@/sharedComponents/Icon'
 
 type DeleteAccountModalProps = {
   visible: boolean
@@ -54,54 +50,66 @@ export const DeleteAccountModal = ({
     >
       <ModalMaskContainer>
         <ModalCard>
-          <TitleText>Confirm deletion</TitleText>
-          <BodyText>This will permanently delete your account and progress. This cannot be undone.</BodyText>
+          <TitleText size="lg" weight="semibold">
+            Confirm deletion
+          </TitleText>
+          <BodyText size="md">
+            This will permanently delete your account and progress. This cannot be
+            undone.
+          </BodyText>
 
           {!!error && (
             <StatusContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <StatusText>{error}</StatusText>
+              <StatusText size="sm" colorVariant="error">
+                {error}
+              </StatusText>
             </StatusContainer>
           )}
 
           {canReauthenticateWithPassword && (
-            <InputField>
-              <Icon
-                name="lock-closed-outline"
-                sizeVariant="sm"
-                colorVariant="primary"
-              />
-              <Input
-                value={password}
-                onChangeText={onChangePassword}
-                placeholder="Password"
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                editable={!isLoading}
-                returnKeyType="done"
-              />
-              <EyeButton
-                onPress={() => setShowPassword((prev) => !prev)}
-                disabled={isLoading}
-              >
-                <Icon
-                  name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                  sizeVariant="sm"
-                  colorVariant="primary"
-                />
-              </EyeButton>
-            </InputField>
+            <InputField
+              leftIcon="lock-closed-outline"
+              value={password}
+              onChangeText={onChangePassword}
+              placeholder="Password"
+              secureTextEntry={!showPassword}
+              autoCapitalize="none"
+              disabled={isLoading}
+              returnKeyType="done"
+              rightSlot={
+                <EyeButton
+                  onPress={() => setShowPassword((prev) => !prev)}
+                  disabled={isLoading}
+                >
+                  <Icon
+                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    sizeVariant="sm"
+                    colorVariant="primary"
+                  />
+                </EyeButton>
+              }
+            />
           )}
 
           <ActionsRow>
-            <CancelButton onPress={onCancel} disabled={isLoading}>
-              <CancelButtonText>Cancel</CancelButtonText>
-            </CancelButton>
+            <Button
+              variant="link"
+              size="md"
+              onPress={onCancel}
+              disabled={isLoading}
+              label="Cancel"
+            />
 
-            <ConfirmButton onPress={onConfirm} disabled={isLoading}>
-              {isLoading && <ActivityIndicator color="white" />}
-              <ConfirmButtonText>Delete</ConfirmButtonText>
-            </ConfirmButton>
+            <Button
+              variant="filled"
+              color="error"
+              size="md"
+              onPress={onConfirm}
+              loading={isLoading}
+              disabled={isLoading}
+              label="Delete"
+            />
           </ActionsRow>
         </ModalCard>
       </ModalMaskContainer>

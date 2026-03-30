@@ -1,8 +1,8 @@
 import { sendEmailVerificationToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useSafeNavigation, useUser } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Icon } from '@/sharedComponents/Icon'
+import { useDevice, useSafeNavigation, useUser } from '@/hooks'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -18,13 +18,12 @@ import {
   ErrorContainer,
   ErrorText,
   MessageText,
-  PrimaryButtonText,
-  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './EmailScreen.styles'
 
 export const EmailScreen = () => {
+  const { isTablet } = useDevice()
   const { authUser } = useUser()
   const { navigate } = useSafeNavigation()
 
@@ -73,7 +72,9 @@ It won't be shared with others.`}
           />
 
           <EmailPill>
-            <EmailPillText>{authUser?.email}</EmailPillText>
+            <EmailPillText size={isTablet ? 'sm' : 'md'}>
+              {authUser?.email}
+            </EmailPillText>
             <Icon
               name={isVerified ? 'checkmark-circle' : 'checkmark-circle-outline'}
               sizeVariant="xs"
@@ -84,32 +85,37 @@ It won't be shared with others.`}
           {!isVerified &&
             (verifySuccess ? (
               <SuccessContainer>
-                <SuccessText>We&apos;ve sent a verification email to you!</SuccessText>
+                <SuccessText
+                  size={isTablet ? 'xs' : 'sm'}
+                  colorVariant="success"
+                >
+                  We&apos;ve sent a verification email to you!
+                </SuccessText>
               </SuccessContainer>
             ) : (
               <SettingSection>
-                <MessageText>Make sure it&apos;s your email!</MessageText>
+                <MessageText size="md" align="center">
+                  Make sure it&apos;s your email!
+                </MessageText>
                 {verifyError ? (
                   <ErrorContainer>
                     <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                    <ErrorText>{verifyError}</ErrorText>
+                    <ErrorText
+                      size={isTablet ? 'xs' : 'sm'}
+                      colorVariant="error"
+                    >
+                      {verifyError}
+                    </ErrorText>
                   </ErrorContainer>
                 ) : null}
-                <Button3D
+                <Button
+                  variant="filled"
+                  color="primary"
                   disabled={verifyLoading}
+                  loading={verifyLoading}
                   onPress={handleSendVerification}
-                  color="blue"
-                  layoutType="row"
-                  fullWidth
-                >
-                  {() => (
-                    <SaveButtonContent>
-                      <PrimaryButtonText>
-                        {verifyLoading ? 'Sending...' : 'Send verification email'}
-                      </PrimaryButtonText>
-                    </SaveButtonContent>
-                  )}
-                </Button3D>
+                  label={verifyLoading ? 'Sending verification email…' : 'Send verification email'}
+                />
               </SettingSection>
             ))}
 

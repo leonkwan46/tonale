@@ -16,7 +16,11 @@ export const ProfileHeader = ({ name, gender }: UserDataHeaderProps) => {
       <AvatarContainer>
         <AvatarImage source={characterImageSource} />
       </AvatarContainer>
-      {name && <ProfileName>{name}</ProfileName>}
+      {name && (
+        <ProfileName size="xl" weight="bold" align="center">
+          {name}
+        </ProfileName>
+      )}
     </ProfileSection>
   )
 }

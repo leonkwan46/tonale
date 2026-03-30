@@ -1,7 +1,6 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -15,25 +14,8 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
-export const ErrorText = styled.Text(({ theme }) => ({
-  color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily()
-}))
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.primaryContrast,
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-export const SaveButtonContent = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  width: '100%'
+export const ErrorText = styled(Typography)(() => ({
+  flex: 1
 }))
 
 export const ScrollContentContainer = styled.View(({ theme }) => ({

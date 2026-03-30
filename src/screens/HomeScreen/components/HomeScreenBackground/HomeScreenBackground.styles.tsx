@@ -18,21 +18,25 @@ export const ImageContainer = styled(View)({
   position: 'relative'
 })
 
-export const StageImage = styled(Image)<{ screenWidth: number }>(({ screenWidth }) => ({
-  width: screenWidth,
-  height: screenWidth * 1.5,
-  resizeMode: 'cover'
-}))
+export const StageImage = styled(Image)<{ screenWidth: number }>(
+  ({ screenWidth }) => ({
+    width: screenWidth,
+    height: screenWidth * 1.5,
+    resizeMode: 'cover'
+  })
+)
 
-export const AvatarImage = styled(Image)<{ screenWidth: number }>(({ screenWidth, theme }) => ({
-  position: 'absolute',
-  bottom: scale(100),
-  left: screenWidth / 2 - scale(65),
-  right: 0,
-  width: screenWidth / 2.5,
-  height: screenWidth / 2.5,
-  resizeMode: 'contain'
-}))
+export const AvatarImage = styled(Image)<{ screenWidth: number }>(
+  ({ screenWidth, theme }) => ({
+    position: 'absolute',
+    bottom: scale(100),
+    left: screenWidth / 2 - scale(65),
+    right: 0,
+    width: screenWidth / 2.5,
+    height: screenWidth / 2.5,
+    resizeMode: 'contain'
+  })
+)
 
 export const BackgroundGradient = styled(LinearGradient)(({ theme }) => ({
   paddingBottom: scale(100)

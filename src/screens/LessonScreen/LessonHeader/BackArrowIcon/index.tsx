@@ -4,18 +4,15 @@ import Svg, { Path } from 'react-native-svg'
 import { IconContainer } from './BackArrowIcon.styles'
 
 interface BackArrowIconProps {
-  size?: number
-  color?: string
+  size?: number;
+  color?: string;
 }
 
-export const BackArrowIcon = ({ 
-  size = 16,
-  color
-}: BackArrowIconProps) => {
+export const BackArrowIcon = ({ size = 16, color }: BackArrowIconProps) => {
   const theme = useTheme()
   const scaledSize = scale(size)
   const strokeColor = color || theme.colors.text
-  
+
   return (
     <IconContainer scaledSize={scaledSize}>
       <Svg

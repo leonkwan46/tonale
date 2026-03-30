@@ -2,7 +2,7 @@ import styled from '@emotion/native'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const GreetingBannerContainer = styled(View)(({ theme }) => ({
   flexDirection: 'row',
@@ -11,12 +11,9 @@ export const GreetingBannerContainer = styled(View)(({ theme }) => ({
   borderRadius: scale(theme.borderRadius.lg)
 }))
 
-export const GreetingText = styled.Text(({ theme }) => ({
-  fontSize: scale(theme.typography['2xl']),
-  color: theme.colors.text,
+export const GreetingText = styled(Typography)(({ theme }) => ({
   flex: 1,
-  marginRight: scale(theme.spacing.md),
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
+  marginRight: scale(theme.spacing.md)
 }))
 
 export const AvatarContainer = styled(View)(({ theme }) => ({

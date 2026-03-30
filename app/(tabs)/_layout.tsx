@@ -31,7 +31,7 @@ const ErrorSubtext = styled.Text(({ theme }) => ({
   fontFamily: getSourGummyFontFamily()
 }))
 
-export default function TabLayout() {
+const TabLayout = () => {
   const { authUser, loading } = useUser()
   
   if (loading) {
@@ -78,3 +78,5 @@ export default function TabLayout() {
     </Tabs>
   )
 }
+
+export default TabLayout

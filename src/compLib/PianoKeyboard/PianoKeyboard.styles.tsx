@@ -1,6 +1,14 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
+import { forwardRef } from 'react'
+import type { View } from 'react-native'
+import { PressableFeedback, type PressableFeedbackProps } from '@/utils/PressableFeedback'
+
+const PressableOpacity095 = forwardRef<View, PressableFeedbackProps>((props, ref) => (
+  <PressableFeedback ref={ref} pressOpacity={0.95} {...props} />
+))
+
 const WHITE_KEY_HEIGHT = scale(145)
 export const WHITE_KEY_WIDTH = scale(42)
 export const WHITE_KEY_MARGIN = scale(1)
@@ -24,7 +32,7 @@ export const KeysRow = styled.View(() => ({
   zIndex: 1
 }))
 
-export const Key = styled.TouchableOpacity<{ isBlack: boolean; isSelected: boolean; isCorrect: boolean; isIncorrect: boolean }>(
+export const Key = styled(PressableOpacity095)<{ isBlack: boolean; isSelected: boolean; isCorrect: boolean; isIncorrect: boolean }>(
   ({ theme, isBlack, isSelected, isCorrect, isIncorrect }) => {
     let backgroundColor: string
     let borderWidth = scale(1)
