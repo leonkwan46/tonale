@@ -12,6 +12,7 @@ import {
   IconSlot,
   getDepthColor,
   isMultiWordLabel,
+  type ButtonRowLayout,
   type ButtonColor,
   type ButtonSize,
   type ButtonVariant
@@ -29,18 +30,27 @@ type ButtonBaseProps = {
   label: string;
   leftIcon?: IconName;
   rightIcon?: IconName;
+  fullWidth?: boolean;
+  withTopSpacing?: boolean;
+  rowLayout?: ButtonRowLayout;
+  labelWeight?: 'regular' | 'medium' | 'semibold' | 'bold';
+  ghostTint?: IconColorVariant;
 }
 
 type DepthButtonProps = ButtonBaseProps & {
   buttonType?: 'depth';
   variant?: 'filled';
   layoutType?: LayoutType;
+  depth?: boolean;
+  depthLayout?: LayoutType;
 }
 
 type FlatButtonProps = ButtonBaseProps & {
   buttonType?: 'flat';
   variant: ButtonVariant;
   layoutType?: never;
+  depth?: boolean;
+  depthLayout?: never;
 }
 
 export type ButtonProps = DepthButtonProps | FlatButtonProps
@@ -65,17 +75,20 @@ const FILLED_ICON_VARIANT: Record<ButtonColor, IconColorVariant> = {
 
 const getIconColor = (
   variant: ButtonVariant,
-  color: ButtonColor
+  color: ButtonColor,
+  ghostTint?: IconColorVariant
 ): IconColorVariant => {
   if (variant === 'link') return 'primary'
+  if (variant === 'ghost') return ghostTint ?? 'primary'
   if (variant === 'outlined') return OUTLINED_ICON_VARIANT[color]
   return FILLED_ICON_VARIANT[color]
 }
 
 const getEffectiveButtonType = (
   buttonType: EffectiveButtonType,
-  variant: ButtonVariant
-): EffectiveButtonType => (variant === 'link' ? 'flat' : buttonType)
+  variant: ButtonVariant,
+  depth: boolean
+): EffectiveButtonType => (variant === 'link' || variant === 'ghost' || !depth ? 'flat' : buttonType)
 
 const getEffectiveVariant = (
   effectiveButtonType: EffectiveButtonType,
@@ -88,6 +101,13 @@ export const Button = ({
   size = 'md',
   buttonType = 'depth',
   layoutType = 'row',
+  depth = true,
+  depthLayout,
+  fullWidth,
+  withTopSpacing,
+  rowLayout,
+  labelWeight,
+  ghostTint,
   disabled = false,
   loading = false,
   onPress,
@@ -97,9 +117,9 @@ export const Button = ({
   rightIcon
 }: ButtonProps) => {
   const isDisabled = disabled || loading
-  const effectiveButtonType = getEffectiveButtonType(buttonType, variant)
+  const effectiveButtonType = getEffectiveButtonType(buttonType, variant, depth)
   const effectiveVariant = getEffectiveVariant(effectiveButtonType, variant)
-  const iconColorVariant = getIconColor(effectiveVariant, color)
+  const iconColorVariant = getIconColor(effectiveVariant, color, ghostTint)
   const depthIconColorVariant = getIconColor('filled', color)
   const isMultiWord = isMultiWordLabel(label)
   const iconSizeVariant = isMultiWord || size === 'sm' ? 'sm' : 'md'
@@ -112,8 +132,9 @@ export const Button = ({
       <Depth3D
         testID={testID}
         color={depthColor}
-        layoutType={layoutType}
+        layoutType={depthLayout ?? layoutType}
         sizeVariant="auto"
+        fullWidth={fullWidth}
         disabled={isDisabled}
         onPress={onPress}
       >
@@ -157,7 +178,10 @@ export const Button = ({
       variant={effectiveVariant}
       color={color}
       size={size}
-      block={effectiveVariant !== 'link'}
+      block={fullWidth ?? effectiveVariant !== 'link'}
+      fullWidth={fullWidth}
+      rowLayout={rowLayout}
+      withTopSpacing={withTopSpacing}
       disabled={isDisabled}
       onPress={onPress}
       accessibilityRole="button"
@@ -165,7 +189,12 @@ export const Button = ({
       accessibilityState={{ disabled: isDisabled, busy: loading }}
     >
       {loading && (
-        <ButtonSpinner size="small" variant={effectiveVariant} color={color} />
+        <ButtonSpinner
+          size="small"
+          variant={effectiveVariant}
+          color={color}
+          ghostTint={ghostTint}
+        />
       )}
       {leftIcon && (
         <IconSlot edge="left" style={hiddenIconStyle}>
@@ -181,6 +210,7 @@ export const Button = ({
         color={color}
         size={size}
         isMultiWord={isMultiWord}
+        ghostTint={ghostTint as any}
       >
         {label}
       </ButtonLabel>

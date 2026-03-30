@@ -1,51 +1,127 @@
 import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
-import { Typography, type TypographySize } from '@/compLib/Typography'
+import { Typography, type TypographyColorVariant, type TypographySize } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
 import type { ReactNode } from 'react'
+import { ActivityIndicator } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
-
-const PressableOpacity07 = createPressableWithOpacity(0.7)
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
 
-export type ButtonVariant = 'filled' | 'outlined' | 'ghost';
-export type ButtonColor = 'primary' | 'error' | Depth3DColor;
+export type ButtonVariant = 'filled' | 'outlined' | 'ghost' | 'link';
+export type ButtonColor =
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'neutral'
+  | 'finalTest';
 export type ButtonSize = 'sm' | 'md';
 
-export type ButtonRowLayout = 'pair' | 'solo';
+export type ButtonRowLayout = 'pair' | 'solo'
 
-export const resolveButtonPaletteKey = (color: ButtonColor): Depth3DColor => {
-  if (color === 'primary') return 'blue'
-  if (color === 'error') return 'red'
-  return color
+const DEPTH_COLOR_MAP: Record<ButtonColor, Depth3DColor> = {
+  primary: 'blue',
+  success: 'green',
+  warning: 'yellow',
+  error: 'red',
+  neutral: 'grey',
+  finalTest: 'finalTest'
 }
 
-/** More than one word → use compact label typography (not the large md depth track). */
+export const getDepthColor = (color: ButtonColor): Depth3DColor =>
+  DEPTH_COLOR_MAP[color]
+
 export const isMultiWordLabel = (label: string): boolean =>
   label.trim().split(/\s+/).filter(Boolean).length > 1
 
-const isSemanticColor = (color: ButtonColor): color is 'primary' | 'error' =>
-  color === 'primary' || color === 'error'
+const OUTLINED_BUTTON_LABEL_COLOR: Record<ButtonColor, TypographyColorVariant> = {
+  primary: 'primary',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+  neutral: 'border',
+  finalTest: 'warning'
+}
+
+const FILLED_BUTTON_LABEL_COLOR: Record<ButtonColor, TypographyColorVariant> = {
+  primary: 'primaryContrast',
+  success: 'successContrast',
+  warning: 'warningContrast',
+  error: 'errorContrast',
+  neutral: 'text',
+  finalTest: 'warningContrast'
+}
+
+export const getButtonLabelColorVariant = (
+  variant: ButtonVariant,
+  color: ButtonColor,
+  ghostTint?: TypographyColorVariant
+): TypographyColorVariant => {
+  if (variant === 'link') return 'primary'
+  if (variant === 'ghost') return ghostTint ?? 'primary'
+  if (variant === 'outlined') return OUTLINED_BUTTON_LABEL_COLOR[color]
+  return FILLED_BUTTON_LABEL_COLOR[color]
+}
+
+export const getButtonIconColorVariant = getButtonLabelColorVariant
+
+export const ButtonSpinner = ({
+  size,
+  variant,
+  color,
+  ghostTint
+}: {
+  size: 'small' | 'large';
+  variant: ButtonVariant;
+  color: ButtonColor;
+  ghostTint?: TypographyColorVariant;
+}) => {
+  const theme = useTheme()
+  return (
+    <ActivityIndicator
+      size={size}
+      color={theme.colors[getButtonIconColorVariant(variant, color, ghostTint)]}
+    />
+  )
+}
+
+export const DepthButtonSpinner = ({
+  size,
+  color
+}: {
+  size: 'small' | 'large';
+  color: ButtonColor;
+}) => {
+  const theme = useTheme()
+  return (
+    <ActivityIndicator
+      size={size}
+      color={theme.colors[getButtonIconColorVariant('filled', color)]}
+    />
+  )
+}
 
 type RootProps = {
   variant: ButtonVariant;
   color: ButtonColor;
   size: ButtonSize;
-  fullWidth: boolean;
+  block?: boolean;
+  fullWidth?: boolean;
   rowLayout?: ButtonRowLayout;
-  withTopSpacing: boolean;
+  withTopSpacing?: boolean;
 };
 
-export const ButtonRoot = styled(PressableOpacity07)<
+export const ButtonRoot = styled(PressableFeedback)<
   RootProps & { disabled?: boolean }
 >(({
   theme,
   variant,
   color,
   size,
+  block,
   fullWidth,
   rowLayout,
   withTopSpacing,
@@ -55,11 +131,12 @@ export const ButtonRoot = styled(PressableOpacity07)<
 
   let backgroundColor = 'transparent'
   if (variant === 'filled') {
-    if (isSemanticColor(color)) {
-      backgroundColor =
-        color === 'error' ? theme.colors.error : theme.colors.primary
+    if (color === 'finalTest') {
+      backgroundColor = theme.components.button.finalTest.color
+    } else if (color === 'neutral') {
+      backgroundColor = theme.colors.surface
     } else {
-      backgroundColor = theme.components.button[color].color
+      backgroundColor = theme.colors[color]
     }
   }
 
@@ -68,11 +145,12 @@ export const ButtonRoot = styled(PressableOpacity07)<
   let borderColor = 'transparent'
   if (variant === 'outlined') {
     borderWidth = isThickOutlined ? 2 : 1
-    if (isSemanticColor(color)) {
-      borderColor =
-        color === 'error' ? theme.colors.error : theme.colors.primary
+    if (color === 'finalTest') {
+      borderColor = theme.colors.warning
+    } else if (color === 'neutral') {
+      borderColor = theme.colors.border
     } else {
-      borderColor = theme.components.button[color].color
+      borderColor = theme.colors[color]
     }
   }
 
@@ -86,6 +164,7 @@ export const ButtonRoot = styled(PressableOpacity07)<
   const radius =
     size === 'sm' ? scale(theme.borderRadius.sm) : scale(theme.borderRadius.md)
 
+  const effectiveFullWidth = fullWidth ?? block ?? false
   const flexPair =
     rowLayout === 'solo' ? 0 : rowLayout === 'pair' ? 1 : undefined
   const alignSelf =
@@ -100,12 +179,14 @@ export const ButtonRoot = styled(PressableOpacity07)<
     alignItems: 'center',
     justifyContent: 'center',
     gap: scale(theme.spacing.sm),
-    width: fullWidth ? '100%' : undefined,
-    alignSelf: fullWidth ? 'stretch' : alignSelf,
+    width: effectiveFullWidth ? '100%' : undefined,
+    alignSelf: effectiveFullWidth ? 'stretch' : alignSelf,
     flex: flexPair,
     paddingVertical: paddingV,
     paddingHorizontal:
-      variant === 'ghost' ? scale(theme.spacing.xs) : scale(theme.spacing.md),
+      variant === 'link' || variant === 'ghost'
+        ? scale(theme.spacing.xs)
+        : scale(theme.spacing.md),
     borderRadius: radius,
     backgroundColor,
     borderWidth,
@@ -124,9 +205,8 @@ export type ButtonLabelProps = {
   variant: ButtonVariant;
   color: ButtonColor;
   size: ButtonSize;
-  multiWordLabel: boolean;
-  labelWeight: 'semibold' | 'bold';
-  ghostTint?: 'neutral' | 'primary';
+  isMultiWord: boolean;
+  ghostTint?: TypographyColorVariant;
   children: ReactNode;
 };
 
@@ -134,48 +214,27 @@ export const ButtonLabel = ({
   variant,
   color,
   size: _buttonSize,
-  multiWordLabel,
-  labelWeight,
-  ghostTint = 'neutral',
+  isMultiWord,
+  ghostTint,
   children
 }: ButtonLabelProps) => {
   const theme = useTheme()
   const isTablet = theme.device.isTablet
-  const typographySize: TypographySize = multiWordLabel
+  const typographySize: TypographySize = isMultiWord
     ? 'sm'
     : isTablet
       ? 'sm'
       : 'md'
 
-  let textColor = theme.colors.text
-  if (variant === 'filled') {
-    if (isSemanticColor(color)) {
-      textColor =
-        color === 'error'
-          ? theme.colors.errorContrast
-          : theme.colors.primaryContrast
-    } else {
-      const pk = resolveButtonPaletteKey(color)
-      textColor = theme.components.button[pk].text
-    }
-  } else if (variant === 'outlined') {
-    if (isSemanticColor(color)) {
-      textColor = color === 'error' ? theme.colors.error : theme.colors.primary
-    } else {
-      const pk = resolveButtonPaletteKey(color)
-      textColor = theme.components.button[pk].color
-    }
-  } else if (variant === 'ghost' && ghostTint === 'primary') {
-    textColor = theme.colors.primary
-  }
+  const colorVariant = getButtonLabelColorVariant(variant, color, ghostTint)
 
   return (
     <Typography
       size={typographySize}
-      weight={labelWeight}
-      color={textColor}
-      align={multiWordLabel ? 'center' : undefined}
-      style={multiWordLabel ? { flexShrink: 1 } : undefined}
+      weight="semibold"
+      colorVariant={colorVariant}
+      align={isMultiWord ? 'center' : undefined}
+      style={isMultiWord ? { flexShrink: 1 } : undefined}
     >
       {children}
     </Typography>
@@ -189,7 +248,6 @@ export const IconSlot = styled.View<{ edge: 'left' | 'right' }>(
   })
 )
 
-/** Inner row for `Button` when `depth` is true (inside Depth3D content). */
 export const DepthButtonInner = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
@@ -204,32 +262,43 @@ export const DepthButtonInner = styled.View(({ theme }) => ({
 export type DepthButtonLabelProps = {
   paletteKey: Depth3DColor;
   size: ButtonSize;
-  multiWordLabel: boolean;
-  labelWeight: 'semibold' | 'bold';
+  isMultiWord: boolean;
   children: ReactNode;
 };
+
+const DEPTH_BUTTON_LABEL_COLOR: Record<Depth3DColor, TypographyColorVariant> = {
+  blue: 'primaryContrast',
+  red: 'errorContrast',
+  green: 'successContrast',
+  yellow: 'warningContrast',
+  grey: 'text',
+  finalTest: 'warningContrast'
+}
+
+const getDepthButtonLabelColorVariant = (
+  paletteKey: Depth3DColor
+): TypographyColorVariant => DEPTH_BUTTON_LABEL_COLOR[paletteKey]
 
 export const DepthButtonLabel = ({
   paletteKey,
   size,
-  multiWordLabel,
-  labelWeight,
+  isMultiWord,
   children
 }: DepthButtonLabelProps) => {
   const theme = useTheme()
   const isTablet = theme.device.isTablet
-  const depthSize: ButtonSize = multiWordLabel ? 'sm' : size
+  const depthSize: ButtonSize = isMultiWord ? 'sm' : size
   const typographySize: TypographySize =
     depthSize === 'sm' ? (isTablet ? 'sm' : 'md') : 'lg'
-  const textColor = theme.components.button[paletteKey].text
+  const colorVariant = getDepthButtonLabelColorVariant(paletteKey)
 
   return (
     <Typography
       size={typographySize}
-      weight={labelWeight}
-      color={textColor}
+      weight="semibold"
+      colorVariant={colorVariant}
       align="center"
-      style={multiWordLabel ? { flexShrink: 1 } : undefined}
+      style={isMultiWord ? { flexShrink: 1 } : undefined}
     >
       {children}
     </Typography>

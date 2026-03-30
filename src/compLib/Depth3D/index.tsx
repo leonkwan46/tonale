@@ -6,11 +6,17 @@ import {
   Depth3DContent,
   Depth3DDepth,
   type Depth3DColor,
+  type Depth3DSizeVariant,
   type Depth3DCustomStyles,
   type LayoutType
 } from './Depth3D.styles'
 
-export type { Depth3DColor, Depth3DCustomStyles, LayoutType } from './Depth3D.styles'
+export type {
+  Depth3DColor,
+  Depth3DSizeVariant,
+  Depth3DCustomStyles,
+  LayoutType
+} from './Depth3D.styles'
 
 interface Depth3DProps {
   onPress: () => void
@@ -18,6 +24,8 @@ interface Depth3DProps {
   testID?: string
   color?: Depth3DColor
   layoutType?: LayoutType
+  sizeVariant?: Depth3DSizeVariant
+  gridColumns?: number
   fullWidth?: boolean
   width?: number
   height?: number
@@ -31,6 +39,8 @@ export const Depth3D = ({
   testID,
   color = 'blue',
   layoutType,
+  sizeVariant = 'auto',
+  gridColumns,
   fullWidth,
   width,
   height,
@@ -56,6 +66,8 @@ export const Depth3D = ({
       testID={testID}
       isPressed={isPressed}
       layoutType={layoutType}
+      sizeVariant={sizeVariant}
+      gridColumns={gridColumns}
       fullWidth={fullWidth}
       width={width}
       height={height}
@@ -68,10 +80,11 @@ export const Depth3D = ({
       <Depth3DContent
         color={color}
         layoutType={layoutType}
-        fullWidth={fullWidth}
-        height={height}
+        sizeVariant={sizeVariant}
         customStyles={customStyles}
         isPressed={isPressed}
+        fullWidth={fullWidth}
+        height={height}
       >
         {children({ color, isPressed })}
       </Depth3DContent>
