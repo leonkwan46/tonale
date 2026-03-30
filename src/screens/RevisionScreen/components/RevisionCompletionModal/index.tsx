@@ -1,6 +1,7 @@
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
   DescriptionText,
   TitleText
@@ -37,28 +38,29 @@ export const RevisionCompletionModal = ({
             testID="done-button"
             variant="filled"
             size="sm"
-            rowLayout="solo"
             onPress={onExit}
             label="Done!"
           />
         ) : (
           <>
-            <Button
-              testID="exit-button"
-              variant="outlined"
-              size="sm"
-              rowLayout="pair"
-              onPress={onExit}
-              label="Exit"
-            />
-            <Button
-              testID="revise-button"
-              variant="filled"
-              size="sm"
-              rowLayout="pair"
-              onPress={onRevise}
-              label="Revise"
-            />
+            <ButtonItem grow>
+              <Button
+                testID="exit-button"
+                variant="outlined"
+                size="sm"
+                onPress={onExit}
+                label="Exit"
+              />
+            </ButtonItem>
+            <ButtonItem grow>
+              <Button
+                testID="revise-button"
+                variant="filled"
+                size="sm"
+                onPress={onRevise}
+                label="Revise"
+              />
+            </ButtonItem>
           </>
         )}
       </ButtonContainer>

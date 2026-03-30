@@ -75,3 +75,8 @@ export const ButtonContainer = styled.View<{ singleButton?: boolean }>(
       : scale(theme.spacing.sm)
   })
 )
+
+export const ButtonItem = styled.View<{ grow?: boolean }>(({ grow }) => ({
+  flex: grow ? 1 : undefined,
+  alignSelf: grow ? 'stretch' : 'center'
+}))

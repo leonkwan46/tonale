@@ -1,6 +1,7 @@
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
   DescriptionText
 } from '@/compLib/Modal/Modal.styles'
@@ -64,30 +65,30 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
             testID="continue-button"
             variant="filled"
             color="primary"
-            depth
-            fullWidth
             onPress={props.onContinue}
             label="Continue"
           />
         </ButtonContainer>
       ) : (
         <ButtonContainer>
-          <Button
-            testID="exit-button"
-            variant="outlined"
-            size="sm"
-            rowLayout="pair"
-            onPress={props.onExit}
-            label="Exit"
-          />
-          <Button
-            testID="retry-test-button"
-            variant="filled"
-            size="sm"
-            rowLayout="pair"
-            onPress={props.onRetry}
-            label="Retry Test"
-          />
+          <ButtonItem grow>
+            <Button
+              testID="exit-button"
+              variant="outlined"
+              size="sm"
+              onPress={props.onExit}
+              label="Exit"
+            />
+          </ButtonItem>
+          <ButtonItem grow>
+            <Button
+              testID="retry-test-button"
+              variant="filled"
+              size="sm"
+              onPress={props.onRetry}
+              label="Retry Test"
+            />
+          </ButtonItem>
         </ButtonContainer>
       )}
     </Modal>

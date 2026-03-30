@@ -1,6 +1,7 @@
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
   DescriptionText,
   TitleText
@@ -38,21 +39,23 @@ export const WarningModal = ({
       </DescriptionText>
       
       <ButtonContainer>
-        <Button
-          variant="outlined"
-          size="sm"
-          rowLayout="pair"
-          onPress={onCancel}
-          label="Cancel"
-        />
+        <ButtonItem grow>
+          <Button
+            variant="outlined"
+            size="sm"
+            onPress={onCancel}
+            label="Cancel"
+          />
+        </ButtonItem>
 
-        <Button
-          variant="filled"
-          size="sm"
-          rowLayout="pair"
-          onPress={onContinue}
-          label="Continue"
-        />
+        <ButtonItem grow>
+          <Button
+            variant="filled"
+            size="sm"
+            onPress={onContinue}
+            label="Continue"
+          />
+        </ButtonItem>
       </ButtonContainer>
     </Modal>
   )

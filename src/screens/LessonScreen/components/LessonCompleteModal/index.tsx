@@ -2,6 +2,7 @@ import { useDevice } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
   DescriptionText,
   TitleText
@@ -124,23 +125,25 @@ export const LessonCompleteModal = ({
       </DescriptionText>
 
       <ButtonContainer>
-        <Button
-          testID="lesson-complete-modal-retry-button"
-          variant="outlined"
-          size="sm"
-          rowLayout="pair"
-          onPress={onRetry}
-          label="Retry"
-        />
+        <ButtonItem grow>
+          <Button
+            testID="lesson-complete-modal-retry-button"
+            variant="outlined"
+            size="sm"
+            onPress={onRetry}
+            label="Retry"
+          />
+        </ButtonItem>
 
-        <Button
-          testID="lesson-complete-modal-continue-button"
-          variant="filled"
-          size="sm"
-          rowLayout="pair"
-          onPress={onContinue}
-          label="Continue"
-        />
+        <ButtonItem grow>
+          <Button
+            testID="lesson-complete-modal-continue-button"
+            variant="filled"
+            size="sm"
+            onPress={onContinue}
+            label="Continue"
+          />
+        </ButtonItem>
       </ButtonContainer>
     </Modal>
   )
