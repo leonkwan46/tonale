@@ -1,5 +1,4 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
@@ -34,12 +33,4 @@ export const InnerCircle = styled.View(({ theme }) => ({
   shadowOpacity: 0.1,
   shadowRadius: scale(theme.spacing.xs),
   elevation: 2
-}))
-
-export const MusicIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary,
-  zIndex: 10,
-  textShadowOffset: { width: 0, height: scale(1) },
-  textShadowRadius: scale(2),
-  textShadowColor: 'rgba(0, 0, 0, 0.2)'
 }))

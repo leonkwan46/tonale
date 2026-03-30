@@ -1,4 +1,4 @@
-import { Icon } from '@/sharedComponents/Icon'
+import { Icon } from '@/compLib/Icon'
 
 import { ErrorContainer, ErrorText } from './ErrorState.styles'
 
@@ -10,7 +10,9 @@ export const ErrorState = ({ error }: ErrorStateProps) => {
   return (
     <ErrorContainer>
       <Icon name="alert-circle" sizeVariant="lg" colorVariant="error" />
-      <ErrorText>{error}</ErrorText>
+      <ErrorText size="xs" colorVariant="error">
+        {error}
+      </ErrorText>
     </ErrorContainer>
   )
 }

@@ -1,4 +1,4 @@
-import { DisplayCard } from '@/sharedComponents/DisplayCard'
+import { DisplayCard } from '@/compLib/DisplayCard'
 import { NoteType } from '@leonkwan46/music-notation'
 import type { StageNumber, VisualComponent } from '@types'
 import {
@@ -8,7 +8,7 @@ import {
   renderTimeSignature,
   renderTriplet
 } from '../../../../utils/visualRender'
-import { VisualQuestionContainer } from '../../../VisualQuestion/VisualQuestion.styles'
+import { QuestionContainer } from '../../QuestionContainer.styles'
 
 interface NotationProps {
   visualComponent: VisualComponent
@@ -30,7 +30,7 @@ export const Notation = ({ visualComponent, stage }: NotationProps) => {
     !shouldRenderIndividualNotes
 
   return (
-    <VisualQuestionContainer>
+    <QuestionContainer>
       {visualComponent.type === 'timeSignature' && visualComponent.timeSignatureValue && (
         <DisplayCard>
           {renderTimeSignature(visualComponent.timeSignatureValue)}
@@ -77,6 +77,6 @@ export const Notation = ({ visualComponent, stage }: NotationProps) => {
           )}
         </DisplayCard>
       )}
-    </VisualQuestionContainer>
+    </QuestionContainer>
   )
 }

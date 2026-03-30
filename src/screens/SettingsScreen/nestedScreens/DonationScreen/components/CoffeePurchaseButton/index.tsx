@@ -1,5 +1,6 @@
+import { useDevice } from '@/hooks'
 import React from 'react'
-import { ImageSourcePropType, TouchableOpacity } from 'react-native'
+import { ImageSourcePropType } from 'react-native'
 
 import {
   ButtonDescription,
@@ -21,13 +22,16 @@ export const CoffeePurchaseButton = ({
   price,
   onPress
 }: CoffeePurchaseButtonProps) => {
+  const { isTablet } = useDevice()
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-      <PurchaseButtonContainer>
-        <CoffeeIcon source={iconSource} />
-        <ButtonDescription>{description}</ButtonDescription>
-        <PriceText>{price}</PriceText>
-      </PurchaseButtonContainer>
-    </TouchableOpacity>
+    <PurchaseButtonContainer onPress={onPress}>
+      <CoffeeIcon source={iconSource} />
+      <ButtonDescription size={isTablet ? 'sm' : 'md'}>
+        {description}
+      </ButtonDescription>
+      <PriceText size={isTablet ? 'md' : 'lg'} weight="bold">
+        {price}
+      </PriceText>
+    </PurchaseButtonContainer>
   )
 }

@@ -1,9 +1,10 @@
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
-import { Platform, TouchableOpacity } from 'react-native'
+import { Platform } from 'react-native'
 import { scale, verticalScale } from 'react-native-size-matters'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { PressableFeedback } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
 
 export const TAB_CONFIG = {
@@ -29,18 +30,16 @@ export const TabBarContainer = styled.View<{
 }>(({ theme, bottomInset, config }) => ({
   flexDirection: 'row',
   backgroundColor: theme.colors.surface,
-  borderTopWidth: 1,
-  borderTopColor: theme.colors.border,
   paddingBottom: bottomInset,
   paddingHorizontal: theme.device.isTablet ? config.paddingHorizontal : scale(config.paddingHorizontal),
   height: Platform.select({
-    ios: theme.device.isTablet ? config.height.ios : verticalScale(config.height.ios),
-    android: theme.device.isTablet ? config.height.android : verticalScale(config.height.android)
+    ios: theme.device.isTablet ? config.height.ios : verticalScale(config.height.ios + scale(theme.spacing.sm)),
+    android: theme.device.isTablet ? config.height.android : verticalScale(config.height.android + scale(theme.spacing.sm))
   }),
   ...theme.shadows.lg
 }))
 
-export const TabButton = styled(TouchableOpacity, {
+export const TabButton = styled(PressableFeedback, {
   shouldForwardProp: createForwardProps(['config'])
 })<{
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
@@ -56,14 +55,14 @@ export const TabLabel = styled.Text<{
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ focused, theme, config }) => ({
   fontSize: theme.device.isTablet ? config.fontSize : scale(config.fontSize),
-  color: focused ? theme.colors.tint : theme.colors.tabIconDefault,
+  color: focused ? theme.components.tabBar.active : theme.components.tabBar.inactive,
   marginTop: 4,
-  fontFamily: getSourGummyFontFamily('500')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 export const TabIcon = styled(Ionicons)<{
   focused: boolean
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ focused, theme, config }) => ({
-  color: focused ? theme.colors.tint : theme.colors.tabIconDefault
+  color: focused ? theme.components.tabBar.active : theme.components.tabBar.inactive
 }))

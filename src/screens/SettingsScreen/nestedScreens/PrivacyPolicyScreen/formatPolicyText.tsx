@@ -17,7 +17,7 @@ export type FormattedSegment = {
  * Parses policy text with **bold**, *italic*, and ==highlight== (primary colour) markup.
  * Uses lazy .*? for robustness (e.g. **text with * inside**).
  */
-export function parseFormattedText(text: string): FormattedSegment[] {
+export const parseFormattedText = (text: string): FormattedSegment[] => {
   const segments: FormattedSegment[] = []
   let lastIndex = 0
   const combinedRegex = /\*\*(.*?)\*\*|\*(.*?)\*|==(.*?)==/g
@@ -44,32 +44,58 @@ export function parseFormattedText(text: string): FormattedSegment[] {
   return segments.length > 0 ? segments : [{ type: 'normal', text }]
 }
 
-function looksLikeEmail(text: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.trim())
-}
+const looksLikeEmail = (text: string): boolean =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.trim())
 
-export function renderFormattedSegments(segments: FormattedSegment[], keyPrefix: string): ReactNode[] {
+export const renderFormattedSegments = (
+  segments: FormattedSegment[],
+  keyPrefix: string
+): ReactNode[] => {
   return segments.map((seg, i) => {
     const key = `${keyPrefix}-${i}`
     if (seg.type === 'bold') {
-      return <ParagraphBold key={key}>{seg.text}</ParagraphBold>
+      return (
+        <ParagraphBold key={key} size="sm" weight="semibold">
+          {seg.text}
+        </ParagraphBold>
+      )
     }
     if (seg.type === 'italic') {
-      return <ParagraphItalic key={key}>{seg.text}</ParagraphItalic>
+      return (
+        <ParagraphItalic key={key} size="sm" italic>
+          {seg.text}
+        </ParagraphItalic>
+      )
     }
     if (seg.type === 'highlight') {
       if (looksLikeEmail(seg.text)) {
         return (
           <ParagraphHighlight
             key={key}
+            size="sm"
+            weight="semibold"
+            colorVariant="primary"
             onPress={() => Linking.openURL(`mailto:${seg.text}`)}
           >
             {seg.text}
           </ParagraphHighlight>
         )
       }
-      return <ParagraphHighlight key={key}>{seg.text}</ParagraphHighlight>
+      return (
+        <ParagraphHighlight
+          key={key}
+          size="sm"
+          weight="semibold"
+          colorVariant="primary"
+        >
+          {seg.text}
+        </ParagraphHighlight>
+      )
     }
-    return <ParagraphPlain key={key}>{seg.text}</ParagraphPlain>
+    return (
+      <ParagraphPlain key={key} size="sm">
+        {seg.text}
+      </ParagraphPlain>
+    )
   })
 }

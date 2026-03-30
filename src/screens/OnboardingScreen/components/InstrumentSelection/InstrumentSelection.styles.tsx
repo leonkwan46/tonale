@@ -1,7 +1,5 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import * as React from 'react'
-import { TextInput } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 export const SectionContainer = styled.View(({ theme }) => ({
@@ -9,29 +7,5 @@ export const SectionContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
-export const SectionTitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.base),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.semibold)
-}))
-
-const StyledTextInput = styled(TextInput)(({ theme }) => ({
-  width: '100%',
-  height: theme.device.isTablet ? scale(44) : scale(48),
-  borderWidth: 1,
-  borderRadius: scale(theme.borderRadius.md),
-  paddingHorizontal: scale(theme.spacing.md),
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  color: theme.colors.text,
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.primary,
-  placeholderTextColor: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily(theme.fontWeight.normal)
-}))
-
-export const CustomInstrumentInput = React.forwardRef<TextInput, React.ComponentProps<typeof StyledTextInput>>(
-  function CustomInstrumentInput(props, ref) {
-    return <StyledTextInput {...props} ref={ref} />
-  }
-)
+export const SectionTitle = styled(Typography)(() => ({}))
 

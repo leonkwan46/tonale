@@ -1,4 +1,9 @@
-import { GRADE_ONE_ACCIDENTAL_SIGNS, GRADE_ONE_ARTICULATION_SIGNS, GRADE_ONE_DYNAMIC_SYMBOLS, TERM_DISPLAY_NAMES } from '@/config/gradeSyllabus'
+import {
+  GRADE_ONE_ACCIDENTAL_SIGNS,
+  GRADE_ONE_ARTICULATION_SIGNS,
+  GRADE_ONE_DYNAMIC_SYMBOLS,
+  TERM_DISPLAY_NAMES
+} from '@/config/gradeSyllabus'
 import { formatAsNotation } from '@/subjects/theory/exercises/utils/timeSignature'
 import { canPronounceTerm } from '@/utils/pronounce'
 import {
@@ -25,9 +30,8 @@ import {
   type TimeSignatureType
 } from '@leonkwan46/music-notation'
 import type { StageNumber, VisualComponent, VisualComponentSize } from '@types'
-import { SMuFLCard } from '../components/SMuFLCard'
-import { TTSButton } from '../components/VisualQuestion/TTSButton'
-import { SMuFLSymbolText } from '../components/VisualQuestion/VisualQuestion.styles'
+import { SMuFLCard } from '../components/QuestionInterface/QuestionTypes/Symbols/SMuFLCard'
+import { TTSButton } from '../components/QuestionInterface/QuestionTypes/Symbols/TTSButton'
 
 const MUSIC_STAFF_HEIGHTS: Record<StageNumber, number> = {
   0: 250,
@@ -39,7 +43,14 @@ const MUSIC_STAFF_HEIGHTS: Record<StageNumber, number> = {
   6: 300
 }
 
-const WIDE_DYNAMIC_SYMBOLS = ['crescendo', 'decrescendo', 'diminuendo', 'cresc.', 'decresc.', 'dim.'] as const
+const WIDE_DYNAMIC_SYMBOLS = [
+  'crescendo',
+  'decrescendo',
+  'diminuendo',
+  'cresc.',
+  'decresc.',
+  'dim.'
+] as const
 
 export const renderTriplet = (noteType: NoteType, numberOfNotes: number) => {
   const elements: MusicElementData[][] = []
@@ -89,9 +100,12 @@ export const renderNoteComponent = (noteType: VisualComponent['noteType']) => {
   }
 }
 
-export const renderTimeSignature = (timeSignatureValue: string | TimeSignatureType | undefined) => {
+export const renderTimeSignature = (
+  timeSignatureValue: string | TimeSignatureType | undefined
+) => {
   const value = timeSignatureValue || ''
-  const timeSignatureString = typeof value === 'string' ? value : formatAsNotation(value)
+  const timeSignatureString =
+    typeof value === 'string' ? value : formatAsNotation(value)
   const parsedTimeSignature = parseTimeSignature(timeSignatureString)
 
   if (typeof parsedTimeSignature === 'string') {
@@ -120,23 +134,45 @@ export const renderTermAndSign = (
   const symbolText =
     !symbolType || !shouldRenderAsSymbol
       ? ''
-      : GRADE_ONE_DYNAMIC_SYMBOLS[symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS] ||
-        GRADE_ONE_ARTICULATION_SIGNS[symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS] ||
-        GRADE_ONE_ACCIDENTAL_SIGNS[symbolType as keyof typeof GRADE_ONE_ACCIDENTAL_SIGNS] ||
+      : GRADE_ONE_DYNAMIC_SYMBOLS[
+          symbolType as keyof typeof GRADE_ONE_DYNAMIC_SYMBOLS
+        ] ||
+        GRADE_ONE_ARTICULATION_SIGNS[
+          symbolType as keyof typeof GRADE_ONE_ARTICULATION_SIGNS
+        ] ||
+        GRADE_ONE_ACCIDENTAL_SIGNS[
+          symbolType as keyof typeof GRADE_ONE_ACCIDENTAL_SIGNS
+        ] ||
         ''
 
-  const isTextTermValue =
-    !symbolType ? false : !shouldRenderAsSymbol ? true : !(symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) && !(symbolType in GRADE_ONE_ARTICULATION_SIGNS) && !(symbolType in GRADE_ONE_ACCIDENTAL_SIGNS)
+  const isTextTermValue = !symbolType
+    ? false
+    : !shouldRenderAsSymbol
+      ? true
+      : !(symbolType in GRADE_ONE_DYNAMIC_SYMBOLS) &&
+        !(symbolType in GRADE_ONE_ARTICULATION_SIGNS) &&
+        !(symbolType in GRADE_ONE_ACCIDENTAL_SIGNS)
 
-  const displayText = !symbolType ? '' : TERM_DISPLAY_NAMES[symbolType as keyof typeof TERM_DISPLAY_NAMES] || symbolType
-  const isWideDynamicValue = Boolean(symbolType && WIDE_DYNAMIC_SYMBOLS.includes(symbolType as (typeof WIDE_DYNAMIC_SYMBOLS)[number]))
-  const showTTSButton = Boolean(symbolType && enableTTS !== false && canPronounceTerm(symbolType))
+  const displayText = !symbolType
+    ? ''
+    : TERM_DISPLAY_NAMES[symbolType as keyof typeof TERM_DISPLAY_NAMES] ||
+      symbolType
+  const isWideDynamicValue = Boolean(
+    symbolType &&
+    WIDE_DYNAMIC_SYMBOLS.includes(
+      symbolType as (typeof WIDE_DYNAMIC_SYMBOLS)[number]
+    )
+  )
+  const showTTSButton = Boolean(
+    symbolType && enableTTS !== false && canPronounceTerm(symbolType)
+  )
 
   return (
-    <SMuFLCard isTextTerm={isTextTermValue}>
-      <SMuFLSymbolText isTextTerm={isTextTermValue} isWideDynamic={isWideDynamicValue}>
-        {isTextTermValue ? displayText : symbolText}
-      </SMuFLSymbolText>
+    <SMuFLCard
+      text={isTextTermValue ? displayText : symbolText}
+      isTextTerm={isTextTermValue}
+      isWideDynamic={isWideDynamicValue}
+    >
       {showTTSButton && <TTSButton symbolType={symbolType} />}
     </SMuFLCard>
   )
@@ -147,12 +183,15 @@ export const calculateMusicStaffMinHeight = (
   elements: MusicElementData[] | undefined,
   stage: StageNumber | undefined
 ): number => {
-  if (!clef || !elements?.length || !elements.some(el => el.pitch)) return 200
+  if (!clef || !elements?.length || !elements.some((el) => el.pitch))
+    return 200
   return stage !== undefined ? MUSIC_STAFF_HEIGHTS[stage] : 300
 }
 
 const parseTimeSignatureForLibrary = (value: string | TimeSignatureType) =>
-  parseTimeSignature(typeof value === 'string' ? value : formatAsNotation(value))
+  parseTimeSignature(
+    typeof value === 'string' ? value : formatAsNotation(value)
+  )
 
 export const renderMusicStaff = (
   size: VisualComponentSize | undefined,
@@ -174,7 +213,13 @@ export const renderMusicStaff = (
           : parseTimeSignatureForLibrary(formatAsNotation(timeSignature))
     }
     keyName={keyName}
-    elements={!elements ? [] : isChord ? [elements] : elements.map((el: MusicElementData) => [el])}
+    elements={
+      !elements
+        ? []
+        : isChord
+          ? [elements]
+          : elements.map((el: MusicElementData) => [el])
+    }
     showStaff={showStaff}
   />
 )

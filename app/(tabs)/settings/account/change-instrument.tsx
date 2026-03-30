@@ -1,5 +1,5 @@
 import { ChangeInstrumentScreen } from '@/screens/SettingsScreen/nestedScreens/AccountSettingsScreen/nestedScreens/ChangeInstrumentScreen'
 
-export default function ChangeInstrumentRoute() {
-  return <ChangeInstrumentScreen />
-}
+const ChangeInstrumentRoute = () => <ChangeInstrumentScreen />
+
+export default ChangeInstrumentRoute

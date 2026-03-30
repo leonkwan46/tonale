@@ -1,6 +1,6 @@
 import { AccountSettingsScreen } from '@/screens/SettingsScreen/nestedScreens/AccountSettingsScreen'
 
-export default function AccountSettingsRoute() {
-  return <AccountSettingsScreen />
-}
+const AccountSettingsRoute = () => <AccountSettingsScreen />
+
+export default AccountSettingsRoute
 

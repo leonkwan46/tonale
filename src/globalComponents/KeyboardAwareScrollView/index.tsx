@@ -7,7 +7,7 @@ export interface KeyboardAwareScrollViewProps extends ScrollViewProps {
 }
 
 export const KeyboardAwareScrollView = React.forwardRef<ScrollView, KeyboardAwareScrollViewProps>(
-  function KeyboardAwareScrollView(props, ref) {
+  (props, ref) => {
     const { children, ...scrollViewProps } = props
 
     return (

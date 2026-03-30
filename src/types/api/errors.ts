@@ -3,12 +3,9 @@ export interface FirebaseError extends Error {
   customData?: Record<string, unknown>
 }
 
-export function isFirebaseError(error: unknown): error is FirebaseError {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    typeof (error as FirebaseError).code === 'string'
-  )
-}
+export const isFirebaseError = (error: unknown): error is FirebaseError =>
+  typeof error === 'object' &&
+  error !== null &&
+  'code' in error &&
+  typeof (error as FirebaseError).code === 'string'
 

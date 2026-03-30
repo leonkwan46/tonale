@@ -1,5 +1,5 @@
 import { TheoryScreen } from '@/screens/TheoryScreen'
 
-export default function TheoryTabScreen() {
-  return <TheoryScreen />
-}
+const TheoryTabScreen = () => <TheoryScreen />
+
+export default TheoryTabScreen

@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+import '@/config/theme/devThemeContrast'
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
@@ -15,7 +16,22 @@ import { ThemeModeProvider } from '@/hooks/useThemeModeContext'
 import { UserProvider } from '@/hooks/useUserContext'
 import { SplashScreen } from '@/screens/SplashScreen'
 
-export default function RootLayout() {  
+if (!__DEV__) {
+  console.log = () => {}
+  console.warn = () => {}
+  console.error = () => {}
+  console.info = () => {}
+  console.debug = () => {}
+}
+
+const DevErrorBoundaryTrigger = () => {
+  if (__DEV__ && process.env.EXPO_PUBLIC_FORCE_ERROR_BOUNDARY === '1') {
+    throw new Error('Test ErrorBoundary')
+  }
+  return null
+}
+
+const RootLayout = () => {
   const [showSplash, setShowSplash] = useState(true)
 
   return (
@@ -24,6 +40,7 @@ export default function RootLayout() {
         <ThemeModeProvider>
           <AppThemeProvider>
             <ErrorBoundary>
+              <DevErrorBoundaryTrigger />
               <NetworkNotificationProvider>
                 <UserProvider>
                   <ProgressProvider>
@@ -54,3 +71,5 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   )
 }
+
+export default RootLayout

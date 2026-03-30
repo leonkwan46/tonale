@@ -1,6 +1,6 @@
+import BouncingScrollView from '@/compLib/BouncingScrollView'
 import { useWindowDimensions } from '@/hooks'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
-import BouncingScrollView from '@/sharedComponents/BouncingScrollView'
 import { getAvatarFullSource } from '@/utils/avatarAssets'
 import { useTheme } from '@emotion/react'
 import { GENDER, type UserGender, type UserInstrument } from '@types'
@@ -60,10 +60,10 @@ export const HomeScreenBackground = ({
 
   const gradientColors = useMemo(() => {
     const colors = isDark
-      ? theme.colors.homeScreen.gradient.dark
-      : theme.colors.homeScreen.gradient.light
+      ? theme.components.homeScreen.gradient.dark
+      : theme.components.homeScreen.gradient.light
     return colors as unknown as readonly [string, string, ...string[]]
-  }, [isDark, theme.colors.homeScreen.gradient])
+  }, [isDark, theme.components.homeScreen.gradient])
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
   // Need to implement gesture-based solution for Android if cross-platform support is required.

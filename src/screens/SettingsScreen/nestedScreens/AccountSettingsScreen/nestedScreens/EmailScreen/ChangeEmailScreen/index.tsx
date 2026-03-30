@@ -1,8 +1,10 @@
 import { updateUserEmailAddress } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Icon } from '@/sharedComponents/Icon'
+import { useDevice, useUser } from '@/hooks'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useState } from 'react'
 import { Keyboard, ScrollView } from 'react-native'
 
@@ -13,15 +15,12 @@ import {
   ErrorContainer,
   ErrorText,
   FormCard,
-  Input,
-  InputField,
-  PrimaryButtonText,
-  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './ChangeEmailScreen.styles'
 
 export const ChangeEmailScreen = () => {
+  const { isTablet } = useDevice()
   const { authUser } = useUser()
 
   const [newEmail, setNewEmail] = useState('')
@@ -56,8 +55,12 @@ export const ChangeEmailScreen = () => {
       setNewEmail('')
       setPassword('')
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update email'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t update your email. Please try again.'
+        )
+      )
     } finally {
       setLoading(false)
     }
@@ -75,7 +78,11 @@ export const ChangeEmailScreen = () => {
 
           {success ? (
             <SuccessContainer>
-              <SuccessText>
+              <SuccessText
+                size={isTablet ? 'sm' : 'md'}
+                colorVariant="success"
+                align="center"
+              >
                 A verification link has been sent to your new email address.
               </SuccessText>
             </SuccessContainer>
@@ -84,53 +91,49 @@ export const ChangeEmailScreen = () => {
               {error ? (
                 <ErrorContainer>
                   <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-                  <ErrorText>{error}</ErrorText>
+                  <ErrorText
+                    size={isTablet ? 'xs' : 'sm'}
+                    colorVariant="error"
+                  >
+                    {error}
+                  </ErrorText>
                 </ErrorContainer>
               ) : null}
 
-              <InputField disabled={loading}>
-                <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-                <Input
-                  placeholder="New Email"
-                  value={newEmail}
-                  onChangeText={setNewEmail}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  autoComplete="email"
-                  editable={!loading}
-                  returnKeyType="next"
-                />
-              </InputField>
-
-              <InputField disabled={loading}>
-                <Icon name="lock-closed-outline" sizeVariant="sm" colorVariant="primary" />
-                <Input
-                  placeholder="Current Password"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  editable={!loading}
-                  returnKeyType="done"
-                  onSubmitEditing={handleConfirm}
-                />
-              </InputField>
-              <Button3D
+              <InputField
+                leftIcon="mail-outline"
+                placeholder="New Email"
+                value={newEmail}
+                onChangeText={setNewEmail}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                autoComplete="email"
                 disabled={loading}
+                returnKeyType="next"
+              />
+
+              <InputField
+                leftIcon="lock-closed-outline"
+                placeholder="Current Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                disabled={loading}
+                returnKeyType="done"
+                onSubmitEditing={handleConfirm}
+              />
+              <Button
+                variant="filled"
+                color="primary"
+                disabled={loading}
+                loading={loading}
                 onPress={handleConfirm}
-                color="blue"
-                layoutType="row"
-                fullWidth
-              >
-                {() => (
-                  <SaveButtonContent>
-                    <PrimaryButtonText>{loading ? 'Confirming...' : 'Confirm'}</PrimaryButtonText>
-                  </SaveButtonContent>
-                )}
-              </Button3D>
+                label={loading ? 'Updating email…' : 'Confirm'}
+              />
             </FormCard>
           )}
         </ContentContainer>

@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export type LayoutType = 'grid' | 'row'
 
@@ -27,19 +27,6 @@ export const MultipleChoiceButtonContainer = styled.View<{ layoutType: LayoutTyp
   width: '100%'
 }))
 
-export const ChoiceText = styled.Text<{ layoutType: LayoutType }>(({ theme, layoutType }) => {
-  const getFontSize = () => {
-    if (layoutType === 'grid') {
-      return theme.device.isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl)
-    }
-    return theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base)
-  }
-
-  return {
-    fontSize: getFontSize(),
-    color: theme.colors.text,
-    textAlign: 'center',
-    fontFamily: getSourGummyFontFamily('600'),
-    width: '100%'
-  }
-})
+export const ChoiceText = styled(Typography)(() => ({
+  width: '100%'
+}))

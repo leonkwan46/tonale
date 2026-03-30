@@ -1,6 +1,7 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import type { Depth3DColor } from '@/compLib/Depth3D/Depth3D.styles'
+import { Typography } from '@/compLib/Typography'
+import { createForwardProps } from '@/utils/styledProps'
 import styled from '@emotion/native'
-import { scale } from 'react-native-size-matters'
 
 export const Container = styled.View({
   alignItems: 'center',
@@ -8,8 +9,8 @@ export const Container = styled.View({
   width: '100%'
 })
 
-export const TapButtonText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  color: '#ffffff',
-  fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
-  fontFamily: getSourGummyFontFamily('700')
+export const TapButtonText = styled(Typography, {
+  shouldForwardProp: createForwardProps(['isTablet', 'buttonColor'])
+})<{ isTablet: boolean; buttonColor: Depth3DColor }>(({ theme, buttonColor }) => ({
+  color: theme.components.button[buttonColor].text
 }))

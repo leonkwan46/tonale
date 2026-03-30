@@ -2,35 +2,33 @@ import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
 import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
 } from 'firebase/auth'
-import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { Keyboard, TextInput } from 'react-native'
 import type { AuthFormData, AuthState } from '../../index'
 import {
   EyeIcon,
-  ForgotPasswordText,
-  ForgotPasswordTouchable,
+  ForgotPasswordWrap,
   FormSection,
-  Input,
-  InputField,
   InputsContainer,
-  PrimaryButton,
-  PrimaryButtonText,
   RequirementsText,
   StatusContainer,
   StatusText
 } from './AuthForm.styles'
 
 interface AuthFormProps {
-  authState: AuthState;
-  formData: AuthFormData;
-  setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>;
-  setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
+  authState: AuthState
+  formData: AuthFormData
+  setFormData: Dispatch<SetStateAction<AuthFormData>>
+  setAuthState: Dispatch<SetStateAction<AuthState>>
 }
 
 export const AuthForm = ({
@@ -121,7 +119,12 @@ export const AuthForm = ({
       }
     } catch (err) {
       updateAuthState({
-        error: (err as Error).message || `Failed to ${authState.mode}`
+        error: getUserFacingErrorMessage(
+          err,
+          isLoginMode
+            ? 'Couldn’t sign in. Please try again.'
+            : 'Couldn’t create your account. Please try again.'
+        )
       })
     } finally {
       updateAuthState({ loading: false })
@@ -160,7 +163,10 @@ export const AuthForm = ({
       updateAuthState({ error: '' })
     } catch (err) {
       updateAuthState({
-        error: (err as Error).message || 'Failed to send reset email'
+        error: getUserFacingErrorMessage(
+          err,
+          'Couldn’t send the reset email. Please try again.'
+        )
       })
     } finally {
       updateAuthState({ loading: false })
@@ -182,140 +188,132 @@ export const AuthForm = ({
             sizeVariant="xs"
             colorVariant={statusMessage.variant === 'error' ? 'error' : 'success'}
           />
-          <StatusText variant={statusMessage.variant}>{statusMessage.text}</StatusText>
+          <StatusText
+            size="xs"
+            colorVariant={
+              statusMessage.variant === 'error' ? 'error' : 'success'
+            }
+          >
+            {statusMessage.text}
+          </StatusText>
         </StatusContainer>
       ) : null}
 
       <InputsContainer>
-        <InputField>
-          <Icon name="mail-outline" sizeVariant="sm" colorVariant="primary" />
-          <Input
-            ref={emailInputRef}
-            placeholder="Email"
-            onChangeText={(text: string) => updateFormData('email', text)}
-            value={formData.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            textContentType={
-              isLoginMode ? 'username' : 'emailAddress'
-            }
-            autoComplete={isLoginMode ? 'username' : 'email'}
-            returnKeyType="next"
-            onSubmitEditing={handleEmailSubmit}
-          />
-        </InputField>
+        <InputField
+          ref={emailInputRef}
+          leftIcon="mail-outline"
+          placeholder="Email"
+          onChangeText={(text: string) => updateFormData('email', text)}
+          value={formData.email}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType={isLoginMode ? 'username' : 'emailAddress'}
+          autoComplete={isLoginMode ? 'username' : 'email'}
+          returnKeyType="next"
+          onSubmitEditing={handleEmailSubmit}
+        />
 
-        <InputField>
-          <Icon
-            name="lock-closed-outline"
-            sizeVariant="sm"
-            colorVariant="primary"
-          />
-          <Input
-            ref={passwordInputRef}
-            placeholder="Password"
-            onChangeText={(text: string) => updateFormData('password', text)}
-            value={formData.password}
-            secureTextEntry={!authState.showPassword}
-            textContentType={
-              isLoginMode ? 'password' : 'newPassword'
-            }
-            autoComplete={
-              isLoginMode ? 'current-password' : 'new-password'
-            }
-            returnKeyType={isRegisterMode ? 'next' : 'done'}
-            onSubmitEditing={handlePasswordSubmit}
-          />
-          <EyeIcon
-            onPress={() =>
-              updateAuthState({ showPassword: !authState.showPassword })
-            }
-          >
-            <Icon
-              name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'}
-              sizeVariant="sm"
-              colorVariant="primary"
-            />
-          </EyeIcon>
-        </InputField>
-
-        {isLoginMode && (
-          <ForgotPasswordTouchable
-            onPress={handleForgotPassword}
-            disabled={authState.loading}
-          >
-            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-          </ForgotPasswordTouchable>
-        )}
-
-        {isRegisterMode && (
-          <InputField>
-            <Icon
-              name="lock-closed-outline"
-              sizeVariant="sm"
-              colorVariant="primary"
-            />
-            <Input
-              ref={confirmPasswordInputRef}
-              placeholder="Confirm Password"
-              onChangeText={(text: string) =>
-                updateFormData('confirmPassword', text)
-              }
-              value={formData.confirmPassword}
-              secureTextEntry={!authState.showConfirmPassword}
-              textContentType="newPassword"
-              autoComplete="new-password"
-              returnKeyType="done"
-              onSubmitEditing={handleConfirmPasswordSubmit}
-            />
+        <InputField
+          ref={passwordInputRef}
+          leftIcon="lock-closed-outline"
+          placeholder="Password"
+          onChangeText={(text: string) => updateFormData('password', text)}
+          value={formData.password}
+          secureTextEntry={!authState.showPassword}
+          textContentType={isLoginMode ? 'password' : 'newPassword'}
+          autoComplete={isLoginMode ? 'current-password' : 'new-password'}
+          returnKeyType={isRegisterMode ? 'next' : 'done'}
+          onSubmitEditing={handlePasswordSubmit}
+          rightSlot={
             <EyeIcon
               onPress={() =>
-                updateAuthState({
-                  showConfirmPassword: !authState.showConfirmPassword
-                })
+                updateAuthState({ showPassword: !authState.showPassword })
               }
             >
               <Icon
-                name={
-                  authState.showConfirmPassword
-                    ? 'eye-outline'
-                    : 'eye-off-outline'
-                }
+                name={authState.showPassword ? 'eye-outline' : 'eye-off-outline'}
                 sizeVariant="sm"
                 colorVariant="primary"
               />
             </EyeIcon>
-          </InputField>
+          }
+        />
+
+        {isLoginMode && (
+          <ForgotPasswordWrap>
+            <Button
+              variant="link"
+              size="sm"
+              onPress={handleForgotPassword}
+              disabled={authState.loading}
+              label="Forgot password?"
+            />
+          </ForgotPasswordWrap>
         )}
 
         {isRegisterMode && (
-          <RequirementsText>
+          <InputField
+            ref={confirmPasswordInputRef}
+            leftIcon="lock-closed-outline"
+            placeholder="Confirm Password"
+            onChangeText={(text: string) =>
+              updateFormData('confirmPassword', text)
+            }
+            value={formData.confirmPassword}
+            secureTextEntry={!authState.showConfirmPassword}
+            textContentType="newPassword"
+            autoComplete="new-password"
+            returnKeyType="done"
+            onSubmitEditing={handleConfirmPasswordSubmit}
+            rightSlot={
+              <EyeIcon
+                onPress={() =>
+                  updateAuthState({
+                    showConfirmPassword: !authState.showConfirmPassword
+                  })
+                }
+              >
+                <Icon
+                  name={
+                    authState.showConfirmPassword
+                      ? 'eye-outline'
+                      : 'eye-off-outline'
+                  }
+                  sizeVariant="sm"
+                  colorVariant="primary"
+                />
+              </EyeIcon>
+            }
+          />
+        )}
+
+        {isRegisterMode && (
+          <RequirementsText size="xs" align="center">
             Password must be at least 6 characters
           </RequirementsText>
         )}
       </InputsContainer>
 
-      <PrimaryButton
+      <Button
         testID="auth-submit-button"
+        variant="filled"
+        size="md"
         onPress={handleAuth}
         disabled={authState.loading}
-      >
-        <PrimaryButtonText>
-          {authState.loading
+        loading={authState.loading}
+        rightIcon={isLoginMode ? 'arrow-forward' : 'person-add'}
+        label={
+          authState.loading
             ? isLoginMode
-              ? 'Signing In...'
-              : 'Creating Account...'
+              ? 'Signing in…'
+              : 'Creating your account…'
             : isLoginMode
               ? 'Sign In'
-              : 'Create Account'}
-        </PrimaryButtonText>
-        <Icon
-          name={isLoginMode ? 'arrow-forward' : 'person-add'}
-          sizeVariant="sm"
-          colorVariant="text"
-        />
-      </PrimaryButton>
+              : 'Create Account'
+        }
+      />
     </FormSection>
   )
 }

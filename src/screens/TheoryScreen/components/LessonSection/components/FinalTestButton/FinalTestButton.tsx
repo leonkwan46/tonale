@@ -1,4 +1,4 @@
-import { Button3D } from '@/sharedComponents/Button3D'
+import { Depth3D } from '@/compLib/Depth3D'
 import {
   FinalTestButtonContainer,
   FinalTestContentContainer,
@@ -29,11 +29,11 @@ export const FinalTestButton = ({
   return (
     <FinalTestWrapper>
       <FinalTestButtonContainer>
-        <Button3D
+        <Depth3D
           onPress={onPress}
           disabled={disabled}
           testID={testID}
-          fullWidth={true}
+          layoutType="row"
           color="finalTest"
         >
           {() => (
@@ -43,12 +43,18 @@ export const FinalTestButton = ({
                 <ScrollIcon size={24} />
               </FinalTestIconContainer>
               <FinalTestTextWrapper>
-                <FinalTestTitle>{title}</FinalTestTitle>
-                {description && <FinalTestDescription>{description}</FinalTestDescription>}
+                <FinalTestTitle size="lg" weight="bold">
+                  {title}
+                </FinalTestTitle>
+                {description && (
+                  <FinalTestDescription size="sm" weight="semibold">
+                    {description}
+                  </FinalTestDescription>
+                )}
               </FinalTestTextWrapper>
             </FinalTestContentContainer>
           )}
-        </Button3D>
+        </Depth3D>
       </FinalTestButtonContainer>
     </FinalTestWrapper>
   )

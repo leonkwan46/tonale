@@ -1,8 +1,9 @@
 import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { useDevice, useUser } from '@/hooks'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -12,13 +13,12 @@ import { ContentContainer } from '../../../../SettingsScreen.styles'
 import {
   ErrorContainer,
   ErrorText,
-  PrimaryButtonText,
-  SaveButtonContent,
   SuccessContainer,
   SuccessText
 } from './ChangePasswordScreen.styles'
 
 export const ChangePasswordScreen = () => {
+  const { isTablet } = useDevice()
   const { authUser } = useUser()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -33,8 +33,12 @@ export const ChangePasswordScreen = () => {
       await sendPasswordResetEmailToUser()
       setSuccess(true)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to send password reset email'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(
+          err,
+          'Couldn’t send the reset email. Please try again.'
+        )
+      )
     } finally {
       setLoading(false)
     }
@@ -52,33 +56,34 @@ export const ChangePasswordScreen = () => {
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <ErrorText>{error}</ErrorText>
+              <ErrorText
+                size={isTablet ? 'xs' : 'sm'}
+                colorVariant="error"
+              >
+                {error}
+              </ErrorText>
             </ErrorContainer>
           ) : null}
 
           {success ? (
             <SuccessContainer>
               <Icon name="checkmark-circle" sizeVariant="xs" colorVariant="success" />
-              <SuccessText>
+              <SuccessText
+                size={isTablet ? 'xs' : 'sm'}
+                colorVariant="success"
+              >
                 Password reset email sent! Check your email at {authUser?.email}.
               </SuccessText>
             </SuccessContainer>
           ) : (
-            <Button3D
+            <Button
+              variant="filled"
+              color="primary"
               disabled={loading}
+              loading={loading}
               onPress={handleSendResetEmail}
-              color="blue"
-              layoutType="row"
-              fullWidth
-            >
-              {() => (
-                <SaveButtonContent>
-                  <PrimaryButtonText>
-                    {loading ? 'Sending...' : 'Send Password Reset Email'}
-                  </PrimaryButtonText>
-                </SaveButtonContent>
-              )}
-            </Button3D>
+              label={loading ? 'Sending reset link…' : 'Send Password Reset Email'}
+            />
           )}
         </ContentContainer>
       </ScrollView>

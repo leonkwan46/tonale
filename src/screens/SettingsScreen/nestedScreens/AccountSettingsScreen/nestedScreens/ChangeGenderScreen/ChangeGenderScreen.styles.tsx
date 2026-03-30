@@ -1,18 +1,6 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-
-export const Container = styled.View(({ theme }) => ({
-  flex: 1,
-  backgroundColor: theme.colors.background
-}))
-
-export const ContentContainer = styled.View(({ theme }) => ({
-  padding: scale(theme.spacing.lg),
-  gap: scale(theme.spacing.lg)
-}))
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -26,29 +14,8 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
-export const ErrorText = styled.Text(({ theme }) => ({
-  color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
-}))
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(theme.typography.base) : scale(theme.typography.lg),
-  fontFamily: getSourGummyFontFamily('600')
-}))
-
-export const SaveButtonContent = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  width: '100%'
-}))
-
-export const ErrorIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.error
+export const ErrorText = styled(Typography)(() => ({
+  flex: 1
 }))
 
 export const ScrollContentContainer = styled.View(({ theme }) => ({

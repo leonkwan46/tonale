@@ -17,10 +17,10 @@ export const Header = ({
   <HeaderContainer>
     <AppLogo />
     <TitlesContainer>
-      <Title>
+      <Title size="xl" weight="bold" align="center">
         Tonalè
       </Title>
-      <Subtitle>
+      <Subtitle size="md" muted align="center">
         {authState.mode === 'login'
           ? 'Welcome back! Let\'s continue learning'
           : 'Start your musical journey today'}

@@ -6,7 +6,7 @@ declare module 'firebase/auth' {
    * Returns a persistence implementation for React Native using AsyncStorage.
    * This function exists at runtime but is not included in TypeScript definitions.
    */
-  export function getReactNativePersistence(
+  export const getReactNativePersistence: (
     storage: typeof ReactNativeAsyncStorage
-  ): Persistence
+  ) => Persistence
 }

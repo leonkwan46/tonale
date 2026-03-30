@@ -1,53 +1,8 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
-
-export const InputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  borderWidth: 1,
-  borderRadius: scale(12),
-  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
-  paddingTop: theme.device.isTablet ? scale(12) : scale(16),
-  paddingBottom: theme.device.isTablet ? scale(12) : scale(16),
-  minHeight: theme.device.isTablet ? scale(120) : scale(160),
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.border,
-  gap: theme.device.isTablet ? scale(6) : scale(8)
-}))
-
-export const EmailInputField = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderWidth: 1,
-  borderRadius: scale(12),
-  paddingHorizontal: theme.device.isTablet ? scale(12) : scale(16),
-  height: theme.device.isTablet ? scale(40) : scale(56),
-  backgroundColor: theme.colors.surface,
-  borderColor: theme.colors.border,
-  gap: theme.device.isTablet ? scale(6) : scale(8)
-}))
-
-export const EmailInput = styled.TextInput(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(12) : scale(14),
-  height: '100%',
-  color: theme.colors.text,
-  placeholderTextColor: theme.colors.placeholderText,
-  fontFamily: getSourGummyFontFamily('400')
-}))
-
-export const FeedbackInput = styled.TextInput(({ theme }) => ({
-  flex: 1,
-  fontSize: theme.device.isTablet ? scale(12) : scale(14),
-  minHeight: theme.device.isTablet ? scale(100) : scale(130),
-  color: theme.colors.text,
-  placeholderTextColor: theme.colors.placeholderText,
-  fontFamily: getSourGummyFontFamily('400'),
-  lineHeight: theme.device.isTablet ? scale(18) : scale(20)
-}))
+import { PressableFeedback } from '@/utils/PressableFeedback'
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -61,11 +16,8 @@ export const ErrorContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(8)
 }))
 
-export const ErrorText = styled.Text(({ theme }) => ({
-  color: theme.colors.error,
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
+export const ErrorText = styled(Typography)(() => ({
+  flex: 1
 }))
 
 export const SuccessContainer = styled.View(({ theme }) => ({
@@ -80,27 +32,8 @@ export const SuccessContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(8)
 }))
 
-export const SuccessText = styled.Text(({ theme }) => ({
-  color: theme.colors.success,
-  fontSize: theme.device.isTablet ? scale(10) : scale(12),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
-}))
-
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  backgroundColor: theme.colors.primary,
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(8) : scale(16),
-  borderRadius: scale(12),
-  opacity: disabled ? 0.7 : 1
-}))
-
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(12) : scale(16),
-  fontFamily: getSourGummyFontFamily('600')
+export const SuccessText = styled(Typography)(() => ({
+  flex: 1
 }))
 
 export const ScrollContentContainer = styled.View({
@@ -112,23 +45,17 @@ export const ContentWrapper = styled.View({
   gap: scale(20)
 })
 
-export const ConsentContainer = styled(TouchableOpacity)(({ theme }) => ({
+export const ConsentContainer = styled(PressableFeedback)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   gap: theme.device.isTablet ? scale(8) : scale(12)
 }))
 
-export const ConsentText = styled.Text(({ theme }) => ({
+export const ConsentText = styled(Typography)(({ theme }) => ({
   flex: 1,
-  fontSize: theme.device.isTablet ? scale(11) : scale(12),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
   lineHeight: theme.device.isTablet ? scale(16) : scale(18)
 }))
 
-export const PrivacyNoticeText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(10) : scale(11),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
+export const PrivacyNoticeText = styled(Typography)(({ theme }) => ({
   lineHeight: theme.device.isTablet ? scale(14) : scale(16)
 }))

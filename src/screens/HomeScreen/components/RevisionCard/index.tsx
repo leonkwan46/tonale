@@ -1,22 +1,21 @@
 import { useProgress, useSafeNavigation } from '@/hooks'
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Card } from '@/sharedComponents/Card'
-import { Skeleton } from '@/sharedComponents/Skeleton'
+import { Button } from '@/compLib/Button'
+import { Card } from '@/compLib/Card'
+import { Skeleton } from '@/compLib/Skeleton'
 import { useTheme } from '@emotion/react'
 import {
   ContentSection,
   IconText,
   RevisionCardContainer,
   RevisionCardContent,
-  RevisionText,
-  StartButtonText
+  RevisionText
 } from './RevisionCard.styles'
 
 export const RevisionCard = () => {
   const { revisionQuestions, revisionQuestionsLoading, progressDataLoading, progressDataInitialized } = useProgress()
   const { isNavigating, navigate } = useSafeNavigation()
   const theme = useTheme()
-  const cardSize = theme.components.cardButton.size
+  const cardSize = theme.dimensions.cardButtonSize
 
   const handleStartRevision = () => {
     navigate('/revision')
@@ -48,21 +47,33 @@ export const RevisionCard = () => {
         <ContentSection>
           {hasRevisionQuestions ? (
             <>
-              <RevisionText testID="revision-card-text">You have {revisionQuestions.length} {revisionQuestions.length === 1 ? 'question' : 'questions'} to revise!</RevisionText>
-              <Button3D
-                onPress={handleStartRevision}
-                disabled={isNavigating}
-                testID="start-revision-button"
-                fullWidth={true}
-                color="red"
+              <RevisionText
+                testID="revision-card-text"
+                size="md"
+                weight="semibold"
               >
-                {() => (
-                  <StartButtonText>Start Revision</StartButtonText>
-                )}
-              </Button3D>
+                You have {revisionQuestions.length}{' '}
+                {revisionQuestions.length === 1 ? 'question' : 'questions'} to
+                revise!
+              </RevisionText>
+              <Button
+                variant="filled"
+                color="error"
+                disabled={isNavigating}
+                loading={isNavigating}
+                testID="start-revision-button"
+                onPress={handleStartRevision}
+                label={isNavigating ? 'Opening…' : 'Start Revision'}
+              />
             </>
           ) : (
-            <RevisionText testID="revision-card-completion-text">{'Well done!\nYou\'ve completed all your revision!'}</RevisionText>
+            <RevisionText
+              testID="revision-card-completion-text"
+              size="md"
+              weight="semibold"
+            >
+              {'Well done!\nYou\'ve completed all your revision!'}
+            </RevisionText>
           )}
         </ContentSection>
       </RevisionCardContent>

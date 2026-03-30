@@ -1,8 +1,7 @@
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { ScrollView, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
-
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
 export const FullScreenScrollView = styled(ScrollView)({
   flex: 1
@@ -15,10 +14,7 @@ export const ScrollContentContainer = styled(View)(({ theme }) => ({
   paddingBottom: theme.device.isTablet ? scale(32) : scale(24)
 }))
 
-export const LastUpdatedText = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(11) : scale(12),
-  color: theme.colors.secondary,
-  fontFamily: getSourGummyFontFamily('400'),
+export const LastUpdatedText = styled(Typography)(({ theme }) => ({
   marginBottom: theme.device.isTablet ? scale(20) : scale(16)
 }))
 
@@ -34,45 +30,31 @@ export const SectionTitleFirst = styled(SectionTitleWrapper)(() => ({
   marginTop: 0
 }))
 
-export const SectionTitle = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(19) : scale(18),
-  color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily('700'),
+export const SectionTitle = styled(Typography)(({ theme }) => ({
   letterSpacing: 0.3
 }))
 
-export const Paragraph = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(13) : scale(14),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
-  lineHeight: theme.device.isTablet ? scale(22) : scale(20),
+const paragraphLine = (theme: { device: { isTablet: boolean } }) => ({
+  lineHeight: theme.device.isTablet ? scale(22) : scale(20)
+})
+
+export const Paragraph = styled(Typography)(({ theme }) => ({
+  ...paragraphLine(theme),
   marginBottom: theme.device.isTablet ? scale(12) : scale(10)
 }))
 
-export const ParagraphPlain = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(13) : scale(14),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400'),
-  lineHeight: theme.device.isTablet ? scale(22) : scale(20)
+export const ParagraphPlain = styled(Typography)(({ theme }) => ({
+  ...paragraphLine(theme)
 }))
 
-export const ParagraphBold = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(13) : scale(14),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('600'),
-  lineHeight: theme.device.isTablet ? scale(22) : scale(20)
+export const ParagraphBold = styled(Typography)(({ theme }) => ({
+  ...paragraphLine(theme)
 }))
 
-export const ParagraphItalic = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(13) : scale(14),
-  color: theme.colors.text,
-  fontFamily: getSourGummyFontFamily('400', true),
-  lineHeight: theme.device.isTablet ? scale(22) : scale(20)
+export const ParagraphItalic = styled(Typography)(({ theme }) => ({
+  ...paragraphLine(theme)
 }))
 
-export const ParagraphHighlight = styled.Text(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(13) : scale(14),
-  color: theme.colors.primary,
-  fontFamily: getSourGummyFontFamily('600'),
-  lineHeight: theme.device.isTablet ? scale(22) : scale(20)
+export const ParagraphHighlight = styled(Typography)(({ theme }) => ({
+  ...paragraphLine(theme)
 }))

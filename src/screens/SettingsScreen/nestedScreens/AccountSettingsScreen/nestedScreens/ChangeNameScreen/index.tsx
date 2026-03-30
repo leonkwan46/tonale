@@ -2,9 +2,11 @@ import { updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
-import { Icon } from '@/sharedComponents/Icon'
-import { Button3D } from '@/sharedComponents/Button3D'
+import { useDevice, useUser } from '@/hooks'
+import { Button } from '@/compLib/Button'
+import { Icon } from '@/compLib/Icon'
+import { InputField } from '@/compLib/InputField'
+import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Keyboard } from 'react-native'
@@ -15,14 +17,11 @@ import { SettingSection } from '../../../../components/SettingSection'
 import {
   ErrorContainer,
   ErrorText,
-  Input,
-  InputField,
-  PrimaryButtonText,
-  SaveButtonContent,
   ScrollContentContainer
 } from './ChangeNameScreen.styles'
 
 export const ChangeNameScreen = () => {
+  const { isTablet } = useDevice()
   const { userData, setUserData } = useUser()
   const router = useRouter()
   const [name, setName] = useState(userData?.name || '')
@@ -67,8 +66,9 @@ export const ChangeNameScreen = () => {
         router.back()
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update name'
-      setError(errorMessage)
+      setError(
+        getUserFacingErrorMessage(err, 'Couldn’t update your name. Please try again.')
+      )
     } finally {
       setLoading(false)
     }
@@ -90,37 +90,35 @@ export const ChangeNameScreen = () => {
           {error ? (
             <ErrorContainer>
               <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <ErrorText>{error}</ErrorText>
+              <ErrorText
+                size={isTablet ? 'xxs' : 'xs'}
+                colorVariant="error"
+              >
+                {error}
+              </ErrorText>
             </ErrorContainer>
           ) : null}
 
-          <InputField>
-            <Icon name="person-outline" sizeVariant="sm" colorVariant="primary" />
-            <Input
-              placeholder="Enter your name"
-              onChangeText={handleNameChange}
-              value={name}
-              autoCapitalize="words"
-              autoCorrect={false}
-              returnKeyType="done"
-              onSubmitEditing={handleSave}
-              editable={!loading}
-            />
-          </InputField>
+          <InputField
+            leftIcon="person-outline"
+            placeholder="Enter your name"
+            onChangeText={handleNameChange}
+            value={name}
+            autoCapitalize="words"
+            autoCorrect={false}
+            returnKeyType="done"
+            onSubmitEditing={handleSave}
+            disabled={loading}
+          />
 
-          <Button3D
+          <Button
+            variant="filled"
+            color="primary"
             disabled={loading || !name.trim()}
+            loading={loading}
             onPress={handleSave}
-            color="blue"
-            layoutType="row"
-            fullWidth
-          >
-            {() => (
-              <SaveButtonContent>
-                <PrimaryButtonText>Save</PrimaryButtonText>
-              </SaveButtonContent>
-            )}
-          </Button3D>
+            label={loading ? 'Saving…' : 'Save'}
+          />
         </SettingSection>
         </ScrollContentContainer>
       </KeyboardAwareScrollView>

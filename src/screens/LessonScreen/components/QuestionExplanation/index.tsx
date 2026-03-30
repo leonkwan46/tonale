@@ -1,15 +1,16 @@
-import { Button3D } from '@/sharedComponents/Button3D'
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
   getExplanationFormattingConfig,
   shouldShowVisualInExplanation
 } from '@/subjects/theory/exercises/utils/explanation'
+import { fontWeight } from '@/config/theme/tokens/typography'
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import type { Explanation, VisualComponent } from '@types'
 import type { ReactNode } from 'react'
 import { createElement } from 'react'
 import { Text } from 'react-native'
-import { ContinueButtonText, ExplanationText } from './QuestionExplanation.styles'
+import { ExplanationText } from './QuestionExplanation.styles'
 import { VisualExplanation } from './VisualExplanation'
 
 interface QuestionExplanationProps {
@@ -19,10 +20,10 @@ interface QuestionExplanationProps {
   onContinue: () => void
 }
 
-function mergeVisualComponent(
+const mergeVisualComponent = (
   fromExplanation?: VisualComponent,
   fromQuestion?: VisualComponent
-): VisualComponent | undefined {
+): VisualComponent | undefined => {
   if (!fromExplanation) return fromQuestion
   if (!fromQuestion) return fromExplanation
   return {
@@ -34,7 +35,7 @@ function mergeVisualComponent(
   }
 }
 
-function getStringsToBold(correctAnswer: string): string[] {
+const getStringsToBold = (correctAnswer: string): string[] => {
   const config = getExplanationFormattingConfig()
   const out: string[] = []
   if (config.boldPatterns.correctAnswer) out.push(correctAnswer)
@@ -43,7 +44,7 @@ function getStringsToBold(correctAnswer: string): string[] {
   return out
 }
 
-function formatExplanationWithBoldAnswer(text: string, correctAnswer: string): ReactNode {
+const formatExplanationWithBoldAnswer = (text: string, correctAnswer: string): ReactNode => {
   if (!text) return null
   const stringsToBold = getStringsToBold(correctAnswer)
   if (stringsToBold.length === 0) return <>{text}</>
@@ -55,7 +56,7 @@ function formatExplanationWithBoldAnswer(text: string, correctAnswer: string): R
   while ((match = regex.exec(text)) !== null) {
     if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index))
     parts.push(
-      createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily('700') } }, match[0])
+      createElement(Text, { key: match.index, style: { fontFamily: getSourGummyFontFamily(fontWeight.bold) } }, match[0])
     )
     lastIndex = regex.lastIndex
   }
@@ -63,12 +64,12 @@ function formatExplanationWithBoldAnswer(text: string, correctAnswer: string): R
   return <>{parts}</>
 }
 
-export function QuestionExplanation({
+export const QuestionExplanation = ({
   explanation,
   correctAnswer,
   visualComponent,
   onContinue
-}: QuestionExplanationProps) {
+}: QuestionExplanationProps) => {
   const displayVisualComponent = mergeVisualComponent(explanation?.visualComponent, visualComponent)
   const showVisual = shouldShowVisualInExplanation(displayVisualComponent, explanation)
   const displayText = explanation?.text ?? `The correct answer is ${correctAnswer}.`
@@ -85,10 +86,18 @@ export function QuestionExplanation({
       {showVisual && displayVisualComponent && (
         <VisualExplanation visualComponent={displayVisualComponent} />
       )}
-      {formattedText && <ExplanationText>{formattedText}</ExplanationText>}
-      <Button3D onPress={onContinue} fullWidth testID="question-explanation-continue-button">
-        {() => <ContinueButtonText>Continue</ContinueButtonText>}
-      </Button3D>
+      {formattedText && (
+        <ExplanationText size="md" align="center">
+          {formattedText}
+        </ExplanationText>
+      )}
+      <Button
+        variant="filled"
+        color="primary"
+        testID="question-explanation-continue-button"
+        onPress={onContinue}
+        label="Continue"
+      />
     </Modal>
   )
 }

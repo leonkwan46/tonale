@@ -3,19 +3,17 @@ import { Link, Stack } from 'expo-router'
 
 import { getSourGummyFontFamily } from '@/utils/fontHelper'
 
-export default function NotFoundScreen() {
-  return (
-    <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <Container>
-        <Title>This screen does not exist.</Title>
-        <StyledLink href="/">
-          <LinkText>Go to home screen!</LinkText>
-        </StyledLink>
-      </Container>
-    </>
-  )
-}
+const NotFoundScreen = () => (
+  <>
+    <Stack.Screen options={{ title: 'Oops!' }} />
+    <Container>
+      <Title>This screen does not exist.</Title>
+      <StyledLink href="/">
+        <LinkText>Go to home screen!</LinkText>
+      </StyledLink>
+    </Container>
+  </>
+)
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -30,7 +28,7 @@ const Title = styled.Text(({ theme }) => ({
   color: theme.colors.text,
   textAlign: 'center',
   marginBottom: theme.spacing.md,
-  fontFamily: getSourGummyFontFamily('bold')
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 const StyledLink = styled(Link)(({ theme }) => ({
@@ -42,5 +40,7 @@ const LinkText = styled.Text(({ theme }) => ({
   color: theme.colors.primary,
   fontSize: theme.typography.base,
   textDecorationLine: 'underline',
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
+
+export default NotFoundScreen

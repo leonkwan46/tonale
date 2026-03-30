@@ -20,7 +20,7 @@ const ErrorText = styled.Text(({ theme }) => ({
   fontSize: theme.typography.lg,
   textAlign: 'center',
   marginBottom: theme.spacing.sm,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
 const ErrorSubtext = styled.Text(({ theme }) => ({
@@ -28,10 +28,10 @@ const ErrorSubtext = styled.Text(({ theme }) => ({
   fontSize: theme.typography.sm,
   textAlign: 'center',
   opacity: 0.7,
-  fontFamily: getSourGummyFontFamily('400')
+  fontFamily: getSourGummyFontFamily()
 }))
 
-export default function TabLayout() {
+const TabLayout = () => {
   const { authUser, loading } = useUser()
   
   if (loading) {
@@ -78,3 +78,5 @@ export default function TabLayout() {
     </Tabs>
   )
 }
+
+export default TabLayout

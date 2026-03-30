@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { ReactNode } from 'react'
 
-import { Icon } from '@/sharedComponents/Icon'
+import { Icon } from '@/compLib/Icon'
 import type { IconColorVariant } from '@/config/theme/theme'
 
 import {
@@ -44,11 +44,16 @@ export const SettingsItem = ({
 
   return (
     <>
-      <SettingsItemContainer onPress={onPress} activeOpacity={0.7}>
+      <SettingsItemContainer onPress={onPress}>
         <IconContainer type={type}>
           <Icon name={icon} sizeVariant="lg" colorVariant={iconColor} />
         </IconContainer>
-        <SettingsItemLabel variant={variant}>{label}</SettingsItemLabel>
+        <SettingsItemLabel
+          size="md"
+          colorVariant={variant === 'red' ? 'error' : 'text'}
+        >
+          {label}
+        </SettingsItemLabel>
         {showVerifyIcon && (
           <VerifyIconContainer>
             <Icon

@@ -1,9 +1,7 @@
 import styled from '@emotion/native'
-import { Ionicons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 
 export const SuccessContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -17,30 +15,11 @@ export const SuccessContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm)
 }))
 
-export const SuccessIcon = styled(Ionicons)(({ theme }) => ({
-  color: theme.colors.primary
+export const SuccessText = styled(Typography)(() => ({
+  flex: 1
 }))
 
-export const SuccessText = styled.Text(({ theme }) => ({
-  color: theme.colors.primary,
-  fontSize: theme.device.isTablet ? scale(theme.typography.xs) : scale(theme.typography.sm),
-  flex: 1,
-  fontFamily: getSourGummyFontFamily('400')
-}))
-
-export const PrimaryButton = styled(TouchableOpacity)<{ disabled?: boolean }>(({ theme, disabled }) => ({
-  backgroundColor: theme.colors.primary,
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingVertical: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md),
-  borderRadius: scale(theme.borderRadius.md),
-  opacity: disabled ? 0.7 : 1,
+export const ContinueButtonWrap = styled.View(({ theme }) => ({
   marginTop: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
-export const PrimaryButtonText = styled.Text(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: theme.device.isTablet ? scale(theme.typography.sm) : scale(theme.typography.base),
-  fontFamily: getSourGummyFontFamily('600')
-}))

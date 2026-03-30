@@ -2,7 +2,7 @@ import { getSemitoneDistance } from './interval'
 import { getScale } from './scale'
 
 // Get scale degree (1st-8th) for a note in a given key
-export function getScaleDegree(note: string, key: string): number {
+export const getScaleDegree = (note: string, key: string): number => {
   const scale = getScale(key, 'ascending')
   
   // Extract note letter (ignore accidentals and octave)
@@ -22,7 +22,7 @@ export function getScaleDegree(note: string, key: string): number {
 }
 
 // Get scale degree name (1st, 2nd, 3rd, etc.)
-export function getScaleDegreeName(degree: number): string {
+export const getScaleDegreeName = (degree: number): string => {
   const suffixes: Record<number, string> = {
     1: 'st',
     2: 'nd',
@@ -34,13 +34,13 @@ export function getScaleDegreeName(degree: number): string {
 }
 
 // Get all scale degrees for a key
-export function getScaleDegrees(key: string): string[] {
+export const getScaleDegrees = (key: string): string[] => {
   const scale = getScale(key, 'ascending')
   return scale.map((_, index) => getScaleDegreeName(index + 1))
 }
 
 // Get note at a specific scale degree
-export function getNoteAtScaleDegree(key: string, degree: number): string {
+export const getNoteAtScaleDegree = (key: string, degree: number): string => {
   const scale = getScale(key, 'ascending')
   
   if (degree < 1 || degree > scale.length) {
@@ -51,7 +51,7 @@ export function getNoteAtScaleDegree(key: string, degree: number): string {
 }
 
 // Check if two notes are a semitone or tone apart
-export function getIntervalType(pitch1: string, pitch2: string): 'semitone' | 'tone' {
+export const getIntervalType = (pitch1: string, pitch2: string): 'semitone' | 'tone' => {
   const semitones = getSemitoneDistance(pitch1, pitch2)
   
   if (semitones === 1) {

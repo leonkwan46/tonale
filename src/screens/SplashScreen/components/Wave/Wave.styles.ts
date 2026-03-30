@@ -12,4 +12,3 @@ export const Bar = styled(Animated.View)(({ theme }) => ({
   shadowRadius: scale(4),
   elevation: 3
 }))
-

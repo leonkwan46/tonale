@@ -14,7 +14,9 @@ export const SettingItemHeader = ({ title }: SettingItemHeaderProps) => {
       <BackButton testID="back-button" onPress={() => router.back()}>
         <BackArrowIcon size={16} />
       </BackButton>
-      <Title>{title}</Title>
+      <Title size="lg" weight="bold">
+        {title}
+      </Title>
     </Header>
   )
 }

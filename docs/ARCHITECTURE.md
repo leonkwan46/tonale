@@ -105,13 +105,13 @@ tonale/
 │   │       └── generators/     # Aural-specific question generators
 │   │
 │   ├── screens/                # Screen components (one folder per route)
-│   ├── sharedComponents/       # Reusable UI components
+│   ├── compLib/                # Reusable UI components (Button, Depth3D, Icon, Modal, …)
 │   ├── globalComponents/       # App-wide wrappers (modals, overlays)
 │   ├── config/
 │   │   ├── firebase/           # Firebase client init + emulator wiring (__DEV__)
 │   │   │   └── functions/      # Thin callers for Cloud Functions (userData, lessonProgress, revisionQuestions)
 │   │   ├── gradeSyllabus/      # ABRSM curriculum data
-│   │   ├── theme/              # Colour tokens, typography, spacing
+│   │   ├── theme/              # Design tokens (palette, dimensions, contrast), components, theme assembly
 │   │   └── environment.ts      # Env config helper (dev / staging / production)
 │   ├── hooks/                  # Custom React hooks
 │   ├── types/                  # Shared TypeScript types

@@ -1,0 +1,21 @@
+import styled from '@emotion/native'
+
+import { scale } from 'react-native-size-matters'
+
+export const DisplayCardContainer = styled.View<{ minHeight?: number }>(({ theme, minHeight = 200 }) => ({
+  backgroundColor: theme.components.displayCard.background,
+  borderRadius: theme.borderRadius.lg,
+  borderWidth: 1,
+  borderColor: theme.components.notation.text,
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  maxWidth: theme.device.isTablet ? 460 : 360,
+  minHeight,
+  overflow: 'hidden',
+  ...(theme.device.isTablet && {
+    marginTop: scale(20),
+    marginBottom: scale(20),
+    transform: [{ scale: 1.4 }]
+  })
+}))

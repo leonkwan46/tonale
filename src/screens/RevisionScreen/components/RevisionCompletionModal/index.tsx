@@ -1,11 +1,11 @@
-import { Modal } from '@/sharedComponents/Modal'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
 import {
+  ButtonItem,
   ButtonContainer,
   DescriptionText,
-  ModalButton,
-  ModalButtonText,
   TitleText
-} from '@/sharedComponents/Modal/Modal.styles'
+} from '@/compLib/Modal/Modal.styles'
 
 interface RevisionCompletionModalProps {
   visible: boolean
@@ -34,36 +34,33 @@ export const RevisionCompletionModal = ({
       </DescriptionText>
       <ButtonContainer singleButton={isAllComplete}>
         {isAllComplete ? (
-          <ModalButton
+          <Button
             testID="done-button"
             variant="filled"
-            singleButton={true}
+            size="sm"
             onPress={onExit}
-          >
-            <ModalButtonText variant="filled">
-              Done!
-            </ModalButtonText>
-          </ModalButton>
+            label="Done!"
+          />
         ) : (
           <>
-            <ModalButton
-              testID="exit-button"
-              variant="outlined"
-              onPress={onExit}
-            >
-              <ModalButtonText variant="outlined">
-                Exit
-              </ModalButtonText>
-            </ModalButton>
-            <ModalButton
-              testID="revise-button"
-              variant="filled"
-              onPress={onRevise}
-            >
-              <ModalButtonText variant="filled">
-                Revise
-              </ModalButtonText>
-            </ModalButton>
+            <ButtonItem grow>
+              <Button
+                testID="exit-button"
+                variant="outlined"
+                size="sm"
+                onPress={onExit}
+                label="Exit"
+              />
+            </ButtonItem>
+            <ButtonItem grow>
+              <Button
+                testID="revise-button"
+                variant="filled"
+                size="sm"
+                onPress={onRevise}
+                label="Revise"
+              />
+            </ButtonItem>
           </>
         )}
       </ButtonContainer>

@@ -1,4 +1,4 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
+import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { Text, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
@@ -18,11 +18,6 @@ export const PullIndicatorEmoji = styled(Text)(({ theme }) => ({
   textAlign: 'center'
 }))
 
-export const PullIndicatorMessage = styled(Text)(({ theme }) => ({
-  fontSize: theme.device.isTablet ? scale(12) : scale(14),
-  color: theme.colors.text,
-  textAlign: 'center',
-  marginTop: scale(8),
-  opacity: 0.8,
-  fontFamily: getSourGummyFontFamily('400')
+export const PullIndicatorMessage = styled(Typography)(({ theme }) => ({
+  marginTop: scale(8)
 }))

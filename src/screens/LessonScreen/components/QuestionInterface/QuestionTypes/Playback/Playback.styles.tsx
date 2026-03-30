@@ -1,7 +1,10 @@
-import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import styled from '@emotion/native'
 import { Ionicons } from '@expo/vector-icons'
 import { scale } from 'react-native-size-matters'
+
+import { Typography } from '@/compLib/Typography'
+import { PressableFeedback } from '@/utils/PressableFeedback'
+import { createForwardProps } from '@/utils/styledProps'
 
 const PLAYBACK_CARD_MAX_WIDTH_TABLET = 400
 const PLAYBACK_CARD_MAX_WIDTH_PHONE = 320
@@ -23,12 +26,7 @@ export const PlaybackCard = styled.View<{ isTablet: boolean }>(({ theme, isTable
   alignSelf: 'center'
 }))
 
-export const PlaybackText = styled.Text<{ isTablet: boolean }>(({ theme, isTablet }) => ({
-  fontSize: isTablet ? scale(theme.typography.lg) : scale(theme.typography.xl),
-  color: theme.colors.text,
-  textAlign: 'center',
-  fontFamily: getSourGummyFontFamily('700')
-}))
+export const PlaybackText = styled(Typography)(() => ({}))
 
 export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ theme, isTablet }) => ({
   position: 'absolute',
@@ -41,7 +39,7 @@ export const AnimationContainer = styled.View<{ isTablet: boolean }>(({ theme, i
   zIndex: 1
 }))
 
-export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => {
+export const PlayButton = styled(PressableFeedback)<{ isTablet: boolean; isPlaying?: boolean; onPlaybackPress?: () => void; disabled?: boolean }>(({ theme, isTablet, isPlaying, onPlaybackPress, disabled }) => {
   const buttonSize = isTablet ? scale(80) : scale(100)
   return {
     width: buttonSize,
@@ -51,15 +49,16 @@ export const PlayButton = styled.TouchableOpacity<{ isTablet: boolean; isPlaying
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: isPlaying ? 0 : scale(theme.spacing.xs),
-    activeOpacity: 0.8,
     overflow: 'hidden',
     opacity: (isPlaying || !onPlaybackPress) ? 0.6 : (disabled ? 0.5 : 1),
     zIndex: 10
   }
 })
 
-export const PlayIcon = styled(Ionicons)<{ isTablet: boolean }>(({ theme }) => ({
-  color: theme.colors.background
+export const PlayIcon = styled(Ionicons, {
+  shouldForwardProp: createForwardProps(['disabled'])
+})<{ disabled: boolean }>(({ theme, disabled }) => ({
+  color: disabled ? theme.colors.icon : theme.colors.primaryContrast
 }))
 
 export const getPlayIconSize = (isTablet: boolean): number => {

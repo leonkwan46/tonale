@@ -84,11 +84,10 @@ export const NOTE_NAME_TO_FREQ: Record<string, number> = {
   'Cb': PITCH_FREQUENCIES.B4
 }
 
-function getNoteFrequency(noteName: string): number {
-  return NOTE_NAME_TO_FREQ[noteName] ?? PITCH_FREQUENCIES.C4
-}
+const getNoteFrequency = (noteName: string): number =>
+  NOTE_NAME_TO_FREQ[noteName] ?? PITCH_FREQUENCIES.C4
 
-export function calculatePlaybackRate(targetNoteName: string): number {
+export const calculatePlaybackRate = (targetNoteName: string): number => {
   const targetFreq = getNoteFrequency(targetNoteName)
   const baseFreq = PITCH_FREQUENCIES.C4
   return targetFreq / baseFreq

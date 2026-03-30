@@ -9,8 +9,16 @@ interface DescriptionProps {
 export const Description = ({ title, description, testID }: DescriptionProps) => {
   return (
     <DescriptionTextContainer>
-        <TitleText testID={testID}>{title}</TitleText>
-        <DescriptionText>{description}</DescriptionText>
+      <TitleText
+        testID={testID}
+        size="lg"
+        weight="bold"
+      >
+        {title}
+      </TitleText>
+      <DescriptionText size="md">
+        {description}
+      </DescriptionText>
     </DescriptionTextContainer>
   )
 }
