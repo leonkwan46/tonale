@@ -1,9 +1,13 @@
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
-import { createPressableWithOpacity } from '@/utils/PressableFeedback'
+import { forwardRef } from 'react'
+import type { View } from 'react-native'
+import { PressableFeedback, type PressableFeedbackProps } from '@/utils/PressableFeedback'
 
-const PressableOpacity095 = createPressableWithOpacity(0.95)
+const PressableOpacity095 = forwardRef<View, PressableFeedbackProps>((props, ref) => (
+  <PressableFeedback ref={ref} pressOpacity={0.95} {...props} />
+))
 
 const WHITE_KEY_HEIGHT = scale(145)
 export const WHITE_KEY_WIDTH = scale(42)
