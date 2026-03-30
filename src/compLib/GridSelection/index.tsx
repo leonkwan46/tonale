@@ -1,9 +1,6 @@
-import { useWindowDimensions } from '@/hooks'
 import { Depth3D } from '@/compLib/Depth3D'
 import { Typography, type TypographySize } from '@/compLib/Typography'
-import { useMemo, useState } from 'react'
 import {
-  GAP_SIZE,
   GridSelectionContainer,
   GridSelectionContent
 } from './GridSelection.styles'
@@ -33,36 +30,10 @@ export const GridSelection = <T extends string>({
   labelSize = 'sm',
   labelMinimumScale = 0.65
 }: GridSelectionProps<T>): React.ReactElement => {
-  const { width: screenWidth } = useWindowDimensions()
-  const [containerWidth, setContainerWidth] = useState<number | null>(null)
-
   const isSingleColumn = columns === 1
 
-  const buttonWidth = useMemo(() => {
-    if (isSingleColumn) {
-      return undefined
-    }
-
-    const baseWidth = containerWidth ?? screenWidth
-    if (!baseWidth) {
-      return 0
-    }
-
-    const totalGaps = GAP_SIZE * (columns - 1)
-    const availableWidth = baseWidth - totalGaps
-    return availableWidth / columns
-  }, [containerWidth, screenWidth, columns, isSingleColumn])
-
   return (
-    <GridSelectionContainer
-      testID={testID}
-      onLayout={(event) => {
-        const width = event.nativeEvent.layout.width
-        if (width && width !== containerWidth) {
-          setContainerWidth(width)
-        }
-      }}
-    >
+    <GridSelectionContainer testID={testID}>
       {options.map((option) => {
         const isSelected = selectedOption === option
         const displayLabel = getDisplayLabel ? getDisplayLabel(option) : option
@@ -74,8 +45,8 @@ export const GridSelection = <T extends string>({
             testID={isSelected ? `selected-${option}` : `option-${option}`}
             color={isSelected ? 'blue' : 'grey'}
             layoutType="grid"
-            width={isSingleColumn ? undefined : buttonWidth}
-            fullWidth={isSingleColumn}
+            sizeVariant="tile"
+            gridColumns={isSingleColumn ? 1 : columns}
           >
             {() => (
               <GridSelectionContent>
