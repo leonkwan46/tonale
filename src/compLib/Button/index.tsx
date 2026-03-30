@@ -1,44 +1,27 @@
-import { useTheme } from '@emotion/react'
-import { ActivityIndicator } from 'react-native'
-
 import { Depth3D, type LayoutType } from '@/compLib/Depth3D'
 import { Icon, type IconName } from '@/compLib/Icon'
-import type { AppTheme, IconColorVariant } from '@/config/theme/theme'
+import type { IconColorVariant } from '@/config/theme/theme'
 
 import {
   ButtonLabel,
   ButtonRoot,
+  ButtonSpinner,
   DepthButtonInner,
   DepthButtonLabel,
+  DepthButtonSpinner,
   IconSlot,
+  getDepthColor,
   isMultiWordLabel,
-  resolveButtonPaletteKey,
   type ButtonColor,
-  type ButtonRowLayout,
   type ButtonSize,
   type ButtonVariant
 } from './Button.styles'
 
-export type ButtonProps = {
-  variant: ButtonVariant;
+type EffectiveButtonType = 'flat' | 'depth'
+
+type ButtonBaseProps = {
   color?: ButtonColor;
   size?: ButtonSize;
-  fullWidth?: boolean;
-  /** Modal row: two buttons share width (`pair`) or single centered (`solo`). */
-  rowLayout?: ButtonRowLayout;
-  /** Adds top margin (auth form primary). */
-  withTopSpacing?: boolean;
-  /** Destructive confirm uses bold label. */
-  labelWeight?: 'semibold' | 'bold';
-  /** Ghost only: `primary` matches link-style text (e.g. Forgot password). */
-  ghostTint?: 'neutral' | 'primary';
-  /** Renders with 3D depth (see `Depth3D`). Ignores flat `variant` chrome. */
-  depth?: boolean;
-  /** When `depth` is true: forwarded to `Depth3D` (`row` for full-width bars). */
-  depthLayout?: LayoutType;
-  /** When `depth` is true: forwarded to `Depth3D`. */
-  depthWidth?: number;
-  depthHeight?: number;
   disabled?: boolean;
   loading?: boolean;
   onPress: () => void;
@@ -46,82 +29,65 @@ export type ButtonProps = {
   label: string;
   leftIcon?: IconName;
   rightIcon?: IconName;
-};
+}
 
-const isSemanticColor = (color: ButtonColor): color is 'primary' | 'error' =>
-  color === 'primary' || color === 'error'
+type DepthButtonProps = ButtonBaseProps & {
+  buttonType?: 'depth';
+  variant?: 'filled';
+  layoutType?: LayoutType;
+}
 
-const iconColorVariant = (
+type FlatButtonProps = ButtonBaseProps & {
+  buttonType?: 'flat';
+  variant: ButtonVariant;
+  layoutType?: never;
+}
+
+export type ButtonProps = DepthButtonProps | FlatButtonProps
+
+const OUTLINED_ICON_VARIANT: Record<ButtonColor, IconColorVariant> = {
+  primary: 'primary',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+  neutral: 'border',
+  finalTest: 'warning'
+}
+
+const FILLED_ICON_VARIANT: Record<ButtonColor, IconColorVariant> = {
+  primary: 'primaryContrast',
+  success: 'successContrast',
+  warning: 'warningContrast',
+  error: 'errorContrast',
+  neutral: 'text',
+  finalTest: 'warningContrast'
+}
+
+const getIconColor = (
   variant: ButtonVariant,
   color: ButtonColor
 ): IconColorVariant => {
-  if (variant === 'filled') {
-    if (isSemanticColor(color)) {
-      return color === 'error' ? 'errorContrast' : 'primaryContrast'
-    }
-    return 'text'
-  }
-  if (variant === 'outlined') {
-    if (isSemanticColor(color)) {
-      return color === 'error' ? 'error' : 'primary'
-    }
-    return 'text'
-  }
-  return 'text'
+  if (variant === 'link') return 'primary'
+  if (variant === 'outlined') return OUTLINED_ICON_VARIANT[color]
+  return FILLED_ICON_VARIANT[color]
 }
 
-const getIconProps = (
-  variant: ButtonVariant,
-  color: ButtonColor,
-  theme: AppTheme
-): { colorVariant?: IconColorVariant; color?: string } => {
-  if (!isSemanticColor(color)) {
-    const pk = resolveButtonPaletteKey(color)
-    if (variant === 'filled') {
-      return { color: theme.components.button[pk].text }
-    }
-    if (variant === 'outlined') {
-      return { color: theme.components.button[pk].color }
-    }
-    return { colorVariant: 'text' }
-  }
-  return { colorVariant: iconColorVariant(variant, color) }
-}
+const getEffectiveButtonType = (
+  buttonType: EffectiveButtonType,
+  variant: ButtonVariant
+): EffectiveButtonType => (variant === 'link' ? 'flat' : buttonType)
 
-const getSpinnerColor = (
-  variant: ButtonVariant,
-  color: ButtonColor,
-  theme: AppTheme
-): string => {
-  if (!isSemanticColor(color)) {
-    const pk = resolveButtonPaletteKey(color)
-    if (variant === 'filled') {
-      return theme.components.button[pk].text
-    }
-    return theme.components.button[pk].color
-  }
-  if (variant === 'filled' && color === 'error') {
-    return theme.colors.errorContrast
-  }
-  if (variant === 'filled') {
-    return theme.colors.primaryContrast
-  }
-  return theme.colors.primary
-}
+const getEffectiveVariant = (
+  effectiveButtonType: EffectiveButtonType,
+  variant: ButtonVariant
+): ButtonVariant => (effectiveButtonType === 'depth' ? 'filled' : variant)
 
 export const Button = ({
-  variant,
+  variant = 'filled',
   color = 'primary',
   size = 'md',
-  fullWidth = false,
-  rowLayout,
-  withTopSpacing = false,
-  labelWeight = 'semibold',
-  ghostTint = 'neutral',
-  depth = false,
-  depthLayout,
-  depthWidth,
-  depthHeight,
+  buttonType = 'depth',
+  layoutType = 'row',
   disabled = false,
   loading = false,
   onPress,
@@ -130,58 +96,52 @@ export const Button = ({
   leftIcon,
   rightIcon
 }: ButtonProps) => {
-  const theme = useTheme()
   const isDisabled = disabled || loading
-  const paletteKey = resolveButtonPaletteKey(color)
-  const iconProps = getIconProps(variant, color, theme)
-  const multiWordLabel = isMultiWordLabel(label)
-  const iconSizeVariant = multiWordLabel || size === 'sm' ? 'sm' : 'md'
+  const effectiveButtonType = getEffectiveButtonType(buttonType, variant)
+  const effectiveVariant = getEffectiveVariant(effectiveButtonType, variant)
+  const iconColorVariant = getIconColor(effectiveVariant, color)
+  const depthIconColorVariant = getIconColor('filled', color)
+  const isMultiWord = isMultiWordLabel(label)
+  const iconSizeVariant = isMultiWord || size === 'sm' ? 'sm' : 'md'
 
-  const spinnerColor = getSpinnerColor(variant, color, theme)
+  const hiddenIconStyle = loading ? { opacity: 0 } : undefined
 
-  if (depth) {
+  const renderDepthButton = () => {
+    const depthColor = getDepthColor(color)
     return (
       <Depth3D
         testID={testID}
-        color={paletteKey}
-        layoutType={depthLayout}
-        fullWidth={fullWidth}
-        width={depthWidth}
-        height={depthHeight}
+        color={depthColor}
+        layoutType={layoutType}
+        sizeVariant="auto"
         disabled={isDisabled}
         onPress={onPress}
       >
         {() => (
           <DepthButtonInner>
-            {loading && (
-              <ActivityIndicator
-                size="small"
-                color={theme.components.button[paletteKey].text}
-              />
-            )}
-            {!loading && leftIcon && (
-              <IconSlot edge="left">
+            {loading && <DepthButtonSpinner size="small" color={color} />}
+            {leftIcon && (
+              <IconSlot edge="left" style={hiddenIconStyle}>
                 <Icon
                   name={leftIcon}
                   sizeVariant={iconSizeVariant}
-                  color={theme.components.button[paletteKey].text}
+                  colorVariant={depthIconColorVariant}
                 />
               </IconSlot>
             )}
             <DepthButtonLabel
-              paletteKey={paletteKey}
+              paletteKey={depthColor}
               size={size}
-              multiWordLabel={multiWordLabel}
-              labelWeight={labelWeight}
+              isMultiWord={isMultiWord}
             >
               {label}
             </DepthButtonLabel>
-            {!loading && rightIcon && (
-              <IconSlot edge="right">
+            {rightIcon && (
+              <IconSlot edge="right" style={hiddenIconStyle}>
                 <Icon
                   name={rightIcon}
                   sizeVariant={iconSizeVariant}
-                  color={theme.components.button[paletteKey].text}
+                  colorVariant={depthIconColorVariant}
                 />
               </IconSlot>
             )}
@@ -191,39 +151,52 @@ export const Button = ({
     )
   }
 
-  return (
+  const renderFlatButton = () => (
     <ButtonRoot
       testID={testID}
-      variant={variant}
+      variant={effectiveVariant}
       color={color}
       size={size}
-      fullWidth={fullWidth}
-      rowLayout={rowLayout}
-      withTopSpacing={withTopSpacing}
+      block={effectiveVariant !== 'link'}
       disabled={isDisabled}
       onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: isDisabled, busy: loading }}
     >
-      {loading && <ActivityIndicator size="small" color={spinnerColor} />}
-      {!loading && leftIcon && (
-        <IconSlot edge="left">
-          <Icon name={leftIcon} sizeVariant={iconSizeVariant} {...iconProps} />
+      {loading && (
+        <ButtonSpinner size="small" variant={effectiveVariant} color={color} />
+      )}
+      {leftIcon && (
+        <IconSlot edge="left" style={hiddenIconStyle}>
+          <Icon
+            name={leftIcon}
+            sizeVariant={iconSizeVariant}
+            colorVariant={iconColorVariant}
+          />
         </IconSlot>
       )}
       <ButtonLabel
-        variant={variant}
+        variant={effectiveVariant}
         color={color}
         size={size}
-        multiWordLabel={multiWordLabel}
-        labelWeight={labelWeight}
-        ghostTint={ghostTint}
+        isMultiWord={isMultiWord}
       >
         {label}
       </ButtonLabel>
-      {!loading && rightIcon && (
-        <IconSlot edge="right">
-          <Icon name={rightIcon} sizeVariant={iconSizeVariant} {...iconProps} />
+      {rightIcon && (
+        <IconSlot edge="right" style={hiddenIconStyle}>
+          <Icon
+            name={rightIcon}
+            sizeVariant={iconSizeVariant}
+            colorVariant={iconColorVariant}
+          />
         </IconSlot>
       )}
     </ButtonRoot>
   )
+
+  return effectiveButtonType === 'depth' ? renderDepthButton() : renderFlatButton()
 }
+
+export default Button
