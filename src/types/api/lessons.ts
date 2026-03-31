@@ -1,4 +1,4 @@
-import type { Timestamp } from 'firebase/firestore'
+import type { Timestamp } from './timestamp'
 
 export type LessonType = 'regular' | 'finalTest'
 

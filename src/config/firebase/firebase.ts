@@ -5,7 +5,6 @@ import {
   getReactNativePersistence,
   initializeAuth
 } from 'firebase/auth'
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 import { Platform } from 'react-native'
 
@@ -21,7 +20,6 @@ export const app = initializeApp(firebaseConfig)
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 })
-export const db = getFirestore(app)
 export const functions = getFunctions(app)
 
 const withTimeout = async <T>(promise: Promise<T>, ms: number): Promise<T> => {
@@ -49,7 +47,6 @@ if (__DEV__) {
 
   connectAuthEmulator(auth, `http://${host}:9099`)
   connectFunctionsEmulator(functions, host, 5001)
-  connectFirestoreEmulator(db, host, 8080)
 
   void (async () => {
     const localSetupHint =
@@ -57,12 +54,13 @@ if (__DEV__) {
 
     const checks = await Promise.all([
       isEmulatorAvailable(`http://${host}:9099/`),
-      isEmulatorAvailable(`http://${host}:5001/`),
-      isEmulatorAvailable(`http://${host}:8080/`)
+      isEmulatorAvailable(`http://${host}:5001/`)
     ])
 
     if (checks.some((isAvailable) => !isAvailable)) {
-      console.warn(`[Firebase] One or more local emulators are not running. ${localSetupHint}`)
+      console.warn(
+        `[Firebase] One or more local emulators are not running. ${localSetupHint}`
+      )
     }
   })()
 }
