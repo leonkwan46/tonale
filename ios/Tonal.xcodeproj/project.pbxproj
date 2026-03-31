@@ -18,7 +18,7 @@
 
 /* Begin PBXFileReference section */
 		0468DD4B4F5AC0599249BEC1 /* Pods-Tonal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.debug.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Tonal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tonal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Tonale.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tonale.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Tonal/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tonal/Info.plist; sourceTree = "<group>"; };
 		16565A29F658F8BC10F6ECB0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Tonal/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* Tonal */ = {
+		13B07FAE1A68108700A75B9A /* Tonale */ = {
 			isa = PBXGroup;
 			children = (
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
@@ -55,7 +55,7 @@
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				16565A29F658F8BC10F6ECB0 /* PrivacyInfo.xcprivacy */,
 			);
-			name = Tonal;
+			name = Tonale;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -92,17 +92,17 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Tonal.app */,
+				13B07F961A680F5B00A75B9A /* Tonale.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B5077BD2DB94ED4838C2DE53 /* Tonal */ = {
+		B5077BD2DB94ED4838C2DE53 /* Tonale */ = {
 			isa = PBXGroup;
 			children = (
 				C1BDC53DA465D015B0B8E0B7 /* ExpoModulesProvider.swift */,
 			);
-			name = Tonal;
+			name = Tonale;
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -134,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* Tonal */ = {
+		13B07F861A680F5B00A75B9A /* Tonale */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Tonal" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Tonale" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
 				6E6B02F128D96BA9979EA74D /* [Expo] Configure project */,
@@ -151,9 +151,9 @@
 			);
 			dependencies = (
 			);
-			name = Tonal;
-			productName = Tonal;
-			productReference = 13B07F961A680F5B00A75B9A /* Tonal.app */;
+			name = Tonale;
+			productName = Tonale;
+			productReference = 13B07F961A680F5B00A75B9A /* Tonale.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -170,7 +170,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Tonal" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Tonale" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -364,7 +364,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leonkwan46.tonale;
-				PRODUCT_NAME = Tonal;
+				PRODUCT_NAME = Tonale;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tonal/Tonal-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -395,7 +395,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leonkwan46.tonale;
-				PRODUCT_NAME = Tonal;
+				PRODUCT_NAME = Tonale;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tonal/Tonal-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -533,7 +533,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Tonal" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Tonale" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -542,7 +542,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Tonal" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Tonale" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
