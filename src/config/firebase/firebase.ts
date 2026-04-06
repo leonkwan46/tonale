@@ -5,22 +5,18 @@ import {
   getReactNativePersistence,
   initializeAuth
 } from 'firebase/auth'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 import { Platform } from 'react-native'
 
-const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
-}
-export const app = initializeApp(firebaseConfig)
+import { getFirebaseConfig, getFirebaseFunctionsRegion } from '../environment'
+
+export const app = initializeApp(getFirebaseConfig())
+const db = getFirestore(app)
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 })
-export const functions = getFunctions(app)
+export const functions = getFunctions(app, getFirebaseFunctionsRegion())
 
 const withTimeout = async <T>(promise: Promise<T>, ms: number): Promise<T> => {
   return await Promise.race([
@@ -35,8 +31,8 @@ const withTimeout = async <T>(promise: Promise<T>, ms: number): Promise<T> => {
 
 const isEmulatorAvailable = async (url: string): Promise<boolean> => {
   try {
-    const response = await withTimeout(fetch(url), 1500)
-    return response.ok
+    await withTimeout(fetch(url), 1500)
+    return true
   } catch {
     return false
   }
@@ -45,7 +41,8 @@ const isEmulatorAvailable = async (url: string): Promise<boolean> => {
 if (__DEV__) {
   const host = Platform.OS === 'android' ? '10.0.2.2' : 'localhost'
 
-  connectAuthEmulator(auth, `http://${host}:9099`)
+  connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true })
+  connectFirestoreEmulator(db, host, 8080)
   connectFunctionsEmulator(functions, host, 5001)
 
   void (async () => {
@@ -54,13 +51,19 @@ if (__DEV__) {
 
     const checks = await Promise.all([
       isEmulatorAvailable(`http://${host}:9099/`),
+      isEmulatorAvailable(`http://${host}:8080/`),
       isEmulatorAvailable(`http://${host}:5001/`)
     ])
 
-    if (checks.some((isAvailable) => !isAvailable)) {
-      console.warn(
-        `[Firebase] One or more local emulators are not running. ${localSetupHint}`
-      )
+    const missingEmulators = ['Auth', 'Firestore', 'Functions'].filter((_, i) => !checks[i])
+    if (missingEmulators.length > 0) {
+      missingEmulators.forEach((emulator) => {
+        console.warn(
+          `[Firebase] Local emulator not running: ${emulator}. ${localSetupHint}`
+        )
+      })
+    } else {
+      console.log('[Firebase] All local emulators are running ✅')
     }
   })()
 }
