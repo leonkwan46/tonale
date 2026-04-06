@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		16E69D36049652806AC34510 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 16565A29F658F8BC10F6ECB0 /* PrivacyInfo.xcprivacy */; };
-		31750D7A135645AE4E7927AB /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1BDC53DA465D015B0B8E0B7 /* ExpoModulesProvider.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		5C3A1BDC649F7ECF302BE7A3 /* libPods-Tonale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C46A25DEA2C44A2C0715ABB /* libPods-Tonale.a */; };
 		7E9C953F02210F6FC09019B7 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA22E40701917343580DD6B /* ExpoModulesProvider.swift */; };
@@ -18,7 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0468DD4B4F5AC0599249BEC1 /* Pods-Tonal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.debug.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.debug.xcconfig"; sourceTree = "<group>"; };
 		0C46A25DEA2C44A2C0715ABB /* libPods-Tonale.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tonale.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Tonale.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tonale.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Tonale/Images.xcassets; sourceTree = "<group>"; };
@@ -27,9 +25,7 @@
 		9386AC6DE722A8E4EE470AA7 /* Pods-Tonale.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonale.release.xcconfig"; path = "Target Support Files/Pods-Tonale/Pods-Tonale.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Tonale/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C1BDC53DA465D015B0B8E0B7 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Tonal/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		C2B8DB554522D462154849B4 /* Pods-Tonale.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonale.debug.xcconfig"; path = "Target Support Files/Pods-Tonale/Pods-Tonale.debug.xcconfig"; sourceTree = "<group>"; };
-		CFE8F3EEE355A195D453DBDE /* Pods-Tonal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tonal.release.xcconfig"; path = "Target Support Files/Pods-Tonal/Pods-Tonal.release.xcconfig"; sourceTree = "<group>"; };
 		EAA22E40701917343580DD6B /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Tonale/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Tonale/AppDelegate.swift; sourceTree = "<group>"; };
@@ -104,7 +100,6 @@
 		B5077BD2DB94ED4838C2DE53 /* Tonale */ = {
 			isa = PBXGroup;
 			children = (
-				C1BDC53DA465D015B0B8E0B7 /* ExpoModulesProvider.swift */,
 				EAA22E40701917343580DD6B /* ExpoModulesProvider.swift */,
 			);
 			name = Tonale;
@@ -122,8 +117,6 @@
 		C7D65C5A622EDADD1C607638 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0468DD4B4F5AC0599249BEC1 /* Pods-Tonal.debug.xcconfig */,
-				CFE8F3EEE355A195D453DBDE /* Pods-Tonal.release.xcconfig */,
 				C2B8DB554522D462154849B4 /* Pods-Tonale.debug.xcconfig */,
 				9386AC6DE722A8E4EE470AA7 /* Pods-Tonale.release.xcconfig */,
 			);
@@ -337,7 +330,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				31750D7A135645AE4E7927AB /* ExpoModulesProvider.swift in Sources */,
 				7E9C953F02210F6FC09019B7 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,9 +342,11 @@
 			baseConfigurationReference = C2B8DB554522D462154849B4 /* Pods-Tonale.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tonale/Tonale.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T98S7V9QCA;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -373,7 +367,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.leonkwan46.tonale;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkstudio.tonale;
 				PRODUCT_NAME = Tonale;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tonale/Tonale-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -388,9 +382,11 @@
 			baseConfigurationReference = 9386AC6DE722A8E4EE470AA7 /* Pods-Tonale.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tonale/Tonale.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T98S7V9QCA;
 				INFOPLIST_FILE = Tonale/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tonalè";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -406,7 +402,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.leonkwan46.tonale;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkstudio.tonale;
 				PRODUCT_NAME = Tonale;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tonale/Tonale-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
