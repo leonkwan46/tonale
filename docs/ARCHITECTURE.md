@@ -204,7 +204,7 @@ graph TD
     style T fill:#C2410C
 ```
 
-Wrong answers are stored via `storeRevisionQuestionV2` so they surface in **Revision mode** — a separate screen that replays only the questions the user got wrong.
+Wrong answers are stored via `storeRevisionQuestion` so they surface in **Revision mode** — a separate screen that replays only the questions the user got wrong.
 
 ---
 
@@ -222,9 +222,9 @@ The app talks to Firebase through **callable Cloud Functions V2**. In `__DEV__`,
 
 | Module | Functions |
 |---|---|
-| User data | `createUserDataV2`, `getUserDataV2`, `updateUserDataV2`, `deleteUserDataV2` |
-| Lesson progress | `updateLessonProgressV2`, `getLessonProgressV2`, `getAllLessonProgressV2`, `deleteLessonProgressV2` |
-| Revision questions | `storeRevisionQuestionV2`, `getRevisionQuestionsV2`, `deleteRevisionQuestionV2`, `deleteRevisionQuestionsV2`, `deleteRevisionQuestionsByLessonV2` |
+| User data | `createUserData`, `getUserData`, `updateUserData`, `deleteUserData` |
+| Lesson progress | `updateLessonProgress`, `getLessonProgress`, `getAllLessonProgress`, `deleteLessonProgress` |
+| Revision questions | `storeRevisionQuestion`, `storeRevisionQuestions`, `getRevisionQuestions`, `deleteRevisionQuestion`, `deleteRevisionQuestions`, `deleteRevisionQuestionsByLesson` |
 
 ---
 
