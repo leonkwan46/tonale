@@ -1,10 +1,10 @@
 # Tonale
+
 <img width="19%" height="461" alt="2" src="https://github.com/user-attachments/assets/8c4b0380-2b6f-4c5a-aeb8-fb1f9893bf39" />
 <img width="19%" height="461" alt="4" src="https://github.com/user-attachments/assets/e67930b0-6677-4370-ae1c-31e4ccdc5da9" />
 <img width="19%" height="461" alt="3" src="https://github.com/user-attachments/assets/da6f3f85-0917-4d08-9c2b-4d36b411d069" />
 <img width="19%" height="461" alt="1" src="https://github.com/user-attachments/assets/6a1812ed-0aaf-43bc-a2df-a7a27d00c92c" />
 <img width="19%" height="460" alt="5" src="https://github.com/user-attachments/assets/a5c8a96b-9890-40f2-82d2-c3a66460abdc" />
-
 
 A React Native app that teaches music theory, aligned to the **ABRSM Grade 1–5 curriculum**. Built with Expo and TypeScript.
 
@@ -30,18 +30,18 @@ A React Native app that teaches music theory, aligned to the **ABRSM Grade 1–5
 
 ## Feature overview
 
-| Feature | Detail |
-|---|---|
-| Lessons | 24+ across Stages 0–2 (Pre-Grade → Grade 1 complete) |
-| Question types | Multiple choice, True/False, Key press |
-| Subjects | Theory + Aural (rhythm playback) |
-| Notation | Custom `@leonkwan46/music-notation` library |
-| Progress | Star ratings, per-lesson and final-test tracking |
-| Revision mode | Stores wrong answers and surfaces them for replay |
-| Auth | Firebase Auth (email/password, with email action links) |
-| Themes | Light + dark mode |
-| Testing | Jest (unit) + Maestro (E2E) |
-| Backend | Separate [tonale-api](https://github.com/leonkwan46/tonale-api) repo (Cloud Functions + Firestore) |
+| Feature        | Detail                                                                                             |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| Lessons        | 24+ across Stages 0–2 (Pre-Grade → Grade 1 complete)                                               |
+| Question types | Multiple choice, True/False, Key press                                                             |
+| Subjects       | Theory + Aural (rhythm playback)                                                                   |
+| Notation       | Custom `@leonkwan46/music-notation` library                                                        |
+| Progress       | Star ratings, per-lesson and final-test tracking                                                   |
+| Revision mode  | Stores wrong answers and surfaces them for replay                                                  |
+| Auth           | Firebase Auth (email/password, with email action links)                                            |
+| Themes         | Light + dark mode                                                                                  |
+| Testing        | Jest (unit) + Maestro (E2E)                                                                        |
+| Backend        | Separate [tonale-api](https://github.com/leonkwan46/tonale-api) repo (Cloud Functions + Firestore) |
 
 ---
 
@@ -63,6 +63,7 @@ cd tonale
 ### 2 — Secrets and config
 
 Contact [@leonkwan46](https://github.com/leonkwan46) to get:
+
 - Invited to the Firebase Tonalè project
 - Added to the Tonalè GitHub organisation
 
@@ -76,7 +77,10 @@ Contact [@leonkwan46](https://github.com/leonkwan46) to get:
   EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
   EXPO_PUBLIC_FIREBASE_APP_ID
   EXPO_PUBLIC_AUTH_ACTION_URL
+  EXPO_PUBLIC_FIREBASE_FUNCTIONS_REGION
   ```
+
+  If omitted, the app picks a region from the device **timezone** (`Asia/*` → `asia-southeast1` / Singapore, otherwise `europe-west2`). Set `EXPO_PUBLIC_FIREBASE_FUNCTIONS_REGION` to force a region for that build (overrides the heuristic).
 
 - **`google-services.json`** (Android) and **`GoogleService-Info.plist`** (iOS) — only needed when doing native builds.
 
@@ -97,22 +101,31 @@ Your token needs **`read:packages`** scope.
 npm install
 ```
 
-### 5 — Start the local backend (Firebase emulators)
+### 5 — Start backend (tonale-api)
 
-This app connects to Firebase emulators in `__DEV__` mode — **Auth on 9099**, **Functions on 5001**, **Firestore on 8080**. The emulators are managed by the backend repo:
-
-```bash
-# In a separate terminal — clone and follow the README in that repo
-git clone https://github.com/leonkwan46/tonale-api
-```
-
-Android uses host `10.0.2.2`; iOS Simulator uses `localhost`. The app still runs without emulators, but backend calls will fail gracefully with a console warning.
-
-Install the Firebase CLI if you haven't already:
+All backend services are managed by [tonale-api](https://github.com/leonkwan46/tonale-api).
 
 ```bash
-npm install -g firebase-tools
+git clone https://github.com/leonkwan46/tonale-api   # if you don’t have it yet
+cd tonale-api
+npm install
+npm run dev
 ```
+
+This runs:
+
+- TypeScript build in watch mode (Functions)
+- Firebase emulators (Auth, Functions, Firestore)
+
+**Emulator ports**
+
+| Service   | Port |
+| --------- | ---- |
+| Auth      | 9099 |
+| Functions | 5001 |
+| Firestore | 8080 |
+
+This app connects to those emulators in `__DEV__` mode. Android uses host `10.0.2.2`; iOS Simulator uses `localhost`. The app still runs without emulators, but backend calls will fail gracefully with a console warning.
 
 ### 6 — Run
 
@@ -143,12 +156,12 @@ E2E tests require a running device/simulator and the emulators from step 5.
 
 ## Documentation
 
-| Doc | What it covers |
-|---|---|
-| [Architecture](./docs/ARCHITECTURE.md) | Tech stack, project layout, lesson flow, notation, Firebase wiring |
-| [App Stage Syllabus](./docs/App-Stage-Syllabus.md) | Full lesson breakdown per stage and grade |
-| [Grade Syllabus](./docs/Grade-Syllabus.md) | ABRSM Grade 1–3 curriculum reference |
-| [Aural Exercise System](./docs/AURAL-EXERCISE-SYSTEM.md) | How aural generators and rhythm playback work |
+| Doc                                                      | What it covers                                                     |
+| -------------------------------------------------------- | ------------------------------------------------------------------ |
+| [Architecture](./docs/ARCHITECTURE.md)                   | Tech stack, project layout, lesson flow, notation, Firebase wiring |
+| [App Stage Syllabus](./docs/App-Stage-Syllabus.md)       | Full lesson breakdown per stage and grade                          |
+| [Grade Syllabus](./docs/Grade-Syllabus.md)               | ABRSM Grade 1–3 curriculum reference                               |
+| [Aural Exercise System](./docs/AURAL-EXERCISE-SYSTEM.md) | How aural generators and rhythm playback work                      |
 
 ---
 
