@@ -7,6 +7,7 @@ import {
   useSharedValue,
   withTiming
 } from 'react-native-reanimated'
+import { getSplashEnvironmentLabel } from '@/config/environment'
 import { AppText } from './components/AppText'
 import { LogoAnimation } from './components/LogoAnimation'
 import { Wave } from './components/Wave'
@@ -106,6 +107,7 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
         <LogoAnimation isTransitioning={isTransitioning} />
         <AppText
           appName="Tonalè"
+          environmentLabel={getSplashEnvironmentLabel()}
           tagline="Your personal music learning companion"
           isTransitioning={isTransitioning}
         />

@@ -6,8 +6,15 @@ import { scale } from 'react-native-size-matters'
 export const AppNameContainer = styled(Animated.View)(() => ({}))
 
 export const AppNameText = styled(Typography)(({ theme }) => ({
-  marginBottom: scale(theme.spacing.sm),
+  marginBottom: scale(theme.spacing.xs),
   letterSpacing: scale(-0.5)
+}))
+
+export const EnvironmentContainer = styled(Animated.View)(() => ({}))
+
+export const EnvironmentText = styled(Typography)(({ theme }) => ({
+  marginBottom: scale(theme.spacing.sm),
+  letterSpacing: scale(0.25)
 }))
 
 export const TaglineContainer = styled(Animated.View)(() => ({}))
