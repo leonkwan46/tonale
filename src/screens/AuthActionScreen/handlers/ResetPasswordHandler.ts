@@ -1,5 +1,4 @@
 import { confirmPasswordResetForUser, signOutUser, verifyPasswordResetCodeForUser } from '@/config/firebase/auth'
-import { clearAllUserCache } from '@/utils/cache'
 import { Router } from 'expo-router'
 import { User } from 'firebase/auth'
 
@@ -91,7 +90,6 @@ export const resetPasswordHandler: AuthActionHandler = {
     try {
       await confirmPasswordResetForUser(code, newPassword)
       await signOutUser()
-      await clearAllUserCache()
 
       return {
         status: 'success'

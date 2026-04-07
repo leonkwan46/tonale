@@ -1,11 +1,10 @@
 import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebase/functions/lessonProgress'
 import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
-import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
+import type { LastLessonAccess } from '@/storage'
+import { userCache } from '@/storage'
 import { calculateStageUnlockStatus } from '@/subjects/curriculumHelper'
 import { stagesArray } from '@/subjects/theory/curriculum/stages/helpers'
-import { clearAllUserCache, loadProgressCache, saveProgressCache } from '@/utils/cache'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { Stage, StageLesson } from '@types'
 import { RevisionQuestion } from '@types'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
@@ -14,10 +13,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 // TYPES & INTERFACES
 // ============================================================================
 
-export interface LastLessonAccess {
-  lessonId: string
-  timestamp: number
-}
+export type { LastLessonAccess }
 
 export interface ProgressData {
   isLocked: boolean
@@ -43,41 +39,12 @@ export interface ProgressContextType {
   getStageById: (id: string) => Stage | undefined
   getStageRequirements: (stageId: string) => { isUnlocked: boolean; missingPrerequisites: Stage[]; progressNeeded: string[] }
   getNextLockedStage: () => Stage | undefined
-  trackLessonAccessLocal: (lessonId: string) => Promise<void>
-  getLastAccessedLessonLocal: () => Promise<LastLessonAccess | null>
+  trackLessonAccess: (lessonId: string) => Promise<void>
+  getLastLessonAccess: () => Promise<LastLessonAccess | null>
   allStageLessons: StageLesson[]
 }
 
 export const ProgressContext = createContext<ProgressContextType | undefined>(undefined)
-
-// ============================================================================
-// STORAGE HELPERS
-// ============================================================================
-
-const trackLessonAccessLocal = async (lessonId: string): Promise<void> => {
-  try {
-    const accessData: LastLessonAccess = {
-      lessonId,
-      timestamp: Date.now()
-    }
-    await AsyncStorage.setItem(LAST_LESSON_ACCESS_KEY, JSON.stringify(accessData))
-  } catch (error) {
-    console.error('Failed to track lesson access:', error)
-  }
-}
-
-const getLastAccessedLessonLocal = async (): Promise<LastLessonAccess | null> => {
-  try {
-    const stored = await AsyncStorage.getItem(LAST_LESSON_ACCESS_KEY)
-    if (!stored) return null
-    
-    const accessData: LastLessonAccess = JSON.parse(stored)
-    return accessData
-  } catch (error) {
-    console.error('Failed to get last accessed lesson:', error)
-    return null
-  }
-}
 
 // ============================================================================
 // STAGE MANAGEMENT HELPERS
@@ -262,7 +229,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
     try {
       if (currentUserIdRef.current && currentUserIdRef.current !== userId) {
         currentUserIdRef.current = ''
-        await clearAllUserCache()
+        await userCache.clearUserCache()
       }
       
       currentUserIdRef.current = userId
@@ -279,11 +246,11 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
           const progressData = convertLessonsDataToProgressFormat(lessonsData)
           setProgressData(progressData)
           syncProgressToStages(progressData)
-          await saveProgressCache(userId, progressData)
+          await userCache.saveProgressCache(userId, progressData)
         }
       } else {
         // Try to load from cache as fallback
-        const cachedData = await loadProgressCache(userId)
+        const cachedData = await userCache.loadProgressCache(userId)
         if (cachedData) {
           // Cache is valid and fresh, use it
           setProgressData(cachedData.data)
@@ -297,7 +264,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
                 const progressData = convertLessonsDataToProgressFormat(lessonsData)
                 setProgressData(progressData)
                 syncProgressToStages(progressData)
-                saveProgressCache(userId, progressData)
+                userCache.saveProgressCache(userId, progressData)
               }
             }
           }).catch(err => {
@@ -432,7 +399,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
       console.error('Failed to sync progress to backend:', error)
     }
     
-    await saveProgressCache(currentUserIdRef.current, updatedData)
+    await userCache.saveProgressCache(currentUserIdRef.current, updatedData)
   }, [])
 
   const updateLessonProgress = useCallback(async (lessonId: string, stars: number) => {
@@ -498,8 +465,8 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
         getStageById,
         getStageRequirements,
         getNextLockedStage,
-        trackLessonAccessLocal,
-        getLastAccessedLessonLocal,
+        trackLessonAccess: userCache.trackLessonAccess,
+        getLastLessonAccess: userCache.getLastLessonAccess,
         allStageLessons
       }}
     >

@@ -1,9 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as WebBrowser from 'expo-web-browser'
 import { useEffect, useRef, useState } from 'react'
 
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useDevice } from '@/hooks'
+import { appPreferences } from '@/storage'
 import { Typewriter } from '@/compLib/Typewriter'
 import { SettingItemHeader } from '../../components/SettingItemHeader'
 import { ContentContainer } from '../../SettingsScreen.styles'
@@ -50,7 +50,6 @@ const LINE_DELAYS = calculateLineDelays(NARRATIVE_LINES)
 
 const TOTAL_LINES = NARRATIVE_LINES.length
 const PAYMENT_LINK_URL = 'https://buy.stripe.com/test_3cI6ozgIW2yL1IU5Rd9oc00'
-const DONATION_NARRATIVE_PLAYED_KEY = 'donation:narrativePlayed'
 
 export const DonationScreen = () => {
   const { isTablet } = useDevice()
@@ -63,14 +62,9 @@ export const DonationScreen = () => {
 
   useEffect(() => {
     const load = async () => {
-      try {
-        const stored = await AsyncStorage.getItem(DONATION_NARRATIVE_PLAYED_KEY)
-        setHasPlayedNarrative(stored === '1')
-      } catch (error) {
-        console.warn('[DonationScreen] Failed to read narrative cache:', error)
-      } finally {
-        setHydrated(true)
-      }
+      const stored = await appPreferences.getDonationAnimationPlayed()
+      setHasPlayedNarrative(stored === true)
+      setHydrated(true)
     }
 
     load()
@@ -81,9 +75,7 @@ export const DonationScreen = () => {
     
     if (completedLinesCountRef.current === TOTAL_LINES) {
       setHasPlayedNarrative(true)
-      AsyncStorage.setItem(DONATION_NARRATIVE_PLAYED_KEY, '1').catch((error) => {
-        console.warn('[DonationScreen] Failed to persist narrative cache:', error)
-      })
+      appPreferences.setDonationAnimationPlayed(true)
     }
   }
 
