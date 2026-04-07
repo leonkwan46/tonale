@@ -5,14 +5,12 @@ import {
   getReactNativePersistence,
   initializeAuth
 } from 'firebase/auth'
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 import { Platform } from 'react-native'
 
 import { getFirebaseConfig, getFirebaseFunctionsRegion } from '../environment'
 
 export const app = initializeApp(getFirebaseConfig())
-const db = getFirestore(app)
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 })
@@ -42,12 +40,11 @@ if (__DEV__) {
   const host = Platform.OS === 'android' ? '10.0.2.2' : 'localhost'
 
   connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true })
-  connectFirestoreEmulator(db, host, 8080)
   connectFunctionsEmulator(functions, host, 5001)
 
   void (async () => {
     const localSetupHint =
-      'Ensure **tonale-api** (https://github.com/leonkwan46/tonale-api/pull/1) is cloned and running locally.'
+      'Ensure **tonale-api** (https://github.com/leonkwan46/tonale-api) is cloned and running locally.'
 
     const checks = await Promise.all([
       isEmulatorAvailable(`http://${host}:9099/`),
