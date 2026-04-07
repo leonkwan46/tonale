@@ -58,16 +58,11 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [fontsLoaded] = useFonts(FONTS)
   const { loading: authLoading } = useUser()
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const containerOpacity = useSharedValue(1)
 
   const startExitAnimation = useCallback(() => {
     setIsTransitioning(true)
     onComplete()
-    containerOpacity.value = withTiming(0, {
-      duration: FADE_OUT_DURATION_MS,
-      easing: Easing.out(Easing.ease)
-    })
-  }, [containerOpacity, onComplete])
+  }, [onComplete])
 
   useEffect(() => {
     if (authLoading || !fontsLoaded) return
@@ -91,12 +86,8 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
     }
   }, [authLoading, fontsLoaded, startExitAnimation])
 
-  const containerStyle = useAnimatedStyle(() => ({
-    opacity: containerOpacity.value
-  }))
-
   return (
-    <Container style={containerStyle}>
+    <Container>
       {!fontsLoaded ? (
         <MusicLogoContainer>
           <LogoAnimation isTransitioning={isTransitioning} />

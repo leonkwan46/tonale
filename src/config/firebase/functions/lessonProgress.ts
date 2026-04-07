@@ -38,4 +38,3 @@ export const deleteLessonProgressFn = httpsCallable<
   GetLessonProgressPayload,
   UserDataSuccessResponse
 >(functions, 'deleteLessonProgress')
-

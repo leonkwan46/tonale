@@ -74,7 +74,7 @@ export const lightComponentColors = {
     background: palette.gray[50],
     border: palette.gray[400],
     text: palette.gray[950],
-    placeholder: palette.gray[500]
+    placeholder: palette.gray[400]
   },
 
   tabBar: {
@@ -88,7 +88,8 @@ export const lightComponentColors = {
   },
 
   settings: {
-    sectionBackground: palette.gray[100]
+    sectionBackground: palette.gray[100],
+    separator: palette.gray[400]
   },
 
   notation: {
@@ -196,7 +197,8 @@ export const darkComponentColors = {
   },
 
   settings: {
-    sectionBackground: palette.blueGray[800]
+    sectionBackground: palette.blueGray[800],
+    separator: palette.gray[500]
   },
 
   notation: {

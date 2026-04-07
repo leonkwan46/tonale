@@ -63,7 +63,7 @@ export const InputFieldRoot = styled.View<{
   return {
     flexDirection: 'row',
     alignItems: multiline ? 'flex-start' : 'center',
-    borderWidth: showFocusRing ? scale(1.5) : scale(1),
+    borderWidth: isTablet ? scale(1.5) : scale(1.5),
     borderRadius: scale(theme.borderRadius.md),
     paddingHorizontal: isTablet
       ? scale(theme.spacing.sm)
