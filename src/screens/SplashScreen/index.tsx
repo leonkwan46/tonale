@@ -1,12 +1,6 @@
 import { useUser } from '@/hooks'
 import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
-import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
-} from 'react-native-reanimated'
 import { getSplashEnvironmentLabel } from '@/config/environment'
 import { AppText } from './components/AppText'
 import { LogoAnimation } from './components/LogoAnimation'
@@ -20,7 +14,6 @@ import {
 // Constants
 const MIN_SPLASH_TIME_MS = 3000
 const POLL_INTERVAL_MS = 100
-const FADE_OUT_DURATION_MS = 500
 const WAVE_COUNT = 5
 const WAVE_DELAY_BASE = 1.5
 const WAVE_DELAY_INCREMENT = 0.2
