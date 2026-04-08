@@ -23,27 +23,18 @@ export const OuterCircle = styled.View(({ theme }) => ({
   borderRadius: scale(60),
   backgroundColor: theme.colors.primary,
   shadowColor: theme.colors.primary,
-  shadowOffset: { width: 0, height: scale(theme.spacing.sm) },
-  shadowOpacity: 0.3,
-  shadowRadius: scale(theme.spacing.md),
-  elevation: 12
+  shadowOpacity: 0.8,
+  shadowRadius: scale(theme.spacing.lg)
 }))
 
 export const InnerCircle = styled.View(({ theme }) => ({
   position: 'absolute',
-  width: scale(96),
-  height: scale(96),
-  borderRadius: scale(48),
-  backgroundColor: theme.colors.surface,
-  shadowOffset: { width: 0, height: scale(2) },
-  shadowOpacity: 0.1,
-  shadowRadius: scale(theme.spacing.xs),
-  elevation: 2
+  width: scale(100),
+  height: scale(100),
+  borderRadius: scale(50),
+  backgroundColor: theme.colors.background
 }))
 
 export const MusicIcon = styled(Ionicons)(({ theme }) => ({
-  zIndex: 10,
-  textShadowOffset: { width: 0, height: scale(1) },
-  textShadowRadius: scale(2),
-  textShadowColor: 'rgba(0, 0, 0, 0.2)'
+  zIndex: 10
 }))

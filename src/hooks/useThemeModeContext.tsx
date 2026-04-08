@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { THEME } from '@/constants/theme'
+import { appPreferences } from '@/storage'
 import {
   createContext,
   type ReactNode,
@@ -29,17 +29,17 @@ export const ThemeModeProvider = ({
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    AsyncStorage.getItem('dark_mode').then(stored => {
-      if (stored !== null) {
-        setIsDarkState(stored === 'true')
-      }
-      setLoaded(true)
-    })
+    appPreferences
+      .getThemeMode()
+      .then((stored) => {
+        if (stored !== null) setIsDarkState(stored)
+      })
+      .finally(() => setLoaded(true))
   }, [])
 
   const setIsDark = useCallback((value: boolean) => {
     setIsDarkState(value)
-    AsyncStorage.setItem('dark_mode', String(value))
+    appPreferences.setThemeMode(value)
   }, [])
 
   const value = useMemo(() => ({ isDark, setIsDark }), [isDark, setIsDark])

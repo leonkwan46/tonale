@@ -23,6 +23,7 @@
     "jest.config.js",
     "android",
     "ios",
-    "functions"
+    "functions",
+    "tonale-api"
   ]
 }

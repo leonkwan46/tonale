@@ -26,7 +26,7 @@ export const SettingsItemLabel = styled(Typography)(() => ({
 
 export const Separator = styled(View)(({ theme }) => ({
   height: 1,
-  backgroundColor: theme.colors.border
+  backgroundColor: theme.components.settings.separator
 }))
 
 export const VerifyIconContainer = styled(View)(({ theme }) => ({

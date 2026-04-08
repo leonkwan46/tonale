@@ -12,6 +12,7 @@ export type ThemeSemanticColors = {
   error: string
   errorContrast: string
   surface: string
+  transparent: string
   border: string
   icon: string
 }
@@ -28,8 +29,9 @@ export const lightSemanticColors: ThemeSemanticColors = {
   error: palette.red[500],
   errorContrast: palette.gray[950],
   surface: palette.gray[50],
+  transparent: palette.base.transparent,
   border: palette.gray[400],
-  icon: palette.gray[400]
+  icon: palette.base.white
 }
 
 export const darkSemanticColors: ThemeSemanticColors = {
@@ -44,6 +46,7 @@ export const darkSemanticColors: ThemeSemanticColors = {
   error: palette.red[400],
   errorContrast: palette.gray[950],
   surface: palette.gray[800],
+  transparent: palette.base.transparent,
   border: palette.gray[800],
   icon: palette.gray[600]
 }
