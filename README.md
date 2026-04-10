@@ -8,7 +8,7 @@
 <img width="19%" height="461" alt="Progress screen" src="https://github.com/user-attachments/assets/6a1812ed-0aaf-43bc-a2df-a7a27d00c92c" />
 <img width="19%" height="460" alt="Settings screen" src="https://github.com/user-attachments/assets/a5c8a96b-9890-40f2-82d2-c3a66460abdc" />
 
-A React Native music theory app aligned to the **ABRSM Grade 1–5 curriculum** — designed, built, and shipped solo.
+A React Native app for learning music theory through a structured **Grade 1–5 curriculum** — designed, built, and shipped solo.
 
 **[Figma Design](https://www.figma.com/design/e7W92MCER7LJqvN32p9iL6/Tonale?node-id=0-1&p=f&t=iZkiu1O4a1c1hPtY-0)** &nbsp;|&nbsp; **[Backend (tonale-api)](https://github.com/leonkwan46/tonale-api)**
 
@@ -46,7 +46,7 @@ The backend lives in `tonale-api` and exposes callable Cloud Functions that hand
 
 ## What makes it stand out
 
-**Structured ABRSM curriculum** — lessons are organised across three stages (Pre-Grade, Grade 1, Grade 2+) so learners follow a real exam path, not a random topic list.
+**Structured curriculum** — lessons are organised across three stages (Pre-Grade, Grade 1, Grade 2+) so learners follow a real exam path, not a random topic list.
 
 **Custom music notation** — `@leonkwan46/music-notation` renders staves, notes, rests, key/time signatures, and articulation marks natively inside React Native; no web view, no images.
 
@@ -102,7 +102,7 @@ E2E tests require a running device/simulator and the emulators from step 5.
 | -------------------------------------------------------- | ------------------------------------------------------------------ |
 | [Architecture](./docs/ARCHITECTURE.md)                   | Tech stack, project layout, lesson flow, notation, Firebase wiring |
 | [App Stage Syllabus](./docs/App-Stage-Syllabus.md)       | Full lesson breakdown per stage and grade                          |
-| [Grade Syllabus](./docs/Grade-Syllabus.md)               | ABRSM Grade 1–3 curriculum reference                               |
+| [Grade Syllabus](./docs/Grade-Syllabus.md)               | Grade 1–3 curriculum reference                                     |
 | [Aural Exercise System](./docs/AURAL-EXERCISE-SYSTEM.md) | How aural generators and rhythm playback work                      |
 
 ---
