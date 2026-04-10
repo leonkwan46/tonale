@@ -101,8 +101,10 @@ tonale/
 │   │   │       └── utils/              # Shared exercise utilities
 │   │   └── aural/              # Aural subject
 │   │       ├── curriculum/     # Aural stage configs
-│   │       ├── exercises/      # Rhythm generators, playback logic
-│   │       └── generators/     # Aural-specific question generators
+│   │       │   ├── config/     # Rhythm + pulse strictness configs
+│   │       │   └── stages/     # Aural stage definitions
+│   │       └── exercises/      # Rhythm generators, playback logic
+│   │           └── generators/ # Aural-specific question generators
 │   │
 │   ├── screens/                # Screen components (one folder per route)
 │   ├── compLib/                # Reusable UI components (Button, Depth3D, Icon, Modal, …)
@@ -265,14 +267,15 @@ npm run test:coverage  # with coverage report
 
 ### E2E tests (Maestro)
 
-23 YAML flows covering every lesson in Stages 0–2, plus revision and account helpers:
+26 YAML flows covering every lesson in Stages 0–2, plus revision and account helpers:
 
 | Stage | Flows |
 |---|---|
-| Stage 0 (Pre-grade) | 7 lessons + final test |
-| Stage 1 (Foundation) | 6 lessons + final test |
-| Stage 2 (Complete Grade 1) | 7 lessons + final test |
-| Helpers | `createAccount`, `loginAccount`, `revision-test` |
+| Stage 0 (Pre-grade) | 7 lessons + final test = 8 |
+| Stage 1 (Foundation) | 6 lessons + final test = 7 |
+| Stage 2 (Complete Grade 1) | 7 lessons + final test = 8 |
+| Helpers | `createAccount`, `loginAccount` |
+| Root | `revision-test` |
 
 ```bash
 npm run test:e2e          # all stages
