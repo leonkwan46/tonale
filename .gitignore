@@ -52,3 +52,7 @@ shared/**/*.js.map
 # Test coverage
 coverage/
 *.lcov
+
+# AI workdirs
+MEMORY/
+Plans/
