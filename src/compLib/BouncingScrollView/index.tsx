@@ -116,7 +116,7 @@ const BouncingScrollView = ({
         >
           <Animated.ScrollView
             onScroll={scrollHandler}
-            scrollEventThrottle={1}
+            scrollEventThrottle={16}
             overScrollMode="never"
             contentContainerStyle={styles.animatedScrollView}
             onContentSizeChange={(_, h) => {
