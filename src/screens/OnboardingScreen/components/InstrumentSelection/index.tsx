@@ -1,11 +1,10 @@
 import { GridSelection } from '@/compLib/GridSelection'
 import { InputField } from '@/compLib/InputField'
-import { useTheme } from '@emotion/react'
 import { INSTRUMENT, type UserInstrument } from '@types'
 import { capitalize } from '@/utils/string'
 import { memo } from 'react'
 import { renderInstrumentIcon } from '../OnboardingIcons'
-import { SectionContainer, SectionTitle } from './InstrumentSelection.styles'
+import { SectionContainer, SectionTitle, useTextColor } from './InstrumentSelection.styles'
 
 const INSTRUMENT_OPTIONS: UserInstrument[] = [
   INSTRUMENT.PIANO,
@@ -34,7 +33,7 @@ const InstrumentSelectionComponent = ({
   onCustomInstrumentChange,
   onScrollToBottom
 }: InstrumentSelectionProps) => {
-  const theme = useTheme()
+  const iconColor = useTextColor()
 
   const handleSelect = (instrument: UserInstrument) => {
     onSelect(instrument)
@@ -50,7 +49,7 @@ const InstrumentSelectionComponent = ({
         selectedOption={selectedInstrument}
         onSelect={handleSelect}
         getDisplayLabel={getDisplayLabel}
-        renderIcon={(option, isSelected) => renderInstrumentIcon(option as UserInstrument, theme)}
+        renderIcon={(option, isSelected) => renderInstrumentIcon(option as UserInstrument, iconColor)}
         testID="instrument-selection"
       />
       {selectedInstrument === INSTRUMENT.OTHER && (

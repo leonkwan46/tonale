@@ -6,15 +6,13 @@ import { StarLogo } from '@/screens/TheoryScreen/components/LessonSection/compon
 import { Button } from '@/compLib/Button'
 import { Card } from '@/compLib/Card'
 import { Skeleton } from '@/compLib/Skeleton'
-import { useTheme } from '@emotion/react'
-import { CardContentContainer, LessonCardContainer, NoLessonText, SkeletonContentSection, StarContainer } from './LessonCard.styles'
+import { CardContentContainer, LessonCardContainer, NoLessonText, SkeletonContentSection, StarContainer, useCardButtonSize } from './LessonCard.styles'
 
 export const LessonCard = () => {
   const { lesson, loading, allCompleted } = useLastLesson()
   const { isNavigating, navigate } = useSafeNavigation()
   const isTablet = useDevice().isTablet
-  const theme = useTheme()
-  const cardSize = theme.dimensions.cardButtonSize
+  const cardSize = useCardButtonSize()
 
   if (loading) {
     return (

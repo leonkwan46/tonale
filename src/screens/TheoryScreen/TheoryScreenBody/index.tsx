@@ -1,5 +1,4 @@
 import { useProgress } from '@/hooks'
-import { stagesArray } from '@/subjects/theory/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -13,7 +12,9 @@ import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonCo
 const PREVIEW_LESSONS_COUNT = 2
 
 export const TheoryScreenBody = () => {
-  const { getStageById, getStageRequirements, getNextLockedStage } = useProgress()
+  const { getStageById, getStageRequirements, getNextLockedStage, stages } = useProgress()
+  const stagesRef = useRef(stages)
+  stagesRef.current = stages
 
   const getVisibleLessonsForStage = useCallback((stageId: string): StageLesson[] => {
     const stage = getStageById(stageId)
@@ -47,7 +48,6 @@ export const TheoryScreenBody = () => {
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
-  const [refreshKey, setRefreshKey] = useState(0)
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
   const openedStageIdsRef = useRef<Set<string>>(new Set())
@@ -73,44 +73,38 @@ export const TheoryScreenBody = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  useFocusEffect(
-    useCallback(() => {
-      setRefreshKey(prev => prev + 1)
-    }, [])
-  )
-  useEffect(() => {
-    const initState = async () => {
-      const initialCollapsedState: Record<string, boolean> = {}
-      const initialVisibleState: Record<string, boolean> = {}
-      const unlockedStages = stagesArray.filter(s => s.isUnlocked)
-      const furthest = unlockedStages.length > 0
-        ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
-        : undefined
-      const furthestId = furthest?.id
+  const initCollapseState = useCallback(() => {
+    const currentStages = stagesRef.current
+    const initialCollapsedState: Record<string, boolean> = {}
+    const initialVisibleState: Record<string, boolean> = {}
+    const unlockedStages = currentStages.filter(s => s.isUnlocked)
+    const furthest = unlockedStages.length > 0
+      ? unlockedStages.reduce((max, s) => (s.order > max.order ? s : max), unlockedStages[0])
+      : undefined
+    const furthestId = furthest?.id
 
-      stagesArray.forEach(stage => {
-        if (!animatedHeights.current[stage.id]) {
-          animatedHeights.current[stage.id] = new Animated.Value(1)
-        }
+    currentStages.forEach(stage => {
+      if (!animatedHeights.current[stage.id]) {
+        animatedHeights.current[stage.id] = new Animated.Value(1)
+      }
 
-        const shouldBeOpen = furthestId === stage.id
+      const shouldBeOpen = furthestId === stage.id
 
-        if (stage.isCleared) {
-          initialCollapsedState[stage.id] = !shouldBeOpen
-          initialVisibleState[stage.id] = shouldBeOpen
-          animatedHeights.current[stage.id].setValue(shouldBeOpen ? 1 : 0)
-        } else {
-          initialVisibleState[stage.id] = true
-          animatedHeights.current[stage.id].setValue(1)
-        }
-      })
+      if (stage.isCleared) {
+        initialCollapsedState[stage.id] = !shouldBeOpen
+        initialVisibleState[stage.id] = shouldBeOpen
+        animatedHeights.current[stage.id].setValue(shouldBeOpen ? 1 : 0)
+      } else {
+        initialVisibleState[stage.id] = true
+        animatedHeights.current[stage.id].setValue(1)
+      }
+    })
 
-      setCollapsedStages(initialCollapsedState)
-      setVisibleStages(initialVisibleState)
-    }
+    setCollapsedStages(initialCollapsedState)
+    setVisibleStages(initialVisibleState)
+  }, [])
 
-    void initState()
-  }, [refreshKey])
+  useFocusEffect(initCollapseState)
 
   const toggleStageCollapse = useCallback(
     (stageId: string) => {
@@ -140,7 +134,7 @@ export const TheoryScreenBody = () => {
   )
 
   const nextLockedStage = getNextLockedStage()
-  const unlockedStages = stagesArray.filter(s => s.isUnlocked)
+  const unlockedStages = stages.filter(s => s.isUnlocked)
   const displayStages = nextLockedStage ? [...unlockedStages, nextLockedStage] : unlockedStages
   const sortedStages = [...displayStages].sort((a, b) => b.order - a.order)
   const hasNextStage = nextLockedStage !== undefined

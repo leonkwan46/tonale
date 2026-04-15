@@ -2,7 +2,6 @@ import BouncingScrollView from '@/compLib/BouncingScrollView'
 import { useWindowDimensions } from '@/hooks'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { getAvatarFullSource } from '@/utils/avatarAssets'
-import { useTheme } from '@emotion/react'
 import { GENDER, type UserGender, type UserInstrument } from '@types'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import {
@@ -12,15 +11,16 @@ import {
   RefreshControl
 } from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
-import { ContentContainer } from '../../../TheoryScreen/TheoryScreenBody/TheoryScreenBody.styles'
 import { ClapCelebration } from './ClapCelebration'
 import {
   AvatarImage,
   BackgroundGradient,
+  ContentContainer,
   HomeScreenContainer,
   ImageContainer,
   ScrollContentContainer,
-  StageImage
+  StageImage,
+  useGradientColors
 } from './HomeScreenBackground.styles'
 import { PullIndicator } from './PullIndicator'
 import { PULL_THRESHOLD } from './PullIndicator/PullIndicator.constants'
@@ -40,7 +40,6 @@ export const HomeScreenBackground = ({
   gender,
   instrument
 }: HomeScreenBackgroundProps) => {
-  const theme = useTheme()
   const { isDark } = useThemeMode()
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
@@ -58,12 +57,7 @@ export const HomeScreenBackground = ({
     return getAvatarFullSource(gender || GENDER.MALE, instrument)
   }, [gender, instrument])
 
-  const gradientColors = useMemo(() => {
-    const colors = isDark
-      ? theme.components.homeScreen.gradient.dark
-      : theme.components.homeScreen.gradient.light
-    return colors as unknown as readonly [string, string, ...string[]]
-  }, [isDark, theme.components.homeScreen.gradient])
+  const gradientColors = useGradientColors(isDark)
 
   // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
   // Need to implement gesture-based solution for Android if cross-platform support is required.

@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react'
 import { useEffect } from 'react'
 import {
     Easing,
@@ -22,8 +21,6 @@ interface LogoAnimationProps {
 }
 
 export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
-  const theme = useTheme()
-
   const scale = useSharedValue(0.3)
   const opacity = useSharedValue(0)
   const rotation = useSharedValue(0)
@@ -62,7 +59,6 @@ export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
         <MusicIcon
           name="musical-notes"
           size={scaleSize(48)}
-          color={theme.colors.primary}
         />
       </LogoContainer>
     </Container>

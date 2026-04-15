@@ -1,8 +1,11 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
+
+export const useIsTablet = () => useTheme().device.isTablet
 
 interface SkeletonDimensionsProps {
   width?: number | string;

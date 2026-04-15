@@ -1,17 +1,15 @@
-import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
 import Svg, { Defs, G, Path } from 'react-native-svg'
 
-import { ScrollIconContainer } from './ScrollIcon.styles'
+import { ScrollIconContainer, useStrokeColor } from './ScrollIcon.styles'
 
 interface ScrollIconProps {
   size?: number
 }
 
 export const ScrollIcon = ({ size = 24 }: ScrollIconProps) => {
-  const theme = useTheme()
   const scaledSize = scale(size)
-  const strokeColor = theme.colors.warningContrast
+  const strokeColor = useStrokeColor()
 
   return (
     <ScrollIconContainer scaledSize={scaledSize}>

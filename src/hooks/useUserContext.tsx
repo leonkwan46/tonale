@@ -3,7 +3,7 @@ import { getUserData } from '@/config/firebase/functions'
 import { userCache } from '@/storage'
 import { isFirebaseError, type UserData } from '@types'
 import { onAuthStateChanged, User } from 'firebase/auth'
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { auth } from '../config/firebase/firebase'
 
@@ -38,7 +38,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Track if registration is in progress to prevent wasted fetchUserData calls
   const isRegisteringRef = useRef(false)
 
-  const fetchUserData = async (): Promise<UserData | null> => {
+  const fetchUserData = useCallback(async (): Promise<UserData | null> => {
     try {
       const result = await getUserData()
       const profileData = result.data.data
@@ -61,7 +61,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         return null
       }
     }
-  }
+  }, [])
 
   const handleOnboardingCheck = async (
     userData: UserData | null,
@@ -143,8 +143,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     isRegisteringRef.current = isRegistering
   }, [])
 
+  const contextValue = useMemo(
+    () => ({ authUser, userData, loading, cachedOnboardingCompleted, fetchUserData, setUserData, setIsRegistering }),
+    [authUser, userData, loading, cachedOnboardingCompleted, fetchUserData, setUserData, setIsRegistering]
+  )
+
   return (
-    <UserContext.Provider value={{ authUser, userData, loading, cachedOnboardingCompleted, fetchUserData, setUserData, setIsRegistering }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   )

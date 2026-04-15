@@ -1,5 +1,7 @@
 import type { AppTheme } from '@/config/theme/theme'
+import { HOME_SCREEN_H_PADDING } from '@/screens/HomeScreen/components/HomeScreenBackground/HomeScreenBackground.styles'
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { Dimensions, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
@@ -14,7 +16,7 @@ type StrikeCardFlameProps = {
 };
 
 const CARD_COUNT = 5
-const CONTENT_PADDING = scale(10) * 2
+const CONTENT_PADDING = HOME_SCREEN_H_PADDING * 2
 const GAP_SIZE = scale(8)
 const GAPS_TOTAL = GAP_SIZE * (CARD_COUNT - 1)
 
@@ -67,3 +69,16 @@ export const getStrikeCardFlameProps = (
 export const StrikeBarCardContainer = styled(View)({
   position: 'relative'
 })
+
+export const useStrikeCardThemeProps = (
+  day: number,
+  currentDay: number,
+  isEmpty: boolean,
+  isActive: boolean
+) => {
+  const theme = useTheme()
+  return {
+    flame: getStrikeCardFlameProps(day, currentDay, theme),
+    cardColors: getStrikeCardColors(theme, { isEmpty, isActive })
+  }
+}
