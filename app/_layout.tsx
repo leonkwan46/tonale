@@ -13,11 +13,16 @@ import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
 import { NetworkNotificationProvider } from '@/hooks/useNetworkNotificationContext'
 import { ProgressProvider } from '@/hooks/useProgressContext'
-import { ThemeModeProvider } from '@/hooks/useThemeModeContext'
+import { ThemeModeProvider, useThemeMode } from '@/hooks/useThemeModeContext'
 import { UserProvider } from '@/hooks/useUserContext'
 import { SplashScreen } from '@/screens/SplashScreen'
 
 initSentry()
+
+const ThemedStatusBar = () => {
+  const { isDark } = useThemeMode()
+  return <StatusBar style={isDark ? 'light' : 'dark'} />
+}
 
 const DevErrorBoundaryTrigger = () => {
   if (__DEV__ && process.env.EXPO_PUBLIC_FORCE_ERROR_BOUNDARY === '1') {
@@ -53,7 +58,7 @@ const RootLayout = () => {
                           <Stack.Screen name="+not-found" />
                         </Stack>
                         <NetworkToast />
-                        <StatusBar style="auto" />
+                        <ThemedStatusBar />
                       </>
                       )}
                     </BottomSheetModalProvider>
