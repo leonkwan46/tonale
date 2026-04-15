@@ -5,11 +5,11 @@ export const wrapWithSentry = (component: Parameters<typeof Sentry.wrap>[0]) =>
   Sentry.wrap(component)
 
 export const initSentry = (): void => {
-  if (!SENTRY_DSN) return
+  if (__DEV__ || !SENTRY_DSN) return
 
   Sentry.init({
     dsn: SENTRY_DSN,
-    environment: __DEV__ ? 'development' : 'production',
+    environment: 'production',
     tracesSampleRate: 1,
     enableAutoSessionTracking: true,
     beforeSend(event) {
@@ -18,15 +18,13 @@ export const initSentry = (): void => {
     }
   })
 
-  if (!__DEV__) {
-    const originalConsoleError = console.error
+  const originalConsoleError = console.error
 
-    console.error = (...args: unknown[]) => {
-      originalConsoleError(...args)
-      const error = args[0] instanceof Error
-        ? args[0]
-        : new Error(args.map(String).join(' '))
-      Sentry.captureException(error)
-    }
+  console.error = (...args: unknown[]) => {
+    originalConsoleError(...args)
+    const error = args[0] instanceof Error
+      ? args[0]
+      : new Error(args.map(String).join(' '))
+    Sentry.captureException(error)
   }
 }
