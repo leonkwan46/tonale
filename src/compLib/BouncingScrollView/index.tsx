@@ -37,7 +37,6 @@ const BouncingScrollView = ({
   const contentHeight = useSharedValue(0)
   const layoutHeight = useSharedValue(0)
 
-  // NOTE: this is to handle the bounce gesture on Android
   const bounceDirection = useSharedValue(-1)
   const bounceOverscroll = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler({
@@ -45,13 +44,11 @@ const BouncingScrollView = ({
       scrollOffset.value = event.contentOffset.y
     }
   })
-  // This is used to calculate the scroll direction to determine manual activation needs
   const startY = useSharedValue(0)
   const nativeScroll = Gesture.Native()
   const bounceGesture = Gesture.Pan()
-
-    .manualActivation(true) // This is to prevent Pan Gesture automatically take over Native control
-    .onTouchesDown((e, state) => {
+    .manualActivation(true)
+    .onTouchesDown((e) => {
       startY.value = e.allTouches[0].absoluteY
     })
     .onTouchesMove((e, state) => {
@@ -69,8 +66,6 @@ const BouncingScrollView = ({
         bounceDirection.value = 1
         state.activate()
       }
-      // Never call state.fail() here — the gesture must stay undetermined so
-      // it can still activate if the user scrolls to an edge mid-touch.
     })
     .onChange((event) => {
       const absY = Math.abs(event.translationY)

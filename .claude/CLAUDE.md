@@ -11,7 +11,7 @@ npm test               # Jest unit tests
 
 ## Architecture
 
-React Native + Expo, two subject tracks: Theory and Aural. Backend: Firebase (Auth, Firestore, Cloud Functions) in separate `tonale-api` repo.
+React Native + Expo, ios and android only, no web. Two subject tracks: Theory and Aural. Backend: Firebase (Auth, Firestore, Cloud Functions) in separate `tonale-api` repo.
 
 **Navigation:** Expo Router under `app/`. Routes: `(auth)/`, `(tabs)/` (Home, Theory, Aural, Settings), `lesson.tsx`, `revision.tsx`.
 

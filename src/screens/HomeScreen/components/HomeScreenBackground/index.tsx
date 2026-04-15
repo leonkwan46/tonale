@@ -59,8 +59,6 @@ export const HomeScreenBackground = ({
 
   const gradientColors = useGradientColors(isDark)
 
-  // TODO: Android doesn't support overscroll/bounce like iOS, so pull-up gesture is iOS-only.
-  // Need to implement gesture-based solution for Android if cross-platform support is required.
   const handleScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       if (Platform.OS !== 'ios') return
@@ -103,15 +101,9 @@ export const HomeScreenBackground = ({
     []
   )
 
-  // NOTE: this function is to handle the bounce gesture on Android
   const handleBounce = useCallback(
     (direction: 'top' | 'bottom', overscroll: number) => {
-      if (
-        hasTriggeredRef.current ||
-        Platform.OS !== 'android' ||
-        direction !== 'bottom'
-      )
-        return
+      if (hasTriggeredRef.current || Platform.OS !== 'android' || direction !== 'bottom') return
       if (overscroll > PULL_THRESHOLD) {
         hasTriggeredRef.current = true
         setCelebrationTrigger(true)
@@ -122,7 +114,7 @@ export const HomeScreenBackground = ({
         }, 1600)
       }
     },
-    [setCelebrationTrigger, setMessageIndex]
+    []
   )
 
   return (
