@@ -1,8 +1,10 @@
 import * as Sentry from '@sentry/react-native'
 const SENTRY_DSN = process.env.EXPO_PUBLIC_SENTRY_DSN
 
-export const wrapWithSentry = (component: Parameters<typeof Sentry.wrap>[0]) =>
-  Sentry.wrap(component)
+export const wrapWithSentry = (component: Parameters<typeof Sentry.wrap>[0]) => {
+  if (__DEV__ || !SENTRY_DSN) return component
+  return Sentry.wrap(component)
+}
 
 export const initSentry = (): void => {
   if (__DEV__ || !SENTRY_DSN) return
