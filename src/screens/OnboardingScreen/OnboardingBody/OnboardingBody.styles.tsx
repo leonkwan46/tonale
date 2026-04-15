@@ -6,3 +6,9 @@ export const ScrollContentContainer = styled.View(({ theme }) => ({
   padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.lg),
   gap: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl)
 }))
+
+export const ErrorText = styled.Text(({ theme }) => ({
+  color: theme.colors.error,
+  fontSize: theme.typography.sm,
+  textAlign: 'center'
+}))

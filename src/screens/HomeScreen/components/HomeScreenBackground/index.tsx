@@ -3,7 +3,7 @@ import { useWindowDimensions } from '@/hooks'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { getAvatarFullSource } from '@/utils/avatarAssets'
 import { GENDER, type UserGender, type UserInstrument } from '@types'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -45,7 +45,14 @@ export const HomeScreenBackground = ({
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
   const hasTriggeredRef = useRef(false)
+  const celebrationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pullDistance = useSharedValue(0)
+
+  useEffect(() => {
+    return () => {
+      if (celebrationTimerRef.current) clearTimeout(celebrationTimerRef.current)
+    }
+  }, [])
 
   const stageImage = useMemo(() => {
     return isDark
@@ -92,7 +99,7 @@ export const HomeScreenBackground = ({
         hasTriggeredRef.current = true
         setCelebrationTrigger(true)
         setMessageIndex((prev) => prev + 1)
-        setTimeout(() => {
+        celebrationTimerRef.current = setTimeout(() => {
           setCelebrationTrigger(false)
           hasTriggeredRef.current = false
         }, 1600)
@@ -108,7 +115,7 @@ export const HomeScreenBackground = ({
         hasTriggeredRef.current = true
         setCelebrationTrigger(true)
         setMessageIndex((prev) => prev + 1)
-        setTimeout(() => {
+        celebrationTimerRef.current = setTimeout(() => {
           setCelebrationTrigger(false)
           hasTriggeredRef.current = false
         }, 1600)

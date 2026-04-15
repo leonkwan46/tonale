@@ -2,7 +2,7 @@ import { useDevice, useProgress } from '@/hooks'
 import { auralStagesArray } from '@/subjects/aural/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { Animated, ScrollView, View } from 'react-native'
 import { LessonDivider } from '../../TheoryScreen/components/LessonDivider'
 import { LessonSection } from '../../TheoryScreen/components/LessonSection'
@@ -60,16 +60,18 @@ export const AuralScreenBody = () => {
   const scrollViewRef = useRef<ScrollView>(null)
   const [collapsedStages, setCollapsedStages] = useState<Record<string, boolean>>({})
   const [visibleStages, setVisibleStages] = useState<Record<string, boolean>>({})
-  const [refreshKey, setRefreshKey] = useState(0) // Force re-render when progress updates
+  const [refreshKey, setRefreshKey] = useState(0)
   const animatedHeights = useRef<Record<string, Animated.Value>>({})
   const stageRefs = useRef<Record<string, View>>({})
   const openedStageIdsRef = useRef<Set<string>>(new Set())
+  const expandTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Helper function to scroll to a stage
   const scrollToStage = (stageId: string, offset: number = 100) => {
     if (stageRefs.current[stageId] && scrollViewRef.current) {
       stageRefs.current[stageId].measureLayout(
-        scrollViewRef.current as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        scrollViewRef.current as unknown as View,
         (x: number, y: number) => {
           scrollViewRef.current?.scrollTo({
             y: Math.max(0, y - offset),
@@ -89,7 +91,11 @@ export const AuralScreenBody = () => {
       scrollViewRef.current?.scrollToEnd({ animated: true })
     }, 100)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      if (expandTimerRef.current) clearTimeout(expandTimerRef.current)
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+    }
   }, [])
 
   useFocusEffect(
@@ -166,19 +172,18 @@ export const AuralScreenBody = () => {
       // Track user intent to keep this stage open (session-only, not persisted)
       openedStageIdsRef.current.add(stageId)
 
-      // Small delay to ensure DOM update, then start fade in animation and scroll
-      setTimeout(() => {
+      if (expandTimerRef.current) clearTimeout(expandTimerRef.current)
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+      expandTimerRef.current = setTimeout(() => {
         animatedHeights.current[stageId].setValue(0)
         Animated.timing(animatedHeights.current[stageId], {
           toValue: 1,
           duration: 200,
           useNativeDriver: true
         }).start()
-        
-        // Scroll to the expanded content
-        setTimeout(() => {
+        scrollTimerRef.current = setTimeout(() => {
           scrollToStage(stageId, 0)
-        }, 150) // Wait for content to be rendered
+        }, 150)
       }, 10)
     }
     if (newCollapsedState) {
