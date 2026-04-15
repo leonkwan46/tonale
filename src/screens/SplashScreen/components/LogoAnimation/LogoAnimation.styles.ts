@@ -36,5 +36,6 @@ export const InnerCircle = styled.View(({ theme }) => ({
 }))
 
 export const MusicIcon = styled(Ionicons)(({ theme }) => ({
+  color: theme.colors.primary,
   zIndex: 10
 }))

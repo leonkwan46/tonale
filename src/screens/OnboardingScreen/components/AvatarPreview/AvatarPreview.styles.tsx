@@ -1,7 +1,13 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
+
+export const useGradientColors = (): [string, string] => {
+  const { colors } = useTheme()
+  return [colors.background, `${colors.background}00`]
+}
 
 export const StickerWrapper = styled(View)<{ screenWidth: number }>(
   ({ screenWidth, theme }) => ({

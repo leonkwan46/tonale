@@ -7,6 +7,7 @@ import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import '@/config/theme/devThemeContrast'
+import { initSentry, wrapWithSentry } from '@/config/sentry'
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
@@ -16,13 +17,7 @@ import { ThemeModeProvider } from '@/hooks/useThemeModeContext'
 import { UserProvider } from '@/hooks/useUserContext'
 import { SplashScreen } from '@/screens/SplashScreen'
 
-if (!__DEV__) {
-  console.log = () => {}
-  console.warn = () => {}
-  console.error = () => {}
-  console.info = () => {}
-  console.debug = () => {}
-}
+initSentry()
 
 const DevErrorBoundaryTrigger = () => {
   if (__DEV__ && process.env.EXPO_PUBLIC_FORCE_ERROR_BOUNDARY === '1') {
@@ -54,6 +49,7 @@ const RootLayout = () => {
                           <Stack.Screen name="(tabs)" />
                           <Stack.Screen name="onboarding" />
                           <Stack.Screen name="lesson" />
+                          <Stack.Screen name="revision" options={{ headerShown: false }} />
                           <Stack.Screen name="+not-found" />
                         </Stack>
                         <NetworkToast />
@@ -72,4 +68,4 @@ const RootLayout = () => {
   )
 }
 
-export default RootLayout
+export default wrapWithSentry(RootLayout)

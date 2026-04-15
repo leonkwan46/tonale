@@ -1,10 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
-import { useTheme } from '@emotion/react'
 import { useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { Thumb, TOGGLE_CONSTANTS, Track } from './ThemeToggle.styles'
+import { Thumb, TOGGLE_CONSTANTS, Track, useToggleIconColor } from './ThemeToggle.styles'
 
 interface ThemeToggleProps {
   isDark: boolean
@@ -12,7 +11,7 @@ interface ThemeToggleProps {
 }
 
 export const ThemeToggle = ({ isDark, onToggle }: ThemeToggleProps) => {
-  const theme = useTheme()
+  const iconColor = useToggleIconColor(isDark)
   const translateX = useRef(new Animated.Value(isDark ? TOGGLE_CONSTANTS.SLIDE_DISTANCE : 0)).current
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export const ThemeToggle = ({ isDark, onToggle }: ThemeToggleProps) => {
         <Ionicons
           name={isDark ? 'moon' : 'sunny'}
           size={scale(14)}
-          color={isDark ? theme.colors.primary : theme.colors.warning}
+          color={iconColor}
         />
       </Thumb>
     </Track>

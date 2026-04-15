@@ -64,7 +64,9 @@ export const createIntervalQuestion = (
 }
 
 const getDuplicateIdentifier = (question: Question): string | null => {
-  return typeof question.correctAnswer === 'string' ? question.correctAnswer : null
+  const answer = typeof question.correctAnswer === 'string' ? question.correctAnswer : null
+  const clef = question.visualComponent?.clef ?? ''
+  return answer ? `${answer}_${clef}` : null
 }
 
 const generateQuestionsForClef = (stage: StageNumber, clef: ClefType, layoutType?: 'grid' | 'row'): Question[] => {

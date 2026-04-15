@@ -66,12 +66,16 @@ jobs:
         npx expo prebuild --platform android --clean
         
     - name: Build Android APK
+      env:
+        SENTRY_DISABLE_AUTO_UPLOAD: 'true'
       run: |
         cd android
         ./gradlew assembleRelease
         cd ..
-        
+
     - name: Build Android AAB
+      env:
+        SENTRY_DISABLE_AUTO_UPLOAD: 'true'
       run: |
         cd android
         ./gradlew bundleRelease

@@ -1,7 +1,10 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
 
 import { PressableFeedback } from '@/utils/PressableFeedback'
+
+export const useCardButtonSize = () => useTheme().dimensions.cardButtonSize
 
 export const LessonSectionContainer = styled(PressableFeedback)(({ theme }) => ({
   flex: 1,

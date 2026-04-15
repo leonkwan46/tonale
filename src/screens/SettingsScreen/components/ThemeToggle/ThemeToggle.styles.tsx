@@ -1,10 +1,15 @@
+import { PressableFeedback, type PressableFeedbackProps } from '@/utils/PressableFeedback'
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
+import { forwardRef } from 'react'
 import { Animated } from 'react-native'
+import type { View } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
-import { forwardRef } from 'react'
-import type { View } from 'react-native'
-import { PressableFeedback, type PressableFeedbackProps } from '@/utils/PressableFeedback'
+export const useToggleIconColor = (isDark: boolean) => {
+  const { colors } = useTheme()
+  return isDark ? colors.primary : colors.warning
+}
 
 const PressableOpacity08 = forwardRef<View, PressableFeedbackProps>((props, ref) => (
   <PressableFeedback ref={ref} pressOpacity={0.8} {...props} />

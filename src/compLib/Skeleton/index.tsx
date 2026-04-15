@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react'
 import { useEffect } from 'react'
 import {
     Easing,
@@ -11,7 +10,8 @@ import { scale } from 'react-native-size-matters'
 import {
     SkeletonBase,
     SkeletonContainer,
-    SkeletonGradient
+    SkeletonGradient,
+    useIsTablet
 } from './Skeleton.styles'
 
 interface SkeletonProps {
@@ -21,7 +21,7 @@ interface SkeletonProps {
 }
 
 export const Skeleton = ({ variant, width, height }: SkeletonProps) => {
-  const theme = useTheme()
+  const isTablet = useIsTablet()
   const translateX = useSharedValue(-400)
 
   useEffect(() => {
@@ -46,14 +46,14 @@ export const Skeleton = ({ variant, width, height }: SkeletonProps) => {
           width: scale(
             (width ?? width !== undefined)
               ? width
-              : theme.device.isTablet
+              : isTablet
                 ? 35
                 : 100
           ),
           height: scale(
             (height ?? height !== undefined)
               ? height
-              : theme.device.isTablet
+              : isTablet
                 ? 35
                 : 100
           ),
@@ -65,7 +65,7 @@ export const Skeleton = ({ variant, width, height }: SkeletonProps) => {
           height:
             height !== undefined
               ? scale(height)
-              : theme.device.isTablet
+              : isTablet
                 ? scale(10)
                 : scale(40),
           borderRadius: scale(15)

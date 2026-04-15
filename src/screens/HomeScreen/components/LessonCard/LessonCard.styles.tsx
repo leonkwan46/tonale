@@ -1,6 +1,9 @@
 import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
+
+export const useCardButtonSize = () => useTheme().dimensions.cardButtonSize
 
 export const LessonCardContainer = styled.View<{ isLoading?: boolean }>(({ theme, isLoading }) => ({
   width: '100%',

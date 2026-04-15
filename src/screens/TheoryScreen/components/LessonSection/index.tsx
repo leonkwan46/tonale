@@ -1,6 +1,5 @@
 import { Card } from '@/compLib/Card'
 import { useSafeNavigation } from '@/hooks'
-import { useTheme } from '@emotion/react'
 import type { Lesson } from '@types'
 import { useState } from 'react'
 import { Description } from './components/Description/Description'
@@ -9,7 +8,7 @@ import { BeamedQuaverLogo } from './components/Logo/BeamedQuaverLogo'
 import { LockLogo } from './components/Logo/LockLogo'
 import { StarLogo } from './components/Logo/StarLogo'
 import { WarningModal } from './components/WarningModal'
-import { LessonSectionContainer, StarContainer } from './LessonSection.styles'
+import { LessonSectionContainer, StarContainer, useCardButtonSize } from './LessonSection.styles'
 
 interface LessonSectionProps {
   index: number;
@@ -24,8 +23,7 @@ export const LessonSection = ({
 }: LessonSectionProps) => {
   const { isNavigating, navigate } = useSafeNavigation()
   const [showWarningModal, setShowWarningModal] = useState(false)
-  const theme = useTheme()
-  const cardSize = theme.dimensions.cardButtonSize
+  const cardSize = useCardButtonSize()
   const cardColor = lesson.isLocked ? 'grey' : 'blue'
 
   const renderCard = () => (

@@ -11,7 +11,7 @@ import { InstrumentSelection } from '../components/InstrumentSelection'
 import { NameInput } from '../components/NameInput'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
-import { ScrollContentContainer } from './OnboardingBody.styles'
+import { ErrorText, ScrollContentContainer } from './OnboardingBody.styles'
 
 interface OnboardingBodyProps {
   authUser: { uid: string } | null
@@ -29,6 +29,7 @@ export const OnboardingBody = ({
   const [selectedInstrument, setSelectedInstrument] = useState<UserInstrument | null>(null)
   const [customInstrument, setCustomInstrument] = useState<string>('')
   const [isCompleting, setIsCompleting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleScrollToBottom = () => {
     setTimeout(() => {
@@ -73,6 +74,7 @@ export const OnboardingBody = ({
       router.replace('/(tabs)')
     } catch {
       setIsCompleting(false)
+      setError('Something went wrong. Please try again.')
     }
   }
 
@@ -115,6 +117,7 @@ export const OnboardingBody = ({
           isCompleting={isCompleting}
           onPress={handleCompleteOnboarding}
         />
+        {error && <ErrorText>{error}</ErrorText>}
       </ScrollContentContainer>
     </KeyboardAwareScrollView>
   )
