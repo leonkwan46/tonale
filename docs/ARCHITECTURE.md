@@ -101,8 +101,10 @@ tonale/
 │   │   │       └── utils/              # Shared exercise utilities
 │   │   └── aural/              # Aural subject
 │   │       ├── curriculum/     # Aural stage configs
-│   │       ├── exercises/      # Rhythm generators, playback logic
-│   │       └── generators/     # Aural-specific question generators
+│   │       │   ├── config/     # Rhythm + pulse strictness configs
+│   │       │   └── stages/     # Aural stage definitions
+│   │       └── exercises/      # Rhythm generators, playback logic
+│   │           └── generators/ # Aural-specific question generators
 │   │
 │   ├── screens/                # Screen components (one folder per route)
 │   ├── compLib/                # Reusable UI components (Button, Depth3D, Icon, Modal, …)
@@ -204,7 +206,7 @@ graph TD
     style T fill:#C2410C
 ```
 
-Wrong answers are stored via `storeRevisionQuestionV2` so they surface in **Revision mode** — a separate screen that replays only the questions the user got wrong.
+Wrong answers are stored via `storeRevisionQuestion` so they surface in **Revision mode** — a separate screen that replays only the questions the user got wrong.
 
 ---
 
@@ -222,9 +224,9 @@ The app talks to Firebase through **callable Cloud Functions V2**. In `__DEV__`,
 
 | Module | Functions |
 |---|---|
-| User data | `createUserDataV2`, `getUserDataV2`, `updateUserDataV2`, `deleteUserDataV2` |
-| Lesson progress | `updateLessonProgressV2`, `getLessonProgressV2`, `getAllLessonProgressV2`, `deleteLessonProgressV2` |
-| Revision questions | `storeRevisionQuestionV2`, `getRevisionQuestionsV2`, `deleteRevisionQuestionV2`, `deleteRevisionQuestionsV2`, `deleteRevisionQuestionsByLessonV2` |
+| User data | `createUserData`, `getUserData`, `updateUserData`, `deleteUserData` |
+| Lesson progress | `updateLessonProgress`, `getLessonProgress`, `getAllLessonProgress`, `deleteLessonProgress` |
+| Revision questions | `storeRevisionQuestion`, `storeRevisionQuestions`, `getRevisionQuestions`, `deleteRevisionQuestion`, `deleteRevisionQuestions`, `deleteRevisionQuestionsByLesson` |
 
 ---
 
@@ -265,14 +267,15 @@ npm run test:coverage  # with coverage report
 
 ### E2E tests (Maestro)
 
-23 YAML flows covering every lesson in Stages 0–2, plus revision and account helpers:
+26 YAML flows covering every lesson in Stages 0–2, plus revision and account helpers:
 
 | Stage | Flows |
 |---|---|
-| Stage 0 (Pre-grade) | 7 lessons + final test |
-| Stage 1 (Foundation) | 6 lessons + final test |
-| Stage 2 (Complete Grade 1) | 7 lessons + final test |
-| Helpers | `createAccount`, `loginAccount`, `revision-test` |
+| Stage 0 (Pre-grade) | 7 lessons + final test = 8 |
+| Stage 1 (Foundation) | 6 lessons + final test = 7 |
+| Stage 2 (Complete Grade 1) | 7 lessons + final test = 8 |
+| Helpers | `createAccount`, `loginAccount` |
+| Root | `revision-test` |
 
 ```bash
 npm run test:e2e          # all stages

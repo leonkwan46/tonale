@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { scale } from 'react-native-size-matters'
 
 export const SheetContainer = styled.View(({ theme }) => ({
@@ -17,9 +18,10 @@ export const SheetHandle = styled.View(({ theme }) => ({
   opacity: 0.5
 }))
 
-export const getBackgroundStyle = (theme: { colors: { surface: string } }) => ({
-  backgroundColor: theme.colors.surface
-})
+export const useSheetBackgroundStyle = () => {
+  const { colors } = useTheme()
+  return { backgroundColor: colors.surface }
+}
 
 export const sheetViewStyle = {
   flex: 1

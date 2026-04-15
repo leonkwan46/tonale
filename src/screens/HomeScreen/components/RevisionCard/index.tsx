@@ -2,20 +2,19 @@ import { useProgress, useSafeNavigation } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Card } from '@/compLib/Card'
 import { Skeleton } from '@/compLib/Skeleton'
-import { useTheme } from '@emotion/react'
 import {
   ContentSection,
   IconText,
   RevisionCardContainer,
   RevisionCardContent,
-  RevisionText
+  RevisionText,
+  useCardButtonSize
 } from './RevisionCard.styles'
 
 export const RevisionCard = () => {
   const { revisionQuestions, revisionQuestionsLoading, progressDataLoading, progressDataInitialized } = useProgress()
   const { isNavigating, navigate } = useSafeNavigation()
-  const theme = useTheme()
-  const cardSize = theme.dimensions.cardButtonSize
+  const cardSize = useCardButtonSize()
 
   const handleStartRevision = () => {
     navigate('/revision')

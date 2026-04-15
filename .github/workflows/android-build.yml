@@ -34,7 +34,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22'
+        node-version: '24'
         cache: 'npm'
         cache-dependency-path: |
           package-lock.json
@@ -66,12 +66,16 @@ jobs:
         npx expo prebuild --platform android --clean
         
     - name: Build Android APK
+      env:
+        SENTRY_DISABLE_AUTO_UPLOAD: 'true'
       run: |
         cd android
         ./gradlew assembleRelease
         cd ..
-        
+
     - name: Build Android AAB
+      env:
+        SENTRY_DISABLE_AUTO_UPLOAD: 'true'
       run: |
         cd android
         ./gradlew bundleRelease

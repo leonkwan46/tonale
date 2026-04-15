@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
 import { Platform } from 'react-native'
 import { scale, verticalScale } from 'react-native-size-matters'
@@ -24,7 +25,14 @@ export const TAB_CONFIG = {
   }
 } as const
 
-export const TabBarContainer = styled.View<{ 
+export const useTabBarSetup = () => {
+  const { device } = useTheme()
+  const config = device.isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
+  const iconSize = device.isTablet ? config.iconSize : scale(config.iconSize)
+  return { config, iconSize }
+}
+
+export const TabBarContainer = styled.View<{
   bottomInset: number
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ theme, bottomInset, config }) => ({
@@ -50,7 +58,7 @@ export const TabButton = styled(PressableFeedback, {
   paddingVertical: theme.device.isTablet ? config.paddingVertical : verticalScale(config.paddingVertical)
 }))
 
-export const TabLabel = styled.Text<{ 
+export const TabLabel = styled.Text<{
   focused: boolean
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ focused, theme, config }) => ({

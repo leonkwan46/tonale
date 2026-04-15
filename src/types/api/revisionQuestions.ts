@@ -1,4 +1,4 @@
-import type { Timestamp } from 'firebase/firestore'
+import type { Timestamp } from './timestamp'
 import type { Question } from '../lesson'
 
 export interface RevisionQuestion extends Question {

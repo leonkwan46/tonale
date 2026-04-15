@@ -13,33 +13,32 @@ export type {
     StoreRevisionQuestionPayload, StoreRevisionQuestionResponse, StoreRevisionQuestionsPayload
 }
 
-// 2nd Gen functions (V2 suffix for migration)
 export const storeRevisionQuestionFn = httpsCallable<
   StoreRevisionQuestionPayload,
   StoreRevisionQuestionResponse
->(functions, 'storeRevisionQuestionV2')
+>(functions, 'storeRevisionQuestion')
 
 export const storeRevisionQuestionsFn = httpsCallable<
   StoreRevisionQuestionsPayload,
   StoreRevisionQuestionResponse
->(functions, 'storeRevisionQuestionsV2')
+>(functions, 'storeRevisionQuestions')
 
 export const getRevisionQuestionsFn = httpsCallable<
   Record<string, never>,
   RevisionQuestionsResponse
->(functions, 'getRevisionQuestionsV2')
+>(functions, 'getRevisionQuestions')
 
 export const deleteRevisionQuestionFn = httpsCallable<
   { id: string },
   StoreRevisionQuestionResponse
->(functions, 'deleteRevisionQuestionV2')
+>(functions, 'deleteRevisionQuestion')
 
 export const deleteRevisionQuestionsFn = httpsCallable<
   { ids: string[] },
   StoreRevisionQuestionResponse
->(functions, 'deleteRevisionQuestionsV2')
+>(functions, 'deleteRevisionQuestions')
 
 export const deleteRevisionQuestionsByLessonFn = httpsCallable<
   { lessonId: string },
   StoreRevisionQuestionResponse
->(functions, 'deleteRevisionQuestionsByLessonV2')
+>(functions, 'deleteRevisionQuestionsByLesson')

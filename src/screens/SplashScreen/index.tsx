@@ -1,12 +1,7 @@
 import { useUser } from '@/hooks'
 import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
-import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
-} from 'react-native-reanimated'
+import { getSplashEnvironmentLabel } from '@/config/environment'
 import { AppText } from './components/AppText'
 import { LogoAnimation } from './components/LogoAnimation'
 import { Wave } from './components/Wave'
@@ -19,7 +14,6 @@ import {
 // Constants
 const MIN_SPLASH_TIME_MS = 3000
 const POLL_INTERVAL_MS = 100
-const FADE_OUT_DURATION_MS = 500
 const WAVE_COUNT = 5
 const WAVE_DELAY_BASE = 1.5
 const WAVE_DELAY_INCREMENT = 0.2
@@ -57,16 +51,11 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [fontsLoaded] = useFonts(FONTS)
   const { loading: authLoading } = useUser()
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const containerOpacity = useSharedValue(1)
 
   const startExitAnimation = useCallback(() => {
     setIsTransitioning(true)
     onComplete()
-    containerOpacity.value = withTiming(0, {
-      duration: FADE_OUT_DURATION_MS,
-      easing: Easing.out(Easing.ease)
-    })
-  }, [containerOpacity, onComplete])
+  }, [onComplete])
 
   useEffect(() => {
     if (authLoading || !fontsLoaded) return
@@ -90,12 +79,8 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
     }
   }, [authLoading, fontsLoaded, startExitAnimation])
 
-  const containerStyle = useAnimatedStyle(() => ({
-    opacity: containerOpacity.value
-  }))
-
   return (
-    <Container style={containerStyle}>
+    <Container>
       {!fontsLoaded ? (
         <MusicLogoContainer>
           <LogoAnimation isTransitioning={isTransitioning} />
@@ -106,6 +91,7 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
         <LogoAnimation isTransitioning={isTransitioning} />
         <AppText
           appName="Tonalè"
+          environmentLabel={getSplashEnvironmentLabel()}
           tagline="Your personal music learning companion"
           isTransitioning={isTransitioning}
         />

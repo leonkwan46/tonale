@@ -1,7 +1,9 @@
+import { signOutUser } from '@/config/firebase/auth'
 import { getUserData } from '@/config/firebase/functions'
+import { userCache } from '@/storage'
 import { isFirebaseError, type UserData } from '@types'
-import { onAuthStateChanged, signOut, User } from 'firebase/auth'
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { onAuthStateChanged, User } from 'firebase/auth'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { auth } from '../config/firebase/firebase'
 
@@ -13,6 +15,7 @@ export interface UserContextType {
   authUser: User | null
   userData: UserData | null
   loading: boolean
+  cachedOnboardingCompleted: boolean | null
   fetchUserData: () => Promise<UserData | null>
   setUserData: (userData: UserData | null) => void
   setIsRegistering: (isRegistering: boolean) => void
@@ -28,17 +31,22 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [authUser, setAuthUser] = useState<User | null>(null)
   const [userData, setUserData] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [cachedOnboardingCompleted, setCachedOnboardingCompleted] = useState<boolean | null>(null)
   // Track if this is the first auth state change (app start/restore)
   // This helps distinguish between app restart vs active session registration
   const isFirstAuthStateChange = useRef(true)
   // Track if registration is in progress to prevent wasted fetchUserData calls
   const isRegisteringRef = useRef(false)
 
-  const fetchUserData = async (): Promise<UserData | null> => {
+  const fetchUserData = useCallback(async (): Promise<UserData | null> => {
     try {
       const result = await getUserData()
       const profileData = result.data.data
       setUserData(profileData)
+      if (profileData?.onboardingCompleted === true) {
+        await userCache.setOnboardingCompleted(true)
+        setCachedOnboardingCompleted(true)
+      }
       return profileData
     } catch (error) {
       if (isFirebaseError(error) && error.code === 'not-found') {
@@ -53,7 +61,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         return null
       }
     }
-  }
+  }, [])
 
   const handleOnboardingCheck = async (
     userData: UserData | null,
@@ -61,11 +69,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   ): Promise<boolean> => {
     if (!isFirstAuthStateChange.current) return true
 
-    // If userData exists but onboarding is incomplete, this means they started onboarding
-    // before but didn't finish. On app restart, sign them out to prevent auto-login.
+    // If userData exists but onboarding is incomplete, this means they started onboarding before but didn't finish.
+    // On app restart, sign them out to prevent auto-login.
     // If userData doesn't exist, this is a new registration - allow onboarding flow.
     if (userData && userData.onboardingCompleted !== true) {
-      await signOut(auth)
+      await signOutUser()
       isFirstAuthStateChange.current = false
       return false
     }
@@ -84,22 +92,31 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       auth,
       async (firebaseUser) => {
         if (firebaseUser) {
-          await firebaseUser.getIdToken(true)
-          // Skip fetchUserData during registration to avoid wasted call before user document exists
-          // handleRegister sets userData directly from createUserData response
-          let fetchedUserData = userData
-          if (fetchedUserData === null && !isRegisteringRef.current) {
-            fetchedUserData = await fetchUserData()
+          if (cachedOnboardingCompleted === null) {
+            userCache.getOnboardingCompleted().then(setCachedOnboardingCompleted)
           }
-          const shouldAllowAuth = await handleOnboardingCheck(fetchedUserData, isFirstAuthStateChange)
-          if (!shouldAllowAuth) return
-          isFirstAuthStateChange.current = false
+
+          try {
+            await firebaseUser.getIdToken(true)
+            // Skip fetchUserData during registration to avoid wasted call before user document exists
+            // handleRegister sets userData directly from createUserData response
+            let fetchedUserData = userData
+            if (fetchedUserData === null && !isRegisteringRef.current) {
+              fetchedUserData = await fetchUserData()
+            }
+            const shouldAllowAuth = await handleOnboardingCheck(fetchedUserData, isFirstAuthStateChange)
+            if (!shouldAllowAuth) return
+            isFirstAuthStateChange.current = false
+          } catch {
+            isFirstAuthStateChange.current = false
+          }
+
           setAuthUser(firebaseUser)
-          
           clearTimeout(authTimeout)
           setLoading(false)
         } else {
           isFirstAuthStateChange.current = true
+          setCachedOnboardingCompleted(null)
           setAuthUser(null)
           setUserData(null)
           clearTimeout(authTimeout)
@@ -126,8 +143,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     isRegisteringRef.current = isRegistering
   }, [])
 
+  const contextValue = useMemo(
+    () => ({ authUser, userData, loading, cachedOnboardingCompleted, fetchUserData, setUserData, setIsRegistering }),
+    [authUser, userData, loading, cachedOnboardingCompleted, fetchUserData, setUserData, setIsRegistering]
+  )
+
   return (
-    <UserContext.Provider value={{ authUser, userData, loading, fetchUserData, setUserData, setIsRegistering }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   )

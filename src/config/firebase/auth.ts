@@ -14,6 +14,7 @@ import {
 } from 'firebase/auth'
 import type { ActionCodeSettings, User } from 'firebase/auth'
 
+import { userCache } from '@/storage'
 import { auth } from './firebase'
 
 // HTTPS URL from authorized domain (required by Firebase API)
@@ -124,10 +125,12 @@ export const updateUserDisplayName = async (displayName: string) => {
 // ============================================================================
 
 export const signOutUser = async () => {
+  userCache.clearUserCache()
   await signOut(auth)
 }
 
 export const deleteUserAccount = async () => {
   const user = requireCurrentUser()
+  userCache.clearUserCache()
   await deleteUser(user)
 }

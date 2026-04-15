@@ -1,10 +1,8 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { useTheme } from '@emotion/react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { scale } from 'react-native-size-matters'
 
 import { Ionicons } from '@expo/vector-icons'
-import { TAB_CONFIG, TabBarContainer, TabButton, TabIcon, TabLabel } from './CustomTabBar.styles'
+import { TabBarContainer, TabButton, TabIcon, TabLabel, useTabBarSetup } from './CustomTabBar.styles'
 import { isFeatureEnabled, FEATURES } from '@/config/featureFlags'
 
 type IoniconsName = keyof typeof Ionicons.glyphMap
@@ -43,8 +41,7 @@ const getTabLabel = (routeName: string) => {
 
 export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets()
-  const theme = useTheme()
-  const config = theme.device.isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
+  const { config, iconSize } = useTabBarSetup()
   const isAuralEnabled = isFeatureEnabled(FEATURES.ENABLE_AURAL_LESSONS)
 
   return (
@@ -89,7 +86,7 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
           >
             <TabIcon
               name={iconName}
-              size={theme.device.isTablet ? config.iconSize : scale(config.iconSize)}
+              size={iconSize}
               focused={isFocused}
               config={config}
             />

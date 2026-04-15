@@ -1,0 +1,21 @@
+# Native build dirs — large, auto-generated, rarely relevant
+ios/
+android/
+
+# Dependencies
+node_modules/
+
+# Expo / build output
+.expo/
+dist/
+web-build/
+
+# Test output
+coverage/
+
+# AI workdirs — PAI algorithm PRDs, plans
+MEMORY/
+Plans/
+
+# Logs
+*.log

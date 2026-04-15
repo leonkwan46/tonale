@@ -28,7 +28,7 @@ export const InnerCircle = styled.View(({ theme }) => ({
   width: theme.device.isTablet ? scale(80) : scale(72),
   height: theme.device.isTablet ? scale(80) : scale(72),
   borderRadius: theme.device.isTablet ? scale(40) : scale(36),
-  backgroundColor: theme.colors.surface,
+  backgroundColor: theme.colors.background,
   shadowOffset: { width: 0, height: scale(2) },
   shadowOpacity: 0.1,
   shadowRadius: scale(theme.spacing.xs),

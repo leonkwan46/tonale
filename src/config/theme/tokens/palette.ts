@@ -1,7 +1,8 @@
 export const palette = {
   base: {
     white: '#ffffff',
-    black: '#000000'
+    black: '#000000',
+    transparent: 'transparent'
   },
 
   gray: {

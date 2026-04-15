@@ -1,5 +1,4 @@
 import * as React from 'react'
-import type { Theme } from '@emotion/react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Entypo from '@expo/vector-icons/Entypo'
 import { INSTRUMENT, type UserGender, type UserInstrument } from '@types'
@@ -26,7 +25,7 @@ export const getInstrumentIconName = (instrument: UserInstrument): string => {
 /**
  * Renders gender icon (head image) for GridSelection
  */
-export const renderGenderIcon = (gender: UserGender, theme: Theme): React.ReactElement => {
+export const renderGenderIcon = (gender: UserGender): React.ReactElement => {
   const imageSource = getAvatarHeadSource(gender)
   
   return (
@@ -39,26 +38,26 @@ export const renderGenderIcon = (gender: UserGender, theme: Theme): React.ReactE
 /**
  * Renders instrument icon (MaterialCommunityIcons or Entypo) for GridSelection
  */
-export const renderInstrumentIcon = (instrument: UserInstrument, theme: Theme): React.ReactElement => {
+export const renderInstrumentIcon = (instrument: UserInstrument, color: string): React.ReactElement => {
   // Use Entypo for vocal/singing
   if (instrument === INSTRUMENT.VOCAL) {
     return (
       <Entypo
         name="mic"
         size={scale(32)}
-        color={theme.colors.text}
+        color={color}
       />
     )
   }
-  
+
   // Use MaterialCommunityIcons for other instruments
   const iconName = getInstrumentIconName(instrument)
-  
+
   return (
     <MaterialCommunityIcons
       name={iconName as keyof typeof MaterialCommunityIcons.glyphMap}
       size={scale(32)}
-      color={theme.colors.text}
+      color={color}
     />
   )
 }

@@ -1,7 +1,25 @@
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
+
+export const useGradientColors = (isDark: boolean): readonly [string, string, ...string[]] => {
+  const theme = useTheme()
+  const colors = isDark
+    ? theme.components.homeScreen.gradient.dark
+    : theme.components.homeScreen.gradient.light
+  return colors as unknown as readonly [string, string, ...string[]]
+}
+
+export const HOME_SCREEN_H_PADDING = scale(15)
+
+export const ContentContainer = styled.View(({ theme }) => ({
+  paddingHorizontal: HOME_SCREEN_H_PADDING,
+  paddingVertical: scale(theme.spacing.sm),
+  gap: scale(theme.spacing.lg),
+  alignItems: 'center'
+}))
 
 export const HomeScreenContainer = styled(View)({
   flex: 1,

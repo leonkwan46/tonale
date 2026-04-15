@@ -1,12 +1,11 @@
-import { useTheme } from '@emotion/react'
 import React from 'react'
 import {
     Platform,
     ScrollView,
     ScrollViewProps,
-    StyleSheet,
-    View
+    StyleSheet
 } from 'react-native'
+import { BackgroundFill } from './BouncingScrollView.styles'
 import {
     Gesture,
     GestureDetector,
@@ -33,13 +32,11 @@ const BouncingScrollView = ({
   pullProgress,
   ...props
 }: BouncingScrollViewProps) => {
-  const theme = useTheme()
   const translateY = useSharedValue(0)
   const scrollOffset = useSharedValue(0)
   const contentHeight = useSharedValue(0)
   const layoutHeight = useSharedValue(0)
 
-  // NOTE: this is to handle the bounce gesture on Android
   const bounceDirection = useSharedValue(-1)
   const bounceOverscroll = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler({
@@ -47,13 +44,11 @@ const BouncingScrollView = ({
       scrollOffset.value = event.contentOffset.y
     }
   })
-  // This is used to calculate the scroll direction to determine manual activation needs
   const startY = useSharedValue(0)
   const nativeScroll = Gesture.Native()
   const bounceGesture = Gesture.Pan()
-
-    .manualActivation(true) // This is to prevent Pan Gesture automatically take over Native control
-    .onTouchesDown((e, state) => {
+    .manualActivation(true)
+    .onTouchesDown((e) => {
       startY.value = e.allTouches[0].absoluteY
     })
     .onTouchesMove((e, state) => {
@@ -71,8 +66,6 @@ const BouncingScrollView = ({
         bounceDirection.value = 1
         state.activate()
       }
-      // Never call state.fail() here — the gesture must stay undetermined so
-      // it can still activate if the user scrolls to an edge mid-touch.
     })
     .onChange((event) => {
       const absY = Math.abs(event.translationY)
@@ -113,8 +106,7 @@ const BouncingScrollView = ({
 
   return (
     <GestureHandlerRootView style={styles.flexContainer}>
-      <View
-        style={[styles.flexFill, { backgroundColor: theme.colors.background }]}
+      <BackgroundFill
         onLayout={(e) => {
           layoutHeight.value = e.nativeEvent.layout.height
         }}
@@ -124,7 +116,7 @@ const BouncingScrollView = ({
         >
           <Animated.ScrollView
             onScroll={scrollHandler}
-            scrollEventThrottle={1}
+            scrollEventThrottle={16}
             overScrollMode="never"
             contentContainerStyle={styles.animatedScrollView}
             onContentSizeChange={(_, h) => {
@@ -138,7 +130,7 @@ const BouncingScrollView = ({
             </Animated.View>
           </Animated.ScrollView>
         </GestureDetector>
-      </View>
+      </BackgroundFill>
     </GestureHandlerRootView>
   )
 }
@@ -147,6 +139,5 @@ export default BouncingScrollView
 
 const styles = StyleSheet.create({
   flexContainer: { flex: 1 },
-  flexFill: { flex: 1 },
   animatedScrollView: { flexGrow: 1 }
 })

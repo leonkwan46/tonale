@@ -52,3 +52,11 @@ shared/**/*.js.map
 # Test coverage
 coverage/
 *.lcov
+
+# AI workdirs
+MEMORY/
+Plans/
+
+# Sentry auth tokens (local only)
+ios/sentry.properties
+android/sentry.properties

@@ -1,23 +1,19 @@
 import { getAllLessonProgressFn, updateLessonProgressFn } from '@/config/firebase/functions/lessonProgress'
 import { getRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
-import { LAST_LESSON_ACCESS_KEY } from '@/constants/cache'
 import { useUser } from '@/hooks/useUserContext'
+import type { LastLessonAccess } from '@/storage'
+import { userCache } from '@/storage'
 import { calculateStageUnlockStatus } from '@/subjects/curriculumHelper'
 import { stagesArray } from '@/subjects/theory/curriculum/stages/helpers'
-import { clearAllUserCache, loadProgressCache, saveProgressCache } from '@/utils/cache'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { Stage, StageLesson } from '@types'
 import { RevisionQuestion } from '@types'
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 // ============================================================================
 // TYPES & INTERFACES
 // ============================================================================
 
-export interface LastLessonAccess {
-  lessonId: string
-  timestamp: number
-}
+export type { LastLessonAccess }
 
 export interface ProgressData {
   isLocked: boolean
@@ -28,134 +24,65 @@ export interface ProgressData {
 export interface ProgressContextType {
   // State
   progressData: Record<string, ProgressData>
+  stages: Stage[]
   revisionQuestions: RevisionQuestion[]
   revisionQuestionsLoading: boolean
   progressDataLoading: boolean
   progressDataInitialized: boolean
-  
+
   // Progress actions
   refreshProgress: () => Promise<void>
   refreshRevisionQuestions: () => Promise<void>
   updateLessonProgress: (lessonId: string, stars: number) => Promise<void>
   updateFinalTestProgress: (lessonId: string, isPassed: boolean) => Promise<void>
-  
+
   // Lesson utilities (pure functions, exposed for convenience)
   getStageById: (id: string) => Stage | undefined
   getStageRequirements: (stageId: string) => { isUnlocked: boolean; missingPrerequisites: Stage[]; progressNeeded: string[] }
   getNextLockedStage: () => Stage | undefined
-  trackLessonAccessLocal: (lessonId: string) => Promise<void>
-  getLastAccessedLessonLocal: () => Promise<LastLessonAccess | null>
+  trackLessonAccess: (lessonId: string) => Promise<void>
+  getLastLessonAccess: () => Promise<LastLessonAccess | null>
   allStageLessons: StageLesson[]
 }
 
 export const ProgressContext = createContext<ProgressContextType | undefined>(undefined)
 
 // ============================================================================
-// STORAGE HELPERS
+// STAGE SELECTOR (pure — no mutation of stagesArray)
 // ============================================================================
 
-const trackLessonAccessLocal = async (lessonId: string): Promise<void> => {
-  try {
-    const accessData: LastLessonAccess = {
-      lessonId,
-      timestamp: Date.now()
-    }
-    await AsyncStorage.setItem(LAST_LESSON_ACCESS_KEY, JSON.stringify(accessData))
-  } catch (error) {
-    console.error('Failed to track lesson access:', error)
-  }
-}
-
-const getLastAccessedLessonLocal = async (): Promise<LastLessonAccess | null> => {
-  try {
-    const stored = await AsyncStorage.getItem(LAST_LESSON_ACCESS_KEY)
-    if (!stored) return null
-    
-    const accessData: LastLessonAccess = JSON.parse(stored)
-    return accessData
-  } catch (error) {
-    console.error('Failed to get last accessed lesson:', error)
-    return null
-  }
-}
-
-// ============================================================================
-// STAGE MANAGEMENT HELPERS
-// ============================================================================
-
-const refreshStageUnlockStatus = (
+const getStagesWithProgress = (
   progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): void => {
-  stagesArray.forEach(stage => {
-    stage.isUnlocked = calculateStageUnlockStatus(stage.id, stagesArray)
-    
-    stage.lessons.forEach(lesson => {
-      if (!stage.isUnlocked) {
-        lesson.isLocked = true
-      } else {
-        const lessonProgress = progressData[lesson.id]
-        lesson.isLocked = lessonProgress?.isLocked ?? lesson.isLocked ?? false
-      }
-    })
-  })
-}
-
-const updateLessonInStages = (lessonId: string, progressUpdate: { stars?: number; isPassed?: boolean }): void => {
-  stagesArray.forEach((stage: Stage) => {
-    stage.lessons.forEach((lesson: StageLesson) => {
-      if (lesson.id === lessonId) {
-        if (progressUpdate.stars !== undefined) {
-          lesson.stars = progressUpdate.stars
-        }
-        if (progressUpdate.isPassed !== undefined) {
-          lesson.isPassed = progressUpdate.isPassed
-        }
-      }
-    })
-  })
-}
-
-const resetStageProgressData = (): void => {
-  stagesArray.forEach((stage: Stage) => {
-    stage.lessons.forEach((lesson: StageLesson) => {
-      lesson.stars = undefined
-      lesson.isPassed = undefined
-    })
-    
-    stage.totalStars = 0
-    stage.isCleared = false
-  })
-}
-
-const updateStageLessonsWithProgress = (
-  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): void => {
-  stagesArray.forEach((stage: Stage) => {
-    stage.lessons.forEach((lesson: StageLesson) => {
+): Stage[] => {
+  // First pass: apply lesson progress data and compute per-stage stats
+  const stagesWithLessons = stagesArray.map(stage => {
+    const lessons = stage.lessons.map(lesson => {
       const lessonProgress = progressData[lesson.id]
-      if (lessonProgress) {
-        lesson.isLocked = lessonProgress.isLocked
-        lesson.stars = lessonProgress.stars
-        lesson.isPassed = lessonProgress.isPassed
-      } else {
-        lesson.stars = undefined
-        lesson.isPassed = undefined
+      return {
+        ...lesson,
+        isLocked: lessonProgress ? lessonProgress.isLocked : (lesson.isLocked ?? false),
+        stars: lessonProgress?.stars,
+        isPassed: lessonProgress?.isPassed
       }
     })
-    
-    const regularLessons = stage.lessons.filter(lesson => !lesson.isFinalTest)
-    const finalTest = stage.lessons.find(lesson => lesson.isFinalTest)
-    
-    stage.totalStars = regularLessons.reduce((total, lesson) => total + (lesson.stars || 0), 0)
-    stage.isCleared = finalTest ? (finalTest.isPassed === true) : false
-  })
-}
 
-const syncProgressToStages = (
-  progressData: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
-): void => {
-  updateStageLessonsWithProgress(progressData)
-  refreshStageUnlockStatus(progressData)
+    const regularLessons = lessons.filter(l => !l.isFinalTest)
+    const finalTest = lessons.find(l => l.isFinalTest)
+    const totalStars = regularLessons.reduce((sum, l) => sum + (l.stars || 0), 0)
+    const isCleared = finalTest ? (finalTest.isPassed === true) : false
+
+    return { ...stage, lessons, totalStars, isCleared }
+  })
+
+  // Second pass: compute unlock status (requires isPassed from first pass),
+  // then lock lessons that belong to locked stages
+  return stagesWithLessons.map(stage => {
+    const isUnlocked = calculateStageUnlockStatus(stage.id, stagesWithLessons)
+    const lessons = isUnlocked
+      ? stage.lessons
+      : stage.lessons.map(l => ({ ...l, isLocked: true }))
+    return { ...stage, isUnlocked, lessons }
+  })
 }
 
 // ============================================================================
@@ -172,61 +99,6 @@ const convertLessonsDataToProgressFormat = (lessonsData: Record<string, { stars?
     }
     return acc
   }, {} as Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>)
-}
-
-// ============================================================================
-// LESSON UTILITIES (Pure functions - could be moved to helpers.ts if preferred)
-// ============================================================================
-
-const allStageLessons: StageLesson[] = [
-  ...stagesArray[0].lessons,
-  ...stagesArray[1].lessons,
-  ...stagesArray[2].lessons
-]
-
-const getStageById = (id: string): Stage | undefined => {
-  return stagesArray.find(stage => stage.id === id)
-}
-
-const getStageRequirements = (stageId: string): { 
-  isUnlocked: boolean
-  missingPrerequisites: Stage[]
-  progressNeeded: string[]
-} => {
-  const stage = stagesArray.find(s => s.id === stageId)
-  if (!stage) {
-    return { isUnlocked: false, missingPrerequisites: [], progressNeeded: [] }
-  }
-  
-  const missingPrerequisites: Stage[] = []
-  const progressNeeded: string[] = []
-  
-  if (stage.prerequisiteStages) {
-    stage.prerequisiteStages.forEach(prereqId => {
-      const prereqStage = stagesArray.find(s => s.id === prereqId)
-      if (prereqStage && !prereqStage.isCleared) {
-        missingPrerequisites.push(prereqStage)
-        const lessonsWithoutStars = prereqStage.lessons.filter(l => l.stars === 0)
-        if (lessonsWithoutStars.length > 0) {
-          progressNeeded.push(
-            `Complete ${lessonsWithoutStars.length} lesson(s) in ${prereqStage.title}`
-          )
-        }
-      }
-    })
-  }
-  
-  return {
-    isUnlocked: stage.isUnlocked,
-    missingPrerequisites,
-    progressNeeded
-  }
-}
-
-const getNextLockedStage = (): Stage | undefined => {
-  return stagesArray
-    .filter(stage => !stage.isUnlocked)
-    .sort((a, b) => a.order - b.order)[0]
 }
 
 // ============================================================================
@@ -252,22 +124,18 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
   }, [])
 
   const initializeEmptyProgress = useCallback(() => {
-    const emptyProgress: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }> = {}
-    setProgressData(emptyProgress)
-    resetStageProgressData()
-    syncProgressToStages(emptyProgress)
+    setProgressData({})
   }, [setProgressData])
 
   const initializeUserProgress = useCallback(async (userId: string) => {
     try {
       if (currentUserIdRef.current && currentUserIdRef.current !== userId) {
         currentUserIdRef.current = ''
-        await clearAllUserCache()
+        await userCache.clearUserCache()
       }
       
       currentUserIdRef.current = userId
-      resetStageProgressData()
-      
+
       const result = await getAllLessonProgressFn()
       
       if (result.data.success) {
@@ -278,16 +146,14 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
         } else {
           const progressData = convertLessonsDataToProgressFormat(lessonsData)
           setProgressData(progressData)
-          syncProgressToStages(progressData)
-          await saveProgressCache(userId, progressData)
+          await userCache.saveProgressCache(userId, progressData)
         }
       } else {
         // Try to load from cache as fallback
-        const cachedData = await loadProgressCache(userId)
+        const cachedData = await userCache.loadProgressCache(userId)
         if (cachedData) {
           // Cache is valid and fresh, use it
           setProgressData(cachedData.data)
-          syncProgressToStages(cachedData.data)
           // Note: We still try to refresh from server in background
           // but don't wait for it
           getAllLessonProgressFn().then(result => {
@@ -296,8 +162,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
               if (Object.keys(lessonsData).length > 0) {
                 const progressData = convertLessonsDataToProgressFormat(lessonsData)
                 setProgressData(progressData)
-                syncProgressToStages(progressData)
-                saveProgressCache(userId, progressData)
+                userCache.saveProgressCache(userId, progressData)
               }
             }
           }).catch(err => {
@@ -411,9 +276,6 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
       return
     }
     
-    updateLessonInStages(lessonId, progressUpdate)
-    syncProgressToStages(updatedData)
-    
     try {
       if (progressUpdate.isPassed !== undefined) {
         await updateLessonProgressFn({
@@ -432,7 +294,7 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
       console.error('Failed to sync progress to backend:', error)
     }
     
-    await saveProgressCache(currentUserIdRef.current, updatedData)
+    await userCache.saveProgressCache(currentUserIdRef.current, updatedData)
   }, [])
 
   const updateLessonProgress = useCallback(async (lessonId: string, stars: number) => {
@@ -475,34 +337,100 @@ export const ProgressProvider = ({ children }: { children: React.ReactNode }) =>
   }, [progressData, saveProgressAndSyncToBackend])
 
   // ============================================================================
+  // DERIVED STAGE STATE
+  // ============================================================================
+
+  const stages = useMemo(
+    () => getStagesWithProgress(progressData),
+    [progressData]
+  )
+
+  const allStageLessons = useMemo(
+    () => stages.flatMap(s => s.lessons),
+    [stages]
+  )
+
+  const getStageById = useCallback(
+    (id: string): Stage | undefined => stages.find(s => s.id === id),
+    [stages]
+  )
+
+  const getStageRequirements = useCallback(
+    (stageId: string): { isUnlocked: boolean; missingPrerequisites: Stage[]; progressNeeded: string[] } => {
+      const stage = stages.find(s => s.id === stageId)
+      if (!stage) {
+        return { isUnlocked: false, missingPrerequisites: [], progressNeeded: [] }
+      }
+
+      const missingPrerequisites: Stage[] = []
+      const progressNeeded: string[] = []
+
+      if (stage.prerequisiteStages) {
+        stage.prerequisiteStages.forEach(prereqId => {
+          const prereqStage = stages.find(s => s.id === prereqId)
+          if (prereqStage && !prereqStage.isCleared) {
+            missingPrerequisites.push(prereqStage)
+            const lessonsWithoutStars = prereqStage.lessons.filter(l => l.stars === 0)
+            if (lessonsWithoutStars.length > 0) {
+              progressNeeded.push(
+                `Complete ${lessonsWithoutStars.length} lesson(s) in ${prereqStage.title}`
+              )
+            }
+          }
+        })
+      }
+
+      return { isUnlocked: stage.isUnlocked, missingPrerequisites, progressNeeded }
+    },
+    [stages]
+  )
+
+  const getNextLockedStage = useCallback(
+    (): Stage | undefined =>
+      stages.filter(s => !s.isUnlocked).sort((a, b) => a.order - b.order)[0],
+    [stages]
+  )
+
+  // ============================================================================
   // CONTEXT VALUE
   // ============================================================================
 
+  const contextValue = useMemo(() => ({
+    progressData,
+    stages,
+    revisionQuestions,
+    revisionQuestionsLoading,
+    progressDataLoading,
+    progressDataInitialized,
+    refreshProgress,
+    refreshRevisionQuestions,
+    updateLessonProgress,
+    updateFinalTestProgress,
+    getStageById,
+    getStageRequirements,
+    getNextLockedStage,
+    trackLessonAccess: userCache.trackLessonAccess,
+    getLastLessonAccess: userCache.getLastLessonAccess,
+    allStageLessons
+  }), [
+    progressData,
+    stages,
+    revisionQuestions,
+    revisionQuestionsLoading,
+    progressDataLoading,
+    progressDataInitialized,
+    refreshProgress,
+    refreshRevisionQuestions,
+    updateLessonProgress,
+    updateFinalTestProgress,
+    getStageById,
+    getStageRequirements,
+    getNextLockedStage,
+    allStageLessons
+  ])
+
   return (
-    <ProgressContext.Provider
-      value={{
-        // State
-        progressData,
-        revisionQuestions,
-        revisionQuestionsLoading,
-        progressDataLoading,
-        progressDataInitialized,
-        
-        // Progress actions
-        refreshProgress,
-        refreshRevisionQuestions,
-        updateLessonProgress,
-        updateFinalTestProgress,
-        
-        // Lesson utilities
-        getStageById,
-        getStageRequirements,
-        getNextLockedStage,
-        trackLessonAccessLocal,
-        getLastAccessedLessonLocal,
-        allStageLessons
-      }}
-    >
+    <ProgressContext.Provider value={contextValue}>
       {children}
     </ProgressContext.Provider>
   )

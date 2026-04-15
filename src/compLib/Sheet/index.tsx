@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react'
 import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import {
     BottomSheetBackdrop,
@@ -10,7 +9,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
     SheetContainer,
     SheetHandle,
-    getBackgroundStyle,
+    useSheetBackgroundStyle,
     handleIndicatorStyle,
     sheetViewStyle
 } from './Sheet.styles'
@@ -52,7 +51,7 @@ export const Sheet = ({
   backdropOpacity = 0.8
 }: SheetProps) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null)
-  const theme = useTheme()
+  const backgroundStyle = useSheetBackgroundStyle()
 
   const snapPointsMemo = useMemo(() => {
     return snapPoints || getSnapPointsFromSize(size)
@@ -88,8 +87,6 @@ export const Sheet = ({
     ),
     [backdropOpacity]
   )
-
-  const backgroundStyle = getBackgroundStyle(theme)
 
   return (
     <BottomSheetModal

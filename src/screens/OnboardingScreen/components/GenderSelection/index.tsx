@@ -1,6 +1,5 @@
 import { GridSelection } from '@/compLib/GridSelection'
 import { getGenderDisplayLabel } from '@/utils/avatarAssets'
-import { useTheme } from '@emotion/react'
 import { GENDER, type UserGender } from '@types'
 import * as React from 'react'
 import { renderGenderIcon } from '../OnboardingIcons'
@@ -21,8 +20,6 @@ const GenderSelectionComponent = ({
   selectedGender,
   onSelect
 }: GenderSelectionProps) => {
-  const theme = useTheme()
-
   return (
     <SectionContainer>
       <SectionTitle size="md" weight="semibold">
@@ -34,7 +31,7 @@ const GenderSelectionComponent = ({
         onSelect={onSelect}
         getDisplayLabel={(value) => getGenderDisplayLabel(value as UserGender)}
         renderIcon={(option, isSelected) =>
-          renderGenderIcon(option as UserGender, theme)
+          renderGenderIcon(option as UserGender)
         }
         testID="gender-selection"
       />

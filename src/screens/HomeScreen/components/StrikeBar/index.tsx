@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { StrikeBarContainer } from './StrikeBar.styles'
 import { StrikeCard } from './StrikeCard'
 import { useStreak } from './useStreak'
@@ -9,15 +9,16 @@ const CENTER_OFFSET = 2
 export const StrikeBar = () => {
   const currentDay = useStreak()
 
-  const getDisplayDays = (): number[] => {
-    return Array.from({ length: DAYS_TO_DISPLAY }, (_, i) => currentDay - CENTER_OFFSET + i)
-  }
+  const displayDays = useMemo(
+    () => Array.from({ length: DAYS_TO_DISPLAY }, (_, i) => currentDay - CENTER_OFFSET + i),
+    [currentDay]
+  )
 
   return (
     <StrikeBarContainer>
-      {getDisplayDays().map((day, index) => (
+      {displayDays.map((day, index) => (
         <StrikeCard
-          key={`${day}-${index}`}
+          key={String(day)}
           day={day}
           currentDay={currentDay}
           index={index}

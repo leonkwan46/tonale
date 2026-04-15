@@ -35,7 +35,7 @@ export const LessonScreen = () => {
     progressData,
     updateFinalTestProgress,
     updateLessonProgress,
-    trackLessonAccessLocal,
+    trackLessonAccess,
     refreshRevisionQuestions
   } = useProgress()
 
@@ -70,7 +70,7 @@ export const LessonScreen = () => {
 
   const [questions, setQuestions] = useState<Question[]>(() => {
     if (!lesson || !lessonId) return []
-    void trackLessonAccessLocal(lessonId)
+    void trackLessonAccess(lessonId)
     return generateQuestions(lesson)
   })
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)

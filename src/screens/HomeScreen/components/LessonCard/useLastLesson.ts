@@ -19,7 +19,7 @@ export const useLastLesson = (): LessonResult => {
   const {
     progressData,
     progressDataInitialized,
-    getLastAccessedLessonLocal,
+    getLastLessonAccess,
     allStageLessons
   } = useProgress()
   
@@ -32,7 +32,7 @@ export const useLastLesson = (): LessonResult => {
     if (loading) return
 
     try {
-      const lastAccess = await getLastAccessedLessonLocal()
+      const lastAccess = await getLastLessonAccess()
       const currentLesson = findLessonToDisplay(
         lastAccess,
         progressData,
@@ -60,7 +60,7 @@ export const useLastLesson = (): LessonResult => {
   }, [
     loading,
     progressData,
-    getLastAccessedLessonLocal,
+    getLastLessonAccess,
     allStageLessons
   ])
 

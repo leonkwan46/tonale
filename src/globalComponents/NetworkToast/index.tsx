@@ -155,7 +155,7 @@ export const NetworkToast = () => {
   const iconName = STATUS_ICON[displayedStatus]
 
   return (
-    <ToastContainer topInset={top} style={animatedStyle}>
+    <ToastContainer topInset={top} style={animatedStyle} pointerEvents="box-none">
       <ToastMessage>
         <ToastRow>
           <ToastIcon name={iconName} variant={variant} />

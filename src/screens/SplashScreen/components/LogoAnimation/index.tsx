@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react'
 import { useEffect } from 'react'
 import {
     Easing,
@@ -22,15 +21,11 @@ interface LogoAnimationProps {
 }
 
 export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
-  const theme = useTheme()
-
-  // Animation values
   const scale = useSharedValue(0.3)
   const opacity = useSharedValue(0)
   const rotation = useSharedValue(0)
 
   useEffect(() => {
-    // Logo entrance animation
     scale.value = withSpring(1.0, {
       damping: 8,
       stiffness: 100
@@ -41,7 +36,6 @@ export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
       easing: Easing.out(Easing.ease)
     })
 
-    // Subtle rotation animation
     rotation.value = withRepeat(
       withTiming(360, {
         duration: 8000,
@@ -65,7 +59,6 @@ export const LogoAnimation = ({ isTransitioning }: LogoAnimationProps) => {
         <MusicIcon
           name="musical-notes"
           size={scaleSize(48)}
-          color={theme.colors.primary}
         />
       </LogoContainer>
     </Container>
