@@ -5,6 +5,8 @@ import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react'
 import { type ReactNode, useMemo } from 'react'
 
+import { ThemeTransitionOverlay } from './ThemeTransitionOverlay'
+
 interface AppThemeProviderProps {
   children: ReactNode
 }
@@ -33,6 +35,7 @@ export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
   return (
     <EmotionThemeProvider theme={extendedTheme}>
       {children}
+      <ThemeTransitionOverlay isDark={isDark} />
     </EmotionThemeProvider>
   )
 }
