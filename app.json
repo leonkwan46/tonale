@@ -34,10 +34,11 @@
       "expo-audio",
       "expo-asset",
       [
-        "@sentry/react-native",
+        "@sentry/react-native/expo",
         {
-          "organization": "lk-studio-59",
-          "project": "react-native"
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "lk-studio-59"
         }
       ]
     ],

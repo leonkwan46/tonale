@@ -7,7 +7,7 @@ import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import '@/config/theme/devThemeContrast'
-import { initSentry } from '@/config/sentry'
+import { initSentry, wrapWithSentry } from '@/config/sentry'
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
@@ -68,4 +68,4 @@ const RootLayout = () => {
   )
 }
 
-export default RootLayout
+export default wrapWithSentry(RootLayout)
