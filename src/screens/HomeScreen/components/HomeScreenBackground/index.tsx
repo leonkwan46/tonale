@@ -128,9 +128,7 @@ export const HomeScreenBackground = ({
   )
 
   return (
-    <HomeScreenContainer
-      style={Platform.OS === 'ios' ? { backgroundColor: gradientColors[0] } : undefined}
-    >
+    <HomeScreenContainer style={{ backgroundColor: gradientColors[0] }}>
       <BouncingScrollView
         refreshControl={
           <RefreshControl
