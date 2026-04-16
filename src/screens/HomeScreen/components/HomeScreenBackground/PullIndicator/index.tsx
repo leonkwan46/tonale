@@ -1,7 +1,7 @@
 import { useMemo, type FC } from 'react'
 import { scale } from 'react-native-size-matters'
 import Animated, { interpolate, useAnimatedStyle, useDerivedValue, type SharedValue } from 'react-native-reanimated'
-import { EmojiText, PullIndicatorContainer, PullIndicatorMessage } from './PullIndicator.styles'
+import { ClapEmoji, PullIndicatorContainer, PullIndicatorMessage } from './PullIndicator.styles'
 
 export const PULL_THRESHOLD = scale(35)
 
@@ -12,7 +12,7 @@ const SCALE_OUTPUT_RANGE = [0.7, 1]
 const TILT_INPUT_RANGE = [0, PULL_THRESHOLD * 0.8, PULL_THRESHOLD]
 const TILT_OUTPUT_RANGE = [0, 0, -15]
 
-const ENCOURAGEMENT_POSITION = { position: 'absolute', bottom: 0, left: 0, right: 0 } as const
+const ENCOURAGEMENT_OVERLAY_STYLE = { position: 'absolute', bottom: 0, left: 0, right: 0 } as const
 
 const ENCOURAGEMENT_MESSAGES = [
   'You\'re making yourself proud',
@@ -64,14 +64,14 @@ export const PullIndicator: FC<PullIndicatorProps> = ({ pullDistance, messageInd
     <Animated.View style={containerStyle}>
       <PullIndicatorContainer>
         <Animated.View style={emojiTiltStyle}>
-          <EmojiText>👏</EmojiText>
+          <ClapEmoji>👏</ClapEmoji>
         </Animated.View>
         <Animated.View style={hintStyle}>
           <PullIndicatorMessage size="sm" align="center" muted>
             Pull to celebrate
           </PullIndicatorMessage>
         </Animated.View>
-        <Animated.View style={[ENCOURAGEMENT_POSITION, encouragementStyle]}>
+        <Animated.View style={[ENCOURAGEMENT_OVERLAY_STYLE, encouragementStyle]}>
           <PullIndicatorMessage size="sm" align="center" muted>
             {encouragementMessage}
           </PullIndicatorMessage>

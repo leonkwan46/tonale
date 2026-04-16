@@ -72,7 +72,6 @@ export const lightComponentColors = {
 
   input: {
     background: palette.gray[50],
-    border: palette.gray[400],
     text: palette.gray[950],
     placeholder: palette.gray[500]
   },

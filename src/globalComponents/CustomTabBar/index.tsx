@@ -50,8 +50,8 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
     <TabBarContainer
       bottomInset={insets.bottom}
       config={config}
-      intensity={50}
-      tint={isDark ? 'dark' : 'light'}
+      intensity={100}
+      tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
       experimentalBlurMethod="dimezisBlurView"
     >
       {state.routes

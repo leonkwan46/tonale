@@ -177,7 +177,7 @@ export const HomeScreenBackground = ({
         pointerEvents="none"
         height={statusBarHeight}
         intensity={50}
-        tint={isDark ? 'dark' : 'light'}
+        tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
         experimentalBlurMethod="dimezisBlurView"
       />
     </HomeScreenContainer>

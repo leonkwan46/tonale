@@ -13,7 +13,7 @@ export const PullIndicatorContainer = styled(View)(({ theme }) => ({
   pointerEvents: 'none'
 }))
 
-export const EmojiText = styled(Text)(({ theme }) => ({
+export const ClapEmoji = styled(Text)(({ theme }) => ({
   fontSize: theme.device.isTablet ? scale(30) : scale(40),
   textAlign: 'center'
 }))
