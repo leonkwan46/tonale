@@ -30,7 +30,7 @@ export const HomeScreen = () => {
   }, [refreshProfile, refreshLesson, refreshProgress, refreshRevisionQuestions])
 
   return (
-    <ScreenContainer>
+    <ScreenContainer includeTopPadding={false}>
       <HomeScreenBackground 
         refreshing={refreshing} 
         onRefresh={handleRefresh} 

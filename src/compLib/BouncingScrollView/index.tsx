@@ -69,7 +69,7 @@ const BouncingScrollView = ({
     })
     .onChange((event) => {
       const absY = Math.abs(event.translationY)
-      const resisted = (absY * 0.7) / (1 + absY * 0.004)
+      const resisted = (absY * 0.85) / (1 + absY * 0.002)
       const clamped = Math.min(resisted, 200)
       bounceOverscroll.value = clamped
       translateY.value = event.translationY < 0 ? -clamped : clamped

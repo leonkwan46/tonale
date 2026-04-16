@@ -1,4 +1,5 @@
 import { Typography } from '@/compLib/Typography'
+import { getTabBarHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
 import styled from '@emotion/native'
 import { Animated, ScrollView } from 'react-native'
 import { scale } from 'react-native-size-matters'
@@ -6,11 +7,12 @@ import { scale } from 'react-native-size-matters'
 export const ContentWrapper = styled(ScrollView)(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background
-  
+
 }))
 
 export const ContentContainer = styled.View(({ theme }) => ({
   padding: scale(theme.spacing.sm),
+  paddingBottom: getTabBarHeight(theme),
   gap: scale(theme.spacing.lg),
   alignItems: 'center'
 }))

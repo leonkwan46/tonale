@@ -2,6 +2,7 @@ import styled from '@emotion/native'
 import { ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { scale } from 'react-native-size-matters'
+import { getTabBarHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
 
 export const Container = styled(SafeAreaView)(({ theme }) => ({
   flex: 1,
@@ -14,6 +15,7 @@ export const FullScreenScrollView = styled(ScrollView)({
 
 export const ScrollContent = styled.View(({ theme }) => ({
   padding: scale(theme.spacing.lg),
+  paddingBottom: getTabBarHeight(theme),
   gap: scale(theme.spacing.lg)
 }))
 
