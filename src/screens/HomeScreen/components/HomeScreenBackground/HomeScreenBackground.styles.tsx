@@ -1,5 +1,6 @@
 import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
+import { BlurView } from 'expo-blur'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
@@ -57,8 +58,18 @@ export const AvatarImage = styled(Image)<{ screenWidth: number }>(
   })
 )
 
-export const BackgroundGradient = styled(LinearGradient)(({ theme }) => ({
+export const BackgroundGradient = styled(LinearGradient)<{ topPadding: number }>(({ theme, topPadding }) => ({
+  paddingTop: topPadding,
   paddingBottom: scale(100)
+}))
+
+export const StatusBarBlur = styled(BlurView)<{ height: number }>(({ height }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  height,
+  overflow: 'hidden'
 }))
 
 export const TabBarSpacer = styled(View)(({ theme }) => ({

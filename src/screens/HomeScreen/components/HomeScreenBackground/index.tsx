@@ -10,6 +10,7 @@ import {
   Platform,
   RefreshControl
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ClapCelebration } from './ClapCelebration'
 import {
@@ -20,6 +21,7 @@ import {
   ImageContainer,
   ScrollContentContainer,
   StageImage,
+  StatusBarBlur,
   TabBarSpacer,
   useGradientColors
 } from './HomeScreenBackground.styles'
@@ -41,6 +43,7 @@ export const HomeScreenBackground = ({
   instrument
 }: HomeScreenBackgroundProps) => {
   const { isDark } = useThemeMode()
+  const { top: statusBarHeight } = useSafeAreaInsets()
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
@@ -146,6 +149,7 @@ export const HomeScreenBackground = ({
             locations={[0, 0.3, 0.8, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
+            topPadding={statusBarHeight}
           >
             <ContentContainer>
               {children as React.ReactElement[]}
@@ -163,6 +167,12 @@ export const HomeScreenBackground = ({
         </ScrollContentContainer>
       </BouncingScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
+      <StatusBarBlur
+        height={statusBarHeight}
+        intensity={50}
+        tint={isDark ? 'dark' : 'light'}
+        experimentalBlurMethod="dimezisBlurView"
+      />
     </HomeScreenContainer>
   )
 }
