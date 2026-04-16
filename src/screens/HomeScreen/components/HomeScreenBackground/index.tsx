@@ -47,8 +47,10 @@ export const HomeScreenBackground = ({
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
+  const [isTopPulling, setIsTopPulling] = useState(false)
   const hasTriggeredRef = useRef(false)
   const celebrationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isTopPullingRef = useRef(false)
   const pullDistance = useSharedValue(0)
 
   useEffect(() => {
@@ -77,6 +79,12 @@ export const HomeScreenBackground = ({
         event.nativeEvent
       const maxScrollY = contentSize.height - layoutMeasurement.height
       const scrollY = contentOffset.y
+
+      const topPulling = scrollY < 0
+      if (topPulling !== isTopPullingRef.current) {
+        isTopPullingRef.current = topPulling
+        setIsTopPulling(topPulling)
+      }
 
       if (scrollY > maxScrollY) {
         const overscroll = scrollY - maxScrollY
@@ -168,10 +176,12 @@ export const HomeScreenBackground = ({
       </BouncingScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
       <StatusBarBlur
+        pointerEvents="none"
         height={statusBarHeight}
         intensity={50}
         tint={isDark ? 'dark' : 'light'}
         experimentalBlurMethod="dimezisBlurView"
+        style={{ opacity: isTopPulling || refreshing ? 0 : 1 }}
       />
     </HomeScreenContainer>
   )
