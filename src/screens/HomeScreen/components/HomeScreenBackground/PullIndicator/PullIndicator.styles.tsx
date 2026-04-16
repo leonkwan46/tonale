@@ -18,6 +18,6 @@ export const EmojiText = styled(Text)(({ theme }) => ({
   textAlign: 'center'
 }))
 
-export const PullIndicatorMessage = styled(Typography)(() => ({
+export const PullIndicatorMessage = styled(Typography)({
   marginTop: scale(8)
-}))
+})

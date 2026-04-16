@@ -41,11 +41,6 @@ export const getTabBarHeight = (theme: { device: { isTablet: boolean }, spacing:
   }) || 0
 }
 
-export const useTabBarHeight = () => {
-  const theme = useTheme()
-  return getTabBarHeight(theme)
-}
-
 export const TabBarContainer = styled(BlurView)<{
   bottomInset: number
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
