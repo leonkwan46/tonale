@@ -58,10 +58,9 @@ export const AvatarImage = styled(Image)<{ screenWidth: number }>(
   })
 )
 
-export const BackgroundGradient = styled(LinearGradient)<{ topPadding: number }>(({ theme, topPadding }) => ({
-  paddingTop: topPadding,
+export const BackgroundGradient = styled(LinearGradient)({
   paddingBottom: scale(100)
-}))
+})
 
 export const StatusBarBlur = styled(BlurView)<{ height: number }>(({ height }) => ({
   position: 'absolute',

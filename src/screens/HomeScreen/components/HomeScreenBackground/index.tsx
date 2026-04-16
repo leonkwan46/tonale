@@ -47,10 +47,8 @@ export const HomeScreenBackground = ({
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
-  const [isTopPulling, setIsTopPulling] = useState(false)
   const hasTriggeredRef = useRef(false)
   const celebrationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isTopPullingRef = useRef(false)
   const pullDistance = useSharedValue(0)
 
   useEffect(() => {
@@ -79,12 +77,6 @@ export const HomeScreenBackground = ({
         event.nativeEvent
       const maxScrollY = contentSize.height - layoutMeasurement.height
       const scrollY = contentOffset.y
-
-      const topPulling = scrollY < 0
-      if (topPulling !== isTopPullingRef.current) {
-        isTopPullingRef.current = topPulling
-        setIsTopPulling(topPulling)
-      }
 
       if (scrollY > maxScrollY) {
         const overscroll = scrollY - maxScrollY
@@ -136,7 +128,9 @@ export const HomeScreenBackground = ({
   )
 
   return (
-    <HomeScreenContainer>
+    <HomeScreenContainer
+      style={Platform.OS === 'ios' ? { backgroundColor: gradientColors[0] } : undefined}
+    >
       <BouncingScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -150,6 +144,8 @@ export const HomeScreenBackground = ({
         onScrollEndDrag={handleScrollEndDrag}
         onBounce={handleBounce}
         pullProgress={pullDistance}
+        contentInset={Platform.OS === 'ios' ? { top: statusBarHeight } : undefined}
+        contentOffset={Platform.OS === 'ios' ? { x: 0, y: -statusBarHeight } : undefined}
       >
         <ScrollContentContainer>
           <BackgroundGradient
@@ -157,7 +153,6 @@ export const HomeScreenBackground = ({
             locations={[0, 0.3, 0.8, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
-            topPadding={statusBarHeight}
           >
             <ContentContainer>
               {children as React.ReactElement[]}
@@ -181,7 +176,6 @@ export const HomeScreenBackground = ({
         intensity={50}
         tint={isDark ? 'dark' : 'light'}
         experimentalBlurMethod="dimezisBlurView"
-        style={{ opacity: isTopPulling || refreshing ? 0 : 1 }}
       />
     </HomeScreenContainer>
   )
