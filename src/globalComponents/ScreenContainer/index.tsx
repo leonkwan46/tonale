@@ -4,18 +4,20 @@ import { StyledContainer } from './ScreenContainer.styles'
 interface ScreenContainerProps {
   children: React.ReactNode
   style?: object
+  includeTopPadding?: boolean
   includeBottomPadding?: boolean
 }
 
-export const ScreenContainer = ({ 
+export const ScreenContainer = ({
   children,
+  includeTopPadding = true,
   includeBottomPadding = false
-}: ScreenContainerProps) => {    
+}: ScreenContainerProps) => {
   const insets = useSafeAreaInsets()
-  
+
   return (
-    <StyledContainer 
-      paddingTop={insets.top} 
+    <StyledContainer
+      paddingTop={includeTopPadding ? insets.top : 0}
       paddingBottom={includeBottomPadding ? insets.bottom : 0}
     >
       {children}
