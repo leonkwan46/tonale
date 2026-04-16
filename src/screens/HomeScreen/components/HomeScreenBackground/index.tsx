@@ -157,6 +157,7 @@ export const HomeScreenBackground = ({
             locations={[0, 0.3, 0.8, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
+            style={Platform.OS === 'android' ? { paddingTop: statusBarHeight } : undefined}
           >
             <ContentContainer>
               {children as React.ReactElement[]}
@@ -174,15 +175,13 @@ export const HomeScreenBackground = ({
         </ScrollContentContainer>
       </BouncingScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
-      {Platform.OS === 'ios' && (
-        <StatusBarBlur
-          pointerEvents="none"
-          height={statusBarHeight}
-          intensity={50}
-          tint={isDark ? 'dark' : 'light'}
-          experimentalBlurMethod="dimezisBlurView"
-        />
-      )}
+      <StatusBarBlur
+        pointerEvents="none"
+        height={statusBarHeight}
+        intensity={50}
+        tint={isDark ? 'dark' : 'light'}
+        experimentalBlurMethod="dimezisBlurView"
+      />
     </HomeScreenContainer>
   )
 }
