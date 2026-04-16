@@ -20,10 +20,10 @@ import {
   ImageContainer,
   ScrollContentContainer,
   StageImage,
+  TabBarSpacer,
   useGradientColors
 } from './HomeScreenBackground.styles'
-import { PullIndicator } from './PullIndicator'
-import { PULL_THRESHOLD } from './PullIndicator/PullIndicator.constants'
+import { PullIndicator, PULL_THRESHOLD } from './PullIndicator'
 
 interface HomeScreenBackgroundProps {
   children: React.ReactNode;
@@ -159,6 +159,7 @@ export const HomeScreenBackground = ({
             pullDistance={pullDistance}
             messageIndex={messageIndex}
           />
+          <TabBarSpacer />
         </ScrollContentContainer>
       </BouncingScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
