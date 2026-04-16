@@ -181,13 +181,12 @@ export const darkComponentColors = {
 
   input: {
     background: palette.gray[950],
-    border: palette.gray[800],
     text: palette.gray[100],
     placeholder: palette.gray[100]
   },
 
   tabBar: {
-    active: palette.base.white,
+    active: palette.blue[600],
     inactive: palette.gray[600]
   },
 

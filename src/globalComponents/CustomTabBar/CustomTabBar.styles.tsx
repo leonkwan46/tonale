@@ -1,6 +1,7 @@
 import styled from '@emotion/native'
 import { useTheme } from '@emotion/react'
 import { Ionicons } from '@expo/vector-icons'
+import { BlurView } from 'expo-blur'
 import { Platform } from 'react-native'
 import { scale, verticalScale } from 'react-native-size-matters'
 
@@ -32,19 +33,35 @@ export const useTabBarSetup = () => {
   return { config, iconSize }
 }
 
-export const TabBarContainer = styled.View<{
+export const getTabBarHeight = (theme: { device: { isTablet: boolean }, spacing: { sm: number } }) => {
+  const config = theme.device.isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
+  return Platform.select({
+    ios: theme.device.isTablet ? config.height.ios : verticalScale(config.height.ios + scale(theme.spacing.sm)),
+    android: theme.device.isTablet ? config.height.android : verticalScale(config.height.android + scale(theme.spacing.sm))
+  }) || 0
+}
+
+export const useTabBarHeight = () => {
+  const theme = useTheme()
+  return getTabBarHeight(theme)
+}
+
+export const TabBarContainer = styled(BlurView)<{
   bottomInset: number
   config: typeof TAB_CONFIG.PHONE | typeof TAB_CONFIG.TABLET
 }>(({ theme, bottomInset, config }) => ({
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
   flexDirection: 'row',
-  backgroundColor: theme.colors.surface,
+  overflow: 'hidden',
   paddingBottom: bottomInset,
   paddingHorizontal: theme.device.isTablet ? config.paddingHorizontal : scale(config.paddingHorizontal),
   height: Platform.select({
     ios: theme.device.isTablet ? config.height.ios : verticalScale(config.height.ios + scale(theme.spacing.sm)),
     android: theme.device.isTablet ? config.height.android : verticalScale(config.height.android + scale(theme.spacing.sm))
-  }),
-  ...theme.shadows.lg
+  })
 }))
 
 export const TabButton = styled(PressableFeedback, {

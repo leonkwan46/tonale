@@ -34,6 +34,7 @@ export const palette = {
 
   blue: {
     400: '#4dabf7',
+    500: '#339af0',
     600: '#0a7ea4',
     700: '#156382',
     900: '#0a3a4a'
