@@ -31,7 +31,7 @@ export const lightSemanticColors: ThemeSemanticColors = {
   surface: palette.gray[50],
   transparent: palette.base.transparent,
   border: palette.gray[400],
-  icon: palette.base.white
+  icon: palette.gray[400]
 }
 
 export const darkSemanticColors: ThemeSemanticColors = {

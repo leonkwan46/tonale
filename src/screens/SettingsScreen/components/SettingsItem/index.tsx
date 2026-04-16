@@ -40,7 +40,7 @@ export const SettingsItem = ({
   isVerified = false,
   rightElement
 }: SettingsItemProps) => {
-  const iconColor = variantToColor[variant] ?? 'icon'
+  const iconColor = variantToColor[variant]
 
   return (
     <>
