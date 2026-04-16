@@ -133,7 +133,11 @@ export const HomeScreenBackground = ({
     >
       <BouncingScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={isDark ? '#FFFFFF' : '#2E3237'}
+          />
         }
         bounces={Platform.OS === 'ios'}
         alwaysBounceVertical={Platform.OS === 'ios'}
@@ -170,13 +174,15 @@ export const HomeScreenBackground = ({
         </ScrollContentContainer>
       </BouncingScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
-      <StatusBarBlur
-        pointerEvents="none"
-        height={statusBarHeight}
-        intensity={50}
-        tint={isDark ? 'dark' : 'light'}
-        experimentalBlurMethod="dimezisBlurView"
-      />
+      {Platform.OS === 'ios' && (
+        <StatusBarBlur
+          pointerEvents="none"
+          height={statusBarHeight}
+          intensity={50}
+          tint={isDark ? 'dark' : 'light'}
+          experimentalBlurMethod="dimezisBlurView"
+        />
+      )}
     </HomeScreenContainer>
   )
 }
