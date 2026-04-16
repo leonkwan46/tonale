@@ -25,14 +25,14 @@ export const ThemeModeProvider = ({
   children: ReactNode
 }) => {
   const systemColorScheme = useColorScheme()
-  const [isDark, setIsDarkState] = useState<boolean>(systemColorScheme === THEME.DARK)
+  const [isDark, setIsDarkState] = useState<boolean>(true)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     appPreferences
       .getThemeMode()
       .then((stored) => {
-        if (stored !== null) setIsDarkState(stored)
+        setIsDarkState(stored !== null ? stored : systemColorScheme === THEME.DARK)
       })
       .finally(() => setLoaded(true))
   }, [])
