@@ -59,8 +59,8 @@ export const HomeScreenBackground = ({
 
   const stageImage = useMemo(() => {
     return isDark
-      ? require('../../../../../assets/images/dark-homepage.png')
-      : require('../../../../../assets/images/light-homepage.png')
+      ? require('@assets/images/dark-homepage.png')
+      : require('@assets/images/light-homepage.png')
   }, [isDark])
 
   const avatarImage = useMemo(() => {

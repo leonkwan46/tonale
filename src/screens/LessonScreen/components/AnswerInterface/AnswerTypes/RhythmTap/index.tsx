@@ -7,7 +7,7 @@ import { createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Container, TapButtonText } from './RhythmTap.styles'
 
-const CLAP_SOUND = require('../../../../../../../assets/sounds/clap.mp3')
+const CLAP_SOUND = require('@assets/sounds/clap.mp3')
 
 interface RhythmTapProps {
   onTapSubmit: (timestamps: number[]) => void

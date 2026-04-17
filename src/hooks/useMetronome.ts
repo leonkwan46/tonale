@@ -2,7 +2,7 @@ import { AudioPlayer, createAudioPlayer } from 'expo-audio'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { setupAutoCleanup } from '@/utils/audioPlayerUtils'
 
-const METRONOME_SOUND = require('../../assets/sounds/metronome_beat.mp3')
+const METRONOME_SOUND = require('@assets/sounds/metronome_beat.mp3')
 const AUDIO_VOLUME_METRONOME = 0.4
 const SCHEDULE_INTERVAL_MS = 5
 

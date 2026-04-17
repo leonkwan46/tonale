@@ -20,14 +20,14 @@ const WAVE_DELAY_INCREMENT = 0.2
 
 // Font definitions — only load weights actually used in the app (400, 600, 700)
 const FONTS = {
-  Bravura: require('../../../assets/fonts/Bravura.otf'),
-  BravuraText: require('../../../assets/fonts/BravuraText.otf'),
-  'SourGummy-Regular': require('../../../assets/fonts/sourGummy/SourGummy-Regular.ttf'),
-  'SourGummy-Italic': require('../../../assets/fonts/sourGummy/SourGummy-Italic.ttf'),
-  'SourGummy-SemiBold': require('../../../assets/fonts/sourGummy/SourGummy-SemiBold.ttf'),
-  'SourGummy-SemiBoldItalic': require('../../../assets/fonts/sourGummy/SourGummy-SemiBoldItalic.ttf'),
-  'SourGummy-Bold': require('../../../assets/fonts/sourGummy/SourGummy-Bold.ttf'),
-  'SourGummy-BoldItalic': require('../../../assets/fonts/sourGummy/SourGummy-BoldItalic.ttf')
+  Bravura: require('@assets/fonts/Bravura.otf'),
+  BravuraText: require('@assets/fonts/BravuraText.otf'),
+  'SourGummy-Regular': require('@assets/fonts/sourGummy/SourGummy-Regular.ttf'),
+  'SourGummy-Italic': require('@assets/fonts/sourGummy/SourGummy-Italic.ttf'),
+  'SourGummy-SemiBold': require('@assets/fonts/sourGummy/SourGummy-SemiBold.ttf'),
+  'SourGummy-SemiBoldItalic': require('@assets/fonts/sourGummy/SourGummy-SemiBoldItalic.ttf'),
+  'SourGummy-Bold': require('@assets/fonts/sourGummy/SourGummy-Bold.ttf'),
+  'SourGummy-BoldItalic': require('@assets/fonts/sourGummy/SourGummy-BoldItalic.ttf')
 } as const
 
 interface SplashScreenProps {
