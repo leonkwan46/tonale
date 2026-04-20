@@ -1,6 +1,7 @@
 import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
+import { getTabBarHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -22,5 +23,6 @@ export const ScrollContentContainer = styled.View(({ theme }) => ({
   alignItems: 'center',
   flexGrow: 1,
   padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.lg),
+  paddingBottom: getTabBarHeight(theme),
   gap: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl)
 }))

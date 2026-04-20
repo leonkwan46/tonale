@@ -25,6 +25,7 @@ export const ScrollContentContainer = styled.View({
 
 export const ContentContainer = styled.View(({ theme }) => ({
   padding: scale(theme.spacing.lg),
+  paddingBottom: getTabBarHeight(theme),
   gap: scale(theme.spacing.lg)
 }))
 
