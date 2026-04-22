@@ -162,9 +162,9 @@ export const AuthActionScreen = () => {
           <LoadingState />
         </Card>
       )}
-      {status === 'error' && !hasProcessedRef.current && (
+      {status === 'error' && (
         <Card>
-          <ErrorState error={error} />
+          <ErrorState error={error} onBack={() => router.replace('/(auth)')} />
         </Card>
       )}
       {status === 'success' && (

@@ -1,18 +1,23 @@
+import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 
-import { ErrorContainer, ErrorText } from './ErrorState.styles'
+import { ErrorContainer, ErrorText, ErrorWrapper } from './ErrorState.styles'
 
 interface ErrorStateProps {
   error: string
+  onBack: () => void
 }
 
-export const ErrorState = ({ error }: ErrorStateProps) => {
+export const ErrorState = ({ error, onBack }: ErrorStateProps) => {
   return (
-    <ErrorContainer>
-      <Icon name="alert-circle" sizeVariant="lg" colorVariant="error" />
-      <ErrorText size="xs" colorVariant="error">
-        {error}
-      </ErrorText>
-    </ErrorContainer>
+    <ErrorWrapper>
+      <ErrorContainer>
+        <Icon name="alert-circle" sizeVariant="lg" colorVariant="error" />
+        <ErrorText size="xs" colorVariant="error">
+          {error}
+        </ErrorText>
+      </ErrorContainer>
+      <Button variant="link" size="sm" label="Back to sign in" onPress={onBack} />
+    </ErrorWrapper>
   )
 }

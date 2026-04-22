@@ -3,6 +3,12 @@ import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
 
+export const ErrorWrapper = styled.View(({ theme }) => ({
+  flexDirection: 'column',
+  alignItems: 'stretch',
+  gap: scale(theme.spacing.sm)
+}))
+
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
