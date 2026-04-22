@@ -2,6 +2,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Ionicons } from '@expo/vector-icons'
+import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { TabBarContainer, TabButton, TabIcon, TabLabel, useTabBarSetup } from './CustomTabBar.styles'
 import { isFeatureEnabled, FEATURES } from '@/config/featureFlags'
 
@@ -41,13 +42,17 @@ const getTabLabel = (routeName: string) => {
 
 export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets()
+  const { isDark } = useThemeMode()
   const { config, iconSize } = useTabBarSetup()
   const isAuralEnabled = isFeatureEnabled(FEATURES.ENABLE_AURAL_LESSONS)
 
   return (
-    <TabBarContainer 
-      bottomInset={insets.bottom} 
+    <TabBarContainer
+      bottomInset={insets.bottom}
       config={config}
+      intensity={100}
+      tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
+      experimentalBlurMethod="dimezisBlurView"
     >
       {state.routes
         .filter((route) => {

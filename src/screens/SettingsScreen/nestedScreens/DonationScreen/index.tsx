@@ -29,9 +29,9 @@ const NARRATIVE_LINES = [
 const TYPEWRITER_SPEED = 50
 const PAUSE_BETWEEN_LINES_MS = 300
 
-const CHARACTER_IMAGE = require('../../../../../assets/images/coffee/the_developer.png')
-const SINGLE_COFFEE_ICON = require('../../../../../assets/images/coffee/coffee_1.png')
-const DOUBLE_COFFEE_ICON = require('../../../../../assets/images/coffee/coffee_2.png')
+const CHARACTER_IMAGE = require('@assets/images/coffee/the_developer.png')
+const SINGLE_COFFEE_ICON = require('@assets/images/coffee/coffee_1.png')
+const DOUBLE_COFFEE_ICON = require('@assets/images/coffee/coffee_2.png')
 
 const calculateLineDelays = (lines: readonly string[]): number[] => {
   return lines.map((_, lineIndex) => {

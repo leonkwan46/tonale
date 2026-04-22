@@ -8,12 +8,12 @@ export const getGenderDisplayLabel = (gender: UserGender): string => {
 
 export const getAvatarHeadSource = (gender: UserGender) => {
   if (gender === GENDER.FEMALE) {
-    return require('../../assets/images/girl/girl_head.png')
+    return require('@assets/images/girl/girl_head.png')
   }
   if (gender === GENDER.NEUTRAL) {
-    return require('../../assets/images/bald/bald_head.png')
+    return require('@assets/images/bald/bald_head.png')
   }
-  return require('../../assets/images/boy/boy_head.png')
+  return require('@assets/images/boy/boy_head.png')
 }
 
 export const getAvatarFullSource = (
@@ -22,10 +22,10 @@ export const getAvatarFullSource = (
 ) => {
   const baseFull =
     gender === GENDER.FEMALE
-      ? require('../../assets/images/girl/girl_full.png')
+      ? require('@assets/images/girl/girl_full.png')
       : gender === GENDER.NEUTRAL
-        ? require('../../assets/images/bald/bald_full.png')
-        : require('../../assets/images/boy/boy_full.png')
+        ? require('@assets/images/bald/bald_full.png')
+        : require('@assets/images/boy/boy_full.png')
 
   // Keep this conservative: only use instrument art when we *know* we have it.
   // Any unknown instrument (including future custom strings) falls back to *_full.
@@ -36,26 +36,26 @@ export const getAvatarFullSource = (
 
   if (instrument === INSTRUMENT.PIANO) {
     return gender === GENDER.FEMALE
-      ? require('../../assets/images/girl/girl_piano.png')
-      : require('../../assets/images/boy/boy_piano.png')
+      ? require('@assets/images/girl/girl_piano.png')
+      : require('@assets/images/boy/boy_piano.png')
   }
 
   if (instrument === INSTRUMENT.GUITAR) {
     return gender === GENDER.FEMALE
-      ? require('../../assets/images/girl/girl_guitar.png')
-      : require('../../assets/images/boy/boy_guitar.png')
+      ? require('@assets/images/girl/girl_guitar.png')
+      : require('@assets/images/boy/boy_guitar.png')
   }
 
   if (instrument === INSTRUMENT.VIOLIN) {
     return gender === GENDER.FEMALE
-      ? require('../../assets/images/girl/girl_violin.png')
-      : require('../../assets/images/boy/boy_violin.png')
+      ? require('@assets/images/girl/girl_violin.png')
+      : require('@assets/images/boy/boy_violin.png')
   }
 
   if (instrument === INSTRUMENT.VOCAL) {
     return gender === GENDER.FEMALE
-      ? require('../../assets/images/girl/girl_vocal.png')
-      : require('../../assets/images/boy/boy_vocal.png')
+      ? require('@assets/images/girl/girl_vocal.png')
+      : require('@assets/images/boy/boy_vocal.png')
   }
 
   return baseFull
