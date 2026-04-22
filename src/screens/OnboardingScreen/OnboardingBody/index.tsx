@@ -1,9 +1,13 @@
 import { sendEmailVerificationToUser, updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
+import { Button } from '@/compLib/Button'
+import { Modal } from '@/compLib/Modal'
+import { Typography } from '@/compLib/Typography'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
-import { GENDER, INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
+import { INSTRUMENT, type UserData, type UserGender, type UserInstrument } from '@types'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
+import { InteractionManager } from 'react-native'
 import type { ScrollView } from 'react-native'
 import { AvatarPreview } from '../components/AvatarPreview'
 import { GenderSelection } from '../components/GenderSelection'
@@ -11,10 +15,10 @@ import { InstrumentSelection } from '../components/InstrumentSelection'
 import { NameInput } from '../components/NameInput'
 import { OnboardingButton } from '../components/OnboardingButton'
 import { OnboardingHeader } from '../components/OnboardingHeader'
-import { ErrorText, ScrollContentContainer } from './OnboardingBody.styles'
+import { ErrorText, ScrollContentContainer, VerificationModalContent } from './OnboardingBody.styles'
 
 interface OnboardingBodyProps {
-  authUser: { uid: string } | null
+  authUser: { uid: string; email: string | null } | null
   setUserData: (userData: UserData) => void
 }
 
@@ -24,22 +28,23 @@ export const OnboardingBody = ({
 }: OnboardingBodyProps) => {
   const router = useRouter()
   const scrollViewRef = useRef<ScrollView>(null)
-  const [selectedGender, setSelectedGender] = useState<UserGender | null>(GENDER.MALE)
+  const [selectedGender, setSelectedGender] = useState<UserGender | null>(null)
   const [name, setName] = useState<string>('')
   const [selectedInstrument, setSelectedInstrument] = useState<UserInstrument | null>(null)
   const [customInstrument, setCustomInstrument] = useState<string>('')
   const [isCompleting, setIsCompleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showVerificationModal, setShowVerificationModal] = useState(false)
 
   const handleScrollToBottom = () => {
-    setTimeout(() => {
+    InteractionManager.runAfterInteractions(() => {
       scrollViewRef.current?.scrollToEnd({ animated: true })
-    }, 100)
+    })
   }
 
-  const canCompleteOnboarding = selectedGender !== null && 
+  const canCompleteOnboarding = selectedGender !== null &&
     name.trim().length > 0 &&
-    selectedInstrument !== null && 
+    selectedInstrument !== null &&
     (selectedInstrument !== INSTRUMENT.OTHER || customInstrument.trim().length > 0) &&
     !isCompleting
 
@@ -52,8 +57,8 @@ export const OnboardingBody = ({
 
     try {
       const trimmedName = name.trim()
-      const instrumentValue = selectedInstrument === INSTRUMENT.OTHER 
-        ? customInstrument.trim().toLowerCase() 
+      const instrumentValue = selectedInstrument === INSTRUMENT.OTHER
+        ? customInstrument.trim().toLowerCase()
         : selectedInstrument
 
       const [result] = await Promise.all([
@@ -71,11 +76,15 @@ export const OnboardingBody = ({
       if (result.data.success && result.data.data) {
         setUserData(result.data.data)
       }
-      router.replace('/(tabs)')
+      setShowVerificationModal(true)
     } catch {
       setIsCompleting(false)
       setError('Something went wrong. Please try again.')
     }
+  }
+
+  const handleVerificationContinue = () => {
+    router.replace('/(tabs)')
   }
 
   return (
@@ -88,8 +97,8 @@ export const OnboardingBody = ({
         <OnboardingHeader />
       </ScrollContentContainer>
 
-      <AvatarPreview 
-        selectedGender={selectedGender} 
+      <AvatarPreview
+        selectedGender={selectedGender}
         selectedInstrument={selectedInstrument}
       />
 
@@ -119,7 +128,26 @@ export const OnboardingBody = ({
         />
         {error && <ErrorText>{error}</ErrorText>}
       </ScrollContentContainer>
+
+      <Modal
+        visible={showVerificationModal}
+        onRequestClose={handleVerificationContinue}
+      >
+        <VerificationModalContent>
+          <Typography size="md" align="center" weight="semibold">
+            Check your inbox!
+          </Typography>
+          <Typography size="sm" align="center">
+            {`We've sent a verification email to ${authUser?.email ?? 'your email'}. Check your inbox to confirm your account.`}
+          </Typography>
+          <Button
+            variant="filled"
+            size="md"
+            label="Got it!"
+            onPress={handleVerificationContinue}
+          />
+        </VerificationModalContent>
+      </Modal>
     </KeyboardAwareScrollView>
   )
 }
-

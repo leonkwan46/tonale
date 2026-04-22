@@ -12,3 +12,10 @@ export const ErrorText = styled.Text(({ theme }) => ({
   fontSize: theme.typography.sm,
   textAlign: 'center'
 }))
+
+export const VerificationModalContent = styled.View(({ theme }) => ({
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: scale(theme.spacing.md),
+  padding: scale(theme.spacing.sm)
+}))
