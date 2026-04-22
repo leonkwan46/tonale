@@ -10,5 +10,13 @@ export const SectionContainer = styled.View(({ theme }) => ({
   gap: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.md)
 }))
 
+export const TitleGroup = styled.View(({ theme }) => ({
+  gap: scale(theme.spacing.xs)
+}))
+
 export const SectionTitle = styled(Typography)(() => ({}))
+
+export const SectionSubtitle = styled(Typography)(({ theme }) => ({
+  color: theme.colors.icon
+}))
 
