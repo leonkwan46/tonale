@@ -36,7 +36,7 @@ export const StatusText = styled(Typography)(() => ({
   flex: 1
 }))
 
-export const InputsContainer = styled.View(({ theme }) => ({
+export const InputsContainer = styled(Animated.View)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.device.isTablet
     ? scale(theme.spacing.xs)
@@ -51,5 +51,11 @@ export const EyeIcon = styled(PressableFeedback)(({ theme }) => ({
 export const RequirementsText = styled(Typography)(() => ({}))
 
 export const ForgotPasswordWrap = styled.View(() => ({
-  alignSelf: 'flex-end'
+  alignSelf: 'flex-end',
+  alignItems: 'flex-end',
+  flexDirection: 'column'
+}))
+
+export const ForgotPasswordHint = styled(Typography)(({ theme }) => ({
+  color: theme.colors.icon
 }))
