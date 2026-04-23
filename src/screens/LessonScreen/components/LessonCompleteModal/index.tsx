@@ -118,7 +118,15 @@ export const LessonCompleteModal = ({
     >
       <TitleText>{getStarMessage(stars)}</TitleText>
 
-      <StarContainer>{renderStars()}</StarContainer>
+      {stars === 0 ? (
+        <StarContainer>
+          <StarIcon filled={true} size={isTablet ? 'xl' : 'xxl'} align="center">
+            📖
+          </StarIcon>
+        </StarContainer>
+      ) : (
+        <StarContainer>{renderStars()}</StarContainer>
+      )}
 
       <DescriptionText>
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
@@ -131,7 +139,7 @@ export const LessonCompleteModal = ({
             variant="outlined"
             size="sm"
             onPress={onRetry}
-            label="Retry"
+            label="Try Again"
           />
         </ButtonItem>
 
