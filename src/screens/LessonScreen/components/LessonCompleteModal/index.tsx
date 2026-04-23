@@ -123,17 +123,9 @@ export const LessonCompleteModal = ({
     >
       <TitleText>{getStarMessage(stars)}</TitleText>
 
-      {stars === 0 ? (
-        <StarContainer>
-          <StarIcon filled={true} size={starSize} align="center">
-            📖
-          </StarIcon>
-        </StarContainer>
-      ) : (
-        <StarContainer>{renderStars()}</StarContainer>
-      )}
+      <StarContainer>{renderStars()}</StarContainer>
 
-      <DescriptionText muted={stars === 0}>
+      <DescriptionText muted={false}>
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
       </DescriptionText>
 
