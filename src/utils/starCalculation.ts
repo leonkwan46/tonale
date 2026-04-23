@@ -27,6 +27,19 @@ export const getStarMessage = (stars: number): string => {
   }
 }
 
+export const getStarEmoji = (stars: number): string => {
+  switch (stars) {
+    case 3:
+      return '🌟'
+    case 2:
+      return '⭐'
+    case 1:
+      return '👍'
+    default:
+      return '💪'
+  }
+}
+
 export const getStarDescription = (stars: number, totalQuestions: number, wrongAnswers: number): string => {
   const correctAnswers = Math.max(0, totalQuestions - wrongAnswers)
 
