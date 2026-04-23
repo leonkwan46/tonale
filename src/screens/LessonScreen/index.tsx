@@ -1,7 +1,6 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress, useSafeNavigation } from '@/hooks'
-import { Alert } from 'react-native'
 import {
     auralStagesArray,
     getAuralLessonWithProgress
@@ -21,7 +20,9 @@ import { calculateStars } from '@/utils/starCalculation'
 import type { Question, StoreRevisionQuestionPayload } from '@types'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
+import { Alert } from 'react-native'
 import { FinalTestModal } from './components/FinalTestModal'
+import { LeaveLessonModal } from './components/LeaveLessonModal'
 import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
@@ -82,6 +83,7 @@ export const LessonScreen = () => {
   const [showFailureModal, setShowFailureModal] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
+  const [showLeaveModal, setShowLeaveModal] = useState(false)
   /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
   const [restartKey, setRestartKey] = useState(0)
 
@@ -91,14 +93,7 @@ export const LessonScreen = () => {
       navigateBack()
       return
     }
-    Alert.alert(
-      'Leave lesson?',
-      'Your progress will be lost.',
-      [
-        { text: 'Stay', style: 'cancel' },
-        { text: 'Leave', style: 'destructive', onPress: navigateBack }
-      ]
-    )
+    setShowLeaveModal(true)
   }, [currentQuestionIndex, wrongAnswers.length, navigateBack])
 
   const restartLesson = useCallback(() => {
@@ -328,6 +323,12 @@ export const LessonScreen = () => {
         wrongAnswers={wrongAnswers.length}
         onContinue={closeModalAndExit}
         onRetry={closeModalAndRetry}
+      />
+
+      <LeaveLessonModal
+        visible={showLeaveModal}
+        onStay={() => setShowLeaveModal(false)}
+        onLeave={navigateBack}
       />
 
       <FinalTestModal
