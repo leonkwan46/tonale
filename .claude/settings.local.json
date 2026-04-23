@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '{print $5, $9}')",
+      "Bash(pngquant --version)",
+      "Bash(brew install *)",
+      "Bash(sips *)",
+      "Bash(optipng -o3 light-homepage.png dark-homepage.png)"
+    ]
+  }
+}

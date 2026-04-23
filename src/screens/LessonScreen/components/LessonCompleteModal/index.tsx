@@ -52,7 +52,11 @@ export const LessonCompleteModal = ({
     }
 
     if (stars === 0) {
+<<<<<<< HEAD
       setAnimatedStars(0)
+=======
+      starAnimations.forEach(anim => anim.setValue(0))
+>>>>>>> 3c8e88d (fix: LessonCompleteModal UX — 6 issues from review)
       return
     }
 
@@ -79,15 +83,16 @@ export const LessonCompleteModal = ({
     }
   }, [visible, stars, starAnimations])
 
+  const starSize = isTablet ? 'xl' : 'xxl'
+
   const renderStars = () => {
     return Array.from({ length: 3 }, (_, index) => {
+      const willBeFilled = index < stars
       const isFilled = index < animatedStars
       const animation = starAnimations[index]
 
-      return (
-        <AnimatedStarContainer
-          key={index}
-          style={{
+      const animatedStyle = willBeFilled
+        ? {
             opacity: animation,
             transform: [{
               scale: animation.interpolate({
@@ -95,19 +100,20 @@ export const LessonCompleteModal = ({
                 outputRange: [0.3, 1]
               })
             }]
-          }}
-        >
-          <StarIcon
-            filled={isFilled}
-            size={isTablet ? 'xl' : 'xxl'}
-            align="center"
-          >
+          }
+        : undefined
+
+      return (
+        <AnimatedStarContainer key={index} style={animatedStyle}>
+          <StarIcon filled={isFilled} size={starSize} align="center">
             {isFilled ? '⭐' : '☆'}
           </StarIcon>
         </AnimatedStarContainer>
       )
     })
   }
+
+  const isPerfect = stars === 3
 
   return (
     <Modal
@@ -119,7 +125,7 @@ export const LessonCompleteModal = ({
 
       {stars === 0 ? (
         <StarContainer>
-          <StarIcon filled={true} size={isTablet ? 'xl' : 'xxl'} align="center">
+          <StarIcon filled={true} size={starSize} align="center">
             📖
           </StarIcon>
         </StarContainer>
@@ -127,28 +133,37 @@ export const LessonCompleteModal = ({
         <StarContainer>{renderStars()}</StarContainer>
       )}
 
-      <DescriptionText>
+      <DescriptionText muted={stars === 0}>
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
       </DescriptionText>
 
+<<<<<<< HEAD
       <ButtonContainer singleButton={stars === 3}>
         {stars < 3 && (
+=======
+      <ButtonContainer singleButton={isPerfect}>
+        {!isPerfect && (
+>>>>>>> 3c8e88d (fix: LessonCompleteModal UX — 6 issues from review)
           <ButtonItem grow>
             <Button
               testID="lesson-complete-modal-retry-button"
               variant="outlined"
+<<<<<<< HEAD
               size="sm"
+=======
+              size="md"
+>>>>>>> 3c8e88d (fix: LessonCompleteModal UX — 6 issues from review)
               onPress={onRetry}
               label="Try Again"
             />
           </ButtonItem>
         )}
 
-        <ButtonItem grow>
+        <ButtonItem grow={!isPerfect}>
           <Button
             testID="lesson-complete-modal-continue-button"
             variant="filled"
-            size="sm"
+            size="md"
             onPress={onContinue}
             label="Continue"
           />
