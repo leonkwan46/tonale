@@ -35,7 +35,7 @@ export const ThemeModeProvider = ({
         setIsDarkState(stored !== null ? stored : systemColorScheme === THEME.DARK)
       })
       .finally(() => setLoaded(true))
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps -- runs once on mount; systemColorScheme is only a fallback for first launch
 
   const setIsDark = useCallback((value: boolean) => {
     setIsDarkState(value)
