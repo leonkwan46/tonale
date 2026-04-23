@@ -36,6 +36,10 @@ export const ProgressTracker = styled.View(({ theme }) => ({
 
 export const ProgressText = styled(Typography)(() => ({}))
 
+export const SessionTitle = styled(Typography)(({ theme }) => ({
+  color: theme.colors.icon
+}))
+
 export const XMarksContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
