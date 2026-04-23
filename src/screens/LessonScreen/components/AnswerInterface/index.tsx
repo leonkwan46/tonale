@@ -3,8 +3,8 @@ import { compareRhythmPattern } from '@/subjects/aural/exercises/generators/rhyt
 import { isEnharmonicEquivalent } from '@/utils/enharmonicMap'
 import { playErrorSound, playSuccessSound } from '@/utils/soundUtils'
 import type { Question } from '@types'
-import { useEffect, useMemo, useState } from 'react'
-import { Text } from 'react-native'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Pressable, Text } from 'react-native'
 import { AnswerInterfaceContainer } from './AnswerInterface.styles'
 import { RhythmTap } from './AnswerTypes/RhythmTap'
 import { KeyPress } from './AnswerTypes/KeyPress'
@@ -38,6 +38,7 @@ export const AnswerInterface = ({
   onPlaybackFinishRef
 }: AnswerInterfaceProps) => {
   const [answerResult, setAnswerResult] = useState<{ selected: string; correct: boolean } | null>(null)
+  const nextTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const showResult = answerResult !== null
   const isCorrect = answerResult?.correct ?? null
@@ -63,13 +64,28 @@ export const AnswerInterface = ({
     if (!correct && !isFinalTest) return
 
     const totalWrong = wrongAnswersCount + (correct ? 0 : 1)
-    const shouldBlock = isFinalTest && !correct && totalWrong > FINAL_TEST_FAILURE_THRESHOLD
+    const shouldBlock = isFinalTest && !correct && totalWrong >= FINAL_TEST_FAILURE_THRESHOLD
 
     if (shouldBlock) return
 
-    const timer = setTimeout(() => onNextQuestion(), CORRECT_ANSWER_DELAY)
-    return () => clearTimeout(timer)
+    const timer = setTimeout(() => {
+      nextTimerRef.current = null
+      onNextQuestion()
+    }, CORRECT_ANSWER_DELAY)
+    nextTimerRef.current = timer
+    return () => {
+      clearTimeout(timer)
+      nextTimerRef.current = null
+    }
   }, [answerResult, wrongAnswersCount, isFinalTest, onNextQuestion])
+
+  const handleSkipDelay = () => {
+    if (nextTimerRef.current !== null) {
+      clearTimeout(nextTimerRef.current)
+      nextTimerRef.current = null
+      onNextQuestion()
+    }
+  }
 
   const handleAnswer = (answer: string, correct: boolean) => {
     if (answerResult !== null) return
@@ -169,10 +185,14 @@ export const AnswerInterface = ({
     }
   }
 
+  const canSkip = showResult && (isCorrect ?? false)
+
   return (
-    <AnswerInterfaceContainer>
-      {renderAnswerComponent()}
-    </AnswerInterfaceContainer>
+    <Pressable onPress={canSkip ? handleSkipDelay : undefined}>
+      <AnswerInterfaceContainer>
+        {renderAnswerComponent()}
+      </AnswerInterfaceContainer>
+    </Pressable>
   )
 }
 
