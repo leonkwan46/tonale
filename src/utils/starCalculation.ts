@@ -17,26 +17,13 @@ export const calculateStars = (totalQuestions: number, wrongAnswers: number): nu
 export const getStarMessage = (stars: number): string => {
   switch (stars) {
     case 3:
-      return 'Perfect!'
+      return 'Perfect! 🌟'
     case 2:
-      return 'Great job!'
+      return 'Great job! ⭐'
     case 1:
-      return 'Good effort!'
+      return 'Good effort! 👍'
     default:
-      return 'Keep practising!'
-  }
-}
-
-export const getStarEmoji = (stars: number): string => {
-  switch (stars) {
-    case 3:
-      return '🌟'
-    case 2:
-      return '⭐'
-    case 1:
-      return '👍'
-    default:
-      return '💪'
+      return 'Keep practising! 💪'
   }
 }
 

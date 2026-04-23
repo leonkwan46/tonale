@@ -7,7 +7,7 @@ import {
   DescriptionText,
   TitleText
 } from '@/compLib/Modal/Modal.styles'
-import { getStarDescription, getStarEmoji, getStarMessage } from '@/utils/starCalculation'
+import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
 import { useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
 import {
@@ -121,8 +121,7 @@ export const LessonCompleteModal = ({
       onRequestClose={onContinue}
       testID="lesson-complete-modal"
     >
-      <TitleText>{getStarMessage(stars)}</TitleText>
-      <TitleText>{getStarEmoji(stars)}</TitleText>
+      <TitleText size="lg">{getStarMessage(stars)}</TitleText>
 
       <StarContainer>{renderStars()}</StarContainer>
 
