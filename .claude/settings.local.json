@@ -5,7 +5,12 @@
       "Bash(pngquant --version)",
       "Bash(brew install *)",
       "Bash(sips *)",
-      "Bash(optipng -o3 light-homepage.png dark-homepage.png)"
+      "Bash(optipng -o3 light-homepage.png dark-homepage.png)",
+      "Bash(npm install *)",
+      "Bash(npx patch-package *)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm uninstall *)"
     ]
   }
 }
