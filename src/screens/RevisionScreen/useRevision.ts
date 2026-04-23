@@ -26,6 +26,7 @@ interface CompletionState {
   status: CompletionStatus;
   showModal: boolean;
   remainingCount: number;
+  masteredCount: number;
 }
 
 interface UseRevisionParams {
@@ -67,7 +68,8 @@ export const useRevision = ({
   const [completion, setCompletion] = useState<CompletionState>({
     status: 'idle',
     showModal: false,
-    remainingCount: 0
+    remainingCount: 0,
+    masteredCount: 0
   })
 
   const prevRevisionQuestionsRef = useRef(revisionQuestions)
@@ -178,6 +180,7 @@ export const useRevision = ({
     const refreshedCounts = buildCountsMap(remainingQuestions)
     return {
       remainingCount: remainingQuestions.length,
+      masteredCount: toDelete.length,
       counts: refreshedCounts
     }
   }, [
@@ -201,11 +204,13 @@ export const useRevision = ({
         return
       }
       const remainingCount = result.remainingCount ?? 0
+      const masteredCount = result.masteredCount ?? 0
       setRevision((prev) => ({ ...prev, counts: result.counts }))
       setCompletion({
         status: 'completed',
         showModal: true,
-        remainingCount
+        remainingCount,
+        masteredCount
       })
       playLessonFinishedSound()
     } catch (error) {
@@ -229,7 +234,8 @@ export const useRevision = ({
     setCompletion({
       status: 'idle',
       showModal: false,
-      remainingCount: 0
+      remainingCount: 0,
+      masteredCount: 0
     })
   }, [restart])
 
