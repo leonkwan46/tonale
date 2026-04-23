@@ -17,7 +17,6 @@ import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanim
 import type { AuthFormData, AuthState } from '../../index'
 import {
   EyeIcon,
-  ForgotPasswordHint,
   ForgotPasswordWrap,
   FormSection,
   InputsContainer,
@@ -257,9 +256,6 @@ export const AuthForm = ({
                 disabled={authState.loading}
                 label="Forgot password?"
               />
-              {!formData.email?.trim() && (
-                <ForgotPasswordHint size="xs">Enter your email above first</ForgotPasswordHint>
-              )}
             </ForgotPasswordWrap>
           </Animated.View>
         )}

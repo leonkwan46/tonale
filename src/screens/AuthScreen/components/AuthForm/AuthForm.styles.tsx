@@ -55,7 +55,3 @@ export const ForgotPasswordWrap = styled.View(() => ({
   alignItems: 'flex-end',
   flexDirection: 'column'
 }))
-
-export const ForgotPasswordHint = styled(Typography)(({ theme }) => ({
-  color: theme.colors.icon
-}))
