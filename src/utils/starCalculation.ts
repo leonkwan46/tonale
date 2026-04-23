@@ -29,16 +29,15 @@ export const getStarMessage = (stars: number): string => {
 
 export const getStarDescription = (stars: number, totalQuestions: number, wrongAnswers: number): string => {
   const correctAnswers = Math.max(0, totalQuestions - wrongAnswers)
-  const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0
 
   switch (stars) {
     case 3:
-      return `Amazing! You got ${accuracy}% correct!`
+      return `You answered all ${totalQuestions} questions correctly!`
     case 2:
-      return `Well done! You got ${accuracy}% correct!`
+      return `You got ${correctAnswers} out of ${totalQuestions} right!`
     case 1:
-      return `Good work! You got ${accuracy}% correct!`
+      return `You got ${correctAnswers} out of ${totalQuestions} right.`
     default:
-      return `You got ${accuracy}% correct. Practise makes perfect!`
+      return `You got ${correctAnswers} out of ${totalQuestions} right. Keep going!`
   }
 }
