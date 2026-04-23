@@ -2,12 +2,14 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
+import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import '@/config/theme/devThemeContrast'
 import { initSentry, wrapWithSentry } from '@/config/sentry'
+import { darkSemanticColors, lightSemanticColors } from '@/config/theme/semantic'
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
@@ -33,9 +35,11 @@ const DevErrorBoundaryTrigger = () => {
 
 const RootLayout = () => {
   const [showSplash, setShowSplash] = useState(true)
+  const colorScheme = useColorScheme()
+  const rootBgColor = colorScheme === 'dark' ? darkSemanticColors.background : lightSemanticColors.background
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: rootBgColor }}>
       <SafeAreaProvider>
         <ThemeModeProvider>
           <AppThemeProvider>
