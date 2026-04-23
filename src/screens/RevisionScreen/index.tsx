@@ -1,6 +1,8 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress } from '@/hooks'
 import { useRouter } from 'expo-router'
+import { useCallback } from 'react'
+import { Alert } from 'react-native'
 import { LessonHeader } from '../LessonScreen/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'
 import { RevisionCompletionModal } from './components/RevisionCompletionModal'
@@ -26,6 +28,21 @@ export const RevisionScreen = () => {
     onExit: () => router.back()
   })
 
+  const handleBackPress = useCallback(() => {
+    if (!hasQuestions) {
+      router.back()
+      return
+    }
+    Alert.alert(
+      'Leave revision?',
+      'Your progress will be lost.',
+      [
+        { text: 'Stay', style: 'cancel' },
+        { text: 'Leave', style: 'destructive', onPress: () => router.back() }
+      ]
+    )
+  }, [hasQuestions, router])
+
   if (!hasQuestions && !completion.showModal) {
     return (
       <ScreenContainer>
@@ -50,8 +67,7 @@ export const RevisionScreen = () => {
         currentQuestionIndex={revision.currentQuestionIndex}
         totalQuestions={revision.questions.length}
         wrongAnswersCount={0}
-        onBackPress={() => router.back()}
-        title="Revision"
+        onBackPress={handleBackPress}
       />
 
       {hasQuestions && currentQuestion && (
