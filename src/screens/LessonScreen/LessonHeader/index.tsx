@@ -6,7 +6,6 @@ import {
   Header,
   ProgressText,
   ProgressTracker,
-  SessionTitle,
   XMark,
   XMarksContainer
 } from './LessonHeader.styles'
@@ -17,7 +16,6 @@ interface LessonHeaderProps {
   totalQuestions: number
   wrongAnswersCount: number
   onBackPress: () => void
-  title?: string
 }
 
 export const LessonHeader = ({
@@ -25,8 +23,7 @@ export const LessonHeader = ({
   currentQuestionIndex,
   totalQuestions,
   wrongAnswersCount,
-  onBackPress,
-  title
+  onBackPress
 }: LessonHeaderProps) => {
   const { isTablet } = useDevice()
   return (
@@ -70,11 +67,6 @@ export const LessonHeader = ({
         </ProgressTracker>
       ) : (
         <ProgressTracker>
-          {title && (
-            <SessionTitle size="xs" weight="semibold">
-              {title}
-            </SessionTitle>
-          )}
           {totalQuestions > 0 && (
             <ProgressText
               testID="question-counter"
