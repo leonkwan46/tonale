@@ -53,7 +53,6 @@ export const LessonCompleteModal = ({
 
     if (stars === 0) {
       setAnimatedStars(0)
-      starAnimations.forEach(anim => anim.setValue(0.1))
       return
     }
 
@@ -113,7 +112,7 @@ export const LessonCompleteModal = ({
   return (
     <Modal
       visible={visible}
-      onRequestClose={onRetry}
+      onRequestClose={onContinue}
       testID="lesson-complete-modal"
     >
       <TitleText>{getStarMessage(stars)}</TitleText>
@@ -132,16 +131,18 @@ export const LessonCompleteModal = ({
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
       </DescriptionText>
 
-      <ButtonContainer>
-        <ButtonItem grow>
-          <Button
-            testID="lesson-complete-modal-retry-button"
-            variant="outlined"
-            size="sm"
-            onPress={onRetry}
-            label="Try Again"
-          />
-        </ButtonItem>
+      <ButtonContainer singleButton={stars === 3}>
+        {stars < 3 && (
+          <ButtonItem grow>
+            <Button
+              testID="lesson-complete-modal-retry-button"
+              variant="outlined"
+              size="sm"
+              onPress={onRetry}
+              label="Try Again"
+            />
+          </ButtonItem>
+        )}
 
         <ButtonItem grow>
           <Button
