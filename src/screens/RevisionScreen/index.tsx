@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router'
 import { LessonHeader } from '../LessonScreen/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'
 import { RevisionCompletionModal } from './components/RevisionCompletionModal'
+import { RevisionEmptyMessage } from './RevisionScreen.styles'
 import { useRevision } from './useRevision'
 
 export const RevisionScreen = () => {
@@ -25,7 +26,22 @@ export const RevisionScreen = () => {
     onExit: () => router.back()
   })
 
-  if (!hasQuestions && !completion.showModal) return null
+  if (!hasQuestions && !completion.showModal) {
+    return (
+      <ScreenContainer>
+        <LessonHeader
+          lesson={null}
+          currentQuestionIndex={0}
+          totalQuestions={0}
+          wrongAnswersCount={0}
+          onBackPress={() => router.back()}
+        />
+        <RevisionEmptyMessage size="md" align="center">
+          Nothing to revise yet. Keep going with your lessons!
+        </RevisionEmptyMessage>
+      </ScreenContainer>
+    )
+  }
 
   return (
     <ScreenContainer>
@@ -35,6 +51,7 @@ export const RevisionScreen = () => {
         totalQuestions={revision.questions.length}
         wrongAnswersCount={0}
         onBackPress={() => router.back()}
+        title="Revision"
       />
 
       {hasQuestions && currentQuestion && (
@@ -51,6 +68,7 @@ export const RevisionScreen = () => {
       <RevisionCompletionModal
         visible={completion.showModal && completion.status === 'completed'}
         remainingQuestions={completion.remainingCount}
+        masteredCount={completion.masteredCount}
         onExit={handleExit}
         onRevise={handleRevise}
       />
