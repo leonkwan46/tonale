@@ -11,6 +11,7 @@ import { KeyPress } from './AnswerTypes/KeyPress'
 import { MultipleChoice } from './AnswerTypes/MultipleChoice'
 import { TrueFalse } from './AnswerTypes/TrueFalse'
 import { ANSWER_TYPE, AnswerType } from './AnswerTypes/types'
+import { FINAL_TEST_FAILURE_THRESHOLD } from '../../constants'
 
 interface AnswerInterfaceProps {
   answerType: AnswerType
@@ -25,7 +26,6 @@ interface AnswerInterfaceProps {
 
 const EXPLANATION_MODAL_DELAY = 1000
 const CORRECT_ANSWER_DELAY = 1500
-const FINAL_TEST_FAILURE_THRESHOLD = 3
 
 export const AnswerInterface = ({
   answerType,

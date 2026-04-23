@@ -26,6 +26,7 @@ import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
 import { LessonEmptyMessage } from './LessonScreen.styles'
+import { FINAL_TEST_FAILURE_THRESHOLD } from './constants'
 
 export const LessonScreen = () => {
   const { navigate, navigateBack } = useSafeNavigation()
@@ -122,7 +123,7 @@ export const LessonScreen = () => {
 
             const updated = [...prev, currentQuestion]
 
-            if (lesson?.isFinalTest && updated.length >= 3) {
+            if (lesson?.isFinalTest && updated.length >= FINAL_TEST_FAILURE_THRESHOLD) {
               setShowFailureModal(true)
             }
 
