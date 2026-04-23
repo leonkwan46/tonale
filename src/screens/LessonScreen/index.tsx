@@ -1,6 +1,7 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useProgress, useSafeNavigation } from '@/hooks'
+import { Alert } from 'react-native'
 import {
     auralStagesArray,
     getAuralLessonWithProgress
@@ -24,6 +25,7 @@ import { FinalTestModal } from './components/FinalTestModal'
 import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
+import { LessonEmptyMessage } from './LessonScreen.styles'
 
 export const LessonScreen = () => {
   const { navigate, navigateBack } = useSafeNavigation()
@@ -81,6 +83,22 @@ export const LessonScreen = () => {
   const [isCompleting, setIsCompleting] = useState(false)
   /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
   const [restartKey, setRestartKey] = useState(0)
+
+  const handleBackPress = useCallback(() => {
+    const hasProgress = currentQuestionIndex > 0 || wrongAnswers.length > 0
+    if (!hasProgress) {
+      navigateBack()
+      return
+    }
+    Alert.alert(
+      'Leave lesson?',
+      'Your progress will be lost.',
+      [
+        { text: 'Stay', style: 'cancel' },
+        { text: 'Leave', style: 'destructive', onPress: navigateBack }
+      ]
+    )
+  }, [currentQuestionIndex, wrongAnswers.length, navigateBack])
 
   const restartLesson = useCallback(() => {
     setCurrentQuestionIndex(0)
@@ -193,16 +211,24 @@ export const LessonScreen = () => {
     } else {
       // Regular lesson: stars, modal, user can retry/continue
       const stars = calculateStars(questions.length, wrongAnswers.length)
-      setShowStarModal(true)
-
       const soundToPlay =
         stars === 0 ? playLessonFailedSound : playLessonFinishedSound
       soundToPlay()
 
-      if (lessonId) {
-        await updateLessonProgress(lessonId, stars)
+      try {
+        if (lessonId) {
+          await updateLessonProgress(lessonId, stars)
+        }
+        await storeRevisionQuestions()
+      } catch {
+        Alert.alert(
+          'Couldn\'t save progress',
+          'Check your connection and try again.',
+          [{ text: 'OK', onPress: () => setIsCompleting(false) }]
+        )
+        return
       }
-      await storeRevisionQuestions()
+      setShowStarModal(true)
     }
   }, [
     isCompleting,
@@ -216,7 +242,20 @@ export const LessonScreen = () => {
     navigateBack
   ])
 
-  if (!lesson || questions.length === 0) return null
+  if (!lesson || questions.length === 0) {
+    return (
+      <ScreenContainer>
+        <LessonHeader
+          lesson={null}
+          currentQuestionIndex={0}
+          totalQuestions={0}
+          wrongAnswersCount={0}
+          onBackPress={navigateBack}
+        />
+        <LessonEmptyMessage size="md" align="center">Lesson not found.</LessonEmptyMessage>
+      </ScreenContainer>
+    )
+  }
 
   const navigateAfterModal = () => {
     if (from === 'home') {
@@ -267,7 +306,7 @@ export const LessonScreen = () => {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
         wrongAnswersCount={wrongAnswers.length}
-        onBackPress={navigateBack}
+        onBackPress={handleBackPress}
       />
 
       <LessonScreenBody
