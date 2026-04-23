@@ -13,7 +13,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Keyboard, TextInput } from 'react-native'
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeInDown, FadeOut, FadeOutUp, LinearTransition } from 'react-native-reanimated'
 import type { AuthFormData, AuthState } from '../../index'
 import {
   EyeIcon,
@@ -261,7 +261,7 @@ export const AuthForm = ({
         )}
 
         {isRegisterMode && (
-          <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
+          <Animated.View entering={FadeInDown.duration(200)} exiting={FadeOutUp.duration(150)}>
             <InputField
               ref={confirmPasswordInputRef}
               leftIcon="lock-closed-outline"
@@ -300,7 +300,7 @@ export const AuthForm = ({
         )}
 
         {isRegisterMode && (
-          <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
+          <Animated.View entering={FadeInDown.duration(200)} exiting={FadeOutUp.duration(150)}>
             <RequirementsText
               size="xs"
               align="center"
