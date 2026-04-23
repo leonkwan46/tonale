@@ -10,6 +10,7 @@ import {
 interface RevisionCompletionModalProps {
   visible: boolean
   remainingQuestions: number
+  masteredQuestions?: number
   onExit: () => void
   onRevise: () => void
 }
@@ -17,6 +18,7 @@ interface RevisionCompletionModalProps {
 export const RevisionCompletionModal = ({
   visible,
   remainingQuestions,
+  masteredQuestions = 0,
   onExit,
   onRevise
 }: RevisionCompletionModalProps) => {
@@ -30,7 +32,9 @@ export const RevisionCompletionModal = ({
       <DescriptionText testID="revision-completion-description">
         {isAllComplete
           ? 'You\'ve completed all your revision questions! Great job!'
-          : `You have ${remainingQuestions} question${remainingQuestions !== 1 ? 's' : ''} left to revise.`}
+          : masteredQuestions > 0
+            ? `Great work! You mastered ${masteredQuestions} question${masteredQuestions !== 1 ? 's' : ''}. You have ${remainingQuestions} question${remainingQuestions !== 1 ? 's' : ''} left to revise.`
+            : `You have ${remainingQuestions} question${remainingQuestions !== 1 ? 's' : ''} left to revise.`}
       </DescriptionText>
       <ButtonContainer singleButton={isAllComplete}>
         {isAllComplete ? (

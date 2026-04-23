@@ -20,6 +20,7 @@ import { calculateStars } from '@/utils/starCalculation'
 import type { Question, StoreRevisionQuestionPayload } from '@types'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
+import { Alert, Pressable, Text, View } from 'react-native'
 import { FinalTestModal } from './components/FinalTestModal'
 import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
@@ -174,35 +175,45 @@ export const LessonScreen = () => {
     if (isCompleting) return // Prevent duplicate calls
     setIsCompleting(true)
 
-    if (lesson?.isFinalTest) {
-      // Final test: pass/fail, show success modal or navigate back
-      const isPassed = wrongAnswers.length < 3
+    try {
+      if (lesson?.isFinalTest) {
+        // Final test: pass/fail, show success modal or navigate back
+        const isPassed = wrongAnswers.length < 3
 
-      if (lessonId) {
-        await updateFinalTestProgress(lessonId, isPassed)
+        if (lessonId) {
+          await updateFinalTestProgress(lessonId, isPassed)
+        }
+        await storeRevisionQuestions()
+
+        if (!isPassed) {
+          navigateBack()
+          return
+        }
+
+        playLessonFinishedSound()
+        setShowSuccessModal(true)
+      } else {
+        // Regular lesson: stars, modal, user can retry/continue
+        const stars = calculateStars(questions.length, wrongAnswers.length)
+
+        if (lessonId) {
+          await updateLessonProgress(lessonId, stars)
+        }
+        await storeRevisionQuestions()
+
+        const soundToPlay =
+          stars === 0 ? playLessonFailedSound : playLessonFinishedSound
+        soundToPlay()
+
+        setShowStarModal(true)
       }
-      await storeRevisionQuestions()
-
-      if (!isPassed) {
-        navigateBack()
-        return
-      }
-
-      playLessonFinishedSound()
-      setShowSuccessModal(true)
-    } else {
-      // Regular lesson: stars, modal, user can retry/continue
-      const stars = calculateStars(questions.length, wrongAnswers.length)
-      setShowStarModal(true)
-
-      const soundToPlay =
-        stars === 0 ? playLessonFailedSound : playLessonFinishedSound
-      soundToPlay()
-
-      if (lessonId) {
-        await updateLessonProgress(lessonId, stars)
-      }
-      await storeRevisionQuestions()
+    } catch (error) {
+      setIsCompleting(false)
+      Alert.alert(
+        'Save failed',
+        'Your progress could not be saved. Please try again.',
+        [{ text: 'OK' }]
+      )
     }
   }, [
     isCompleting,
@@ -216,7 +227,21 @@ export const LessonScreen = () => {
     navigateBack
   ])
 
-  if (!lesson || questions.length === 0) return null
+  if (!lesson || questions.length === 0) {
+    return (
+      <ScreenContainer>
+        <View style={{ padding: 16, paddingTop: 12 }}>
+          <Pressable onPress={navigateBack} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+            <Text style={{ fontSize: 24, fontWeight: '600' }}>← Back</Text>
+          </Pressable>
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 8, textAlign: 'center' }}>Lesson not found</Text>
+          <Text style={{ fontSize: 14, textAlign: 'center', opacity: 0.7 }}>Unable to load this lesson. Please try again or go back.</Text>
+        </View>
+      </ScreenContainer>
+    )
+  }
 
   const navigateAfterModal = () => {
     if (from === 'home') {
@@ -224,6 +249,13 @@ export const LessonScreen = () => {
     } else {
       navigateBack()
     }
+  }
+
+  const handleBackPress = () => {
+    Alert.alert('Leave lesson?', 'Your progress will be lost.', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Leave', onPress: navigateBack, style: 'destructive' }
+    ])
   }
 
   const closeModalAndExit = () => {
@@ -267,7 +299,7 @@ export const LessonScreen = () => {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
         wrongAnswersCount={wrongAnswers.length}
-        onBackPress={navigateBack}
+        onBackPress={handleBackPress}
       />
 
       <LessonScreenBody

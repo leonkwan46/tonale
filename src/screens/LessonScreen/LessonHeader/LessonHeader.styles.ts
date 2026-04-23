@@ -34,6 +34,14 @@ export const ProgressTracker = styled.View(({ theme }) => ({
   gap: scale(theme.spacing.xs)
 }))
 
+export const Title = styled(Typography)(({ theme }) => ({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  textAlign: 'center',
+  color: theme.colors.text
+}))
+
 export const ProgressText = styled(Typography)(() => ({}))
 
 export const XMarksContainer = styled.View(({ theme }) => ({

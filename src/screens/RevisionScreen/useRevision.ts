@@ -26,6 +26,7 @@ interface CompletionState {
   status: CompletionStatus;
   showModal: boolean;
   remainingCount: number;
+  masteredCount?: number;
 }
 
 interface UseRevisionParams {
@@ -201,11 +202,14 @@ export const useRevision = ({
         return
       }
       const remainingCount = result.remainingCount ?? 0
+      const initialCount = restart.questions.length
+      const masteredCount = initialCount - remainingCount
       setRevision((prev) => ({ ...prev, counts: result.counts }))
       setCompletion({
         status: 'completed',
         showModal: true,
-        remainingCount
+        remainingCount,
+        masteredCount
       })
       playLessonFinishedSound()
     } catch (error) {
@@ -216,7 +220,7 @@ export const useRevision = ({
         status: prev.status === 'completed' ? 'completed' : 'idle'
       }))
     }
-  }, [completion.status, updateRevision])
+  }, [completion.status, updateRevision, restart.questions.length])
 
   const restartRevision = useCallback(() => {
     cancelledCompletionGenerationRef.current = completionGenerationRef.current

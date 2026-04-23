@@ -9,7 +9,7 @@ import {
 } from '@/compLib/Modal/Modal.styles'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
 import { useEffect, useRef, useState } from 'react'
-import { Animated } from 'react-native'
+import { Animated, Text } from 'react-native'
 import {
   AnimatedStarContainer,
   StarContainer,
@@ -80,34 +80,51 @@ export const LessonCompleteModal = ({
     }
   }, [visible, stars, starAnimations])
 
-  const renderStars = () => {
-    return Array.from({ length: 3 }, (_, index) => {
-      const isFilled = index < animatedStars
-      const animation = starAnimations[index]
-
+  const renderStarDisplay = () => {
+    if (stars === 0) {
       return (
-        <AnimatedStarContainer
-          key={index}
-          style={{
-            opacity: animation,
-            transform: [{
-              scale: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.3, 1]
-              })
-            }]
-          }}
-        >
-          <StarIcon
-            filled={isFilled}
-            size={isTablet ? 'xl' : 'xxl'}
-            align="center"
-          >
-            {isFilled ? '⭐' : '☆'}
-          </StarIcon>
-        </AnimatedStarContainer>
+        <StarContainer>
+          <Text style={{ fontSize: isTablet ? 48 : 64, marginBottom: 12 }}>
+            📚
+          </Text>
+          <Text style={{ fontSize: 16, fontWeight: '600', textAlign: 'center', opacity: 0.7 }}>
+            Keep practising to unlock stars!
+          </Text>
+        </StarContainer>
       )
-    })
+    }
+
+    return (
+      <StarContainer>
+        {Array.from({ length: 3 }, (_, index) => {
+          const isFilled = index < animatedStars
+          const animation = starAnimations[index]
+
+          return (
+            <AnimatedStarContainer
+              key={index}
+              style={{
+                opacity: animation,
+                transform: [{
+                  scale: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.3, 1]
+                  })
+                }]
+              }}
+            >
+              <StarIcon
+                filled={isFilled}
+                size={isTablet ? 'xl' : 'xxl'}
+                align="center"
+              >
+                {isFilled ? '⭐' : '☆'}
+              </StarIcon>
+            </AnimatedStarContainer>
+          )
+        })}
+      </StarContainer>
+    )
   }
 
   return (
@@ -118,7 +135,7 @@ export const LessonCompleteModal = ({
     >
       <TitleText>{getStarMessage(stars)}</TitleText>
 
-      <StarContainer>{renderStars()}</StarContainer>
+      {renderStarDisplay()}
 
       <DescriptionText>
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
@@ -131,7 +148,7 @@ export const LessonCompleteModal = ({
             variant="outlined"
             size="sm"
             onPress={onRetry}
-            label="Retry"
+            label="Try Again"
           />
         </ButtonItem>
 

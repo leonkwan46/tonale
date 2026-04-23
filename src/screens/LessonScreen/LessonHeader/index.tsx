@@ -6,6 +6,7 @@ import {
   Header,
   ProgressText,
   ProgressTracker,
+  Title,
   XMark,
   XMarksContainer
 } from './LessonHeader.styles'
@@ -16,6 +17,7 @@ interface LessonHeaderProps {
   totalQuestions: number
   wrongAnswersCount: number
   onBackPress: () => void
+  title?: string
 }
 
 export const LessonHeader = ({
@@ -23,7 +25,8 @@ export const LessonHeader = ({
   currentQuestionIndex,
   totalQuestions,
   wrongAnswersCount,
-  onBackPress
+  onBackPress,
+  title
 }: LessonHeaderProps) => {
   const { isTablet } = useDevice()
   return (
@@ -31,7 +34,13 @@ export const LessonHeader = ({
       <BackButton testID="back-button" onPress={onBackPress}>
         <BackArrowIcon size={16} />
       </BackButton>
-      
+
+      {title && (
+        <Title size="md" weight="semibold">
+          {title}
+        </Title>
+      )}
+
       {lesson?.isFinalTest ? (
         <ProgressTracker>
           <ProgressText
