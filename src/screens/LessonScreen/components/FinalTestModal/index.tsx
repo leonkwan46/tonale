@@ -64,7 +64,7 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
           <Button
             testID="continue-button"
             variant="filled"
-            color="primary"
+            size="sm"
             onPress={props.onContinue}
             label="Continue"
           />
@@ -86,7 +86,7 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
               variant="filled"
               size="sm"
               onPress={props.onRetry}
-              label="Retry Test"
+              label="Try Again"
             />
           </ButtonItem>
         </ButtonContainer>
