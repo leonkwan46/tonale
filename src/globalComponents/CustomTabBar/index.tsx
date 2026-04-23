@@ -52,7 +52,7 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       config={config}
       intensity={100}
       tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
-      experimentalBlurMethod="dimezisBlurView"
+      blurMethod="dimezisBlurView"
     >
       {state.routes
         .filter((route) => {
