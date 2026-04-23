@@ -44,7 +44,7 @@ export const RevisionCompletionModal = ({
           <Button
             testID="done-button"
             variant="filled"
-            size="sm"
+            size="md"
             onPress={onExit}
             label="Done!"
           />
@@ -54,7 +54,7 @@ export const RevisionCompletionModal = ({
               <Button
                 testID="exit-button"
                 variant="outlined"
-                size="sm"
+                size="md"
                 onPress={onExit}
                 label="Exit"
               />
@@ -63,7 +63,7 @@ export const RevisionCompletionModal = ({
               <Button
                 testID="revise-button"
                 variant="filled"
-                size="sm"
+                size="md"
                 onPress={onRevise}
                 label="Revise"
               />

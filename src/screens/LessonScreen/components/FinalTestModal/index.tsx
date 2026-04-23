@@ -75,7 +75,7 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
             <Button
               testID="exit-button"
               variant="outlined"
-              size="sm"
+              size="md"
               onPress={props.onExit}
               label="Exit"
             />
@@ -84,7 +84,7 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
             <Button
               testID="retry-test-button"
               variant="filled"
-              size="sm"
+              size="md"
               onPress={props.onRetry}
               label="Try Again"
             />

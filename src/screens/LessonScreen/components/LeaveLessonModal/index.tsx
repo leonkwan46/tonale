@@ -25,7 +25,7 @@ export const LeaveLessonModal = ({
       <ButtonItem grow>
         <Button
           variant="outlined"
-          size="sm"
+          size="md"
           onPress={onStay}
           label="Stay"
         />
@@ -33,7 +33,7 @@ export const LeaveLessonModal = ({
       <ButtonItem grow>
         <Button
           variant="filled"
-          size="sm"
+          size="md"
           color="error"
           onPress={onLeave}
           label="Leave"
