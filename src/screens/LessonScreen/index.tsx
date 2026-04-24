@@ -30,7 +30,7 @@ import { LessonEmptyMessage } from './LessonScreen.styles'
 import { FINAL_TEST_FAILURE_THRESHOLD } from './constants'
 
 export const LessonScreen = () => {
-  const { navigate, navigateBack } = useSafeNavigation()
+  const { navigate, navigateBack, navigateReplace } = useSafeNavigation()
   const { lessonId, from } = useLocalSearchParams<{
     lessonId: string;
     from: string;
@@ -261,7 +261,7 @@ export const LessonScreen = () => {
 
   const navigateAfterModal = () => {
     if (from === 'home') {
-      navigate('/(tabs)/theory')
+      navigateReplace('/(tabs)/theory')
     } else {
       navigateBack()
     }
