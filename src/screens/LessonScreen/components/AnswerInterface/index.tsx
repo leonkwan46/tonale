@@ -189,7 +189,7 @@ export const AnswerInterface = ({
 
   return (
     <Pressable onPress={canSkip ? handleSkipDelay : undefined}>
-      <AnswerInterfaceContainer>
+      <AnswerInterfaceContainer pointerEvents={showResult ? 'none' : 'auto'}>
         {renderAnswerComponent()}
       </AnswerInterfaceContainer>
     </Pressable>
