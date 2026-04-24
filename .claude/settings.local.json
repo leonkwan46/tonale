@@ -10,7 +10,13 @@
       "Bash(npx patch-package *)",
       "WebSearch",
       "WebFetch(domain:github.com)",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "Bash(npm ls *)",
+      "Bash(node node_modules/react-native/scripts/generate-codegen-artifacts.js --help)",
+      "Bash(node *)",
+      "Bash(cp -r ios/build/generated/ios/build/generated/ios/ReactCodegen ios/build/generated/ios/ReactCodegen)",
+      "Bash(cp -r ios/build/generated/ios/build/generated/ios/ReactAppDependencyProvider ios/build/generated/ios/ReactAppDependencyProvider)",
+      "Bash(xargs cat *)"
     ]
   }
 }
