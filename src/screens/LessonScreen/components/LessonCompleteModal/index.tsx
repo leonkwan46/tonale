@@ -8,7 +8,7 @@ import {
   TitleText
 } from '@/compLib/Modal/Modal.styles'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
 import {
   AnimatedStarContainer,
@@ -34,7 +34,6 @@ export const LessonCompleteModal = ({
   onRetry
 }: LessonCompleteModalProps) => {
   const { isTablet } = useDevice()
-  const [animatedStars, setAnimatedStars] = useState(0)
   const starAnimations = useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -44,32 +43,24 @@ export const LessonCompleteModal = ({
 
   useEffect(() => {
     if (!visible) {
-      setAnimatedStars(0)
       starAnimations.forEach(anim => anim.setValue(0))
       timeoutRef.current.forEach(clearTimeout)
       timeoutRef.current = []
       return
     }
 
-    if (stars === 0) {
-      starAnimations.forEach(anim => anim.setValue(0))
-      return
-    }
-
-    setAnimatedStars(0)
     starAnimations.forEach(anim => anim.setValue(0))
     timeoutRef.current.forEach(clearTimeout)
     timeoutRef.current = []
 
-    for (let i = 1; i <= stars; i++) {
+    for (let i = 0; i < 3; i++) {
       const timeout = setTimeout(() => {
-        setAnimatedStars(i)
-        Animated.timing(starAnimations[i - 1], {
+        Animated.timing(starAnimations[i], {
           toValue: 1,
           duration: 300,
           useNativeDriver: true
         }).start()
-      }, i * 500)
+      }, (i + 1) * 500)
       timeoutRef.current.push(timeout)
     }
 
@@ -77,27 +68,24 @@ export const LessonCompleteModal = ({
       timeoutRef.current.forEach(clearTimeout)
       timeoutRef.current = []
     }
-  }, [visible, stars, starAnimations])
+  }, [visible, starAnimations])
 
   const starSize = isTablet ? 'xl' : 'xxl'
 
   const renderStars = () => {
     return Array.from({ length: 3 }, (_, index) => {
-      const willBeFilled = index < stars
-      const isFilled = index < animatedStars
+      const isFilled = index < stars
       const animation = starAnimations[index]
 
-      const animatedStyle = willBeFilled
-        ? {
-            opacity: animation,
-            transform: [{
-              scale: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.3, 1]
-              })
-            }]
-          }
-        : undefined
+      const animatedStyle = {
+        opacity: animation,
+        transform: [{
+          scale: animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.3, 1]
+          })
+        }]
+      }
 
       return (
         <AnimatedStarContainer key={index} style={animatedStyle}>
@@ -115,6 +103,7 @@ export const LessonCompleteModal = ({
     <Modal
       visible={visible}
       onRequestClose={onContinue}
+      animationType="none"
       testID="lesson-complete-modal"
     >
       <TitleText size="lg">{getStarMessage(stars)}</TitleText>
