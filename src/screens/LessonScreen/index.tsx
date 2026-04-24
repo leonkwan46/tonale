@@ -18,8 +18,8 @@ import {
 } from '@/utils/soundUtils'
 import { calculateStars } from '@/utils/starCalculation'
 import type { Question, StoreRevisionQuestionPayload } from '@types'
-import { useLocalSearchParams, useNavigation } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useLocalSearchParams } from 'expo-router'
+import { useCallback, useState } from 'react'
 import { Alert } from 'react-native'
 import { FinalTestModal } from './components/FinalTestModal'
 import { LeaveLessonModal } from './components/LeaveLessonModal'
@@ -87,12 +87,7 @@ export const LessonScreen = () => {
   /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
   const [restartKey, setRestartKey] = useState(0)
 
-  const navigation = useNavigation()
   const hasProgress = currentQuestionIndex > 0 || wrongAnswers.length > 0
-
-  useEffect(() => {
-    navigation.setOptions({ gestureEnabled: !hasProgress })
-  }, [hasProgress, navigation])
 
   const handleBackPress = useCallback(() => {
     if (!hasProgress) {
