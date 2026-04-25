@@ -10,6 +10,7 @@ import {
 interface RevisionCompletionModalProps {
   visible: boolean
   remainingQuestions: number
+  masteredCount: number
   onExit: () => void
   onRevise: () => void
 }
@@ -17,6 +18,7 @@ interface RevisionCompletionModalProps {
 export const RevisionCompletionModal = ({
   visible,
   remainingQuestions,
+  masteredCount,
   onExit,
   onRevise
 }: RevisionCompletionModalProps) => {
@@ -32,12 +34,17 @@ export const RevisionCompletionModal = ({
           ? 'You\'ve completed all your revision questions! Great job!'
           : `You have ${remainingQuestions} question${remainingQuestions !== 1 ? 's' : ''} left to revise.`}
       </DescriptionText>
+      {masteredCount > 0 && (
+        <DescriptionText>
+          {`You mastered ${masteredCount} question${masteredCount !== 1 ? 's' : ''} this session! ⭐`}
+        </DescriptionText>
+      )}
       <ButtonContainer singleButton={isAllComplete}>
         {isAllComplete ? (
           <Button
             testID="done-button"
             variant="filled"
-            size="sm"
+            size="md"
             onPress={onExit}
             label="Done!"
           />
@@ -47,7 +54,7 @@ export const RevisionCompletionModal = ({
               <Button
                 testID="exit-button"
                 variant="outlined"
-                size="sm"
+                size="md"
                 onPress={onExit}
                 label="Exit"
               />
@@ -56,7 +63,7 @@ export const RevisionCompletionModal = ({
               <Button
                 testID="revise-button"
                 variant="filled"
-                size="sm"
+                size="md"
                 onPress={onRevise}
                 label="Revise"
               />

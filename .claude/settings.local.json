@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '{print $5, $9}')",
+      "Bash(pngquant --version)",
+      "Bash(brew install *)",
+      "Bash(sips *)",
+      "Bash(optipng -o3 light-homepage.png dark-homepage.png)",
+      "Bash(npm install *)",
+      "Bash(npx patch-package *)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm uninstall *)",
+      "Bash(npm ls *)",
+      "Bash(node node_modules/react-native/scripts/generate-codegen-artifacts.js --help)",
+      "Bash(node *)",
+      "Bash(cp -r ios/build/generated/ios/build/generated/ios/ReactCodegen ios/build/generated/ios/ReactCodegen)",
+      "Bash(cp -r ios/build/generated/ios/build/generated/ios/ReactAppDependencyProvider ios/build/generated/ios/ReactAppDependencyProvider)",
+      "Bash(xargs cat *)"
+    ]
+  }
+}

@@ -13,6 +13,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Keyboard, TextInput } from 'react-native'
+import Animated, { FadeIn, FadeInDown, FadeOut, FadeOutUp, LinearTransition } from 'react-native-reanimated'
 import type { AuthFormData, AuthState } from '../../index'
 import {
   EyeIcon,
@@ -122,8 +123,8 @@ export const AuthForm = ({
         error: getUserFacingErrorMessage(
           err,
           isLoginMode
-            ? 'Couldn’t sign in. Please try again.'
-            : 'Couldn’t create your account. Please try again.'
+            ? 'Couldn\'t sign in. Please try again.'
+            : 'Couldn\'t create your account. Please try again.'
         )
       })
     } finally {
@@ -165,13 +166,15 @@ export const AuthForm = ({
       updateAuthState({
         error: getUserFacingErrorMessage(
           err,
-          'Couldn’t send the reset email. Please try again.'
+          'Couldn\'t send the reset email. Please try again.'
         )
       })
     } finally {
       updateAuthState({ loading: false })
     }
   }
+
+  const passwordTooShort = isRegisterMode && formData.password.length > 0 && formData.password.length < 6
 
   const statusMessage = authState.error
     ? { variant: 'error' as const, text: authState.error }
@@ -199,7 +202,7 @@ export const AuthForm = ({
         </StatusContainer>
       ) : null}
 
-      <InputsContainer>
+      <InputsContainer layout={LinearTransition}>
         <InputField
           ref={emailInputRef}
           leftIcon="mail-outline"
@@ -213,6 +216,7 @@ export const AuthForm = ({
           autoComplete={isLoginMode ? 'username' : 'email'}
           returnKeyType="next"
           onSubmitEditing={handleEmailSubmit}
+          editable={!authState.loading}
         />
 
         <InputField
@@ -226,6 +230,7 @@ export const AuthForm = ({
           autoComplete={isLoginMode ? 'current-password' : 'new-password'}
           returnKeyType={isRegisterMode ? 'next' : 'done'}
           onSubmitEditing={handlePasswordSubmit}
+          editable={!authState.loading}
           rightSlot={
             <EyeIcon
               onPress={() =>
@@ -242,57 +247,68 @@ export const AuthForm = ({
         />
 
         {isLoginMode && (
-          <ForgotPasswordWrap>
-            <Button
-              variant="link"
-              size="sm"
-              onPress={handleForgotPassword}
-              disabled={authState.loading}
-              label="Forgot password?"
-            />
-          </ForgotPasswordWrap>
+          <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
+            <ForgotPasswordWrap>
+              <Button
+                variant="link"
+                size="sm"
+                onPress={handleForgotPassword}
+                disabled={authState.loading}
+                label="Forgot password?"
+              />
+            </ForgotPasswordWrap>
+          </Animated.View>
         )}
 
         {isRegisterMode && (
-          <InputField
-            ref={confirmPasswordInputRef}
-            leftIcon="lock-closed-outline"
-            placeholder="Confirm Password"
-            onChangeText={(text: string) =>
-              updateFormData('confirmPassword', text)
-            }
-            value={formData.confirmPassword}
-            secureTextEntry={!authState.showConfirmPassword}
-            textContentType="newPassword"
-            autoComplete="new-password"
-            returnKeyType="done"
-            onSubmitEditing={handleConfirmPasswordSubmit}
-            rightSlot={
-              <EyeIcon
-                onPress={() =>
-                  updateAuthState({
-                    showConfirmPassword: !authState.showConfirmPassword
-                  })
-                }
-              >
-                <Icon
-                  name={
-                    authState.showConfirmPassword
-                      ? 'eye-outline'
-                      : 'eye-off-outline'
+          <Animated.View entering={FadeInDown.duration(200)} exiting={FadeOutUp.duration(150)}>
+            <InputField
+              ref={confirmPasswordInputRef}
+              leftIcon="lock-closed-outline"
+              placeholder="Confirm Password"
+              onChangeText={(text: string) =>
+                updateFormData('confirmPassword', text)
+              }
+              value={formData.confirmPassword}
+              secureTextEntry={!authState.showConfirmPassword}
+              textContentType="newPassword"
+              autoComplete="new-password"
+              returnKeyType="done"
+              onSubmitEditing={handleConfirmPasswordSubmit}
+              editable={!authState.loading}
+              rightSlot={
+                <EyeIcon
+                  onPress={() =>
+                    updateAuthState({
+                      showConfirmPassword: !authState.showConfirmPassword
+                    })
                   }
-                  sizeVariant="sm"
-                  colorVariant="primary"
-                />
-              </EyeIcon>
-            }
-          />
+                >
+                  <Icon
+                    name={
+                      authState.showConfirmPassword
+                        ? 'eye-outline'
+                        : 'eye-off-outline'
+                    }
+                    sizeVariant="sm"
+                    colorVariant="primary"
+                  />
+                </EyeIcon>
+              }
+            />
+          </Animated.View>
         )}
 
         {isRegisterMode && (
-          <RequirementsText size="xs" align="center">
-            Password must be at least 6 characters
-          </RequirementsText>
+          <Animated.View entering={FadeInDown.duration(200)} exiting={FadeOutUp.duration(150)}>
+            <RequirementsText
+              size="xs"
+              align="center"
+              colorVariant={passwordTooShort ? 'error' : formData.password.length >= 6 ? 'success' : 'text'}
+            >
+              Password must be at least 6 characters
+            </RequirementsText>
+          </Animated.View>
         )}
       </InputsContainer>
 

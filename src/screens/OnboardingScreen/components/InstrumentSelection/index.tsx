@@ -4,7 +4,7 @@ import { INSTRUMENT, type UserInstrument } from '@types'
 import { capitalize } from '@/utils/string'
 import { memo } from 'react'
 import { renderInstrumentIcon } from '../OnboardingIcons'
-import { SectionContainer, SectionTitle, useTextColor } from './InstrumentSelection.styles'
+import { SectionContainer, SectionSubtitle, SectionTitle, TitleGroup, useTextColor } from './InstrumentSelection.styles'
 
 const INSTRUMENT_OPTIONS: UserInstrument[] = [
   INSTRUMENT.PIANO,
@@ -41,9 +41,14 @@ const InstrumentSelectionComponent = ({
 
   return (
     <SectionContainer>
-      <SectionTitle size="md" weight="semibold">
-        Instrument
-      </SectionTitle>
+      <TitleGroup>
+        <SectionTitle size="md" weight="semibold">
+          Instrument
+        </SectionTitle>
+        <SectionSubtitle size="sm">
+          What do you play?
+        </SectionSubtitle>
+      </TitleGroup>
       <GridSelection
         options={INSTRUMENT_OPTIONS}
         selectedOption={selectedInstrument}
@@ -62,9 +67,7 @@ const InstrumentSelectionComponent = ({
           testID="custom-instrument-input"
           onLayout={() => {
             if (!customInstrument && onScrollToBottom) {
-              setTimeout(() => {
-                onScrollToBottom()
-              }, 100)
+              onScrollToBottom()
             }
           }}
         />

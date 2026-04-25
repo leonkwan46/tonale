@@ -67,13 +67,15 @@ export const LessonHeader = ({
         </ProgressTracker>
       ) : (
         <ProgressTracker>
-          <ProgressText
-            testID="question-counter"
-            size="md"
-            weight="semibold"
-          >
-            {currentQuestionIndex + 1}/{totalQuestions}
-          </ProgressText>
+          {totalQuestions > 0 && (
+            <ProgressText
+              testID="question-counter"
+              size="md"
+              weight="semibold"
+            >
+              {currentQuestionIndex + 1}/{totalQuestions}
+            </ProgressText>
+          )}
         </ProgressTracker>
       )}
     </Header>

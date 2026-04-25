@@ -4,6 +4,7 @@ import { Animated } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
+import { getSourGummyFontFamily } from '@/utils/fontHelper'
 import { PressableFeedback } from '@/utils/PressableFeedback'
 import { createForwardProps } from '@/utils/styledProps'
 import { StarLogo } from '../LessonSection/components/Logo/StarLogo'
@@ -16,9 +17,7 @@ export const HeaderContainer = styled(PressableFeedback)<{ isPerfect?: boolean }
   backgroundColor: isPerfect
     ? theme.components.stage.perfect
     : theme.components.stage.cleared,
-  borderRadius: scale(12),
-  borderWidth: isPerfect ? 2 : 0,
-  borderColor: isPerfect ? theme.components.stage.perfectBorder : 'transparent'
+  borderRadius: scale(12)
 }))
 
 export const StageTitle = styled(Typography, {
@@ -27,7 +26,8 @@ export const StageTitle = styled(Typography, {
   marginBottom: scale(4),
   color: isPerfect
     ? theme.components.stage.textOnPerfect
-    : theme.components.stage.textOnCleared
+    : theme.components.stage.textOnCleared,
+  fontFamily: getSourGummyFontFamily(theme.fontWeight.bold)
 }))
 
 export const LeftContentContainer = styled.View({

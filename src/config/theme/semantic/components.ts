@@ -204,13 +204,13 @@ export const darkComponentColors = {
   },
 
   achievement: {
-    gold: palette.gold[700]
+    gold: palette.gold[400]
   },
 
   stage: {
     cleared: palette.green[400],
-    perfect: palette.gold[700],
-    perfectBorder: palette.gold[600],
+    perfect: palette.gold[400],
+    perfectBorder: palette.gold[500],
     textOnCleared: palette.gray[950],
     textOnPerfect: palette.base.black
   }

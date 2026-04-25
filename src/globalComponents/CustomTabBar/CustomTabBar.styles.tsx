@@ -33,12 +33,13 @@ export const useTabBarSetup = () => {
   return { config, iconSize }
 }
 
-export const getTabBarHeight = (theme: { device: { isTablet: boolean }, spacing: { sm: number } }) => {
+export const getTabBarHeight = (theme: { device: { isTablet: boolean }, spacing: { sm: number, lg: number } }) => {
   const config = theme.device.isTablet ? TAB_CONFIG.TABLET : TAB_CONFIG.PHONE
-  return Platform.select({
+  const base = Platform.select({
     ios: theme.device.isTablet ? config.height.ios : verticalScale(config.height.ios + scale(theme.spacing.sm)),
     android: theme.device.isTablet ? config.height.android : verticalScale(config.height.android + scale(theme.spacing.sm))
   }) || 0
+  return base + scale(theme.spacing.lg)
 }
 
 export const TabBarContainer = styled(BlurView)<{

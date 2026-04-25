@@ -23,7 +23,7 @@ const AvatarPreviewComponent = ({
   const gradientColors = useGradientColors()
   const imageSource = useMemo(() => {
     return getAvatarFullSource(
-      selectedGender || GENDER.MALE,
+      selectedGender || GENDER.NEUTRAL,
       selectedInstrument
     )
   }, [selectedGender, selectedInstrument])

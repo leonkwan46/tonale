@@ -1,7 +1,9 @@
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { signOutUser } from '@/config/firebase/auth'
 import { useSafeNavigation, useUser } from '@/hooks'
+import { useProgress } from '@/hooks/useProgressContext'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
+import { allLessons } from '@/subjects/theory/curriculum/stages/helpers'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 
@@ -21,7 +23,9 @@ export const SettingsScreen = () => {
   const { userData } = useUser()
   const { navigate, navigateReplace } = useSafeNavigation()
   const { isDark, setIsDark } = useThemeMode()
+  const { updateLessonProgress, updateFinalTestProgress } = useProgress()
   const [loggingOut, setLoggingOut] = useState(false)
+  const [fillingProgress, setFillingProgress] = useState(false)
 
   const handleAppearancePress = () => {
     setIsDark(!isDark)
@@ -55,6 +59,25 @@ export const SettingsScreen = () => {
         onPress: handleLogout
       }
     ])
+  }
+
+  const handleFillAllProgress = async () => {
+    setFillingProgress(true)
+    try {
+      for (const lesson of allLessons) {
+        if (lesson.isFinalTest) {
+          await updateFinalTestProgress(lesson.id, true)
+        } else {
+          await updateLessonProgress(lesson.id, 3)
+        }
+      }
+      Alert.alert('Done', 'All lessons filled with full stars.')
+    } catch (error) {
+      console.error('Error filling progress:', error)
+      Alert.alert('Error', 'Failed to fill progress.')
+    } finally {
+      setFillingProgress(false)
+    }
   }
 
   const handleLogout = async () => {
@@ -118,6 +141,16 @@ export const SettingsScreen = () => {
                 showSeparator={false}
               />
             </SettingSection>
+            {__DEV__ && (
+              <SettingSection variant='list'>
+                <SettingsItem
+                  icon='flask-outline'
+                  label={fillingProgress ? 'Filling progress...' : 'Fill All Progress (Dev)'}
+                  onPress={handleFillAllProgress}
+                  showSeparator={false}
+                />
+              </SettingSection>
+            )}
             <LogoutCard>
               <SettingsItem
                 icon='log-out-outline'

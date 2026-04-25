@@ -23,6 +23,6 @@ export const ScrollContentContainer = styled.View(({ theme }) => ({
   alignItems: 'center',
   flexGrow: 1,
   padding: theme.device.isTablet ? scale(theme.spacing.sm) : scale(theme.spacing.sm),
-  paddingBottom: getTabBarHeight(theme) + scale(theme.spacing.lg),
+  paddingBottom: getTabBarHeight(theme),
   gap: theme.device.isTablet ? scale(theme.spacing.md) : scale(theme.spacing.xl)
 }))

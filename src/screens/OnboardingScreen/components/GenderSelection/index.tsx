@@ -3,7 +3,7 @@ import { getGenderDisplayLabel } from '@/utils/avatarAssets'
 import { GENDER, type UserGender } from '@types'
 import * as React from 'react'
 import { renderGenderIcon } from '../OnboardingIcons'
-import { SectionContainer, SectionTitle } from './GenderSelection.styles'
+import { SectionContainer, SectionSubtitle, SectionTitle, TitleGroup } from './GenderSelection.styles'
 
 const GENDER_OPTIONS: UserGender[] = [
   GENDER.MALE,
@@ -22,9 +22,14 @@ const GenderSelectionComponent = ({
 }: GenderSelectionProps) => {
   return (
     <SectionContainer>
-      <SectionTitle size="md" weight="semibold">
-        Gender
-      </SectionTitle>
+      <TitleGroup>
+        <SectionTitle size="md" weight="semibold">
+          Gender
+        </SectionTitle>
+        <SectionSubtitle size="sm">
+          Pick how your avatar looks
+        </SectionSubtitle>
+      </TitleGroup>
       <GridSelection
         options={GENDER_OPTIONS}
         selectedOption={selectedGender}

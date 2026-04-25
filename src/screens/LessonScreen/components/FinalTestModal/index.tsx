@@ -19,7 +19,7 @@ const CONFIG = {
       'You\'ve passed the final test! Great work on mastering this stage.'
   },
   failure: {
-    icon: '❌',
+    icon: '💪',
     title: 'Not quite yet!',
     description:
       'You\'ve reached the maximum wrong answers. Don\'t worry - practise makes perfect! Review the lessons and try again.'
@@ -64,7 +64,7 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
           <Button
             testID="continue-button"
             variant="filled"
-            color="primary"
+            size="sm"
             onPress={props.onContinue}
             label="Continue"
           />
@@ -75,7 +75,7 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
             <Button
               testID="exit-button"
               variant="outlined"
-              size="sm"
+              size="md"
               onPress={props.onExit}
               label="Exit"
             />
@@ -84,9 +84,9 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
             <Button
               testID="retry-test-button"
               variant="filled"
-              size="sm"
+              size="md"
               onPress={props.onRetry}
-              label="Retry Test"
+              label="Try Again"
             />
           </ButtonItem>
         </ButtonContainer>

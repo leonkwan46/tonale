@@ -57,7 +57,7 @@ const RootLayout = () => {
                           <Stack.Screen name="(auth)" />
                           <Stack.Screen name="(tabs)" />
                           <Stack.Screen name="onboarding" />
-                          <Stack.Screen name="lesson" />
+                          <Stack.Screen name="lesson" options={{ gestureEnabled: false }} />
                           <Stack.Screen name="revision" options={{ headerShown: false }} />
                           <Stack.Screen name="+not-found" />
                         </Stack>

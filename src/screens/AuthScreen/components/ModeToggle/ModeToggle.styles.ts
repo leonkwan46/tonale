@@ -1,4 +1,5 @@
 import styled from '@emotion/native'
+import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
 import { Typography } from '@/compLib/Typography'
@@ -15,13 +16,22 @@ export const ToggleBackground = styled.View(({ theme }) => ({
   backgroundColor: theme.colors.surface
 }))
 
-export const ToggleButton = styled(PressableFeedback)<{ isActive: boolean }>(({ theme, isActive }) => ({
+export const ToggleButton = styled(PressableFeedback)(({ theme }) => ({
   flex: 1,
   paddingVertical: theme.device.isTablet ? scale(5) : scale(theme.spacing.sm),
   borderRadius: scale(theme.borderRadius.sm),
   alignItems: 'center',
-  backgroundColor: isActive ? theme.colors.primary : 'transparent'
+  overflow: 'hidden'
+}))
+
+export const ToggleActiveIndicator = styled(Animated.View)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  borderRadius: scale(theme.borderRadius.sm),
+  backgroundColor: theme.colors.primary
 }))
 
 export const ToggleText = styled(Typography)(() => ({}))
-

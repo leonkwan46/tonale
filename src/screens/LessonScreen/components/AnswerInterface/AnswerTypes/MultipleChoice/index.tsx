@@ -70,7 +70,7 @@ export const MultipleChoice = ({
               <Depth3D
                 key={index}
                 onPress={() => onChoiceSelect(choice)}
-                disabled={selectedAnswer !== null}
+                disabled={selectedAnswer !== null && !showResult}
                 testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
                 color={color}
                 layoutType={type}
