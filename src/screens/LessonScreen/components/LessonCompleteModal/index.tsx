@@ -1,12 +1,6 @@
 import { useDevice } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
-import {
-  ButtonItem,
-  ButtonContainer,
-  DescriptionText,
-  TitleText
-} from '@/compLib/Modal/Modal.styles'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
 import { useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
@@ -72,8 +66,8 @@ export const LessonCompleteModal = ({
 
   const starSize = isTablet ? 'xl' : 'xxl'
 
-  const renderStars = () => {
-    return Array.from({ length: 3 }, (_, index) => {
+  const renderStars = () =>
+    Array.from({ length: 3 }, (_, index) => {
       const isFilled = index < stars
       const animation = starAnimations[index]
 
@@ -95,7 +89,6 @@ export const LessonCompleteModal = ({
         </AnimatedStarContainer>
       )
     })
-  }
 
   const isPerfect = stars === 3
 
@@ -106,37 +99,32 @@ export const LessonCompleteModal = ({
       animationType="none"
       testID="lesson-complete-modal"
     >
-      <TitleText size="lg">{getStarMessage(stars)}</TitleText>
+      <Modal.Title size="lg">{getStarMessage(stars)}</Modal.Title>
 
       <StarContainer>{renderStars()}</StarContainer>
 
-      <DescriptionText muted={false}>
+      <Modal.Description muted={false}>
         {getStarDescription(stars, totalQuestions, wrongAnswers)}
-      </DescriptionText>
+      </Modal.Description>
 
-      <ButtonContainer singleButton={isPerfect}>
+      <Modal.Actions>
         {!isPerfect && (
-          <ButtonItem grow>
-            <Button
-              testID="lesson-complete-modal-retry-button"
-              variant="outlined"
-              size="md"
-              onPress={onRetry}
-              label="Try Again"
-            />
-          </ButtonItem>
-        )}
-
-        <ButtonItem grow={!isPerfect}>
           <Button
-            testID="lesson-complete-modal-continue-button"
-            variant="filled"
+            testID="lesson-complete-modal-retry-button"
+            variant="outlined"
             size="md"
-            onPress={onContinue}
-            label="Continue"
+            onPress={onRetry}
+            label="Try Again"
           />
-        </ButtonItem>
-      </ButtonContainer>
+        )}
+        <Button
+          testID="lesson-complete-modal-continue-button"
+          variant="filled"
+          size="md"
+          onPress={onContinue}
+          label="Continue"
+        />
+      </Modal.Actions>
     </Modal>
   )
 }

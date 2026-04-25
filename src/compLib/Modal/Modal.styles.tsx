@@ -80,3 +80,8 @@ export const ButtonItem = styled.View<{ grow?: boolean }>(({ grow }) => ({
   flex: grow ? 1 : undefined,
   alignSelf: grow ? 'stretch' : 'center'
 }))
+
+export const ModalIconText = styled.Text(({ theme }) => ({
+  fontSize: theme.device.isTablet ? scale(48) : scale(64),
+  textAlign: 'center'
+}))
