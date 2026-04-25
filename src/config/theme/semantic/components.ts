@@ -72,7 +72,6 @@ export const lightComponentColors = {
 
   input: {
     background: palette.gray[50],
-    border: palette.gray[400],
     text: palette.gray[950],
     placeholder: palette.gray[500]
   },
@@ -181,13 +180,12 @@ export const darkComponentColors = {
 
   input: {
     background: palette.gray[950],
-    border: palette.gray[800],
     text: palette.gray[100],
     placeholder: palette.gray[100]
   },
 
   tabBar: {
-    active: palette.base.white,
+    active: palette.blue[600],
     inactive: palette.gray[600]
   },
 
@@ -206,13 +204,13 @@ export const darkComponentColors = {
   },
 
   achievement: {
-    gold: palette.gold[700]
+    gold: palette.gold[400]
   },
 
   stage: {
     cleared: palette.green[400],
-    perfect: palette.gold[700],
-    perfectBorder: palette.gold[600],
+    perfect: palette.gold[400],
+    perfectBorder: palette.gold[500],
     textOnCleared: palette.gray[950],
     textOnPerfect: palette.base.black
   }

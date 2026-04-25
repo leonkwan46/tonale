@@ -118,7 +118,7 @@ export const LessonSection = ({
       )}
 
       <WarningModal
-        isVisible={showWarningModal}
+        visible={showWarningModal}
         onContinue={handleContinueToFinalTest}
         onCancel={handleCancelFinalTest}
         title="Final Test Warning"

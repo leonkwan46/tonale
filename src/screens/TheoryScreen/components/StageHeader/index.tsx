@@ -39,7 +39,7 @@ export const StageHeader = ({
       onPress={showToggle ? onToggle : undefined}
       disabled={!showToggle}
     >
-      <StageTitle isPerfect={isPerfect} size="lg" weight="semibold">
+      <StageTitle isPerfect={isPerfect} size="lg">
         Stage {stage.order}
       </StageTitle>
 

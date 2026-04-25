@@ -6,8 +6,7 @@ import { AnswerInterface } from '../components/AnswerInterface'
 import { QuestionInterface } from '../components/QuestionInterface'
 import { LessonScrollView, QuestionText } from './LessonScreenBody.styles'
 import { QuestionExplanation } from '../components/QuestionExplanation'
-
-const FINAL_TEST_FAILURE_THRESHOLD = 3
+import { FINAL_TEST_FAILURE_THRESHOLD } from '../constants'
 
 interface LessonScreenBodyProps {
   questions: Question[]

@@ -2,6 +2,7 @@ import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
 import { ScrollView, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
+import { getTabBarHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
 
 export const FullScreenScrollView = styled(ScrollView)({
   flex: 1
@@ -11,7 +12,7 @@ export const ScrollContentContainer = styled(View)(({ theme }) => ({
   flexGrow: 1,
   paddingHorizontal: theme.device.isTablet ? scale(24) : scale(20),
   paddingTop: theme.device.isTablet ? scale(16) : scale(12),
-  paddingBottom: theme.device.isTablet ? scale(32) : scale(24)
+  paddingBottom: getTabBarHeight(theme)
 }))
 
 export const LastUpdatedText = styled(Typography)(({ theme }) => ({

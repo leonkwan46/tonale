@@ -3,6 +3,7 @@ import styled from '@emotion/native'
 import { scale } from 'react-native-size-matters'
 
 import { PressableFeedback } from '@/utils/PressableFeedback'
+import { getTabBarHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
 
 export const ErrorContainer = styled.View(({ theme }) => ({
   flexDirection: 'row',
@@ -40,10 +41,11 @@ export const ScrollContentContainer = styled.View({
   flexGrow: 1
 })
 
-export const ContentWrapper = styled.View({
+export const ContentWrapper = styled.View(({ theme }) => ({
   padding: scale(20),
+  paddingBottom: getTabBarHeight(theme),
   gap: scale(20)
-})
+}))
 
 export const ConsentContainer = styled(PressableFeedback)(({ theme }) => ({
   flexDirection: 'row',

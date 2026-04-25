@@ -1,6 +1,6 @@
 import { InputField } from '@/compLib/InputField'
 import { memo } from 'react'
-import { SectionContainer, SectionTitle } from './NameInput.styles'
+import { SectionContainer, SectionSubtitle, SectionTitle, TitleGroup } from './NameInput.styles'
 
 interface NameInputProps {
   name: string
@@ -12,7 +12,7 @@ const NameInputComponent = ({
   onNameChange
 }: NameInputProps) => {
   const validateName = (text: string): string => {
-    return text.replace(/[^a-zA-Z-]/g, '')
+    return text.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ'\- ]/g, '')
   }
 
   const handleNameChange = (text: string) => {
@@ -22,15 +22,22 @@ const NameInputComponent = ({
 
   return (
     <SectionContainer>
-      <SectionTitle size="md" weight="semibold">
-        Name
-      </SectionTitle>
+      <TitleGroup>
+        <SectionTitle size="md" weight="semibold">
+          Name
+        </SectionTitle>
+        <SectionSubtitle size="sm">
+          What should we call you?
+        </SectionSubtitle>
+      </TitleGroup>
       <InputField
         placeholder="Enter your name"
         keyboardType="default"
         value={name}
         onChangeText={handleNameChange}
         autoCapitalize="words"
+        maxLength={30}
+        returnKeyType="done"
         testID="name-input"
       />
     </SectionContainer>

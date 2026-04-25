@@ -287,9 +287,8 @@ export const DepthButtonLabel = ({
 }: DepthButtonLabelProps) => {
   const theme = useTheme()
   const isTablet = theme.device.isTablet
-  const depthSize: ButtonSize = isMultiWord ? 'sm' : size
   const typographySize: TypographySize =
-    depthSize === 'sm' ? (isTablet ? 'sm' : 'md') : 'lg'
+    size === 'sm' ? (isTablet ? 'sm' : 'md') : 'lg'
   const colorVariant = getDepthButtonLabelColorVariant(paletteKey)
 
   return (

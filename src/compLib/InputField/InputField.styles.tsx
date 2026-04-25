@@ -81,7 +81,7 @@ export const InputFieldRoot = styled.View<{
     backgroundColor: theme.components.input.background,
     borderColor: showFocusRing
       ? theme.colors.primary
-      : theme.components.input.border,
+      : theme.colors.border,
     opacity: disabled ? 0.6 : 1,
     gap: isTablet ? scale(theme.spacing.xs) : scale(theme.spacing.sm)
   }

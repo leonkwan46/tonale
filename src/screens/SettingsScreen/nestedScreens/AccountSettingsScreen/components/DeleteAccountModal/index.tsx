@@ -3,14 +3,12 @@ import { useState } from 'react'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
+import { Modal } from '@/compLib/Modal'
 
 import {
   ActionsRow,
   BodyText,
   EyeButton,
-  ModalCard,
-  ModalMask,
-  ModalMaskContainer,
   StatusContainer,
   StatusText,
   TitleText
@@ -40,80 +38,73 @@ export const DeleteAccountModal = ({
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <ModalMask
+    <Modal
       visible={visible}
-      transparent={true}
-      animationType="fade"
       onRequestClose={() => {
         if (!isLoading) onCancel()
       }}
     >
-      <ModalMaskContainer>
-        <ModalCard>
-          <TitleText size="lg" weight="semibold">
-            Confirm deletion
-          </TitleText>
-          <BodyText size="md">
-            This will permanently delete your account and progress. This cannot be
-            undone.
-          </BodyText>
+      <TitleText size="lg" weight="semibold">
+        Confirm deletion
+      </TitleText>
+      <BodyText size="md">
+        This will permanently delete your account and progress. This cannot be
+        undone.
+      </BodyText>
 
-          {!!error && (
-            <StatusContainer>
-              <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
-              <StatusText size="sm" colorVariant="error">
-                {error}
-              </StatusText>
-            </StatusContainer>
-          )}
+      {!!error && (
+        <StatusContainer>
+          <Icon name="alert-circle" sizeVariant="xs" colorVariant="error" />
+          <StatusText size="sm" colorVariant="error">
+            {error}
+          </StatusText>
+        </StatusContainer>
+      )}
 
-          {canReauthenticateWithPassword && (
-            <InputField
-              leftIcon="lock-closed-outline"
-              value={password}
-              onChangeText={onChangePassword}
-              placeholder="Password"
-              secureTextEntry={!showPassword}
-              autoCapitalize="none"
+      {canReauthenticateWithPassword && (
+        <InputField
+          leftIcon="lock-closed-outline"
+          value={password}
+          onChangeText={onChangePassword}
+          placeholder="Password"
+          secureTextEntry={!showPassword}
+          autoCapitalize="none"
+          disabled={isLoading}
+          returnKeyType="done"
+          rightSlot={
+            <EyeButton
+              onPress={() => setShowPassword((prev) => !prev)}
               disabled={isLoading}
-              returnKeyType="done"
-              rightSlot={
-                <EyeButton
-                  onPress={() => setShowPassword((prev) => !prev)}
-                  disabled={isLoading}
-                >
-                  <Icon
-                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                    sizeVariant="sm"
-                    colorVariant="primary"
-                  />
-                </EyeButton>
-              }
-            />
-          )}
+            >
+              <Icon
+                name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                sizeVariant="sm"
+                colorVariant="primary"
+              />
+            </EyeButton>
+          }
+        />
+      )}
 
-          <ActionsRow>
-            <Button
-              variant="link"
-              size="md"
-              onPress={onCancel}
-              disabled={isLoading}
-              label="Cancel"
-            />
+      <ActionsRow>
+        <Button
+          variant="link"
+          size="md"
+          onPress={onCancel}
+          disabled={isLoading}
+          label="Cancel"
+        />
 
-            <Button
-              variant="filled"
-              color="error"
-              size="md"
-              onPress={onConfirm}
-              loading={isLoading}
-              disabled={isLoading}
-              label="Delete"
-            />
-          </ActionsRow>
-        </ModalCard>
-      </ModalMaskContainer>
-    </ModalMask>
+        <Button
+          variant="filled"
+          color="error"
+          size="md"
+          onPress={onConfirm}
+          loading={isLoading}
+          disabled={isLoading}
+          label="Delete"
+        />
+      </ActionsRow>
+    </Modal>
   )
 }
-

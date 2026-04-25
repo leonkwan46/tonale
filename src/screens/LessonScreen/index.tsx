@@ -20,13 +20,17 @@ import { calculateStars } from '@/utils/starCalculation'
 import type { Question, StoreRevisionQuestionPayload } from '@types'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
+import { Alert } from 'react-native'
 import { FinalTestModal } from './components/FinalTestModal'
+import { LeaveLessonModal } from './components/LeaveLessonModal'
 import { LessonCompleteModal } from './components/LessonCompleteModal'
 import { LessonHeader } from './LessonHeader'
 import { LessonScreenBody } from './LessonScreenBody'
+import { LessonEmptyMessage } from './LessonScreen.styles'
+import { FINAL_TEST_FAILURE_THRESHOLD } from './constants'
 
 export const LessonScreen = () => {
-  const { navigate, navigateBack } = useSafeNavigation()
+  const { navigate, navigateBack, navigateReplace } = useSafeNavigation()
   const { lessonId, from } = useLocalSearchParams<{
     lessonId: string;
     from: string;
@@ -79,8 +83,19 @@ export const LessonScreen = () => {
   const [showFailureModal, setShowFailureModal] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
+  const [showLeaveModal, setShowLeaveModal] = useState(false)
   /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
   const [restartKey, setRestartKey] = useState(0)
+
+  const hasProgress = currentQuestionIndex > 0 || wrongAnswers.length > 0
+
+  const handleBackPress = useCallback(() => {
+    if (!hasProgress) {
+      navigateBack()
+      return
+    }
+    setShowLeaveModal(true)
+  }, [hasProgress, navigateBack])
 
   const restartLesson = useCallback(() => {
     setCurrentQuestionIndex(0)
@@ -104,7 +119,7 @@ export const LessonScreen = () => {
 
             const updated = [...prev, currentQuestion]
 
-            if (lesson?.isFinalTest && updated.length >= 3) {
+            if (lesson?.isFinalTest && updated.length >= FINAL_TEST_FAILURE_THRESHOLD) {
               setShowFailureModal(true)
             }
 
@@ -193,16 +208,24 @@ export const LessonScreen = () => {
     } else {
       // Regular lesson: stars, modal, user can retry/continue
       const stars = calculateStars(questions.length, wrongAnswers.length)
-      setShowStarModal(true)
-
       const soundToPlay =
         stars === 0 ? playLessonFailedSound : playLessonFinishedSound
       soundToPlay()
 
-      if (lessonId) {
-        await updateLessonProgress(lessonId, stars)
+      try {
+        if (lessonId) {
+          await updateLessonProgress(lessonId, stars)
+        }
+        await storeRevisionQuestions()
+      } catch {
+        Alert.alert(
+          'Couldn\'t save progress',
+          'Check your connection and try again.',
+          [{ text: 'OK', onPress: () => setIsCompleting(false) }]
+        )
+        return
       }
-      await storeRevisionQuestions()
+      setShowStarModal(true)
     }
   }, [
     isCompleting,
@@ -216,11 +239,24 @@ export const LessonScreen = () => {
     navigateBack
   ])
 
-  if (!lesson || questions.length === 0) return null
+  if (!lesson || questions.length === 0) {
+    return (
+      <ScreenContainer>
+        <LessonHeader
+          lesson={null}
+          currentQuestionIndex={0}
+          totalQuestions={0}
+          wrongAnswersCount={0}
+          onBackPress={navigateBack}
+        />
+        <LessonEmptyMessage size="md" align="center">Lesson not found.</LessonEmptyMessage>
+      </ScreenContainer>
+    )
+  }
 
   const navigateAfterModal = () => {
     if (from === 'home') {
-      navigate('/(tabs)/theory')
+      navigateReplace('/(tabs)/theory')
     } else {
       navigateBack()
     }
@@ -267,7 +303,7 @@ export const LessonScreen = () => {
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.length}
         wrongAnswersCount={wrongAnswers.length}
-        onBackPress={navigateBack}
+        onBackPress={handleBackPress}
       />
 
       <LessonScreenBody
@@ -288,6 +324,12 @@ export const LessonScreen = () => {
         wrongAnswers={wrongAnswers.length}
         onContinue={closeModalAndExit}
         onRetry={closeModalAndRetry}
+      />
+
+      <LeaveLessonModal
+        visible={showLeaveModal}
+        onStay={() => setShowLeaveModal(false)}
+        onLeave={navigateBack}
       />
 
       <FinalTestModal

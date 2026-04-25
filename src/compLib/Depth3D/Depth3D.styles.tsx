@@ -71,7 +71,8 @@ export const Depth3DContainer = styled(PressableFeedback)<{
   fullWidth?: boolean
   width?: DimensionValue
   height?: number
-}>(({ theme, isPressed, layoutType, sizeVariant, gridColumns, fullWidth, width, height }) => {
+  disabled?: boolean
+}>(({ theme, isPressed, layoutType, sizeVariant, gridColumns, fullWidth, width, height, disabled }) => {
   const isTablet = theme.device.isTablet
   const dims = getSizeDimensions(isTablet, sizeVariant)
   const gridWidth =
@@ -96,6 +97,7 @@ export const Depth3DContainer = styled(PressableFeedback)<{
     alignSelf: layoutType === 'row' ? 'stretch' : 'center',
     width: getWidth(),
     height: height ?? dims.height,
+    opacity: disabled ? 0.45 : 1,
     transform: [{ scale: isPressed ? 0.95 : 1 }]
   }
 })

@@ -1,15 +1,10 @@
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
-import {
-  ButtonItem,
-  ButtonContainer,
-  DescriptionText,
-  TitleText
-} from '@/compLib/Modal/Modal.styles'
 
 interface RevisionCompletionModalProps {
   visible: boolean
   remainingQuestions: number
+  masteredCount: number
   onExit: () => void
   onRevise: () => void
 }
@@ -17,6 +12,7 @@ interface RevisionCompletionModalProps {
 export const RevisionCompletionModal = ({
   visible,
   remainingQuestions,
+  masteredCount,
   onExit,
   onRevise
 }: RevisionCompletionModalProps) => {
@@ -24,47 +20,37 @@ export const RevisionCompletionModal = ({
 
   return (
     <Modal visible={visible} onRequestClose={onExit} testID="revision-completion-modal">
-      <TitleText testID="revision-completion-title">
+      <Modal.Title testID="revision-completion-title">
         {isAllComplete ? 'Congratulations!' : 'Revision Complete!'}
-      </TitleText>
-      <DescriptionText testID="revision-completion-description">
+      </Modal.Title>
+      <Modal.Description testID="revision-completion-description">
         {isAllComplete
           ? 'You\'ve completed all your revision questions! Great job!'
           : `You have ${remainingQuestions} question${remainingQuestions !== 1 ? 's' : ''} left to revise.`}
-      </DescriptionText>
-      <ButtonContainer singleButton={isAllComplete}>
-        {isAllComplete ? (
+      </Modal.Description>
+      {masteredCount > 0 && (
+        <Modal.Description>
+          {`You mastered ${masteredCount} question${masteredCount !== 1 ? 's' : ''} this session! ⭐`}
+        </Modal.Description>
+      )}
+      <Modal.Actions>
+        {!isAllComplete && (
           <Button
-            testID="done-button"
-            variant="filled"
-            size="sm"
+            testID="exit-button"
+            variant="outlined"
+            size="md"
             onPress={onExit}
-            label="Done!"
+            label="Exit"
           />
-        ) : (
-          <>
-            <ButtonItem grow>
-              <Button
-                testID="exit-button"
-                variant="outlined"
-                size="sm"
-                onPress={onExit}
-                label="Exit"
-              />
-            </ButtonItem>
-            <ButtonItem grow>
-              <Button
-                testID="revise-button"
-                variant="filled"
-                size="sm"
-                onPress={onRevise}
-                label="Revise"
-              />
-            </ButtonItem>
-          </>
         )}
-      </ButtonContainer>
+        <Button
+          testID={isAllComplete ? 'done-button' : 'revise-button'}
+          variant="filled"
+          size="md"
+          onPress={isAllComplete ? onExit : onRevise}
+          label={isAllComplete ? 'Done!' : 'Revise'}
+        />
+      </Modal.Actions>
     </Modal>
   )
 }
-

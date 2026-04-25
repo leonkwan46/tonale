@@ -48,7 +48,7 @@ export const TrueFalse = ({
             <Depth3D
               key={choice}
               onPress={() => onChoiceSelect(choice)}
-              disabled={selectedAnswer !== null}
+              disabled={selectedAnswer !== null && !showResult}
               testID={isCorrect ? `correct-choice-${choice}` : `choice-${choice}`}
               color={color}
             >

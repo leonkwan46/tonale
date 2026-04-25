@@ -1,0 +1,1 @@
+export const FINAL_TEST_FAILURE_THRESHOLD = 3

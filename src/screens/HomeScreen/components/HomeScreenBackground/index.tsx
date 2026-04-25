@@ -10,6 +10,7 @@ import {
   Platform,
   RefreshControl
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
 import { ClapCelebration } from './ClapCelebration'
 import {
@@ -20,10 +21,11 @@ import {
   ImageContainer,
   ScrollContentContainer,
   StageImage,
+  StatusBarBlur,
+  TabBarSpacer,
   useGradientColors
 } from './HomeScreenBackground.styles'
-import { PullIndicator } from './PullIndicator'
-import { PULL_THRESHOLD } from './PullIndicator/PullIndicator.constants'
+import { PullIndicator, PULL_THRESHOLD } from './PullIndicator'
 
 interface HomeScreenBackgroundProps {
   children: React.ReactNode;
@@ -41,6 +43,7 @@ export const HomeScreenBackground = ({
   instrument
 }: HomeScreenBackgroundProps) => {
   const { isDark } = useThemeMode()
+  const { top: statusBarHeight } = useSafeAreaInsets()
   const { width: screenWidth } = useWindowDimensions()
   const [celebrationTrigger, setCelebrationTrigger] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
@@ -56,8 +59,8 @@ export const HomeScreenBackground = ({
 
   const stageImage = useMemo(() => {
     return isDark
-      ? require('../../../../../assets/images/dark-homepage.png')
-      : require('../../../../../assets/images/light-homepage.png')
+      ? require('@assets/images/dark-homepage.png')
+      : require('@assets/images/light-homepage.png')
   }, [isDark])
 
   const avatarImage = useMemo(() => {
@@ -125,10 +128,14 @@ export const HomeScreenBackground = ({
   )
 
   return (
-    <HomeScreenContainer>
+    <HomeScreenContainer style={{ backgroundColor: gradientColors[0] }}>
       <BouncingScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={isDark ? '#FFFFFF' : '#2E3237'}
+          />
         }
         bounces={Platform.OS === 'ios'}
         alwaysBounceVertical={Platform.OS === 'ios'}
@@ -139,6 +146,8 @@ export const HomeScreenBackground = ({
         onScrollEndDrag={handleScrollEndDrag}
         onBounce={handleBounce}
         pullProgress={pullDistance}
+        contentInset={Platform.OS === 'ios' ? { top: statusBarHeight } : undefined}
+        contentOffset={Platform.OS === 'ios' ? { x: 0, y: -statusBarHeight } : undefined}
       >
         <ScrollContentContainer>
           <BackgroundGradient
@@ -146,6 +155,7 @@ export const HomeScreenBackground = ({
             locations={[0, 0.3, 0.8, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
+            style={Platform.OS === 'android' ? { paddingTop: statusBarHeight } : undefined}
           >
             <ContentContainer>
               {children as React.ReactElement[]}
@@ -159,9 +169,17 @@ export const HomeScreenBackground = ({
             pullDistance={pullDistance}
             messageIndex={messageIndex}
           />
+          <TabBarSpacer />
         </ScrollContentContainer>
       </BouncingScrollView>
       <ClapCelebration trigger={celebrationTrigger} />
+      <StatusBarBlur
+        pointerEvents="none"
+        height={statusBarHeight}
+        intensity={50}
+        tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
+        blurMethod="dimezisBlurView"
+      />
     </HomeScreenContainer>
   )
 }

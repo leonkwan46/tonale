@@ -15,4 +15,3 @@ const SettingsLayout = () => (
 )
 
 export default SettingsLayout
-

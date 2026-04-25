@@ -1,25 +1,8 @@
 import { Typography } from '@/compLib/Typography'
 import styled from '@emotion/native'
-import { Modal } from 'react-native'
 import { scale } from 'react-native-size-matters'
 
 import { PressableFeedback } from '@/utils/PressableFeedback'
-
-export const ModalMask = styled(Modal)({})
-
-export const ModalMaskContainer = styled.View(({ theme }) => ({
-  flex: 1,
-  backgroundColor: theme.components.modal.mask,
-  justifyContent: 'center',
-  padding: scale(theme.spacing.lg)
-}))
-
-export const ModalCard = styled.View(({ theme }) => ({
-  backgroundColor: theme.colors.surface,
-  borderRadius: scale(theme.borderRadius.md),
-  padding: scale(theme.spacing.lg),
-  gap: scale(theme.spacing.md)
-}))
 
 export const TitleText = styled(Typography)(() => ({}))
 
