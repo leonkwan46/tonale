@@ -1,15 +1,5 @@
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
-import {
-  ButtonItem,
-  ButtonContainer,
-  DescriptionText
-} from '@/compLib/Modal/Modal.styles'
-import {
-  ErrorTitleText,
-  ModalIcon,
-  SuccessTitleText
-} from './FinalTestModal.styles'
 
 const CONFIG = {
   success: {
@@ -49,48 +39,32 @@ export const FinalTestModal = (props: FinalTestModalProps) => {
 
   return (
     <Modal visible={visible} onRequestClose={onRequestClose}>
-      <ModalIcon>{config.icon}</ModalIcon>
+      <Modal.Icon>{config.icon}</Modal.Icon>
 
-      {variant === 'success' ? (
-        <SuccessTitleText>{config.title}</SuccessTitleText>
-      ) : (
-        <ErrorTitleText>{config.title}</ErrorTitleText>
-      )}
+      <Modal.Title colorVariant={variant === 'success' ? 'success' : 'error'}>
+        {config.title}
+      </Modal.Title>
 
-      <DescriptionText>{config.description}</DescriptionText>
+      <Modal.Description>{config.description}</Modal.Description>
 
-      {variant === 'success' ? (
-        <ButtonContainer singleButton={true}>
+      <Modal.Actions>
+        {variant === 'failure' && (
           <Button
-            testID="continue-button"
-            variant="filled"
-            size="sm"
-            onPress={props.onContinue}
-            label="Continue"
+            testID="exit-button"
+            variant="outlined"
+            size="md"
+            onPress={props.onExit}
+            label="Exit"
           />
-        </ButtonContainer>
-      ) : (
-        <ButtonContainer>
-          <ButtonItem grow>
-            <Button
-              testID="exit-button"
-              variant="outlined"
-              size="md"
-              onPress={props.onExit}
-              label="Exit"
-            />
-          </ButtonItem>
-          <ButtonItem grow>
-            <Button
-              testID="retry-test-button"
-              variant="filled"
-              size="md"
-              onPress={props.onRetry}
-              label="Try Again"
-            />
-          </ButtonItem>
-        </ButtonContainer>
-      )}
+        )}
+        <Button
+          testID={variant === 'success' ? 'continue-button' : 'retry-test-button'}
+          variant="filled"
+          size={variant === 'success' ? 'sm' : 'md'}
+          onPress={variant === 'success' ? props.onContinue : props.onRetry}
+          label={variant === 'success' ? 'Continue' : 'Try Again'}
+        />
+      </Modal.Actions>
     </Modal>
   )
 }
