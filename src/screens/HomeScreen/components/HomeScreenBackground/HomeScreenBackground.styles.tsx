@@ -4,7 +4,7 @@ import { BlurView } from 'expo-blur'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Image, View } from 'react-native'
 import { scale } from 'react-native-size-matters'
-import { getTabBarHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
+import { getTabBarBaseHeight } from '@/globalComponents/CustomTabBar/CustomTabBar.styles'
 
 export const useGradientColors = (isDark: boolean): readonly [string, string, ...string[]] => {
   const theme = useTheme()
@@ -72,5 +72,5 @@ export const StatusBarBlur = styled(BlurView)<{ height: number }>(({ height }) =
 }))
 
 export const TabBarSpacer = styled(View)(({ theme }) => ({
-  height: getTabBarHeight(theme)
+  height: getTabBarBaseHeight(theme)
 }))
