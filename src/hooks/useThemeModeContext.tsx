@@ -25,17 +25,15 @@ export const ThemeModeProvider = ({
   children: ReactNode
 }) => {
   const systemColorScheme = useColorScheme()
-  const [isDark, setIsDarkState] = useState<boolean>(true)
-  const [loaded, setLoaded] = useState(false)
+  const [isDark, setIsDarkState] = useState<boolean>(systemColorScheme === THEME.DARK)
 
   useEffect(() => {
     appPreferences
       .getThemeMode()
       .then((stored) => {
-        setIsDarkState(stored !== null ? stored : systemColorScheme === THEME.DARK)
+        if (stored !== null) setIsDarkState(stored)
       })
-      .finally(() => setLoaded(true))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps -- runs once on mount; systemColorScheme is only a fallback for first launch
+  }, [])
 
   const setIsDark = useCallback((value: boolean) => {
     setIsDarkState(value)
@@ -43,8 +41,6 @@ export const ThemeModeProvider = ({
   }, [])
 
   const value = useMemo(() => ({ isDark, setIsDark }), [isDark, setIsDark])
-
-  if (!loaded) return null
 
   return (
     <ThemeModeContext.Provider value={value}>
