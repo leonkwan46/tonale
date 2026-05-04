@@ -1,11 +1,12 @@
 import { ICONS } from '@/compLib/Icon'
-import { useNetworkNotification } from '@/hooks/useNetworkNotificationContext'
 import {
+  addEventListener,
+  fetch as fetchNetInfo,
   type NetInfoState,
   NetInfoStateType
 } from '@react-native-community/netinfo'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Dimensions } from 'react-native'
+import { AppState, type AppStateStatus, Dimensions } from 'react-native'
 import {
   runOnJS,
   useAnimatedStyle,
@@ -85,8 +86,41 @@ const useToastStatus = (netInfoState: NetInfoState): ToastStatus => {
   return toastStatus
 }
 
+const DEFAULT_NET_INFO_STATE: NetInfoState = {
+  type: NetInfoStateType.unknown,
+  isConnected: null,
+  isInternetReachable: null,
+  details: null
+}
+
+const useNetInfoState = (): NetInfoState => {
+  const [netInfoState, setNetInfoState] = useState<NetInfoState>(DEFAULT_NET_INFO_STATE)
+
+  useEffect(() => {
+    let cancelled = false
+    const applyState = (state: NetInfoState) => {
+      if (!cancelled) setNetInfoState(state)
+    }
+    fetchNetInfo().then(applyState)
+    const unsubscribeNetInfo = addEventListener(applyState)
+    const appStateSubscription = AppState.addEventListener(
+      'change',
+      (nextAppState: AppStateStatus) => {
+        if (nextAppState === 'active') fetchNetInfo().then(applyState)
+      }
+    )
+    return () => {
+      cancelled = true
+      unsubscribeNetInfo()
+      appStateSubscription.remove()
+    }
+  }, [])
+
+  return netInfoState
+}
+
 const useNetworkToast = (topInset: number) => {
-  const { netInfoState } = useNetworkNotification()
+  const netInfoState = useNetInfoState()
   const toastStatus = useToastStatus(netInfoState)
 
   const [displayedStatus, setDisplayedStatus] = useState<ToastStatus>(null)
