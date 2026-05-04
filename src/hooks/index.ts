@@ -5,6 +5,6 @@ export { useMetronome } from './useMetronome'
 export { usePlayer } from './usePlayer'
 export { useProgress } from './useProgressContext'
 export { useSafeNavigation } from './useSafeNavigation'
-export { useUser } from './useUserContext'
+export { useAuthRoute, useUser } from './useUserContext'
 export { useWindowDimensions } from './useWindowDimensions'
 
