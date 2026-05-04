@@ -5,7 +5,8 @@ import { scale } from 'react-native-size-matters'
 export const StarContainer = styled.View(() => ({
   flexDirection: 'row',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  gap: scale(8)
 }))
 
 export const AnimatedStarContainer = styled(Animated.View)(() => ({

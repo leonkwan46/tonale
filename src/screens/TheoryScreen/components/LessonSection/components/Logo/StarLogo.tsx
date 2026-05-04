@@ -33,7 +33,7 @@ export const StarLogo = ({
   const emptyColor = color ?? theme.colors.text
 
   return (
-    <Svg width={scale(scaledSize * 0.95)} height={scale(scaledSize * 0.95)} viewBox="0 0 24 24" fill="none">
+    <Svg width={scale(scaledSize * 0.85)} height={scale(scaledSize * 0.85)} viewBox="0 0 24 24" fill="none">
       <Path d={OUTLINED_PATH} fill={emptyColor} fillRule="evenodd" clipRule="evenodd" />
     </Svg>
   )
