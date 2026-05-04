@@ -41,7 +41,7 @@ export const AuthForm = ({
   const isLoginMode = authState.mode === 'login'
   const isRegisterMode = authState.mode === 'register'
 
-  const { setUserData, setIsRegistering } = useUser()
+  const { setUserData } = useUser()
 
   const emailInputRef = useRef<TextInput>(null)
   const passwordInputRef = useRef<TextInput>(null)
@@ -83,22 +83,17 @@ export const AuthForm = ({
   }
 
   const handleRegister = async () => {
-    setIsRegistering(true)
-    try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      )
-      await user.getIdToken(true)
-      const result = await createUserData({
-        email: user.email || formData.email
-      })
-      if (result.data.success && result.data.data) {
-        setUserData(result.data.data)
-      }
-    } finally {
-      setIsRegistering(false)
+    const { user } = await createUserWithEmailAndPassword(
+      auth,
+      formData.email,
+      formData.password
+    )
+    await user.getIdToken(true)
+    const result = await createUserData({
+      email: user.email || formData.email
+    })
+    if (result.data.success && result.data.data) {
+      setUserData(result.data.data)
     }
   }
 
