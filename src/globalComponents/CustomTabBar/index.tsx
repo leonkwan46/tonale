@@ -1,4 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import { Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Ionicons } from '@expo/vector-icons'
@@ -52,7 +53,7 @@ export const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       config={config}
       intensity={100}
       tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
-      blurMethod="dimezisBlurView"
+      blurMethod={Platform.OS === 'ios' ? 'dimezisBlurView' : 'none'}
     >
       {state.routes
         .filter((route) => {

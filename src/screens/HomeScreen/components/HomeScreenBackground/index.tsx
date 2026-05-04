@@ -178,7 +178,7 @@ export const HomeScreenBackground = ({
         height={statusBarHeight}
         intensity={50}
         tint={isDark ? 'systemThinMaterialDark' : 'systemThinMaterialLight'}
-        blurMethod="dimezisBlurView"
+        blurMethod={Platform.OS === 'ios' ? 'dimezisBlurView' : 'none'}
       />
     </HomeScreenContainer>
   )
