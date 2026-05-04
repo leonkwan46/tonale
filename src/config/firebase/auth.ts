@@ -32,10 +32,10 @@ const actionCodeSettings: ActionCodeSettings = {
   url: ACTION_URL,
   handleCodeInApp: true,
   iOS: {
-    bundleId: 'com.leonkwan46.tonale'
+    bundleId: 'com.lkstudio.tonale'
   },
   android: {
-    packageName: 'com.leonkwan46.tonale',
+    packageName: 'com.lkstudio.tonale',
     installApp: true,
     minimumVersion: '1'
   }
