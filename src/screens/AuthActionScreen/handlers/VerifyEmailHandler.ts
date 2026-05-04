@@ -6,7 +6,7 @@ import { isFirebaseError } from '@/types/api/errors'
 import { AuthActionHandler, AuthActionParams, AuthActionResult, ResultHandlingInstructions } from '../AuthActionScreen.types'
 import { getFirebaseErrorMessage } from '../AuthActionScreen.utils'
 
-const REDIRECT_ROUTE = '/(tabs)/settings'
+const REDIRECT_ROUTE = '/settings'
 const REDIRECT_DELAY = 3000
 
 export const verifyEmailHandler: AuthActionHandler = {
@@ -74,9 +74,9 @@ export const verifyEmailHandler: AuthActionHandler = {
 
   executeRedirect: (router: Router, instructions: ResultHandlingInstructions) => {
     // Replace to settings screen first, then push to account page
-    router.replace('/(tabs)/settings' as Parameters<typeof router.replace>[0])
+    router.replace('/settings' as Parameters<typeof router.replace>[0])
     setTimeout(() => {
-      router.push('/(tabs)/settings/account')
+      router.push('/settings/account')
     }, 100)
   }
 }

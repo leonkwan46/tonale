@@ -256,7 +256,7 @@ export const LessonScreen = () => {
 
   const navigateAfterModal = () => {
     if (from === 'home') {
-      navigateReplace('/(tabs)/theory')
+      navigateReplace('/theory')
     } else {
       navigateBack()
     }
@@ -290,7 +290,7 @@ export const LessonScreen = () => {
     const nextLockedStage = getNextLockedStage(stages, progressData)
 
     if (nextLockedStage) {
-      navigate(isAuralLesson ? '/(tabs)/aural' : '/(tabs)/theory')
+      navigate(isAuralLesson ? '/aural' : '/theory')
     } else {
       navigateAfterModal()
     }

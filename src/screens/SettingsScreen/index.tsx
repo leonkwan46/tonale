@@ -32,19 +32,19 @@ export const SettingsScreen = () => {
   }
 
   const handleAccountPress = () => {
-    navigate('/(tabs)/settings/account')
+    navigate('/settings/account')
   }
 
   const handleBuyMeACoffeePress = () => {
-    navigate('/(tabs)/settings/donation')
+    navigate('/settings/donation')
   }
 
   const handleFeedbackPress = () => {
-    navigate('/(tabs)/settings/feedback')
+    navigate('/settings/feedback')
   }
 
   const handlePrivacyPolicyPress = () => {
-    navigate('/(tabs)/settings/privacy-policy')
+    navigate('/settings/privacy-policy')
   }
 
   const handleLogoutPress = () => {

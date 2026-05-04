@@ -7,7 +7,7 @@ const AuthLayout = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (route === 'app') router.replace('../(tabs)')
+    if (route === 'app') router.replace('/(app)/(tabs)')
     else if (route === 'onboarding') router.replace('../onboarding')
   }, [route, router])
 

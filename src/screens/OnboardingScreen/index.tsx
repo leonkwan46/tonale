@@ -11,7 +11,7 @@ export const OnboardingScreen = () => {
 
   useEffect(() => {
     if (route === 'auth') router.replace('/(auth)')
-    else if (route === 'app') router.replace('/(tabs)')
+    else if (route === 'app') router.replace('/(app)/(tabs)')
   }, [route, router])
 
   if (route !== 'onboarding') return null

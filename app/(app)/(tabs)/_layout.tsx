@@ -3,7 +3,7 @@ import React from 'react'
 
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { useUser } from '@/hooks'
-import { CustomTabBar } from '../../src/globalComponents/CustomTabBar'
+import { CustomTabBar } from '@/globalComponents/CustomTabBar'
 
 const TabLayout = () => {
   const { authUser } = useUser()

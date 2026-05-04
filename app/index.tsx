@@ -6,7 +6,7 @@ const Index = () => {
   if (route === 'loading') return null
   if (route === 'auth') return <Redirect href="/(auth)" />
   if (route === 'onboarding') return <Redirect href="/onboarding" />
-  return <Redirect href="/(tabs)" />
+  return <Redirect href="/(app)/(tabs)" />
 }
 
 export default Index

@@ -84,7 +84,7 @@ export const OnboardingBody = ({
   }
 
   const handleVerificationContinue = () => {
-    router.replace('/(tabs)')
+    router.replace('/(app)/(tabs)')
   }
 
   return (

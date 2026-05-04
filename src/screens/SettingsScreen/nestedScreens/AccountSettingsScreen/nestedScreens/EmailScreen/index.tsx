@@ -57,7 +57,7 @@ export const EmailScreen = () => {
   }
 
   const handleChangeEmailPress = () => {
-    navigate('/(tabs)/settings/account/change-email-form')
+    navigate('/settings/account/change-email-form')
   }
 
   return (

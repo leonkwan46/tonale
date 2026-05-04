@@ -41,23 +41,23 @@ export const AccountSettingsScreen = () => {
   }, [authUser?.providerData])
 
   const handleDisplayNamePress = () => {
-    navigate('/(tabs)/settings/account/edit-name')
+    navigate('/settings/account/edit-name')
   }
 
   const handleChangeEmail = () => {
-    navigate('/(tabs)/settings/account/change-email')
+    navigate('/settings/account/change-email')
   }
 
   const handleChangePassword = () => {
-    navigate('/(tabs)/settings/account/change-password')
+    navigate('/settings/account/change-password')
   }
 
   const handleChangeInstrument = () => {
-    navigate('/(tabs)/settings/account/change-instrument')
+    navigate('/settings/account/change-instrument')
   }
 
   const handleChangeGender = () => {
-    navigate('/(tabs)/settings/account/change-gender')
+    navigate('/settings/account/change-gender')
   }
 
   const handleDeleteAccountPress = () => {

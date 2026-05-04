@@ -1,4 +1,3 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
@@ -13,8 +12,6 @@ import { darkSemanticColors, lightSemanticColors } from '@/config/theme/semantic
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
-import { NetworkNotificationProvider } from '@/hooks/useNetworkNotificationContext'
-import { ProgressProvider } from '@/hooks/useProgressContext'
 import { ThemeModeProvider, useThemeMode } from '@/hooks/useThemeModeContext'
 import { UserProvider } from '@/hooks/useUserContext'
 import { SplashScreen } from '@/screens/SplashScreen'
@@ -41,37 +38,29 @@ const RootLayout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: rootBgColor }}>
       <SafeAreaProvider>
-        <ThemeModeProvider>
-          <AppThemeProvider>
-            <ErrorBoundary>
-              <DevErrorBoundaryTrigger />
-              <NetworkNotificationProvider>
-                <UserProvider>
-                  <ProgressProvider>
-                    <BottomSheetModalProvider>
-                      {showSplash ? (
-                        <SplashScreen onComplete={() => setShowSplash(false)} />
-                      ) : (
-                      <>
-                        <Stack screenOptions={{ headerShown: false }}>
-                          <Stack.Screen name="(auth)" />
-                          <Stack.Screen name="(tabs)" />
-                          <Stack.Screen name="onboarding" />
-                          <Stack.Screen name="lesson" options={{ gestureEnabled: false }} />
-                          <Stack.Screen name="revision" options={{ headerShown: false }} />
-                          <Stack.Screen name="+not-found" />
-                        </Stack>
-                        <NetworkToast />
-                        <ThemedStatusBar />
-                      </>
-                      )}
-                    </BottomSheetModalProvider>
-                  </ProgressProvider>
-                </UserProvider>
-              </NetworkNotificationProvider>
-            </ErrorBoundary>
-          </AppThemeProvider>
-        </ThemeModeProvider>
+        <ErrorBoundary>
+          <DevErrorBoundaryTrigger />
+          <ThemeModeProvider>
+            <AppThemeProvider>
+              <UserProvider>
+                {showSplash ? (
+                  <SplashScreen onComplete={() => setShowSplash(false)} />
+                ) : (
+                  <>
+                    <Stack screenOptions={{ headerShown: false }}>
+                      <Stack.Screen name="(auth)" />
+                      <Stack.Screen name="(app)" />
+                      <Stack.Screen name="onboarding" />
+                      <Stack.Screen name="+not-found" />
+                    </Stack>
+                    <NetworkToast />
+                    <ThemedStatusBar />
+                  </>
+                )}
+              </UserProvider>
+            </AppThemeProvider>
+          </ThemeModeProvider>
+        </ErrorBoundary>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   )
