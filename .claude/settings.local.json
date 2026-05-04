@@ -16,7 +16,17 @@
       "Bash(node *)",
       "Bash(cp -r ios/build/generated/ios/build/generated/ios/ReactCodegen ios/build/generated/ios/ReactCodegen)",
       "Bash(cp -r ios/build/generated/ios/build/generated/ios/ReactAppDependencyProvider ios/build/generated/ios/ReactAppDependencyProvider)",
-      "Bash(xargs cat *)"
+      "Bash(xargs cat *)",
+      "Read(//Users/leonkwan/Coding/**)",
+      "Read(//Users/leonkwan/**)",
+      "Bash(xargs sed *)",
+      "Bash(npx react-native *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('project',{}\\).get\\('android',{}\\).get\\('packageName'\\)\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('project',{}\\).get\\('android',{}\\)\\)\")",
+      "Bash(python3 *)",
+      "Bash(pod install *)",
+      "Bash(sudo ln *)",
+      "Bash(npm info *)"
     ]
   }
 }
