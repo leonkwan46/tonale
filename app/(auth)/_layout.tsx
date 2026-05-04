@@ -1,27 +1,18 @@
-import { useUser } from '@/hooks'
+import { useAuthRoute } from '@/hooks'
 import { Stack, useRouter } from 'expo-router'
 import { useEffect } from 'react'
 
 const AuthLayout = () => {
-  const { authUser, userData, loading } = useUser()
+  const route = useAuthRoute()
   const router = useRouter()
-  
-  // Use an effect for navigation
+
   useEffect(() => {
-    if (authUser && !loading) {
-      // Check onboarding status before redirecting
-      if (userData?.onboardingCompleted === true) {
-        router.replace('../(tabs)')
-      } else {
-        // userData doesn't exist or onboarding not completed
-        router.replace('../onboarding')
-      }
-    }
-  }, [authUser, userData, loading, router])
-  
-  // While loading, return nothing
-  if (loading) return null
-  
+    if (route === 'app') router.replace('../(tabs)')
+    else if (route === 'onboarding') router.replace('../onboarding')
+  }, [route, router])
+
+  if (route === 'loading') return null
+
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
