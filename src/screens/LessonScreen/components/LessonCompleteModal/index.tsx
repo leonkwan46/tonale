@@ -1,13 +1,13 @@
 import { useDevice } from '@/hooks'
 import { Button } from '@/compLib/Button'
 import { Modal } from '@/compLib/Modal'
+import { StarLogo } from '@/screens/TheoryScreen/components/LessonSection/components/Logo/StarLogo'
 import { getStarDescription, getStarMessage } from '@/utils/starCalculation'
 import { useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
 import {
   AnimatedStarContainer,
-  StarContainer,
-  StarIcon
+  StarContainer
 } from './LessonCompleteModal.styles'
 
 interface LessonCompleteModalProps {
@@ -64,7 +64,7 @@ export const LessonCompleteModal = ({
     }
   }, [visible, starAnimations])
 
-  const starSize = isTablet ? 'xl' : 'xxl'
+  const starSize = isTablet ? 48 : 56
 
   const renderStars = () =>
     Array.from({ length: 3 }, (_, index) => {
@@ -83,9 +83,7 @@ export const LessonCompleteModal = ({
 
       return (
         <AnimatedStarContainer key={index} style={animatedStyle}>
-          <StarIcon filled={isFilled} size={starSize} align="center">
-            {isFilled ? '⭐' : '☆'}
-          </StarIcon>
+          <StarLogo filled={isFilled} size={starSize} />
         </AnimatedStarContainer>
       )
     })
