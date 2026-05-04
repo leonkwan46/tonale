@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Tonalè",
+    "name": "Tonale",
     "slug": "tonale",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,7 +9,10 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.leonkwan46.tonale"
+      "bundleIdentifier": "com.lkstudio.tonale",
+      "infoPlist": {
+        "CFBundleDisplayName": "Tonalè"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,8 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
-      "package": "com.leonkwan46.tonale"
+      "package": "com.lkstudio.tonale",
+      "displayName": "Tonalè"
     },
     "assetBundlePatterns": [
       "assets/fonts/*"
@@ -37,6 +41,12 @@
           "url": "https://sentry.io/",
           "project": "react-native",
           "organization": "lk-studio-59"
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.476539409264-mo9lggoj2jgjkos2fu4cnq2ps1fqb077"
         }
       ]
     ],
