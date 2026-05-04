@@ -1,37 +1,20 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useAuthRoute, useUser } from '@/hooks'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
-import { ActivityIndicator } from 'react-native'
 import { OnboardingBody } from './OnboardingBody'
-import { ContentContainer } from './OnboardingScreen.styles'
 
 export const OnboardingScreen = () => {
+  const route = useAuthRoute()
   const router = useRouter()
-  const { authUser, userData, loading: userLoading, setUserData } = useUser()
+  const { authUser, setUserData } = useUser()
 
   useEffect(() => {
-    if (userLoading) return
-    if (!authUser) {
-      router.replace('/(auth)')
-      return
-    }
-    if (userData?.onboardingCompleted === true) {
-      router.replace('/(tabs)')
-    }
-  }, [authUser, userData, userLoading, router])
+    if (route === 'auth') router.replace('/(auth)')
+    else if (route === 'app') router.replace('/(tabs)')
+  }, [route, router])
 
-  if (userLoading) {
-    return (
-      <ScreenContainer>
-        <ContentContainer>
-          <ActivityIndicator size="large" />
-        </ContentContainer>
-      </ScreenContainer>
-    )
-  }
-
-  if (!authUser || userData?.onboardingCompleted === true) return null
+  if (route !== 'onboarding') return null
 
   return (
     <ScreenContainer includeBottomPadding>
