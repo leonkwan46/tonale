@@ -1,4 +1,4 @@
-package com.leonkwan46.tonale
+package com.lkstudio.tonale
 
 import android.app.Application
 import android.content.res.Configuration

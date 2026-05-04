@@ -1,4 +1,4 @@
-package com.leonkwan46.tonale
+package com.lkstudio.tonale
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
