@@ -41,13 +41,9 @@ export const calculateStageUnlockStatus = (stageId: string, allStagesData: Stage
   const stage = allStagesData.find(s => s.id === stageId)
   if (!stage) return false
 
-  if (stage.order === 0) {
-    return true
-  }
+  if (stage.order === 0) return true
 
-  if (!stage.prerequisiteStages || stage.prerequisiteStages.length === 0) {
-    return false
-  }
+  if (!stage.prerequisiteStages || stage.prerequisiteStages.length === 0) return false
 
   return stage.prerequisiteStages.every(prereqStageId => {
     const prereqStage = allStagesData.find(s => s.id === prereqStageId)

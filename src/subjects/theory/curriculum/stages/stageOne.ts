@@ -95,6 +95,6 @@ export const stage1: Stage = {
   lessons: stageOneLessons.map(lesson => ({ ...lesson, stageId: 'theory-stage-1' } as StageLesson)),
   order: 1,
   prerequisiteStages: ['theory-stage-0'],
-  isUnlocked: false, // Will be calculated
+  isUnlocked: false,
   ...calculateStageStats(stageOneLessons)
 }
