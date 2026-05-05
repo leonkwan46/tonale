@@ -11,6 +11,7 @@ import { initSentry, wrapWithSentry } from '@/config/sentry'
 import { darkSemanticColors, lightSemanticColors } from '@/config/theme/semantic'
 import { AppThemeProvider } from '@/globalComponents/AppThemeProvider'
 import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
+import { ModalRoot } from '@/globalComponents/ModalRoot'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
 import { ThemeModeProvider, useThemeMode } from '@/hooks/useThemeModeContext'
 import { UserProvider } from '@/hooks/useUserContext'
@@ -43,20 +44,19 @@ const RootLayout = () => {
           <ThemeModeProvider>
             <AppThemeProvider>
               <UserProvider>
-                {showSplash ? (
-                  <SplashScreen onComplete={() => setShowSplash(false)} />
-                ) : (
-                  <>
-                    <Stack screenOptions={{ headerShown: false }}>
-                      <Stack.Screen name="(auth)" />
-                      <Stack.Screen name="(app)" />
-                      <Stack.Screen name="onboarding" />
-                      <Stack.Screen name="+not-found" />
-                    </Stack>
-                    <NetworkToast />
-                    <ThemedStatusBar />
-                  </>
-                )}
+                <ModalRoot>
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="(auth)" />
+                    <Stack.Screen name="(app)" />
+                    <Stack.Screen name="onboarding" />
+                    <Stack.Screen name="+not-found" />
+                  </Stack>
+                  <NetworkToast />
+                  <ThemedStatusBar />
+                  {showSplash && (
+                    <SplashScreen onComplete={() => setShowSplash(false)} />
+                  )}
+                </ModalRoot>
               </UserProvider>
             </AppThemeProvider>
           </ThemeModeProvider>

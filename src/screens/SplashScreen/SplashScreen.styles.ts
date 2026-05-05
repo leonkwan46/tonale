@@ -3,10 +3,16 @@ import Animated from 'react-native-reanimated'
 import { scale } from 'react-native-size-matters'
 
 export const Container = styled(Animated.View)(({ theme }) => ({
-  flex: 1,
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: theme.colors.background
+  backgroundColor: theme.colors.background,
+  zIndex: 1000,
+  elevation: 1000
 }))
 
 export const MusicLogoContainer = styled.View(({ theme }) => ({
