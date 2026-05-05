@@ -1,5 +1,6 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useAuthRoute, useUser } from '@/hooks'
+import { useAuthRoute } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { OnboardingBody } from './OnboardingBody'
@@ -7,7 +8,8 @@ import { OnboardingBody } from './OnboardingBody'
 export const OnboardingScreen = () => {
   const route = useAuthRoute()
   const router = useRouter()
-  const { authUser, setUserData } = useUser()
+  const authUser = useUserStore(s => s.authUser)
+  const setUserData = useUserStore(s => s.setUserData)
 
   useEffect(() => {
     if (route === 'auth') router.replace('/(auth)')
