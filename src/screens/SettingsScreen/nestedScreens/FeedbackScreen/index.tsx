@@ -3,7 +3,7 @@ import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
 import Constants from 'expo-constants'
 import { useState } from 'react'
@@ -34,7 +34,7 @@ const GOOGLE_FORM_ENTRY_IDS = {
 } as const
 
 export const FeedbackScreen = () => {
-  const { authUser } = useUser()
+  const authUser = useUserStore(s => s.authUser)
   const [fullName, setFullName] = useState(authUser?.displayName || '')
   const [feedback, setFeedback] = useState('')
   const [email, setEmail] = useState(authUser?.email || '')

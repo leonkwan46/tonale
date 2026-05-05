@@ -1,6 +1,7 @@
 import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useDevice, useUser } from '@/hooks'
+import { useDevice } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
@@ -19,7 +20,7 @@ import {
 
 export const ChangePasswordScreen = () => {
   const { isTablet } = useDevice()
-  const { authUser } = useUser()
+  const authUser = useUserStore(s => s.authUser)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)

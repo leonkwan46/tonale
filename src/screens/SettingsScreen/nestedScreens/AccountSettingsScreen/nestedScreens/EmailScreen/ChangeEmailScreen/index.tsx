@@ -1,6 +1,7 @@
 import { updateUserEmailAddress } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useDevice, useUser } from '@/hooks'
+import { useDevice } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
@@ -21,7 +22,7 @@ import {
 
 export const ChangeEmailScreen = () => {
   const { isTablet } = useDevice()
-  const { authUser } = useUser()
+  const authUser = useUserStore(s => s.authUser)
 
   const [newEmail, setNewEmail] = useState('')
   const [password, setPassword] = useState('')

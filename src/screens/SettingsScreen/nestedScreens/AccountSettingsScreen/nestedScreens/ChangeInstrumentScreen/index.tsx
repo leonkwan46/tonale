@@ -1,7 +1,8 @@
 import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useDevice, useUser } from '@/hooks'
+import { useDevice } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { AvatarPreview } from '@/screens/OnboardingScreen/components/AvatarPreview'
 import { InstrumentSelection } from '@/screens/OnboardingScreen/components/InstrumentSelection'
 import { Button } from '@/compLib/Button'
@@ -35,7 +36,8 @@ const getInstrumentFromValue = (value: string | undefined): UserInstrument | nul
 
 export const ChangeInstrumentScreen = () => {
   const { isTablet } = useDevice()
-  const { userData, setUserData } = useUser()
+  const userData = useUserStore(s => s.userData)
+  const setUserData = useUserStore(s => s.setUserData)
   const router = useRouter()
   const scrollViewRef = useRef<ScrollView>(null)
   

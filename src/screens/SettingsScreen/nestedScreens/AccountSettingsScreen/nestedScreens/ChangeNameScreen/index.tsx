@@ -2,7 +2,8 @@ import { updateUserDisplayName } from '@/config/firebase/auth'
 import { updateUserData } from '@/config/firebase/functions'
 import { KeyboardAwareScrollView } from '@/globalComponents/KeyboardAwareScrollView'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useDevice, useUser } from '@/hooks'
+import { useDevice } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
@@ -22,7 +23,8 @@ import {
 
 export const ChangeNameScreen = () => {
   const { isTablet } = useDevice()
-  const { userData, setUserData } = useUser()
+  const userData = useUserStore(s => s.userData)
+  const setUserData = useUserStore(s => s.setUserData)
   const router = useRouter()
   const [name, setName] = useState(userData?.name || '')
   const [error, setError] = useState('')

@@ -1,7 +1,8 @@
 import { deleteUserAccount, reauthenticateUser } from '@/config/firebase/auth'
 import { deleteUserData } from '@/config/firebase/functions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useSafeNavigation, useUser } from '@/hooks'
+import { useSafeNavigation } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { capitalize } from '@/utils/string'
 import {
   GENDER,
@@ -25,7 +26,8 @@ import {
 import { DeleteAccountModal } from './components/DeleteAccountModal'
 
 export const AccountSettingsScreen = () => {
-  const { userData, authUser } = useUser()
+  const userData = useUserStore(s => s.userData)
+  const authUser = useUserStore(s => s.authUser)
   const { navigate, navigateReplace } = useSafeNavigation()
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)

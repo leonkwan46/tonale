@@ -1,6 +1,7 @@
 import { sendEmailVerificationToUser } from '@/config/firebase/auth'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useDevice, useSafeNavigation, useUser } from '@/hooks'
+import { useDevice, useSafeNavigation } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { getUserFacingErrorMessage } from '@/utils/errorMessages'
@@ -24,7 +25,7 @@ import {
 
 export const EmailScreen = () => {
   const { isTablet } = useDevice()
-  const { authUser } = useUser()
+  const authUser = useUserStore(s => s.authUser)
   const { navigate } = useSafeNavigation()
 
   const [isVerified, setIsVerified] = useState(authUser?.emailVerified || false)
