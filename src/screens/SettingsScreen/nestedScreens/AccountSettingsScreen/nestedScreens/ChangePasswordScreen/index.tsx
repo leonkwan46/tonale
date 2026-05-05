@@ -83,7 +83,7 @@ export const ChangePasswordScreen = () => {
               disabled={loading}
               loading={loading}
               onPress={handleSendResetEmail}
-              label={loading ? 'Sending reset link…' : 'Send Password Reset Email'}
+              label={loading ? 'Sending…' : 'Send Reset Link'}
             />
           )}
         </ContentContainer>

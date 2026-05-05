@@ -115,7 +115,7 @@ It won't be shared with others.`}
                   disabled={verifyLoading}
                   loading={verifyLoading}
                   onPress={handleSendVerification}
-                  label={verifyLoading ? 'Sending verification email…' : 'Send verification email'}
+                  label={verifyLoading ? 'Sending…' : 'Verify Email'}
                 />
               </SettingSection>
             ))}

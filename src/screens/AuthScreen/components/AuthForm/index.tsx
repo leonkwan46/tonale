@@ -323,7 +323,7 @@ export const AuthForm = ({
           authState.loading
             ? isLoginMode
               ? 'Signing in…'
-              : 'Creating your account…'
+              : 'Creating…'
             : isLoginMode
               ? 'Sign In'
               : 'Create Account'

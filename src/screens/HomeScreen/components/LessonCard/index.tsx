@@ -92,7 +92,7 @@ export const LessonCard = () => {
         loading={isNavigating}
         testID="continue-lesson-button"
         onPress={handleContinuePress}
-        label={isNavigating ? 'Opening lesson…' : 'Continue Lesson'}
+        label={isNavigating ? 'Opening…' : 'Continue Lesson'}
       />
     </LessonCardContainer>
   )

@@ -36,7 +36,7 @@ export const GuestLogin = ({
         onPress={onGuestLogin}
         disabled={loading}
         loading={loading}
-        label={loading ? 'Continuing as guest…' : 'Continue as Guest'}
+        label={loading ? 'Continuing…' : 'Continue as Guest'}
       />
     </GuestLoginContainer>
   </GuestLoginWrapper>

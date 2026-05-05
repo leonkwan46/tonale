@@ -133,7 +133,7 @@ export const ChangeEmailScreen = () => {
                 disabled={loading}
                 loading={loading}
                 onPress={handleConfirm}
-                label={loading ? 'Updating email…' : 'Confirm'}
+                label={loading ? 'Updating…' : 'Confirm'}
               />
             </FormCard>
           )}

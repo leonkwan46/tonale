@@ -234,7 +234,9 @@ export const ButtonLabel = ({
       weight="semibold"
       colorVariant={colorVariant}
       align={isMultiWord ? 'center' : undefined}
-      style={isMultiWord ? { flexShrink: 1 } : undefined}
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      style={{ flexShrink: 1 }}
     >
       {children}
     </Typography>
@@ -297,7 +299,9 @@ export const DepthButtonLabel = ({
       weight="semibold"
       colorVariant={colorVariant}
       align="center"
-      style={isMultiWord ? { flexShrink: 1 } : undefined}
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      style={{ flexShrink: 1 }}
     >
       {children}
     </Typography>

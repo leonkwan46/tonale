@@ -202,7 +202,7 @@ export const FeedbackScreen = () => {
                   disabled={loading || !feedback.trim() || !consentGiven}
                   loading={loading}
                   onPress={handleSubmit}
-                  label={loading ? 'Sending feedback…' : 'Submit Feedback'}
+                  label={loading ? 'Sending…' : 'Submit Feedback'}
                 />
               </SettingSection>
             )}

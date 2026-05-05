@@ -147,7 +147,7 @@ export const SettingsScreen = () => {
               <SettingSection variant='list'>
                 <SettingsItem
                   icon='flask-outline'
-                  label={fillingProgress ? 'Filling progress...' : 'Fill All Progress (Dev)'}
+                  label={fillingProgress ? 'Filling…' : 'Fill All Progress (Dev)'}
                   onPress={handleFillAllProgress}
                   showSeparator={false}
                 />
@@ -156,7 +156,7 @@ export const SettingsScreen = () => {
             <LogoutCard>
               <SettingsItem
                 icon='log-out-outline'
-                label={loggingOut ? 'Logging out...' : 'Log Out'}
+                label={loggingOut ? 'Logging out…' : 'Log Out'}
                 onPress={handleLogoutPress}
                 showSeparator={false}
                 variant='red'

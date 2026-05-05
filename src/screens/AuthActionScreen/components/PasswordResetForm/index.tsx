@@ -117,7 +117,7 @@ export const PasswordResetForm = ({
           disabled={isLoading || !newPassword || !confirmPassword}
           loading={isLoading}
           onPress={handleSubmit}
-          label={isLoading ? 'Resetting password…' : 'Reset Password'}
+          label={isLoading ? 'Resetting…' : 'Reset Password'}
         />
       </ScrollContainer>
     </KeyboardAwareScrollView>

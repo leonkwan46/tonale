@@ -22,7 +22,7 @@ const OnboardingButtonComponent = ({
         loading={isCompleting}
         onPress={onPress}
         testID="complete-onboarding-button"
-        label={isCompleting ? 'Finishing setup…' : 'Start!'}
+        label={isCompleting ? 'Finishing…' : 'Start!'}
       />
     </OnboardingButtonContainer>
   )
