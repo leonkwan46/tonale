@@ -1,161 +1,161 @@
-import { userCache } from "@/cache";
-import { storeRevisionQuestionsFn } from "@/config/firebase/functions/revisionQuestions";
-import { ScreenContainer } from "@/globalComponents/ScreenContainer";
-import { useSafeNavigation } from "@/hooks";
-import { useProgressStore } from "@/stores/progressStore";
+import { userCache } from '@/cache'
+import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
+import { ScreenContainer } from '@/globalComponents/ScreenContainer'
+import { useSafeNavigation } from '@/hooks'
+import { useProgressStore } from '@/stores/progressStore'
 import {
     auralStagesArray,
-    getAuralLessonWithProgress,
-} from "@/subjects/aural/curriculum/stages/helpers";
-import { generateAuralQuestions } from "@/subjects/aural/exercises/generate";
-import { getNextLockedStage } from "@/subjects/curriculumHelper";
+    getAuralLessonWithProgress
+} from '@/subjects/aural/curriculum/stages/helpers'
+import { generateAuralQuestions } from '@/subjects/aural/exercises/generate'
+import { getNextLockedStage } from '@/subjects/curriculumHelper'
 import {
     getTheoryLessonWithProgress,
-    stagesArray as theoryStagesArray,
-} from "@/subjects/theory/curriculum/stages/helpers";
-import { generateLessonQuestions } from "@/subjects/theory/exercises/generator";
+    stagesArray as theoryStagesArray
+} from '@/subjects/theory/curriculum/stages/helpers'
+import { generateLessonQuestions } from '@/subjects/theory/exercises/generator'
 import {
     playLessonFailedSound,
-    playLessonFinishedSound,
-} from "@/utils/soundUtils";
-import { calculateStars } from "@/utils/starCalculation";
-import type { Question, StoreRevisionQuestionPayload } from "@types";
-import { useLocalSearchParams } from "expo-router";
-import { useCallback, useState } from "react";
-import { Alert } from "react-native";
-import { FinalTestModal } from "./components/FinalTestModal";
-import { LeaveLessonModal } from "./components/LeaveLessonModal";
-import { LessonCompleteModal } from "./components/LessonCompleteModal";
-import { FINAL_TEST_FAILURE_THRESHOLD } from "./constants";
-import { LessonHeader } from "./LessonHeader";
-import { LessonEmptyMessage } from "./LessonScreen.styles";
-import { LessonScreenBody } from "./LessonScreenBody";
+    playLessonFinishedSound
+} from '@/utils/soundUtils'
+import { calculateStars } from '@/utils/starCalculation'
+import type { Question, StoreRevisionQuestionPayload } from '@types'
+import { useLocalSearchParams } from 'expo-router'
+import { useCallback, useState } from 'react'
+import { Alert } from 'react-native'
+import { FinalTestModal } from './components/FinalTestModal'
+import { LeaveLessonModal } from './components/LeaveLessonModal'
+import { LessonCompleteModal } from './components/LessonCompleteModal'
+import { FINAL_TEST_FAILURE_THRESHOLD } from './constants'
+import { LessonHeader } from './LessonHeader'
+import { LessonEmptyMessage } from './LessonScreen.styles'
+import { LessonScreenBody } from './LessonScreenBody'
 
 export const LessonScreen = () => {
-  const { navigate, navigateBack, navigateReplace } = useSafeNavigation();
+  const { navigate, navigateBack, navigateReplace } = useSafeNavigation()
   const { lessonId, from } = useLocalSearchParams<{
     lessonId: string;
     from: string;
-  }>();
-  const progressData = useProgressStore((s) => s.progressData);
+  }>()
+  const progressData = useProgressStore((s) => s.progressData)
   const updateFinalTestProgress = useProgressStore(
-    (s) => s.updateFinalTestProgress,
-  );
-  const updateLessonProgress = useProgressStore((s) => s.updateLessonProgress);
+    (s) => s.updateFinalTestProgress
+  )
+  const updateLessonProgress = useProgressStore((s) => s.updateLessonProgress)
   const refreshRevisionQuestions = useProgressStore(
-    (s) => s.refreshRevisionQuestions,
-  );
-  const trackLessonAccess = userCache.trackLessonAccess;
+    (s) => s.refreshRevisionQuestions
+  )
+  const trackLessonAccess = userCache.trackLessonAccess
 
   // Get lesson - try aural first, then theory
   const getLesson = useCallback(
     (id: string) => {
-      if (id.startsWith("aural-")) {
-        return getAuralLessonWithProgress(id, progressData);
+      if (id.startsWith('aural-')) {
+        return getAuralLessonWithProgress(id, progressData)
       }
-      return getTheoryLessonWithProgress(id, progressData);
+      return getTheoryLessonWithProgress(id, progressData)
     },
-    [progressData],
-  );
+    [progressData]
+  )
 
-  const lesson = lessonId ? getLesson(lessonId) : null;
+  const lesson = lessonId ? getLesson(lessonId) : null
 
   const generateQuestions = useCallback(
     (lessonData: typeof lesson): Question[] => {
-      if (!lessonData || !lessonData.exerciseConfig) return [];
+      if (!lessonData || !lessonData.exerciseConfig) return []
 
       // Detect aural lessons by ID prefix
-      const isAuralLesson = lessonData.id.startsWith("aural-");
+      const isAuralLesson = lessonData.id.startsWith('aural-')
 
       if (isAuralLesson) {
-        return generateAuralQuestions(lessonData.exerciseConfig);
+        return generateAuralQuestions(lessonData.exerciseConfig)
       }
 
-      return generateLessonQuestions(lessonData.exerciseConfig);
+      return generateLessonQuestions(lessonData.exerciseConfig)
     },
-    [],
-  );
+    []
+  )
 
   const [questions, setQuestions] = useState<Question[]>(() => {
-    if (!lesson || !lessonId) return [];
-    void trackLessonAccess(lessonId);
-    return generateQuestions(lesson);
-  });
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [wrongAnswers, setWrongAnswers] = useState<Question[]>([]);
-  const [showStarModal, setShowStarModal] = useState(false);
-  const [showFailureModal, setShowFailureModal] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [isCompleting, setIsCompleting] = useState(false);
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const [showExplanationModal, setShowExplanationModal] = useState(false);
+    if (!lesson || !lessonId) return []
+    void trackLessonAccess(lessonId)
+    return generateQuestions(lesson)
+  })
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [wrongAnswers, setWrongAnswers] = useState<Question[]>([])
+  const [showStarModal, setShowStarModal] = useState(false)
+  const [showFailureModal, setShowFailureModal] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [isCompleting, setIsCompleting] = useState(false)
+  const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const [showExplanationModal, setShowExplanationModal] = useState(false)
   /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
-  const [restartKey, setRestartKey] = useState(0);
+  const [restartKey, setRestartKey] = useState(0)
 
-  const hasProgress = currentQuestionIndex > 0 || wrongAnswers.length > 0;
+  const hasProgress = currentQuestionIndex > 0 || wrongAnswers.length > 0
 
   const handleBackPress = useCallback(() => {
     if (!hasProgress) {
-      navigateBack();
-      return;
+      navigateBack()
+      return
     }
-    setShowLeaveModal(true);
-  }, [hasProgress, navigateBack]);
+    setShowLeaveModal(true)
+  }, [hasProgress, navigateBack])
 
   const handleShowExplanation = useCallback(() => {
-    setShowExplanationModal(true);
-  }, []);
+    setShowExplanationModal(true)
+  }, [])
 
   const handleHideExplanation = useCallback(() => {
-    setShowExplanationModal(false);
-  }, []);
+    setShowExplanationModal(false)
+  }, [])
 
   const restartLesson = useCallback(() => {
-    setCurrentQuestionIndex(0);
-    setWrongAnswers([]);
-    setIsCompleting(false);
-    setShowExplanationModal(false);
+    setCurrentQuestionIndex(0)
+    setWrongAnswers([])
+    setIsCompleting(false)
+    setShowExplanationModal(false)
     if (lesson) {
-      setQuestions(generateQuestions(lesson));
+      setQuestions(generateQuestions(lesson))
     }
-    setRestartKey((k) => k + 1);
-  }, [lesson, generateQuestions]);
+    setRestartKey((k) => k + 1)
+  }, [lesson, generateQuestions])
 
   const onAnswerSubmit = useCallback(
     (isCorrect: boolean) => {
       if (!isCorrect) {
-        const currentQuestion = questions[currentQuestionIndex];
+        const currentQuestion = questions[currentQuestionIndex]
         if (currentQuestion) {
           setWrongAnswers((prev) => {
             // Prevent duplicate entries for the same question
-            const alreadyExists = prev.some((q) => q.id === currentQuestion.id);
-            if (alreadyExists) return prev;
+            const alreadyExists = prev.some((q) => q.id === currentQuestion.id)
+            if (alreadyExists) return prev
 
-            const updated = [...prev, currentQuestion];
+            const updated = [...prev, currentQuestion]
 
             if (
               lesson?.isFinalTest &&
               updated.length >= FINAL_TEST_FAILURE_THRESHOLD
             ) {
-              setShowFailureModal(true);
+              setShowFailureModal(true)
             }
 
-            return updated;
-          });
+            return updated
+          })
         }
       }
     },
-    [questions, currentQuestionIndex, lesson?.isFinalTest],
-  );
+    [questions, currentQuestionIndex, lesson?.isFinalTest]
+  )
 
   const goToNextQuestion = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1)
     }
-  }, [currentQuestionIndex, questions.length]);
+  }, [currentQuestionIndex, questions.length])
 
   const storeRevisionQuestions = useCallback(async () => {
-    if (!lessonId || wrongAnswers.length === 0) return;
+    if (!lessonId || wrongAnswers.length === 0) return
 
     const questions: StoreRevisionQuestionPayload[] = wrongAnswers.map(
       (question) => {
@@ -166,83 +166,83 @@ export const LessonScreen = () => {
           correctAnswer: question.correctAnswer,
           choices: question.choices,
           type: question.type,
-          correctCount: 0,
-        };
+          correctCount: 0
+        }
 
         // Convert Explanation object to string (Firebase expects string)
         if (question.explanation) {
           payload.explanation =
-            typeof question.explanation === "string"
+            typeof question.explanation === 'string'
               ? question.explanation
-              : question.explanation.text;
+              : question.explanation.text
         }
         if (question.visualComponent) {
-          payload.visualComponent = question.visualComponent;
+          payload.visualComponent = question.visualComponent
         }
         if (question.questionInterface) {
-          payload.questionInterface = question.questionInterface;
+          payload.questionInterface = question.questionInterface
         }
         if (question.layoutType) {
-          payload.layoutType = question.layoutType;
+          payload.layoutType = question.layoutType
         }
-        return payload;
-      },
-    );
+        return payload
+      }
+    )
 
     try {
-      await storeRevisionQuestionsFn({ questions });
-      await refreshRevisionQuestions();
+      await storeRevisionQuestionsFn({ questions })
+      await refreshRevisionQuestions()
     } catch (error) {
-      console.error("Failed to store revision questions:", error);
+      console.error('Failed to store revision questions:', error)
       // Log the actual error details if available
       if (error instanceof Error) {
-        console.error("Error message:", error.message);
-        console.error("Error stack:", error.stack);
+        console.error('Error message:', error.message)
+        console.error('Error stack:', error.stack)
       }
     }
-  }, [lessonId, wrongAnswers, refreshRevisionQuestions]);
+  }, [lessonId, wrongAnswers, refreshRevisionQuestions])
 
   const completeLesson = useCallback(async () => {
-    if (isCompleting) return; // Prevent duplicate calls
-    setIsCompleting(true);
+    if (isCompleting) return // Prevent duplicate calls
+    setIsCompleting(true)
 
     if (lesson?.isFinalTest) {
       // Final test: pass/fail, show success modal or navigate back
-      const isPassed = wrongAnswers.length < 3;
+      const isPassed = wrongAnswers.length < 3
 
       if (lessonId) {
-        await updateFinalTestProgress(lessonId, isPassed);
+        await updateFinalTestProgress(lessonId, isPassed)
       }
-      await storeRevisionQuestions();
+      await storeRevisionQuestions()
 
       if (!isPassed) {
-        navigateBack();
-        return;
+        navigateBack()
+        return
       }
 
-      playLessonFinishedSound();
-      setShowSuccessModal(true);
+      playLessonFinishedSound()
+      setShowSuccessModal(true)
     } else {
       // Regular lesson: stars, modal, user can retry/continue
-      const stars = calculateStars(questions.length, wrongAnswers.length);
+      const stars = calculateStars(questions.length, wrongAnswers.length)
       const soundToPlay =
-        stars === 0 ? playLessonFailedSound : playLessonFinishedSound;
-      soundToPlay();
+        stars === 0 ? playLessonFailedSound : playLessonFinishedSound
+      soundToPlay()
 
       try {
         if (lessonId) {
-          await updateLessonProgress(lessonId, stars);
+          await updateLessonProgress(lessonId, stars)
         }
-        await storeRevisionQuestions();
+        await storeRevisionQuestions()
       } catch {
         Alert.alert(
-          "Couldn't save progress",
-          "Check your connection and try again.",
-          [{ text: "OK", onPress: () => setIsCompleting(false) }],
-        );
-        return;
+          'Couldn\'t save progress',
+          'Check your connection and try again.',
+          [{ text: 'OK', onPress: () => setIsCompleting(false) }]
+        )
+        return
       }
-      setShowStarModal(true);
+      setShowStarModal(true)
     }
   }, [
     isCompleting,
@@ -253,8 +253,8 @@ export const LessonScreen = () => {
     updateFinalTestProgress,
     updateLessonProgress,
     storeRevisionQuestions,
-    navigateBack,
-  ]);
+    navigateBack
+  ])
 
   if (!lesson || questions.length === 0) {
     return (
@@ -270,50 +270,50 @@ export const LessonScreen = () => {
           Lesson not found.
         </LessonEmptyMessage>
       </ScreenContainer>
-    );
+    )
   }
 
   const navigateAfterModal = () => {
-    if (from === "home") {
-      navigateReplace("/theory");
+    if (from === 'home') {
+      navigateReplace('/theory')
     } else {
-      navigateBack();
+      navigateBack()
     }
-  };
+  }
 
   const closeModalAndExit = () => {
-    setShowStarModal(false);
-    navigateAfterModal();
-  };
+    setShowStarModal(false)
+    navigateAfterModal()
+  }
 
   const closeModalAndRetry = () => {
-    setShowStarModal(false);
-    restartLesson();
-  };
+    setShowStarModal(false)
+    restartLesson()
+  }
 
   const closeFailureModalAndRetry = () => {
-    setShowFailureModal(false);
-    restartLesson();
-  };
+    setShowFailureModal(false)
+    restartLesson()
+  }
 
   const closeFailureModalAndExit = () => {
-    setShowFailureModal(false);
-    navigateAfterModal();
-  };
+    setShowFailureModal(false)
+    navigateAfterModal()
+  }
 
   const closeSuccessModalAndContinue = () => {
-    setShowSuccessModal(false);
+    setShowSuccessModal(false)
     // Determine subject and check for unlocked stages
-    const isAuralLesson = lessonId?.startsWith("aural-") ?? false;
-    const stages = isAuralLesson ? auralStagesArray : theoryStagesArray;
-    const nextLockedStage = getNextLockedStage(stages, progressData);
+    const isAuralLesson = lessonId?.startsWith('aural-') ?? false
+    const stages = isAuralLesson ? auralStagesArray : theoryStagesArray
+    const nextLockedStage = getNextLockedStage(stages, progressData)
 
     if (nextLockedStage) {
-      navigate(isAuralLesson ? "/aural" : "/theory");
+      navigate(isAuralLesson ? '/aural' : '/theory')
     } else {
-      navigateAfterModal();
+      navigateAfterModal()
     }
-  };
+  }
 
   return (
     <ScreenContainer>
@@ -356,11 +356,11 @@ export const LessonScreen = () => {
 
       <FinalTestModal
         visible={showSuccessModal || showFailureModal}
-        variant={showSuccessModal ? "success" : "failure"}
+        variant={showSuccessModal ? 'success' : 'failure'}
         onContinue={closeSuccessModalAndContinue}
         onRetry={closeFailureModalAndRetry}
         onExit={closeFailureModalAndExit}
       />
     </ScreenContainer>
-  );
-};
+  )
+}
