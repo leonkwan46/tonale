@@ -1,9 +1,10 @@
 export { useLastLesson } from '../screens/HomeScreen/components/LessonCard/useLastLesson'
+export { useAuthRoute } from './useAuthRoute'
 export { useCollapsibleStages } from './useCollapsibleStages'
 export { useDevice, useResponsiveValue } from './useDevice'
 export { useMetronome } from './useMetronome'
 export { usePlayer } from './usePlayer'
 export { useSafeNavigation } from './useSafeNavigation'
-export { useAuthRoute, useUser } from './useUserContext'
+export { useUserBootstrap } from './useUserBootstrap'
 export { useWindowDimensions } from './useWindowDimensions'
 

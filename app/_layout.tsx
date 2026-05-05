@@ -14,7 +14,7 @@ import { ErrorBoundary } from '@/globalComponents/ErrorBoundary'
 import { ModalRoot } from '@/globalComponents/ModalRoot'
 import { NetworkToast } from '@/globalComponents/NetworkToast'
 import { ThemeModeProvider, useThemeMode } from '@/hooks/useThemeModeContext'
-import { UserProvider } from '@/hooks/useUserContext'
+import { useUserBootstrap } from '@/hooks/useUserBootstrap'
 import { SplashScreen } from '@/screens/SplashScreen'
 
 initSentry()
@@ -36,6 +36,8 @@ const RootLayout = () => {
   const colorScheme = useColorScheme()
   const rootBgColor = colorScheme === 'dark' ? darkSemanticColors.background : lightSemanticColors.background
 
+  useUserBootstrap()
+
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: rootBgColor }}>
       <SafeAreaProvider>
@@ -43,21 +45,19 @@ const RootLayout = () => {
           <DevErrorBoundaryTrigger />
           <ThemeModeProvider>
             <AppThemeProvider>
-              <UserProvider>
-                <ModalRoot>
-                  <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="(auth)" />
-                    <Stack.Screen name="(app)" />
-                    <Stack.Screen name="onboarding" />
-                    <Stack.Screen name="+not-found" />
-                  </Stack>
-                  <NetworkToast />
-                  <ThemedStatusBar />
-                  {showSplash && (
-                    <SplashScreen onComplete={() => setShowSplash(false)} />
-                  )}
-                </ModalRoot>
-              </UserProvider>
+              <ModalRoot>
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="(auth)" />
+                  <Stack.Screen name="(app)" />
+                  <Stack.Screen name="onboarding" />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+                <NetworkToast />
+                <ThemedStatusBar />
+                {showSplash && (
+                  <SplashScreen onComplete={() => setShowSplash(false)} />
+                )}
+              </ModalRoot>
             </AppThemeProvider>
           </ThemeModeProvider>
         </ErrorBoundary>
