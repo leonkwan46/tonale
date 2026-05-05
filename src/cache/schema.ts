@@ -8,20 +8,20 @@ export const STORAGE_KEYS = {
   ONBOARDING_COMPLETED: 'onboarding_completed'
 } as const
 
-export interface LessonProgressCache {
+export interface LessonProgress {
   userId: string
   timestamp: number
   data: Record<string, { isLocked: boolean; stars?: number; isPassed?: boolean }>
 }
 
-export interface LastLessonAccess {
+export interface LastLesson {
   lessonId: string
   timestamp: number
 }
 
 interface StorageValueMap extends Record<string, unknown> {
-  [STORAGE_KEYS.LESSON_PROGRESS_CACHE]: LessonProgressCache
-  [STORAGE_KEYS.LAST_LESSON_ACCESS]: LastLessonAccess
+  [STORAGE_KEYS.LESSON_PROGRESS_CACHE]: LessonProgress
+  [STORAGE_KEYS.LAST_LESSON_ACCESS]: LastLesson
   [STORAGE_KEYS.THEME_MODE]: boolean
   [STORAGE_KEYS.DONATION_ANIMATION_PLAYED]: boolean
   [STORAGE_KEYS.ONBOARDING_COMPLETED]: boolean

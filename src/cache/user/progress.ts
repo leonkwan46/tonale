@@ -1,37 +1,37 @@
 import { STORAGE_KEYS, storage } from '../schema'
-import type { LessonProgressCache } from '../schema'
+import type { LessonProgress } from '../schema'
 
 const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000
 
-export const saveProgressCache = async (
+export const saveProgress = async (
   userId: string,
-  data: LessonProgressCache['data']
+  data: LessonProgress['data']
 ): Promise<void> => {
-  const cache: LessonProgressCache = { userId, timestamp: Date.now(), data }
+  const cache: LessonProgress = { userId, timestamp: Date.now(), data }
   await storage.setItem(STORAGE_KEYS.LESSON_PROGRESS_CACHE, cache)
 }
 
-export const loadProgressCache = async (
+export const loadProgress = async (
   userId: string
-): Promise<LessonProgressCache | null> => {
+): Promise<LessonProgress | null> => {
   const cache = await storage.getItem(STORAGE_KEYS.LESSON_PROGRESS_CACHE)
   if (!cache) return null
 
   if (cache.userId !== userId) {
-    await clearProgressCache()
+    await clearProgress()
     return null
   }
 
   const cacheAge = Date.now() - cache.timestamp
 
   if (!Number.isFinite(cacheAge) || cacheAge > CACHE_MAX_AGE_MS) {
-    await clearProgressCache()
+    await clearProgress()
     return null
   }
 
   return cache
 }
 
-export const clearProgressCache = async (): Promise<void> => {
+export const clearProgress = async (): Promise<void> => {
   await storage.removeItem(STORAGE_KEYS.LESSON_PROGRESS_CACHE)
 }

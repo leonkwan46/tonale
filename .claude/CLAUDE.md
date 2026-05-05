@@ -22,7 +22,7 @@ Three React contexts — always use the hook, never import the context object di
 - `useProgress()` — lesson progress, stars, grade tracking
 - `useThemeMode()` — light/dark theme toggle
 
-AsyncStorage → always via `src/persistence/typedStorage.ts`.
+AsyncStorage → always via `src/cache/adapter.ts`.
 
 ### Theory Exercise System
 
@@ -58,7 +58,7 @@ Theme via `({ theme }) => ({ ... })` callbacks in `.styles.tsx` only. Never `use
 ## Do Not
 
 - Call `useTheme()` inside `index.tsx` files — theme access belongs in `.styles.tsx` only
-- Access AsyncStorage directly — always go through `src/persistence/typedStorage.ts`
+- Access AsyncStorage directly — always go through `src/cache/adapter.ts`
 - Import context objects directly — always use the hook (`useUser()`, not `UserContext`)
 - Hardcode colors except card backgrounds (white/black allowed there)
 

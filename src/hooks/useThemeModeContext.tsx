@@ -1,4 +1,4 @@
-import { appPreferences } from '@/cache'
+import { deviceStorage } from '@/cache'
 import { THEME } from '@/constants/theme'
 import {
     createContext,
@@ -27,14 +27,14 @@ export const ThemeModeProvider = ({ children }: { children: ReactNode }) => {
   )
 
   useEffect(() => {
-    appPreferences.getThemeMode().then((stored: boolean | null) => {
+    deviceStorage.getThemeMode().then((stored: boolean | null) => {
       if (stored !== null) setIsDarkState(stored)
     })
   }, [])
 
   const setIsDark = useCallback((value: boolean) => {
     setIsDarkState(value)
-    appPreferences.setThemeMode(value)
+    deviceStorage.setThemeMode(value)
   }, [])
 
   const value = useMemo(() => ({ isDark, setIsDark }), [isDark, setIsDark])

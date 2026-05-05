@@ -1,4 +1,4 @@
-import { userCache } from '@/cache'
+import { userStorage } from '@/cache'
 import {
     getAllLessonProgressFn,
     updateLessonProgressFn
@@ -32,7 +32,7 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
 
     if (currentUserId && currentUserId !== userId) {
       set({ currentUserId: '' })
-      await userCache.clearUserCache()
+      await userStorage.clearAll()
     }
 
     set({ currentUserId: userId, progressDataLoading: true })
@@ -54,10 +54,10 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
           progressDataInitialized: true
         })
         if (Object.keys(lessonsData).length > 0) {
-          await userCache.saveProgressCache(userId, progressData)
+          await userStorage.saveProgress(userId, progressData)
         }
       } else {
-        const cached = await userCache.loadProgressCache(userId)
+        const cached = await userStorage.loadProgress(userId)
         if (cached) {
           const stages = computeStages(cached.data)
           set({
@@ -78,7 +78,7 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
                     stages,
                     allStageLessons: stages.flatMap((s) => s.lessons)
                   })
-                  userCache.saveProgressCache(userId, progressData)
+                  userStorage.saveProgress(userId, progressData)
                 }
               }
             })
@@ -167,7 +167,7 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
     } catch (error) {
       console.error('Failed to sync progress to backend:', error)
     }
-    await userCache.saveProgressCache(currentUserId, updatedData)
+    await userStorage.saveProgress(currentUserId, updatedData)
   },
 
   updateFinalTestProgress: async (lessonId, isPassed) => {
@@ -197,7 +197,7 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
     } catch (error) {
       console.error('Failed to sync progress to backend:', error)
     }
-    await userCache.saveProgressCache(currentUserId, updatedData)
+    await userStorage.saveProgress(currentUserId, updatedData)
   },
 
   getStageById: (id) => get().stages.find((s) => s.id === id),

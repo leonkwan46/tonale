@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser'
 import { useEffect, useRef, useState } from 'react'
 
-import { appPreferences } from '@/cache'
+import { deviceStorage } from '@/cache'
 import { Typewriter } from '@/compLib/Typewriter'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useDevice } from '@/hooks'
@@ -62,7 +62,7 @@ export const DonationScreen = () => {
 
   useEffect(() => {
     const load = async () => {
-      const stored = await appPreferences.getDonationAnimationPlayed()
+      const stored = await deviceStorage.getDonationAnimationPlayed()
       setHasPlayedNarrative(stored === true)
       setHydrated(true)
     }
@@ -75,7 +75,7 @@ export const DonationScreen = () => {
 
     if (completedLinesCountRef.current === TOTAL_LINES) {
       setHasPlayedNarrative(true)
-      appPreferences.setDonationAnimationPlayed(true)
+      deviceStorage.setDonationAnimationPlayed(true)
     }
   }
 

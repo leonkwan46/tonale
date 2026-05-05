@@ -14,7 +14,7 @@ import {
     verifyPasswordResetCode
 } from 'firebase/auth'
 
-import { userCache } from '@/cache'
+import { userStorage } from '@/cache'
 import { auth } from './firebase'
 
 // HTTPS URL from authorized domain (required by Firebase API)
@@ -136,12 +136,12 @@ export const updateUserDisplayName = async (displayName: string) => {
 // ============================================================================
 
 export const signOutUser = async () => {
-  userCache.clearUserCache()
+  userStorage.clearAll()
   await signOut(auth)
 }
 
 export const deleteUserAccount = async () => {
   const user = requireCurrentUser()
-  userCache.clearUserCache()
+  userStorage.clearAll()
   await deleteUser(user)
 }

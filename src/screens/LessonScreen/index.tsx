@@ -1,4 +1,4 @@
-import { userCache } from '@/cache'
+import { userStorage } from '@/cache'
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
 import { useSafeNavigation } from '@/hooks'
@@ -45,7 +45,7 @@ export const LessonScreen = () => {
   const refreshRevisionQuestions = useProgressStore(
     (s) => s.refreshRevisionQuestions
   )
-  const trackLessonAccess = userCache.trackLessonAccess
+  const setLastLesson = userStorage.setLastLesson
 
   // Get lesson - try aural first, then theory
   const getLesson = useCallback(
@@ -78,7 +78,7 @@ export const LessonScreen = () => {
 
   const [questions, setQuestions] = useState<Question[]>(() => {
     if (!lesson || !lessonId) return []
-    void trackLessonAccess(lessonId)
+    void setLastLesson(lessonId)
     return generateQuestions(lesson)
   })
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)

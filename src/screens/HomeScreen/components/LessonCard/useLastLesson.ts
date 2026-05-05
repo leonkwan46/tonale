@@ -1,4 +1,4 @@
-import { userCache } from '@/cache'
+import { userStorage } from '@/cache'
 import { useProgressStore, type ProgressData } from '@/stores/progressStore'
 import { useUserStore } from '@/stores/userStore'
 import { getTheoryLessonWithProgress } from '@/subjects/theory/curriculum/stages/helpers'
@@ -23,7 +23,7 @@ export const useLastLesson = (): LessonResult => {
     (s) => s.progressDataInitialized
   )
   const allStageLessons = useProgressStore((s) => s.allStageLessons)
-  const getLastLessonAccess = userCache.getLastLessonAccess
+  const getLastLesson = userStorage.getLastLesson
 
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [allCompleted, setAllCompleted] = useState(false)
@@ -34,7 +34,7 @@ export const useLastLesson = (): LessonResult => {
     if (loading) return
 
     try {
-      const lastAccess = await getLastLessonAccess()
+      const lastAccess = await getLastLesson()
       const currentLesson = findLessonToDisplay(
         lastAccess,
         progressData,
@@ -60,7 +60,7 @@ export const useLastLesson = (): LessonResult => {
       setLesson(null)
       setAllCompleted(false)
     }
-  }, [loading, progressData, getLastLessonAccess, allStageLessons])
+  }, [loading, progressData, getLastLesson, allStageLessons])
 
   // Reactive update: refreshes when progressData or user state changes
   // Handles updates when lessons are completed and context data changes
