@@ -1,6 +1,7 @@
 export { useLastLesson } from '../screens/HomeScreen/components/LessonCard/useLastLesson'
 export { useAuthRoute } from './useAuthRoute'
 export { useCollapsibleStages } from './useCollapsibleStages'
+export { BREAKPOINTS, useBreakpoint, type Breakpoint } from './useBreakpoint'
 export { useDevice, useResponsiveValue } from './useDevice'
 export { useMetronome } from './useMetronome'
 export { usePlayer } from './usePlayer'
