@@ -1,6 +1,7 @@
-import { Children, useMemo } from 'react'
-import { Modal as RNModal } from 'react-native'
+import { Children, useEffect, useId, useMemo, useRef } from 'react'
+import { Animated, BackHandler, StyleSheet } from 'react-native'
 import { useWindowDimensions } from '@/hooks'
+import { modalStore } from '@/globalComponents/ModalRoot/store'
 import {
   ButtonContainer,
   ButtonItem,
@@ -21,25 +22,38 @@ interface ModalProps {
   children: React.ReactNode
 }
 
-const ModalBase = ({
-  visible,
-  onRequestClose,
-  animationType = 'fade',
-  transparent = true,
-  testID,
-  contentVariant = 'default',
-  children
-}: ModalProps) => {
-  const { width: screenWidth } = useWindowDimensions()
+const FADE_DURATION = 200
 
-  const modalWidth = useMemo(() => screenWidth * 0.85, [screenWidth])
+const ModalContent = ({
+  animated,
+  testID,
+  contentVariant,
+  modalWidth,
+  onRequestClose,
+  children
+}: {
+  animated: boolean
+  testID?: string
+  contentVariant: 'default' | 'light'
+  modalWidth: number
+  onRequestClose: () => void
+  children: React.ReactNode
+}) => {
+  const opacity = useRef(new Animated.Value(animated ? 0 : 1)).current
+
+  useEffect(() => {
+    if (!animated) return
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: FADE_DURATION,
+      useNativeDriver: true
+    }).start()
+  }, [animated, opacity])
 
   return (
-    <RNModal
-      visible={visible}
-      transparent={transparent}
-      animationType={animationType}
-      onRequestClose={onRequestClose}
+    <Animated.View
+      pointerEvents="box-none"
+      style={[StyleSheet.absoluteFillObject, { opacity, zIndex: 1000 }]}
     >
       <ModalOverlay onPress={onRequestClose}>
         <ModalContainer
@@ -51,8 +65,62 @@ const ModalBase = ({
           {children}
         </ModalContainer>
       </ModalOverlay>
-    </RNModal>
+    </Animated.View>
   )
+}
+
+const ModalBase = ({
+  visible,
+  onRequestClose,
+  animationType = 'fade',
+  testID,
+  contentVariant = 'default',
+  children
+}: ModalProps) => {
+  const id = useId()
+  const { width: screenWidth } = useWindowDimensions()
+  const modalWidth = useMemo(() => screenWidth * 0.85, [screenWidth])
+  const childrenRef = useRef(children)
+  childrenRef.current = children
+
+  useEffect(() => {
+    if (!visible) {
+      modalStore.unregister(id)
+      return
+    }
+    modalStore.register(
+      id,
+      <ModalContent
+        animated={animationType !== 'none'}
+        testID={testID}
+        contentVariant={contentVariant}
+        modalWidth={modalWidth}
+        onRequestClose={onRequestClose}
+      >
+        {childrenRef.current}
+      </ModalContent>
+    )
+    return () => modalStore.unregister(id)
+  }, [
+    visible,
+    id,
+    animationType,
+    testID,
+    contentVariant,
+    modalWidth,
+    onRequestClose
+  ])
+
+  useEffect(() => {
+    if (!visible) return
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      onRequestClose()
+      return true
+    })
+    return () => sub.remove()
+  }, [visible, onRequestClose])
+
+  return null
 }
 
 const ModalIcon = ({ children }: { children: React.ReactNode }) => (
