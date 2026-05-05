@@ -1,5 +1,6 @@
-import { useProgress, type ProgressData } from '@/hooks/useProgressContext'
+import { useProgressStore, type ProgressData } from '@/stores/progressStore'
 import { useUser } from '@/hooks/useUserContext'
+import { userCache } from '@/storage'
 import { getTheoryLessonWithProgress } from '@/subjects/theory/curriculum/stages/helpers'
 import type { Lesson } from '@types'
 import { useFocusEffect } from 'expo-router'
@@ -16,12 +17,10 @@ type LastAccess = { lessonId: string; timestamp: number } | null
 
 export const useLastLesson = (): LessonResult => {
   const { loading: userLoading, authUser } = useUser()
-  const {
-    progressData,
-    progressDataInitialized,
-    getLastLessonAccess,
-    allStageLessons
-  } = useProgress()
+  const progressData = useProgressStore(s => s.progressData)
+  const progressDataInitialized = useProgressStore(s => s.progressDataInitialized)
+  const allStageLessons = useProgressStore(s => s.allStageLessons)
+  const getLastLessonAccess = userCache.getLastLessonAccess
   
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [allCompleted, setAllCompleted] = useState(false)

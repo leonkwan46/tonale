@@ -1,10 +1,11 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { Stack } from 'expo-router'
 
-import { ProgressProvider } from '@/hooks/useProgressContext'
+import { useProgressBootstrap } from '@/hooks/useProgressBootstrap'
 
-const AppLayout = () => (
-  <ProgressProvider>
+const AppLayout = () => {
+  useProgressBootstrap()
+  return (
     <BottomSheetModalProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
@@ -12,7 +13,7 @@ const AppLayout = () => (
         <Stack.Screen name="revision" />
       </Stack>
     </BottomSheetModalProvider>
-  </ProgressProvider>
-)
+  )
+}
 
 export default AppLayout

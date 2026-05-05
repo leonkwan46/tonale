@@ -1,7 +1,7 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useProgress } from '@/hooks'
+import { useProgressStore } from '@/stores/progressStore'
 import { useRouter } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Alert } from 'react-native'
 import { LessonHeader } from '../LessonScreen/LessonHeader'
 import { LessonScreenBody } from '../LessonScreen/LessonScreenBody'
@@ -11,7 +11,8 @@ import { useRevision } from './useRevision'
 
 export const RevisionScreen = () => {
   const router = useRouter()
-  const { revisionQuestions, refreshRevisionQuestions } = useProgress()
+  const revisionQuestions = useProgressStore(s => s.revisionQuestions)
+  const refreshRevisionQuestions = useProgressStore(s => s.refreshRevisionQuestions)
   const {
     revision,
     completion,
@@ -27,6 +28,11 @@ export const RevisionScreen = () => {
     refreshRevisionQuestions,
     onExit: () => router.back()
   })
+
+  const [showExplanationModal, setShowExplanationModal] = useState(false)
+
+  const handleShowExplanation = useCallback(() => setShowExplanationModal(true), [])
+  const handleHideExplanation = useCallback(() => setShowExplanationModal(false), [])
 
   const handleBackPress = useCallback(() => {
     if (!hasQuestions) {
@@ -78,6 +84,9 @@ export const RevisionScreen = () => {
           onAnswerSubmit={onAnswerSubmit}
           onNextQuestion={goToNextQuestion}
           onLessonComplete={completeRevision}
+          showExplanationModal={showExplanationModal}
+          onShowExplanation={handleShowExplanation}
+          onHideExplanation={handleHideExplanation}
         />
       )}
 

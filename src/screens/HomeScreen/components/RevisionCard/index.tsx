@@ -1,4 +1,5 @@
-import { useProgress, useSafeNavigation } from '@/hooks'
+import { useSafeNavigation } from '@/hooks'
+import { useProgressStore } from '@/stores/progressStore'
 import { Button } from '@/compLib/Button'
 import { Card } from '@/compLib/Card'
 import { Skeleton } from '@/compLib/Skeleton'
@@ -12,7 +13,10 @@ import {
 } from './RevisionCard.styles'
 
 export const RevisionCard = () => {
-  const { revisionQuestions, revisionQuestionsLoading, progressDataLoading, progressDataInitialized } = useProgress()
+  const revisionQuestions = useProgressStore(s => s.revisionQuestions)
+  const revisionQuestionsLoading = useProgressStore(s => s.revisionQuestionsLoading)
+  const progressDataLoading = useProgressStore(s => s.progressDataLoading)
+  const progressDataInitialized = useProgressStore(s => s.progressDataInitialized)
   const { isNavigating, navigate } = useSafeNavigation()
   const cardSize = useCardButtonSize()
 

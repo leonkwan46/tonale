@@ -1,6 +1,6 @@
 import { useDevice } from '@/hooks'
 import type { Question } from '@types'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef } from 'react'
 import { Platform } from 'react-native'
 import { AnswerInterface } from '../components/AnswerInterface'
 import { QuestionInterface } from '../components/QuestionInterface'
@@ -16,6 +16,9 @@ interface LessonScreenBodyProps {
   onLessonComplete?: () => void
   wrongAnswersCount?: number
   isFinalTest?: boolean
+  showExplanationModal: boolean
+  onShowExplanation: () => void
+  onHideExplanation: () => void
 }
 
 export const LessonScreenBody = ({
@@ -25,14 +28,16 @@ export const LessonScreenBody = ({
   onNextQuestion,
   onLessonComplete,
   wrongAnswersCount = 0,
-  isFinalTest = false
+  isFinalTest = false,
+  showExplanationModal,
+  onShowExplanation,
+  onHideExplanation
 }: LessonScreenBodyProps) => {
   const { isTablet } = useDevice()
   const currentQuestion = questions[currentQuestionIndex]
   const { question, type } = currentQuestion
   const isLastQuestion = currentQuestionIndex === questions.length - 1
   const onPlaybackFinishRef = useRef<(() => void) | null>(null)
-  const [showExplanationModal, setShowExplanationModal] = useState(false)
 
   const handleNextQuestionInternal = useCallback(() => {
     if (isLastQuestion) {
@@ -43,12 +48,12 @@ export const LessonScreenBody = ({
   }, [isLastQuestion, onLessonComplete, onNextQuestion])
 
   const handleExplanationContinue = useCallback(() => {
-    setShowExplanationModal(false)
+    onHideExplanation()
     const shouldBlock =
       isFinalTest && wrongAnswersCount + 1 >= FINAL_TEST_FAILURE_THRESHOLD
     if (shouldBlock) return
     handleNextQuestionInternal()
-  }, [isFinalTest, wrongAnswersCount, handleNextQuestionInternal])
+  }, [onHideExplanation, isFinalTest, wrongAnswersCount, handleNextQuestionInternal])
 
   if (questions.length === 0) return null
 
@@ -76,7 +81,7 @@ export const LessonScreenBody = ({
         questionData={currentQuestion}
         onAnswerSubmit={onAnswerSubmit}
         onNextQuestion={handleNextQuestionInternal}
-        onShowExplanation={() => setShowExplanationModal(true)}
+        onShowExplanation={onShowExplanation}
         wrongAnswersCount={wrongAnswersCount}
         isFinalTest={isFinalTest}
         onPlaybackFinishRef={onPlaybackFinishRef}

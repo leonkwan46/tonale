@@ -1,7 +1,7 @@
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
 import { signOutUser } from '@/config/firebase/auth'
 import { useSafeNavigation, useUser } from '@/hooks'
-import { useProgress } from '@/hooks/useProgressContext'
+import { useProgressStore } from '@/stores/progressStore'
 import { useThemeMode } from '@/hooks/useThemeModeContext'
 import { allLessons } from '@/subjects/theory/curriculum/stages/helpers'
 import { useState } from 'react'
@@ -23,7 +23,8 @@ export const SettingsScreen = () => {
   const { userData } = useUser()
   const { navigate, navigateReplace } = useSafeNavigation()
   const { isDark, setIsDark } = useThemeMode()
-  const { updateLessonProgress, updateFinalTestProgress } = useProgress()
+  const updateLessonProgress = useProgressStore(s => s.updateLessonProgress)
+  const updateFinalTestProgress = useProgressStore(s => s.updateFinalTestProgress)
   const [loggingOut, setLoggingOut] = useState(false)
   const [fillingProgress, setFillingProgress] = useState(false)
 

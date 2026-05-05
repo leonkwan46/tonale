@@ -1,4 +1,5 @@
-import { useCollapsibleStages, useProgress } from '@/hooks'
+import { useCollapsibleStages } from '@/hooks'
+import { useProgressStore } from '@/stores/progressStore'
 import type { Stage, StageLesson } from '@types'
 import { useCallback } from 'react'
 import { LessonDivider } from '../components/LessonDivider'
@@ -10,7 +11,10 @@ import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonCo
 const PREVIEW_LESSONS_COUNT = 2
 
 export const TheoryScreenBody = () => {
-  const { getStageById, getStageRequirements, getNextLockedStage, stages } = useProgress()
+  const stages = useProgressStore(s => s.stages)
+  const getStageById = useProgressStore(s => s.getStageById)
+  const getStageRequirements = useProgressStore(s => s.getStageRequirements)
+  const getNextLockedStage = useProgressStore(s => s.getNextLockedStage)
   const { scrollViewRef, collapsedStages, visibleStages, animatedHeights, stageRefs, toggleStageCollapse } =
     useCollapsibleStages(stages)
 

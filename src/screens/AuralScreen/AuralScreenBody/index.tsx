@@ -1,4 +1,5 @@
-import { useCollapsibleStages, useDevice, useProgress } from '@/hooks'
+import { useCollapsibleStages, useDevice } from '@/hooks'
+import { useProgressStore } from '@/stores/progressStore'
 import { auralStagesArray } from '@/subjects/aural/curriculum/stages/helpers'
 import type { Stage, StageLesson } from '@types'
 import { useCallback } from 'react'
@@ -10,7 +11,7 @@ import { CollapsibleLessonsContainer, ContentContainer, ContentWrapper, LessonCo
 
 export const AuralScreenBody = () => {
   const { isTablet } = useDevice()
-  const { progressData } = useProgress()
+  const progressData = useProgressStore(s => s.progressData)
   const { scrollViewRef, collapsedStages, visibleStages, animatedHeights, stageRefs, toggleStageCollapse } =
     useCollapsibleStages(auralStagesArray)
 

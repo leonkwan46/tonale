@@ -1,6 +1,8 @@
 import { storeRevisionQuestionsFn } from '@/config/firebase/functions/revisionQuestions'
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useProgress, useSafeNavigation } from '@/hooks'
+import { useSafeNavigation } from '@/hooks'
+import { useProgressStore } from '@/stores/progressStore'
+import { userCache } from '@/storage'
 import {
     auralStagesArray,
     getAuralLessonWithProgress
@@ -35,13 +37,11 @@ export const LessonScreen = () => {
     lessonId: string;
     from: string;
   }>()
-  const {
-    progressData,
-    updateFinalTestProgress,
-    updateLessonProgress,
-    trackLessonAccess,
-    refreshRevisionQuestions
-  } = useProgress()
+  const progressData = useProgressStore(s => s.progressData)
+  const updateFinalTestProgress = useProgressStore(s => s.updateFinalTestProgress)
+  const updateLessonProgress = useProgressStore(s => s.updateLessonProgress)
+  const refreshRevisionQuestions = useProgressStore(s => s.refreshRevisionQuestions)
+  const trackLessonAccess = userCache.trackLessonAccess
 
   // Get lesson - try aural first, then theory
   const getLesson = useCallback(
@@ -84,6 +84,7 @@ export const LessonScreen = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
   const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const [showExplanationModal, setShowExplanationModal] = useState(false)
   /** Incremented on Retry so LessonScreenBody remounts and clears stale state (e.g. AnswerInterface answerResult). */
   const [restartKey, setRestartKey] = useState(0)
 
@@ -97,10 +98,19 @@ export const LessonScreen = () => {
     setShowLeaveModal(true)
   }, [hasProgress, navigateBack])
 
+  const handleShowExplanation = useCallback(() => {
+    setShowExplanationModal(true)
+  }, [])
+
+  const handleHideExplanation = useCallback(() => {
+    setShowExplanationModal(false)
+  }, [])
+
   const restartLesson = useCallback(() => {
     setCurrentQuestionIndex(0)
     setWrongAnswers([])
     setIsCompleting(false)
+    setShowExplanationModal(false)
     if (lesson) {
       setQuestions(generateQuestions(lesson))
     }
@@ -315,6 +325,9 @@ export const LessonScreen = () => {
         onLessonComplete={completeLesson}
         wrongAnswersCount={wrongAnswers.length}
         isFinalTest={lesson?.isFinalTest || false}
+        showExplanationModal={showExplanationModal}
+        onShowExplanation={handleShowExplanation}
+        onHideExplanation={handleHideExplanation}
       />
 
       <LessonCompleteModal
