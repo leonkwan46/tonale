@@ -1,4 +1,4 @@
-import { useUser } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { useFonts } from 'expo-font'
 import { useCallback, useEffect, useState } from 'react'
 import { getSplashEnvironmentLabel } from '@/config/environment'
@@ -36,7 +36,7 @@ interface SplashScreenProps {
 
 export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const [fontsLoaded] = useFonts(FONTS)
-  const { loading: authLoading } = useUser()
+  const authLoading = useUserStore(s => s.loading)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
   const startExitAnimation = useCallback(() => {

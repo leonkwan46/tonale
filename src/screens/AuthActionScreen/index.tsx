@@ -1,5 +1,5 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useUser } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { useGlobalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 
@@ -13,7 +13,7 @@ import { getHandler } from './handlers/AuthActionHandlerRegistry'
 
 export const AuthActionScreen = () => {
   const router = useRouter()
-  const { authUser } = useUser()
+  const authUser = useUserStore(s => s.authUser)
   const params = useGlobalSearchParams<{ 
     mode?: string
     oobCode?: string

@@ -2,11 +2,11 @@ import { Redirect, Tabs } from 'expo-router'
 import React from 'react'
 
 import { FEATURES, isFeatureEnabled } from '@/config/featureFlags'
-import { useUser } from '@/hooks'
 import { CustomTabBar } from '@/globalComponents/CustomTabBar'
+import { useUserStore } from '@/stores/userStore'
 
 const TabLayout = () => {
-  const { authUser } = useUser()
+  const authUser = useUserStore(s => s.authUser)
 
   if (!authUser) return <Redirect href="/(auth)" />
 

@@ -1,7 +1,7 @@
 import { sendPasswordResetEmailToUser } from '@/config/firebase/auth'
 import { auth } from '@/config/firebase/firebase'
 import { createUserData } from '@/config/firebase/functions'
-import { useUser } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import { Button } from '@/compLib/Button'
 import { Icon } from '@/compLib/Icon'
 import { InputField } from '@/compLib/InputField'
@@ -41,7 +41,8 @@ export const AuthForm = ({
   const isLoginMode = authState.mode === 'login'
   const isRegisterMode = authState.mode === 'register'
 
-  const { setUserData } = useUser()
+  const setUserData = useUserStore(s => s.setUserData)
+  const setSkipNextFetch = useUserStore(s => s.setSkipNextFetch)
 
   const emailInputRef = useRef<TextInput>(null)
   const passwordInputRef = useRef<TextInput>(null)
@@ -83,6 +84,9 @@ export const AuthForm = ({
   }
 
   const handleRegister = async () => {
+    // Skip the bootstrap's fetchUserData on the auth state change that follows —
+    // the document doesn't exist yet, and createUserData below populates state directly.
+    setSkipNextFetch(true)
     const { user } = await createUserWithEmailAndPassword(
       auth,
       formData.email,
