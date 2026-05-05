@@ -1,5 +1,5 @@
 import { updateUserData } from '@/config/firebase/functions'
-import { useUser } from '@/hooks'
+import { useUserStore } from '@/stores/userStore'
 import type { UserData } from '@types'
 import { useEffect, useRef, useState } from 'react'
 
@@ -99,7 +99,8 @@ type PreviousStreakData = {
 }
 
 export const useStreak = (): number => {
-  const { authUser, userData } = useUser()
+  const authUser = useUserStore(s => s.authUser)
+  const userData = useUserStore(s => s.userData)
   const [currentStreak, setCurrentStreak] = useState<number>(DEFAULT_STREAK)
   const previousUserIdRef = useRef<string | null>(null)
   const hasInitialProfileLoadRef = useRef<boolean>(false)

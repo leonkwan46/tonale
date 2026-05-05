@@ -1,5 +1,5 @@
 import { useProgressStore, type ProgressData } from '@/stores/progressStore'
-import { useUser } from '@/hooks/useUserContext'
+import { useUserStore } from '@/stores/userStore'
 import { userCache } from '@/storage'
 import { getTheoryLessonWithProgress } from '@/subjects/theory/curriculum/stages/helpers'
 import type { Lesson } from '@types'
@@ -16,7 +16,8 @@ interface LessonResult {
 type LastAccess = { lessonId: string; timestamp: number } | null
 
 export const useLastLesson = (): LessonResult => {
-  const { loading: userLoading, authUser } = useUser()
+  const userLoading = useUserStore(s => s.loading)
+  const authUser = useUserStore(s => s.authUser)
   const progressData = useProgressStore(s => s.progressData)
   const progressDataInitialized = useProgressStore(s => s.progressDataInitialized)
   const allStageLessons = useProgressStore(s => s.allStageLessons)

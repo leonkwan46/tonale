@@ -1,6 +1,7 @@
 import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useLastLesson, useUser } from '@/hooks'
+import { useLastLesson } from '@/hooks'
 import { useProgressStore } from '@/stores/progressStore'
+import { useUserStore } from '@/stores/userStore'
 import { useCallback, useState } from 'react'
 import { GreetingBanner } from './components/GreetingBanner'
 import { HomeScreenBackground } from './components/HomeScreenBackground'
@@ -9,7 +10,10 @@ import { RevisionCard } from './components/RevisionCard'
 import { StrikeBar } from './components/StrikeBar'
 
 export const HomeScreen = () => {
-  const { authUser, userData, loading, fetchUserData: refreshProfile } = useUser()
+  const authUser = useUserStore(s => s.authUser)
+  const userData = useUserStore(s => s.userData)
+  const loading = useUserStore(s => s.loading)
+  const refreshProfile = useUserStore(s => s.fetchUserData)
   const { refresh: refreshLesson } = useLastLesson()
   const refreshProgress = useProgressStore(s => s.refreshProgress)
   const refreshRevisionQuestions = useProgressStore(s => s.refreshRevisionQuestions)
