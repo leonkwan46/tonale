@@ -1,9 +1,13 @@
 import { Typography } from '@/compLib/Typography'
-import { useTheme } from '@emotion/react'
 import styled from '@emotion/native'
+import { useTheme } from '@emotion/react'
 import { ScrollView } from 'react-native'
 
-export const ErrorBoundaryScroll = ({ children }: { children: React.ReactNode }) => {
+export const ErrorBoundaryScroll = ({
+  children
+}: {
+  children: React.ReactNode;
+}) => {
   const theme = useTheme()
   return (
     <ScrollContainer

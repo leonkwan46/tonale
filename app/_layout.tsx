@@ -41,10 +41,10 @@ const RootLayout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: rootBgColor }}>
       <SafeAreaProvider>
-        <ErrorBoundary>
-          <DevErrorBoundaryTrigger />
-          <ThemeModeProvider>
-            <AppThemeProvider>
+        <ThemeModeProvider>
+          <AppThemeProvider>
+            <ErrorBoundary>
+              <DevErrorBoundaryTrigger />
               <ModalRoot>
                 <Stack screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="(auth)" />
@@ -58,9 +58,9 @@ const RootLayout = () => {
                   <SplashScreen onComplete={() => setShowSplash(false)} />
                 )}
               </ModalRoot>
-            </AppThemeProvider>
-          </ThemeModeProvider>
-        </ErrorBoundary>
+            </ErrorBoundary>
+          </AppThemeProvider>
+        </ThemeModeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   )

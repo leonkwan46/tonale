@@ -1,60 +1,55 @@
-import { THEME } from '@/constants/theme'
-import { appPreferences } from '@/storage'
+import { appPreferences } from "@/cache";
+import { THEME } from "@/constants/theme";
 import {
-  createContext,
-  type ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
-import { useColorScheme } from 'react-native'
+    createContext,
+    type ReactNode,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
+import { useColorScheme } from "react-native";
 
 export interface ThemeModeContextType {
-  isDark: boolean
-  setIsDark: (value: boolean) => void
+  isDark: boolean;
+  setIsDark: (value: boolean) => void;
 }
 
-export const ThemeModeContext =
-  createContext<ThemeModeContextType | undefined>(undefined)
+export const ThemeModeContext = createContext<ThemeModeContextType | undefined>(
+  undefined,
+);
 
-export const ThemeModeProvider = ({
-  children
-}: {
-  children: ReactNode
-}) => {
-  const systemColorScheme = useColorScheme()
-  const [isDark, setIsDarkState] = useState<boolean>(systemColorScheme === THEME.DARK)
+export const ThemeModeProvider = ({ children }: { children: ReactNode }) => {
+  const systemColorScheme = useColorScheme();
+  const [isDark, setIsDarkState] = useState<boolean>(
+    systemColorScheme === THEME.DARK,
+  );
 
   useEffect(() => {
-    appPreferences
-      .getThemeMode()
-      .then((stored) => {
-        if (stored !== null) setIsDarkState(stored)
-      })
-  }, [])
+    appPreferences.getThemeMode().then((stored) => {
+      if (stored !== null) setIsDarkState(stored);
+    });
+  }, []);
 
   const setIsDark = useCallback((value: boolean) => {
-    setIsDarkState(value)
-    appPreferences.setThemeMode(value)
-  }, [])
+    setIsDarkState(value);
+    appPreferences.setThemeMode(value);
+  }, []);
 
-  const value = useMemo(() => ({ isDark, setIsDark }), [isDark, setIsDark])
+  const value = useMemo(() => ({ isDark, setIsDark }), [isDark, setIsDark]);
 
   return (
     <ThemeModeContext.Provider value={value}>
       {children}
     </ThemeModeContext.Provider>
-  )
-}
+  );
+};
 
 export const useThemeMode = (): ThemeModeContextType => {
-  const context = useContext(ThemeModeContext)
+  const context = useContext(ThemeModeContext);
   if (context === undefined) {
-    throw new Error(
-      'useThemeMode must be used within a ThemeModeProvider'
-    )
+    throw new Error("useThemeMode must be used within a ThemeModeProvider");
   }
-  return context
-}
+  return context;
+};

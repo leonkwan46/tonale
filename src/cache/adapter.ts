@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import type { StorageKey } from './keys'
 
 type Logger = Pick<Console, 'warn'>
 
@@ -19,7 +18,7 @@ export interface TypedStorageOptions {
   logger?: Logger
 }
 
-export const createTypedStorage = <ValueMap extends Record<StorageKey, unknown>>(
+export const createTypedStorage = <ValueMap extends Record<string, unknown>>(
   options: TypedStorageOptions = {}
 ) => {
   const logger = options.logger ?? defaultLogger
@@ -44,7 +43,7 @@ export const createTypedStorage = <ValueMap extends Record<StorageKey, unknown>>
     }
   }
 
-  const removeItem = async (key: StorageKey | string): Promise<void> => {
+  const removeItem = async (key: string): Promise<void> => {
     try {
       await AsyncStorage.removeItem(String(key))
     } catch (error) {
@@ -52,10 +51,9 @@ export const createTypedStorage = <ValueMap extends Record<StorageKey, unknown>>
     }
   }
 
-  const removeItems = async (keys: (StorageKey | string)[]): Promise<void> => {
+  const removeItems = async (keys: string[]): Promise<void> => {
     await Promise.all(keys.map(removeItem))
   }
 
   return { getItem, setItem, removeItem, removeItems }
 }
-

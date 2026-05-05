@@ -1,4 +1,4 @@
-import { STORAGE_KEYS, storage } from './storage'
+import { STORAGE_KEYS, storage } from './client'
 
 export const getThemeMode = async (): Promise<boolean | null> => {
   return await storage.getItem(STORAGE_KEYS.THEME_MODE)

@@ -1,98 +1,98 @@
-import * as WebBrowser from 'expo-web-browser'
-import { useEffect, useRef, useState } from 'react'
+import * as WebBrowser from "expo-web-browser";
+import { useEffect, useRef, useState } from "react";
 
-import { ScreenContainer } from '@/globalComponents/ScreenContainer'
-import { useDevice } from '@/hooks'
-import { appPreferences } from '@/storage'
-import { Typewriter } from '@/compLib/Typewriter'
-import { SettingItemHeader } from '../../components/SettingItemHeader'
-import { ContentContainer } from '../../SettingsScreen.styles'
-import { CoffeePurchaseButton } from './components/CoffeePurchaseButton'
+import { appPreferences } from "@/cache";
+import { Typewriter } from "@/compLib/Typewriter";
+import { ScreenContainer } from "@/globalComponents/ScreenContainer";
+import { useDevice } from "@/hooks";
+import { SettingItemHeader } from "../../components/SettingItemHeader";
+import { ContentContainer } from "../../SettingsScreen.styles";
+import { CoffeePurchaseButton } from "./components/CoffeePurchaseButton";
 import {
-  ButtonsContainer,
-  CharacterImage,
-  FullScreenScrollView,
-  NarrativeContainer,
-  NarrativeLine,
-  NarrativeText,
-  ScrollContentContainer
-} from './DonationScreen.styles'
+    ButtonsContainer,
+    CharacterImage,
+    FullScreenScrollView,
+    NarrativeContainer,
+    NarrativeLine,
+    NarrativeText,
+    ScrollContentContainer,
+} from "./DonationScreen.styles";
 
 const NARRATIVE_LINES = [
-  'This is Leon.',
-  'Leon makes this app.',
-  'Leon sleeps on a keyboard.',
-  'Leon runs on coffee.',
-  'Help Leon survive ☕💀'
-] as const
+  "This is Leon.",
+  "Leon makes this app.",
+  "Leon sleeps on a keyboard.",
+  "Leon runs on coffee.",
+  "Help Leon survive ☕💀",
+] as const;
 
-const TYPEWRITER_SPEED = 50
-const PAUSE_BETWEEN_LINES_MS = 300
+const TYPEWRITER_SPEED = 50;
+const PAUSE_BETWEEN_LINES_MS = 300;
 
-const CHARACTER_IMAGE = require('@assets/images/coffee/the_developer.png')
-const SINGLE_COFFEE_ICON = require('@assets/images/coffee/coffee_1.png')
-const DOUBLE_COFFEE_ICON = require('@assets/images/coffee/coffee_2.png')
+const CHARACTER_IMAGE = require("@assets/images/coffee/the_developer.png");
+const SINGLE_COFFEE_ICON = require("@assets/images/coffee/coffee_1.png");
+const DOUBLE_COFFEE_ICON = require("@assets/images/coffee/coffee_2.png");
 
 const calculateLineDelays = (lines: readonly string[]): number[] => {
   return lines.map((_, lineIndex) => {
-    if (lineIndex === 0) return 0
-    
-    let totalDelay = 0
+    if (lineIndex === 0) return 0;
+
+    let totalDelay = 0;
     for (let i = 0; i < lineIndex; i++) {
-      totalDelay += lines[i].length * TYPEWRITER_SPEED
-      totalDelay += PAUSE_BETWEEN_LINES_MS
+      totalDelay += lines[i].length * TYPEWRITER_SPEED;
+      totalDelay += PAUSE_BETWEEN_LINES_MS;
     }
-    return totalDelay
-  })
-}
+    return totalDelay;
+  });
+};
 
-const LINE_DELAYS = calculateLineDelays(NARRATIVE_LINES)
+const LINE_DELAYS = calculateLineDelays(NARRATIVE_LINES);
 
-const TOTAL_LINES = NARRATIVE_LINES.length
-const PAYMENT_LINK_URL = 'https://buy.stripe.com/test_3cI6ozgIW2yL1IU5Rd9oc00'
+const TOTAL_LINES = NARRATIVE_LINES.length;
+const PAYMENT_LINK_URL = "https://buy.stripe.com/test_3cI6ozgIW2yL1IU5Rd9oc00";
 
 export const DonationScreen = () => {
-  const { isTablet } = useDevice()
-  const completedLinesCountRef = useRef(0)
-  const [hasPlayedNarrative, setHasPlayedNarrative] = useState<boolean>(false)
-  const [hydrated, setHydrated] = useState(false)
+  const { isTablet } = useDevice();
+  const completedLinesCountRef = useRef(0);
+  const [hasPlayedNarrative, setHasPlayedNarrative] = useState<boolean>(false);
+  const [hydrated, setHydrated] = useState(false);
 
   // Keep the container (ButtonsContainer) non-animated; we want the buttons visible immediately.
   // (We still keep the typewriter animation for first-time users only.)
 
   useEffect(() => {
     const load = async () => {
-      const stored = await appPreferences.getDonationAnimationPlayed()
-      setHasPlayedNarrative(stored === true)
-      setHydrated(true)
-    }
+      const stored = await appPreferences.getDonationAnimationPlayed();
+      setHasPlayedNarrative(stored === true);
+      setHydrated(true);
+    };
 
-    load()
-  }, [])
+    load();
+  }, []);
 
   const handleLineComplete = () => {
-    completedLinesCountRef.current += 1
-    
+    completedLinesCountRef.current += 1;
+
     if (completedLinesCountRef.current === TOTAL_LINES) {
-      setHasPlayedNarrative(true)
-      appPreferences.setDonationAnimationPlayed(true)
+      setHasPlayedNarrative(true);
+      appPreferences.setDonationAnimationPlayed(true);
     }
-  }
+  };
 
   // If we haven't loaded the cache yet, keep behavior simple: render immediately (no typewriter).
-  const shouldAnimateNarrative = hydrated && !hasPlayedNarrative
+  const shouldAnimateNarrative = hydrated && !hasPlayedNarrative;
 
   const openPaymentLink = async () => {
-    await WebBrowser.openBrowserAsync(PAYMENT_LINK_URL)
-  }
+    await WebBrowser.openBrowserAsync(PAYMENT_LINK_URL);
+  };
 
   const handleSingleCoffeePress = () => {
-    openPaymentLink()
-  }
+    openPaymentLink();
+  };
 
   const handleDoubleCoffeePress = () => {
-    openPaymentLink()
-  }
+    openPaymentLink();
+  };
 
   return (
     <ScreenContainer>
@@ -104,17 +104,17 @@ export const DonationScreen = () => {
         <ScrollContentContainer>
           <ContentContainer>
             <CharacterImage source={CHARACTER_IMAGE} />
-            
+
             <NarrativeContainer>
               {NARRATIVE_LINES.map((line, index) => {
                 if (!shouldAnimateNarrative) {
                   return (
                     <NarrativeLine key={index}>
-                      <NarrativeText size={isTablet ? 'lg' : 'md'}>
+                      <NarrativeText size={isTablet ? "lg" : "md"}>
                         {line}
                       </NarrativeText>
                     </NarrativeLine>
-                  )
+                  );
                 }
 
                 return (
@@ -124,10 +124,10 @@ export const DonationScreen = () => {
                       speed={TYPEWRITER_SPEED}
                       delay={LINE_DELAYS[index]}
                       onComplete={handleLineComplete}
-                      size={isTablet ? 'lg' : 'md'}
+                      size={isTablet ? "lg" : "md"}
                     />
                   </NarrativeLine>
-                )
+                );
               })}
             </NarrativeContainer>
 
@@ -149,5 +149,5 @@ export const DonationScreen = () => {
         </ScrollContentContainer>
       </FullScreenScrollView>
     </ScreenContainer>
-  )
-}
+  );
+};

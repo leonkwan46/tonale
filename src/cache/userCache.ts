@@ -1,5 +1,5 @@
-import { STORAGE_KEYS, storage } from './storage'
-import type { LessonProgressCache, LastLessonAccess } from './valueMap'
+import { STORAGE_KEYS, storage } from './client'
+import type { LessonProgressCache, LastLessonAccess } from './client'
 
 // Cache is considered stale after 24 hours (in milliseconds)
 const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000
